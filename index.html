@@ -597,7 +597,9 @@ html[data-light] .rank-score { color: var(--tinta); }
       <div class="room-row">
         <input type="text" id="roomCode" readonly class="input-code room-code-value" />
         <button type="button" id="copyRoomBtn" onclick="copyRoomCode()">Copiar</button>
+        <button type="button" id="shareRoomBtn" onclick="shareRoomLink()">Compartir</button>
       </div>
+      <p class="hint">El link entra directo a la sala; solo falta poner el nombre.</p>
     </div>
 
     <div class="field" id="roomFieldJoin" style="display:none;">
@@ -1132,6 +1134,40 @@ function copyRoomCode() {
     document.execCommand("copy");
     done();
   }
+}
+
+function roomShareLink() {
+  return `${location.origin}${location.pathname}?room=${encodeURIComponent(state.roomCode)}`;
+}
+
+function shareRoomLink() {
+  const btn = document.getElementById("shareRoomBtn");
+  const link = roomShareLink();
+  const done = () => {
+    if (!btn) return;
+    const original = "Compartir";
+    btn.textContent = "¡Copiado!";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = original; btn.classList.remove("copied"); }, 1500);
+  };
+  if (navigator.share) {
+    navigator.share({ title: "tutti.frutti", text: "Unite a mi sala de tutti.frutti", url: link }).catch(() => {});
+    return;
+  }
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(link).then(done).catch(() => {});
+  }
+}
+
+function applyRoomLinkFromUrl() {
+  const params = new URLSearchParams(location.search);
+  const roomFromLink = params.get("room");
+  if (!roomFromLink) return;
+  setMode("join");
+  const input = document.getElementById("joinCodeInput");
+  input.value = roomFromLink.toUpperCase();
+  checkCanPlay();
+  history.replaceState(null, "", location.pathname);
 }
 
 function renderCategoryPicker() {
@@ -2553,6 +2589,7 @@ try {
   renderPresetGrid();
   setPreset("pomelo__crema");
 }
+applyRoomLinkFromUrl();
 checkCanPlay();
 </script>
 <div class="confetti-container" id="confettiContainer"></div>
