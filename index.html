@@ -150,16 +150,16 @@ body:has(#screen-lobby.active) .brand-mini { visibility: hidden; }
 .theme-picker { position: relative; }
 .theme-menu {
   display: none; position: absolute; top: 56px; right: 0; z-index: 50;
-  width: 264px; max-height: 60vh; overflow-y: auto; padding: 8px;
+  min-width: 200px; padding: 8px;
   background: var(--surface-media); border: 1px solid var(--borde-fuerte); border-radius: var(--radius-card);
 }
 .theme-menu.open { display: block; }
-.theme-menu-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); padding: 10px 10px 4px; }
-.preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+.theme-menu-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); padding: 8px 10px 4px; }
+.preset-grid { display: flex; flex-direction: column; gap: 2px; }
 .theme-option {
-  display: flex; align-items: center; gap: 10px; width: 100%;
-  padding: 10px; border: 0; border-radius: 10px; background: transparent;
-  color: var(--text); font: 500 13px/1.2 var(--font-body); text-align: left; cursor: pointer;
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 12px; border: 0; border-radius: 10px; background: transparent;
+  color: var(--text); font: 500 16px/1.2 var(--font-body); text-align: left; cursor: pointer;
 }
 .theme-option:hover { background: var(--crema-08); }
 .theme-option.selected { font-weight: 700; background: var(--crema-08); }
@@ -226,17 +226,16 @@ html[data-light] .room-row button.copied { color: var(--tinta); border-color: va
 
 /* ---------- Tabs / segmentado ---------- */
 .mode-tabs {
-  display: flex; gap: 4px; background: var(--crema-08);
-  padding: 4px; border-radius: 10px; margin-bottom: 18px;
+  display: flex; gap: 10px; margin-bottom: 20px;
 }
 .mode-tab {
-  flex: 1; border: none; background: transparent; padding: 16px 8px;
-  border-radius: 8px; font-family: var(--font-body);
-  font-size: 16px; font-weight: 600; color: var(--text-muted); cursor: pointer;
-  transition: background-color .15s, color .15s;
+  flex: 1; border: none; background: var(--surface); padding: 18px 10px;
+  border-radius: 12px; font-family: var(--font-body);
+  font-size: 16px; font-weight: 600; color: var(--text); cursor: pointer;
+  transition: background-color .15s, color .15s, filter .15s;
 }
 .mode-tab.active { background: var(--text); color: var(--bg); font-weight: 700; }
-.mode-tab:hover:not(.active) { background: rgba(var(--fg-rgb), .14); color: var(--text); }
+.mode-tab:hover:not(.active) { filter: brightness(1.25); }
 
 /* ---------- Chips ---------- */
 .pack-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -518,6 +517,25 @@ html[data-light] .rank-score { color: var(--tinta); }
 @media (max-width: 380px) {
   .grid { grid-template-columns: 1fr; }
   .players-strip .chip:nth-child(3) { display: none; }
+}
+
+/* ---------- Escritorio: que no se sienta una versión de celular estirada ---------- */
+@media (min-width: 900px) {
+  body { font-size: 18px; padding: 32px 32px 72px; }
+  .top-bar, .lobby, .results, .board, .grid, .basta-wrap { max-width: 880px; }
+  .lobby-hero .wordmark { font-size: clamp(72px, 8vw, 128px); }
+  .lobby-hero .lead { font-size: 20px; }
+  .field input[type="text"], .field select { padding: 20px 24px; font-size: 18px; }
+  .mode-tab { padding: 20px 12px; font-size: 17px; }
+  .btn { padding: 22px 38px; font-size: 18px; }
+  .medal { font-size: 112px; }
+  .timer { width: 92px; height: 92px; }
+  .basta { max-width: 460px; font-size: 32px; padding: 24px 38px; }
+  .hero-band { padding: 34px; }
+  .hero-band h2 { font-size: 46px; }
+  .rank-row { padding: 18px 22px; }
+  .rank-name { font-size: 18px; }
+  .rank-score { font-size: 18px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -1029,40 +1047,29 @@ function toggleMute() {
   try { localStorage.setItem("tuttifruti_muted", state.muted ? "1" : "0"); } catch (e) { /* storage unavailable */ }
 }
 
-const THEME_INFO = {
-  pomelo: { label: "Pomelo", color: "#FF5E5B" },
-  cielo: { label: "Cielo", color: "#35C8F2" },
-  uva: { label: "Uva", color: "#9C6BFF" },
-  lima: { label: "Lima", color: "#B6EF3C" },
-  mandarina: { label: "Mandarina", color: "#FFA62B" },
-};
-const BG_INFO = {
-  tinta: { label: "Tinta", color: "#14101F" },
-  violeta: { label: "Violeta", color: "#2A1F47" },
-  petroleo: { label: "Petróleo", color: "#103036" },
-  crema: { label: "Crema", color: "#FFF3E2" },
-  lavanda: { label: "Lavanda", color: "#ECE4FF" },
+const BG_COLOR = {
+  tinta: "#14101F",
+  violeta: "#2A1F47",
+  petroleo: "#103036",
+  crema: "#FFF3E2",
+  lavanda: "#ECE4FF",
 };
 const LIGHT_BACKGROUNDS = ["crema", "lavanda"];
 
-const PRESETS = [];
-Object.keys(THEME_INFO).forEach(theme => {
-  Object.keys(BG_INFO).forEach(bg => {
-    PRESETS.push({
-      key: `${theme}__${bg}`,
-      theme,
-      bg,
-      label: `${THEME_INFO[theme].label} · ${BG_INFO[bg].label}`,
-    });
-  });
-});
+const PRESETS = [
+  { key: "pomelo__crema", theme: "pomelo", bg: "crema", label: "Pomelo", color: "#FF5E5B" },
+  { key: "cielo__tinta", theme: "cielo", bg: "tinta", label: "Cielo", color: "#35C8F2" },
+  { key: "uva__violeta", theme: "uva", bg: "violeta", label: "Uva", color: "#9C6BFF" },
+  { key: "lima__petroleo", theme: "lima", bg: "petroleo", label: "Lima", color: "#B6EF3C" },
+  { key: "mandarina__lavanda", theme: "mandarina", bg: "lavanda", label: "Mandarina", color: "#FFA62B" },
+];
 
 function renderPresetGrid() {
   const grid = document.getElementById("presetGrid");
   if (!grid || grid.childElementCount) return;
   grid.innerHTML = PRESETS.map(p => `
     <button type="button" class="theme-option" data-preset="${p.key}" onclick="setPreset('${p.key}')">
-      <span class="theme-swatch" style="background:${THEME_INFO[p.theme].color}; --sw2:${BG_INFO[p.bg].color};"></span>${p.label}
+      <span class="theme-swatch" style="background:${p.color}; --sw2:${BG_COLOR[p.bg]};"></span>${p.label}
     </button>
   `).join("");
 }
@@ -2541,10 +2548,10 @@ try {
   }
   renderPresetGrid();
   const savedPreset = localStorage.getItem("tuttifruti_preset");
-  setPreset(savedPreset && PRESETS.some(p => p.key === savedPreset) ? savedPreset : "pomelo__tinta");
+  setPreset(savedPreset && PRESETS.some(p => p.key === savedPreset) ? savedPreset : "pomelo__crema");
 } catch (e) {
   renderPresetGrid();
-  setPreset("pomelo__tinta");
+  setPreset("pomelo__crema");
 }
 checkCanPlay();
 </script>
