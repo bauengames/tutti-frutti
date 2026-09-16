@@ -132,7 +132,12 @@ strong { font-weight: 700; }
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px; margin: 0 auto 28px; min-height: 48px;
 }
-.brand-mini { display: flex; align-items: center; gap: 10px; }
+.brand-mini {
+  display: flex; align-items: center; gap: 10px;
+  border: 0; background: transparent; padding: 0; margin: 0; cursor: pointer;
+  transition: opacity .15s;
+}
+.brand-mini:hover { opacity: .8; }
 .brand-mini .simbolo { width: 30px; height: 30px; flex-shrink: 0; }
 .brand-mini .wordmark { font-size: 26px; }
 body:has(#screen-lobby.active) .brand-mini { visibility: hidden; }
@@ -545,10 +550,10 @@ html[data-light] .rank-score { color: var(--tinta); }
 <body>
 
 <header class="top-bar">
-  <div class="brand-mini" aria-hidden="true">
+  <button type="button" class="brand-mini" onclick="goToLobby()" aria-label="Ir al inicio">
     <svg class="simbolo" viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg>
     <span class="wordmark">tutti<span class="apple-dot"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span><span class="sr-only">.</span>frutti</span>
-  </div>
+  </button>
   <div class="top-actions">
     <div class="theme-picker" id="themePicker">
       <button type="button" class="icon-btn" onclick="toggleThemeMenu()" aria-label="Cambiar tema"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M203.57,51A107.9,107.9,0,0,0,20,128c0,44.72,27.6,82.25,72,97.94A36,36,0,0,0,140,192a12,12,0,0,1,12-12h46.21a35.79,35.79,0,0,0,35.1-28A108.6,108.6,0,0,0,236,127.09,107.23,107.23,0,0,0,203.57,51Zm6.34,95.67a11.91,11.91,0,0,1-11.7,9.3H152a36,36,0,0,0-36,36,12,12,0,0,1-16,11.3c-16.65-5.88-30.65-15.76-40.48-28.56A76,76,0,0,1,44,128a84,84,0,0,1,83.13-84H128a84.35,84.35,0,0,1,84,83.29A84.72,84.72,0,0,1,209.91,146.71ZM144,76a16,16,0,1,1-16-16A16,16,0,0,1,144,76Zm-44,24A16,16,0,1,1,84,84,16,16,0,0,1,100,100Zm0,56a16,16,0,1,1-16-16A16,16,0,0,1,100,156Zm88-56a16,16,0,1,1-16-16A16,16,0,0,1,188,100Z"/></svg></button>
