@@ -372,6 +372,7 @@ body {
   border-radius: 999px; padding: 5px 10px; cursor: pointer; white-space: nowrap; font-family: 'Space Grotesk', sans-serif;
 }
 .objection-btn.active { border-color: var(--terracotta); background: rgba(193,71,58,0.12); color: var(--terracotta); }
+.objection-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .ranking { margin-top: 18px; }
 .rank-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px; margin-bottom: 6px; background: #fff; }
@@ -652,7 +653,8 @@ body {
   <div class="results">
     <div class="results-card">
       <h2>Revisá las respuestas</h2>
-      <p class="lead">Objetá cualquier respuesta que te parezca inválida antes de calcular el puntaje. Si la mayoría de los demás la objeta, no cuenta.</p>
+      <p class="lead">Objetá cualquier respuesta que te parezca inválida. El autor puede aceptar la objeción (vale 0), o si no, decide un juez con IA al cerrar esta pantalla. Ojo: si el juez te da la razón al autor, cada uno que objetó pierde 5 puntos.</p>
+      <p class="lead" id="reviewObjectionsLeft" style="font-size:12px; margin-top:-8px;"></p>
       <div id="reviewList"></div>
       <p class="lead" id="reviewReadyStatus" style="margin-top:14px; text-align:center;"></p>
       <button class="play-btn" id="reviewReadyBtn" onclick="markReviewReady()">Listo, ya revisé</button>
@@ -662,13 +664,21 @@ body {
   </div>
 </div>
 
+<!-- JUDGING (el juez con IA está resolviendo las palabras en disputa) -->
+<div class="screen" id="screen-judging">
+  <div class="lobby" style="text-align:center;">
+    <div class="search-spinner"></div>
+    <p class="lead" style="margin-top:18px;">El juez está revisando las palabras en disputa...</p>
+  </div>
+</div>
+
 <!-- RESULTS -->
 <div class="screen" id="screen-results">
   <div class="results">
     <div class="results-card">
       <h2 id="resultsTitle">Resultados de la ronda</h2>
       <p class="lead" id="resultsSummary"></p>
-      <p style="font-size:11px; color:var(--ink-soft); margin:-10px 0 16px;">0 vacío · 5 repetida · 10 única · 20 solo vos</p>
+      <p style="font-size:11px; color:var(--ink-soft); margin:-10px 0 16px;">0: vacía o inválida · 5: repetida · 10: nadie más puso esa palabra · 20: fuiste el único que completó la categoría</p>
       <div id="answerList"></div>
 
       <div class="ranking">
@@ -1414,6 +1424,11 @@ function handleRoomUpdate(data) {
   } else if (data.status === "review" && lastHandledStatus !== "review") {
     lastHandledStatus = "review";
     startReviewPhase(data);
+  } else if (data.status === "judging" && lastHandledStatus !== "judging") {
+    lastHandledStatus = "judging";
+    clearInterval(state.reviewCountdownId);
+    clearTimeout(state.reviewTimeoutId);
+    showScreen("screen-judging");
   } else if (data.status === "results" && lastHandledStatus !== "results") {
     lastHandledStatus = "results";
     clearInterval(state.reviewCountdownId);
@@ -1599,6 +1614,26 @@ async function hostOpenReview(round) {
 }
 
 const REVIEW_SECONDS = 40;
+const MAX_OBJECTIONS_PER_ROUND = 3;
+const OBJECTION_PENALTY = 5;
+const JUDGE_TIMEOUT_MS = 5000;
+
+function stripAccents(s) {
+  return s
+    .replace(/[áàäâ]/g, "a").replace(/[éèëê]/g, "e").replace(/[íìïî]/g, "i")
+    .replace(/[óòöô]/g, "o").replace(/[úùüû]/g, "u");
+}
+
+// Para comparar repetidas: ignora mayúsculas, tildes y espacios extra.
+function normalizeAnswer(s) {
+  return stripAccents((s || "").trim().toLowerCase()).replace(/\s+/g, " ");
+}
+
+function answerMatchesLetter(raw, letter) {
+  const norm = normalizeAnswer(raw);
+  if (!norm) return false;
+  return norm.charAt(0) === normalizeAnswer(letter).charAt(0);
+}
 
 function startReviewPhase(data) {
   showScreen("screen-review");
@@ -1675,14 +1710,18 @@ function renderReviewAnswers(data) {
   const categories = (data.config && data.config.categories) || [];
   const answers = (data.answers && data.answers[round]) || {};
   const objectionsForRound = (data.objections && data.objections[round]) || {};
+  const acceptedForRound = (data.accepted && data.accepted[round]) || {};
   const players = data.players || {};
   const pids = Object.keys(players);
+  const myCount = myObjectionCount(round);
+  const myObjectionsLeft = Math.max(0, MAX_OBJECTIONS_PER_ROUND - myCount);
 
   const list = document.getElementById("reviewList");
   list.innerHTML = "";
   categories.forEach(cat => {
     const block = document.createElement("div");
     block.style.marginBottom = "18px";
+    const catEsc = cat.replace(/'/g, "\\'");
     let rows = `<p class="card-label" style="font-size:13px; font-weight:700; color:var(--ink); margin-bottom:6px;">${cat}</p>`;
     pids.forEach(pid => {
       const val = ((answers[pid] || {})[cat] || "").trim();
@@ -1690,20 +1729,52 @@ function renderReviewAnswers(data) {
       const objectorsForThis = (objectionsForRound[cat] && objectionsForRound[cat][pid]) || {};
       const objectedByMe = !!objectorsForThis[state.playerId];
       const count = Object.keys(objectorsForThis).length;
+      const isAccepted = !!(acceptedForRound[cat] && acceptedForRound[cat][pid]);
       const name = (players[pid] && players[pid].name) || "?";
+
+      let statusHtml = "";
+      if (!isMine && val) {
+        const disableNew = !objectedByMe && myObjectionsLeft === 0;
+        statusHtml = `<button type="button" class="objection-btn${objectedByMe ? " active" : ""}" ${disableNew ? "disabled title=\"Ya usaste tus objeciones\"" : ""} onclick="toggleObjection('${catEsc}','${pid}')">${objectedByMe ? "Objetada" : "Objetar"}${count > 0 ? " (" + count + ")" : ""}</button>`;
+      } else if (isMine && val && count > 0) {
+        if (isAccepted) {
+          statusHtml = `<span class="objection-btn active" style="cursor:default;">Aceptada · vale 0</span>`;
+        } else {
+          statusHtml = `
+            <span style="display:flex; gap:6px; align-items:center;">
+              <span class="objection-btn active" style="cursor:default;">En disputa (${count})</span>
+              <button type="button" class="objection-btn" onclick="acceptObjection('${catEsc}','${pid}')">La acepto</button>
+            </span>`;
+        }
+      }
+
       rows += `
         <div class="answer-row">
           <span class="answer-cat">${name}${isMine ? " (vos)" : ""}</span>
           <span class="answer-val ${val ? "" : "empty"}">${val || "sin respuesta"}</span>
-          ${(!isMine && val) ? `<button type="button" class="objection-btn${objectedByMe ? " active" : ""}" onclick="toggleObjection('${cat.replace(/'/g, "\\'")}','${pid}')">${objectedByMe ? "Objetada" : "Objetar"}${count > 0 ? " (" + count + ")" : ""}</button>` : ""}
-          ${(isMine && val && count > 0) ? `<span class="objection-btn active" style="cursor:default;">Objetada (${count})</span>` : ""}
+          ${statusHtml}
         </div>
       `;
     });
     block.innerHTML = rows;
     list.appendChild(block);
   });
+
+  const leftEl = document.getElementById("reviewObjectionsLeft");
+  if (leftEl) leftEl.textContent = `Te quedan ${myObjectionsLeft} de ${MAX_OBJECTIONS_PER_ROUND} objeciones esta ronda.`;
+
   renderReviewReadyStatus(data);
+}
+
+function myObjectionCount(round) {
+  const objectionsForRound = (state.room.objections && state.room.objections[round]) || {};
+  let count = 0;
+  Object.keys(objectionsForRound).forEach(cat => {
+    Object.keys(objectionsForRound[cat]).forEach(targetPid => {
+      if (objectionsForRound[cat][targetPid][state.playerId]) count++;
+    });
+  });
+  return count;
 }
 
 function toggleObjection(cat, targetPid) {
@@ -1712,8 +1783,19 @@ function toggleObjection(cat, targetPid) {
   const objectionsForRound = (state.room.objections && state.room.objections[round]) || {};
   const objectorsForThis = (objectionsForRound[cat] && objectionsForRound[cat][targetPid]) || {};
   const currentlyObjected = !!objectorsForThis[state.playerId];
+  if (!currentlyObjected && myObjectionCount(round) >= MAX_OBJECTIONS_PER_ROUND) {
+    alert(`Ya usaste tus ${MAX_OBJECTIONS_PER_ROUND} objeciones de esta ronda.`);
+    return;
+  }
   const path = `rooms/${state.roomCode}/objections/${round}/${cat}/${targetPid}/${state.playerId}`;
   window.FB.set(window.FB.ref(window.FB.db, path), currentlyObjected ? null : true);
+}
+
+function acceptObjection(cat, targetPid) {
+  if (!state.room || targetPid !== state.playerId) return;
+  const round = state.room.round;
+  const path = `rooms/${state.roomCode}/accepted/${round}/${cat}/${targetPid}`;
+  window.FB.set(window.FB.ref(window.FB.db, path), true);
 }
 
 function hostFinalizeReviewNow() {
@@ -1731,40 +1813,143 @@ async function hostFinalizeReview(round) {
   await computeAndApplyScores(data, round);
 }
 
+async function callJudge(roomCode, round, letter, disputas) {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), JUDGE_TIMEOUT_MS);
+    const res = await fetch("/.netlify/functions/juez", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ salaId: roomCode, ronda: round, letra: letter, disputas }),
+      signal: controller.signal,
+    });
+    clearTimeout(timeoutId);
+    if (!res.ok) return { verdicts: {}, failed: true };
+    const data = await res.json();
+    const map = {};
+    (Array.isArray(data.veredictos) ? data.veredictos : []).forEach(v => {
+      if (v && typeof v.id === "string") map[v.id] = v;
+    });
+    return { verdicts: map, failed: false };
+  } catch (e) {
+    // Plan B: el juez no respondió a tiempo o falló — todas las disputas
+    // cuentan como válidas y no se aplica ninguna penalidad.
+    return { verdicts: {}, failed: true };
+  }
+}
+
 async function computeAndApplyScores(data, round) {
   const categories = (data.config && data.config.categories) || [];
   const answers = (data.answers && data.answers[round]) || {};
   const objectionsForRound = (data.objections && data.objections[round]) || {};
+  const acceptedForRound = (data.accepted && data.accepted[round]) || {};
   const players = data.players || {};
   const pids = Object.keys(players);
-  const roundScores = {};
-  pids.forEach(pid => { roundScores[pid] = {}; });
+  const letter = data.letter;
 
+  // Paso 1: clasificar cada respuesta objetada o no, sin consultar todavía
+  // al juez (eso solo pasa si de verdad hace falta).
+  const classification = {};
+  const disputas = [];
   categories.forEach(cat => {
-    const normalized = {};
+    classification[cat] = {};
     pids.forEach(pid => {
       const raw = ((answers[pid] || {})[cat] || "").trim();
+      if (!raw) { classification[cat][pid] = { status: "empty" }; return; }
+      if (!answerMatchesLetter(raw, letter)) { classification[cat][pid] = { status: "badLetter" }; return; }
+
       const objectorsForThis = (objectionsForRound[cat] && objectionsForRound[cat][pid]) || {};
-      const eligibleVoters = pids.length - 1;
-      const objectionCount = Object.keys(objectorsForThis).length;
-      const invalidated = raw && eligibleVoters > 0 && objectionCount > eligibleVoters / 2;
-      normalized[pid] = (raw && !invalidated) ? raw.toLowerCase() : "";
+      const objectorIds = Object.keys(objectorsForThis);
+      if (objectorIds.length === 0) { classification[cat][pid] = { status: "clear", raw }; return; }
+
+      const isAccepted = !!(acceptedForRound[cat] && acceptedForRound[cat][pid]);
+      if (isAccepted) { classification[cat][pid] = { status: "accepted" }; return; }
+
+      const others = pids.filter(p => p !== pid);
+      const allOthersObjected = others.length > 0 && objectorIds.length >= 2 && others.every(p => objectorIds.includes(p));
+      if (pids.length >= 3 && allOthersObjected) {
+        classification[cat][pid] = { status: "shortcut", objectors: objectorIds };
+        return;
+      }
+
+      const id = `r${round}-${cat}-${pid}`.replace(/\s+/g, "_");
+      disputas.push({ id, categoria: cat, palabra: raw });
+      classification[cat][pid] = { status: "needsJudge", raw, objectors: objectorIds, id };
     });
-    const filled = pids.filter(pid => normalized[pid]);
+  });
+
+  // Paso 2: si hay disputas de verdad, avisar a todos que el juez está
+  // trabajando, y consultarlo con una sola llamada para toda la ronda.
+  let verdicts = {};
+  let judgeFailed = false;
+  if (disputas.length > 0) {
+    await window.FB.update(roomsRef(), { status: "judging" });
+    const result = await callJudge(state.roomCode, round, letter, disputas);
+    verdicts = result.verdicts;
+    judgeFailed = result.failed;
+  }
+
+  // Paso 3: con los veredictos ya en mano, decidir qué respuestas cuentan,
+  // comparar repetidas (ignorando tildes/mayúsculas) y armar el puntaje.
+  const normalized = {};
+  const judgeInfo = {};
+  const penalties = {};
+  categories.forEach(cat => {
+    normalized[cat] = {};
     pids.forEach(pid => {
-      if (!normalized[pid]) { roundScores[pid][cat] = 0; return; }
+      const c = classification[cat][pid];
+      let isValid = false;
+      let raw = "";
+      if (c.status === "clear") {
+        isValid = true;
+        raw = c.raw;
+      } else if (c.status === "needsJudge") {
+        const v = verdicts[c.id];
+        const hasVerdict = !!v && !judgeFailed;
+        isValid = !hasVerdict ? true : v.valida !== false;
+        raw = c.raw;
+        judgeInfo[`${cat}|${pid}`] = {
+          valida: isValid,
+          motivo: (hasVerdict && v.motivo) || "",
+          sinRespuesta: !hasVerdict,
+        };
+        if (hasVerdict && v.valida !== false) {
+          (c.objectors || []).forEach(objId => {
+            penalties[objId] = (penalties[objId] || 0) - OBJECTION_PENALTY;
+          });
+        }
+      } else if (c.status === "accepted") {
+        judgeInfo[`${cat}|${pid}`] = { aceptada: true };
+      } else if (c.status === "shortcut") {
+        judgeInfo[`${cat}|${pid}`] = { mayoria: true };
+      } else if (c.status === "badLetter") {
+        judgeInfo[`${cat}|${pid}`] = { letraInvalida: true };
+      }
+      normalized[cat][pid] = isValid ? normalizeAnswer(raw) : "";
+    });
+  });
+
+  const roundScores = {};
+  pids.forEach(pid => { roundScores[pid] = {}; });
+  categories.forEach(cat => {
+    const filled = pids.filter(pid => normalized[cat][pid]);
+    pids.forEach(pid => {
+      const norm = normalized[cat][pid];
+      if (!norm) { roundScores[pid][cat] = 0; return; }
       if (filled.length === 1) { roundScores[pid][cat] = 20; return; }
-      const count = filled.filter(p2 => normalized[p2] === normalized[pid]).length;
+      const count = filled.filter(p2 => normalized[cat][p2] === norm).length;
       roundScores[pid][cat] = count === 1 ? 10 : 5;
     });
   });
 
   const updates = {};
   pids.forEach(pid => {
-    const total = categories.reduce((sum, c) => sum + (roundScores[pid][c] || 0), 0);
+    const total = categories.reduce((sum, c) => sum + (roundScores[pid][c] || 0), 0) + (penalties[pid] || 0);
     updates[`roundScores/${round}/${pid}`] = roundScores[pid];
     updates[`players/${pid}/score`] = (players[pid].score || 0) + total;
   });
+  updates[`judgeInfo/${round}`] = judgeInfo;
+  updates[`penalties/${round}`] = penalties;
   updates.status = "results";
   await window.FB.update(roomsRef(), updates);
 }
@@ -1774,22 +1959,42 @@ function renderOnlineResults(data) {
   const categories = (data.config && data.config.categories) || [];
   const myScores = (data.roundScores && data.roundScores[round] && data.roundScores[round][state.playerId]) || {};
   const myAnswers = (data.answers && data.answers[round] && data.answers[round][state.playerId]) || {};
-  const total = categories.reduce((sum, c) => sum + (myScores[c] || 0), 0);
+  const judgeInfo = (data.judgeInfo && data.judgeInfo[round]) || {};
+  const myPenalty = (data.penalties && data.penalties[round] && data.penalties[round][state.playerId]) || 0;
+  const total = categories.reduce((sum, c) => sum + (myScores[c] || 0), 0) + myPenalty;
 
   document.getElementById("resultsTitle").textContent = `Resultados de la ronda ${round}`;
-  document.getElementById("resultsSummary").innerHTML = `Letra: <strong>${data.letter}</strong> · Puntos ganados: <strong>${total}</strong>`;
+  let summaryHtml = `Letra: <strong>${data.letter}</strong> · Puntos ganados: <strong>${total}</strong>`;
+  if (myPenalty) summaryHtml += ` <span style="color:#c1473a;">(incluye ${myPenalty} por objetar mal)</span>`;
+  document.getElementById("resultsSummary").innerHTML = summaryHtml;
 
   const list = document.getElementById("answerList");
   list.innerHTML = "";
   categories.forEach(cat => {
     const val = (myAnswers[cat] || "").trim();
     const pts = myScores[cat] || 0;
+    const info = judgeInfo[`${cat}|${state.playerId}`];
+    let extra = "";
+    if (info) {
+      if (info.aceptada) {
+        extra = `<div style="font-size:11px; color:var(--ink-soft);">Aceptaste la objeción</div>`;
+      } else if (info.mayoria) {
+        extra = `<div style="font-size:11px; color:var(--ink-soft);">La objetaron todos los demás</div>`;
+      } else if (info.letraInvalida) {
+        extra = `<div style="font-size:11px; color:var(--ink-soft);">No empieza con ${data.letter}</div>`;
+      } else if (typeof info.valida === "boolean") {
+        const color = info.valida ? "#4a7a3f" : "#c1473a";
+        extra = `<div style="font-size:11px; color:${color};">Juez: ${info.valida ? "Válida" : "No válida"}${info.motivo ? " — " + info.motivo : ""}${info.sinRespuesta ? " (el juez no respondió, se aceptó por defecto)" : ""}</div>`;
+      }
+    }
     const row = document.createElement("div");
     row.className = "answer-row";
+    row.style.flexWrap = "wrap";
     row.innerHTML = `
       <span class="answer-cat">${cat}</span>
       <span class="answer-val ${val ? "" : "empty"}">${val || "sin respuesta"}</span>
       <span class="points" title="${SCORE_LABELS[pts]}">+${pts}</span>
+      ${extra ? `<div style="flex-basis:100%;">${extra}</div>` : ""}
     `;
     list.appendChild(row);
   });
