@@ -654,7 +654,6 @@ body {
     <div class="results-card">
       <h2>Revisá las respuestas</h2>
       <p class="lead">Objetá cualquier respuesta que te parezca inválida. El autor puede aceptar la objeción (vale 0), o si no, decide un juez con IA al cerrar esta pantalla. Ojo: si el juez te da la razón al autor, cada uno que objetó pierde 5 puntos.</p>
-      <p class="lead" id="reviewObjectionsLeft" style="font-size:12px; margin-top:-8px;"></p>
       <div id="reviewList"></div>
       <p class="lead" id="reviewReadyStatus" style="margin-top:14px; text-align:center;"></p>
       <button class="play-btn" id="reviewReadyBtn" onclick="markReviewReady()">Listo, ya revisé</button>
@@ -1614,7 +1613,6 @@ async function hostOpenReview(round) {
 }
 
 const REVIEW_SECONDS = 40;
-const MAX_OBJECTIONS_PER_ROUND = 3;
 const OBJECTION_PENALTY = 5;
 const JUDGE_TIMEOUT_MS = 5000;
 
@@ -1713,8 +1711,6 @@ function renderReviewAnswers(data) {
   const acceptedForRound = (data.accepted && data.accepted[round]) || {};
   const players = data.players || {};
   const pids = Object.keys(players);
-  const myCount = myObjectionCount(round);
-  const myObjectionsLeft = Math.max(0, MAX_OBJECTIONS_PER_ROUND - myCount);
 
   const list = document.getElementById("reviewList");
   list.innerHTML = "";
@@ -1734,8 +1730,7 @@ function renderReviewAnswers(data) {
 
       let statusHtml = "";
       if (!isMine && val) {
-        const disableNew = !objectedByMe && myObjectionsLeft === 0;
-        statusHtml = `<button type="button" class="objection-btn${objectedByMe ? " active" : ""}" ${disableNew ? "disabled title=\"Ya usaste tus objeciones\"" : ""} onclick="toggleObjection('${catEsc}','${pid}')">${objectedByMe ? "Objetada" : "Objetar"}${count > 0 ? " (" + count + ")" : ""}</button>`;
+        statusHtml = `<button type="button" class="objection-btn${objectedByMe ? " active" : ""}" onclick="toggleObjection('${catEsc}','${pid}')">${objectedByMe ? "Objetada" : "Objetar"}${count > 0 ? " (" + count + ")" : ""}</button>`;
       } else if (isMine && val && count > 0) {
         if (isAccepted) {
           statusHtml = `<span class="objection-btn active" style="cursor:default;">Aceptada · vale 0</span>`;
@@ -1760,21 +1755,7 @@ function renderReviewAnswers(data) {
     list.appendChild(block);
   });
 
-  const leftEl = document.getElementById("reviewObjectionsLeft");
-  if (leftEl) leftEl.textContent = `Te quedan ${myObjectionsLeft} de ${MAX_OBJECTIONS_PER_ROUND} objeciones esta ronda.`;
-
   renderReviewReadyStatus(data);
-}
-
-function myObjectionCount(round) {
-  const objectionsForRound = (state.room.objections && state.room.objections[round]) || {};
-  let count = 0;
-  Object.keys(objectionsForRound).forEach(cat => {
-    Object.keys(objectionsForRound[cat]).forEach(targetPid => {
-      if (objectionsForRound[cat][targetPid][state.playerId]) count++;
-    });
-  });
-  return count;
 }
 
 function toggleObjection(cat, targetPid) {
@@ -1783,10 +1764,6 @@ function toggleObjection(cat, targetPid) {
   const objectionsForRound = (state.room.objections && state.room.objections[round]) || {};
   const objectorsForThis = (objectionsForRound[cat] && objectionsForRound[cat][targetPid]) || {};
   const currentlyObjected = !!objectorsForThis[state.playerId];
-  if (!currentlyObjected && myObjectionCount(round) >= MAX_OBJECTIONS_PER_ROUND) {
-    alert(`Ya usaste tus ${MAX_OBJECTIONS_PER_ROUND} objeciones de esta ronda.`);
-    return;
-  }
   const path = `rooms/${state.roomCode}/objections/${round}/${cat}/${targetPid}/${state.playerId}`;
   window.FB.set(window.FB.ref(window.FB.db, path), currentlyObjected ? null : true);
 }
