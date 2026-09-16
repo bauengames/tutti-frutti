@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reglas del juego · tutti.frutti</title>
+<meta name="description" content="Cómo se juega al tutti frutti online: rondas, letras, puntajes, objeciones y el juez con inteligencia artificial." />
+<meta name="theme-color" content="#FFF3E2" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
+<link rel="canonical" href="https://tuttipuntofrutti.netlify.app/reglas.html" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="site.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <svg class="simbolo" viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg>
+      tutti<span class="punto"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti
+    </a>
+    <a class="btn-play" href="jugar.html">Jugar ahora</a>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <h1>Reglas del juego</h1>
+    <p class="lead">Todo lo que necesitás saber para jugar una partida, desde armar la sala hasta entender cómo se resuelven las disputas.</p>
+
+    <section>
+      <h2>Armar una partida</h2>
+      <ul>
+        <li><strong>Crear sala:</strong> elegís categorías, tiempo por ronda, cantidad de rondas y qué letras entran en juego. Se genera un código de 5 caracteres que podés compartir por código o por link — quien abra el link entra directo a la sala.</li>
+        <li><strong>Unirme a sala:</strong> pedís el código a quien creó la sala y jugás con la configuración que eligió esa persona.</li>
+        <li><strong>Sala al azar:</strong> te empareja con quien esté buscando partida en ese momento, con categorías y reglas fijas. Si nadie aparece en unos segundos, podés seguir esperando o jugar contra un rival de prueba.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Cómo se juega una ronda</h2>
+      <p>Al arrancar la ronda se sortea una letra entre las habilitadas para esa sala. Todos los jugadores completan al mismo tiempo las categorías elegidas (por ejemplo Nombre, Animal, Comida, Color) con palabras que empiecen con esa letra. Apenas alguien termina, toca <strong>¡Basta!</strong> y la ronda se corta para todos los jugadores en simultáneo.</p>
+    </section>
+
+    <section>
+      <h2>Revisión y objeciones</h2>
+      <p>Antes de calcular el puntaje hay una breve ventana de revisión donde se pueden objetar respuestas:</p>
+      <ul>
+        <li>Una palabra que no empieza con la letra de la ronda vale 0 automáticamente, sin necesidad de objetarla.</li>
+        <li>Si alguien objeta una respuesta, queda "en disputa". El autor puede tocar <strong>"La acepto"</strong> y la palabra vale 0 directamente.</li>
+        <li>En salas de 3 o más jugadores, si todos los demás (menos el autor) objetan la misma palabra, vale 0 sin necesidad de nada más.</li>
+        <li>Si la disputa sigue abierta al cerrarse la revisión, decide un <strong>juez con inteligencia artificial</strong>: evalúa si la palabra empieza con la letra correcta y si pertenece razonablemente a la categoría, aceptando regionalismos y errores menores de ortografía.</li>
+        <li>Si el juez determina que la palabra es <strong>válida</strong>, cada jugador que la objetó sin razón pierde 5 puntos. Si la determina <strong>inválida</strong>, la palabra vale 0 y no hay penalidad para nadie.</li>
+        <li>Si el juez no llega a responder a tiempo, todas las palabras en disputa de esa ronda se dan por válidas y no se aplica ninguna penalidad — la partida nunca queda trabada esperando.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Puntaje por categoría</h2>
+      <table class="score-table">
+        <thead><tr><th>Puntos</th><th>Situación</th></tr></thead>
+        <tbody>
+          <tr><td>0</td><td>Dejaste la categoría vacía, o la palabra quedó invalidada.</td></tr>
+          <tr><td>5</td><td>Otro jugador escribió la misma palabra (comparando sin tildes ni mayúsculas).</td></tr>
+          <tr><td>10</td><td>Tu respuesta fue única — nadie más puso esa palabra.</td></tr>
+          <tr><td>20</td><td>Fuiste la única persona que completó esa categoría.</td></tr>
+        </tbody>
+      </table>
+      <p>Gana quien acumule más puntos al cabo de la cantidad de rondas elegida.</p>
+    </section>
+
+    <section>
+      <h2>Preguntas frecuentes</h2>
+      <h3>¿Necesito crear una cuenta?</h3>
+      <p>No. Solo elegís un nombre para esa partida; no hace falta registro ni contraseña.</p>
+      <h3>¿Puedo jugar solo desde el celular?</h3>
+      <p>Sí, el juego funciona igual en celular y en computadora, adaptándose a la pantalla.</p>
+      <h3>¿Qué pasa si me quedo sin internet a mitad de partida?</h3>
+      <p>La sala sigue activa para el resto de los jugadores; podés volver a entrar con el mismo código mientras la partida siga en curso.</p>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <nav>
+      <a href="index.html">Inicio</a>
+      <a href="privacidad.html">Privacidad</a>
+      <a href="terminos.html">Términos de uso</a>
+    </nav>
+    <span class="copy">© <span id="year"></span> tutti.frutti</span>
+  </div>
+</footer>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

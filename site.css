@@ -1,0 +1,102 @@
+/* tutti.frutti · estilos compartidos para las páginas de contenido (home, reglas, privacidad, términos) */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --pomelo: #FF5E5B;
+  --lima: #B6EF3C;
+  --mandarina: #FFA62B;
+  --tinta: #14101F;
+  --crema: #FFF3E2;
+  --surface: #FFFFFF;
+  --text-muted: rgba(20, 16, 31, .62);
+  --borde: rgba(20, 16, 31, .12);
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Instrument Sans', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--crema);
+  color: var(--tinta);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; }
+a { color: var(--pomelo); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.wrap { width: 100%; max-width: 720px; margin: 0 auto; padding: 0 20px; }
+
+header.site-header {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--borde);
+}
+header.site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -.03em;
+  color: var(--tinta); text-decoration: none; text-transform: lowercase;
+}
+.brand:hover { text-decoration: none; opacity: .85; }
+.brand .simbolo { width: 28px; height: 28px; flex-shrink: 0; }
+.brand .punto { display: inline-block; width: .32em; height: .36em; margin: 0 .02em; vertical-align: baseline; }
+.brand .punto svg { width: 100%; height: 100%; display: block; }
+
+.btn-play {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--pomelo); color: var(--tinta); font-family: var(--font-body); font-weight: 700;
+  font-size: 15px; padding: 12px 22px; border-radius: 10px; text-decoration: none;
+}
+.btn-play:hover { text-decoration: none; filter: brightness(1.06); }
+
+main { padding: 48px 0 64px; }
+main .wrap > p.lead { font-size: 19px; color: var(--text-muted); margin: 0 0 32px; }
+
+.hero { text-align: center; padding: 40px 0 24px; }
+.hero h1 { font-size: clamp(36px, 7vw, 56px); margin: 0 0 16px; }
+.hero p { font-size: 19px; color: var(--text-muted); max-width: 56ch; margin: 0 auto 28px; }
+
+.card {
+  background: var(--surface); border: 1px solid var(--borde); border-radius: 16px;
+  padding: 24px; margin-bottom: 20px;
+}
+.card h2 { font-size: 20px; margin: 0 0 8px; }
+.card p { margin: 0; color: var(--text-muted); }
+
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 32px 0; }
+
+section { margin-bottom: 40px; }
+section h2 { font-size: 26px; margin: 0 0 14px; }
+section h3 { font-size: 18px; margin: 24px 0 8px; }
+section p, section li { color: rgba(20, 16, 31, .8); }
+section ul, section ol { padding-left: 22px; }
+section li { margin-bottom: 8px; }
+
+.pill-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+.pill-list span {
+  background: rgba(255, 94, 91, .1); color: var(--pomelo); border-radius: 999px;
+  padding: 6px 14px; font-size: 14px; font-weight: 600;
+}
+
+.score-table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+.score-table th, .score-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--borde); }
+.score-table th { font-family: var(--font-mono, monospace); font-size: 13px; text-transform: uppercase; color: var(--text-muted); }
+
+footer.site-footer {
+  border-top: 1px solid var(--borde); padding: 32px 0; margin-top: 40px;
+}
+footer.site-footer .wrap {
+  display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: center; justify-content: space-between;
+}
+footer.site-footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
+footer.site-footer a { color: var(--tinta); font-size: 14px; font-weight: 600; }
+footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
+
+@media (max-width: 520px) {
+  header.site-header .wrap { flex-wrap: wrap; }
+  footer.site-footer .wrap { flex-direction: column; align-items: flex-start; }
+}
