@@ -1150,12 +1150,12 @@ function shareRoomLink() {
     btn.classList.add("copied");
     setTimeout(() => { btn.textContent = original; btn.classList.remove("copied"); }, 1500);
   };
-  if (navigator.share) {
-    navigator.share({ title: "tutti.frutti", text: "Unite a mi sala de tutti.frutti", url: link }).catch(() => {});
-    return;
-  }
   if (navigator.clipboard) {
-    navigator.clipboard.writeText(link).then(done).catch(() => {});
+    navigator.clipboard.writeText(link).then(done).catch(() => {
+      if (navigator.share) navigator.share({ title: "tutti.frutti", text: "Unite a mi sala de tutti.frutti", url: link }).catch(() => {});
+    });
+  } else if (navigator.share) {
+    navigator.share({ title: "tutti.frutti", text: "Unite a mi sala de tutti.frutti", url: link }).catch(() => {});
   }
 }
 
