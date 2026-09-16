@@ -1140,6 +1140,15 @@ function roomShareLink() {
   return `${location.origin}${location.pathname}?room=${encodeURIComponent(state.roomCode)}`;
 }
 
+function isMobileDevice() {
+  if (navigator.userAgentData && typeof navigator.userAgentData.mobile === "boolean") {
+    return navigator.userAgentData.mobile;
+  }
+  const uaIsMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  const coarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+  return uaIsMobile || coarsePointer;
+}
+
 function shareRoomLink() {
   const btn = document.getElementById("shareRoomBtn");
   const link = roomShareLink();
@@ -1150,12 +1159,18 @@ function shareRoomLink() {
     btn.classList.add("copied");
     setTimeout(() => { btn.textContent = original; btn.classList.remove("copied"); }, 1500);
   };
+  const shareData = { title: "tutti.frutti", text: "Unite a mi sala de tutti.frutti", url: link };
+
+  if (isMobileDevice() && navigator.share) {
+    navigator.share(shareData).catch(() => {});
+    return;
+  }
   if (navigator.clipboard) {
     navigator.clipboard.writeText(link).then(done).catch(() => {
-      if (navigator.share) navigator.share({ title: "tutti.frutti", text: "Unite a mi sala de tutti.frutti", url: link }).catch(() => {});
+      if (navigator.share) navigator.share(shareData).catch(() => {});
     });
   } else if (navigator.share) {
-    navigator.share({ title: "tutti.frutti", text: "Unite a mi sala de tutti.frutti", url: link }).catch(() => {});
+    navigator.share(shareData).catch(() => {});
   }
 }
 
