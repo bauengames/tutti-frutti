@@ -52,7 +52,7 @@
 
     <section>
       <h2>Publicidad y cookies</h2>
-      <p>Este Sitio puede mostrar anuncios a través de Google AdSense. Google y sus socios publicitarios pueden usar cookies y tecnologías similares para mostrar anuncios en base a tus visitas a este y otros sitios.</p>
+      <p>Este Sitio puede mostrar anuncios a través de Google AdSense. Google y sus socios publicitarios pueden usar cookies y tecnologías similares para mostrar anuncios en base a tus visitas a este y otros sitios. La primera vez que entrás, un aviso te permite aceptar o rechazar estas cookies antes de que se usen.</p>
       <ul>
         <li>Podés conocer cómo Google usa esta información en <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">policies.google.com/technologies/ads</a>.</li>
         <li>Podés inhabilitar la publicidad personalizada en <a href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.</li>
@@ -87,6 +87,7 @@
       <a href="index.html">Inicio</a>
       <a href="reglas.html">Reglas del juego</a>
       <a href="terminos.html">Términos de uso</a>
+      <a href="contacto.html">Contacto</a>
     </nav>
     <span class="copy">© <span id="year"></span> tutti.frutti</span>
   </div>
@@ -96,5 +97,6 @@
   document.getElementById("year").textContent = new Date().getFullYear();
   document.getElementById("fecha").textContent = new Date().toLocaleDateString("es-AR", { year: "numeric", month: "long", day: "numeric" });
 </script>
+<script src="cookie-consent.js"></script>
 </body>
 </html>
