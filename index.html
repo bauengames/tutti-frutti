@@ -4,12 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>tutti.frutti · Tutti frutti online con amigos</title>
-<meta name="description" content="Jugá al tutti frutti online gratis con amigos o con un rival al azar. Armá la sala, se sortea la letra y un juez con IA resuelve las dudas." />
+<meta name="description" content="Jugá al tutti frutti online gratis con amigos o con un rival al azar (el mismo juego que en otros países se conoce como Stop o Basta). Armá la sala, se sortea la letra y un juez con IA resuelve las dudas." />
 <meta name="theme-color" content="#14101F" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
 <link rel="canonical" href="https://tuttipuntofrutti.netlify.app/" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<script src="site-i18n.js"></script>
 <script>
 /* Aplica el mismo tema/fondo elegido en el juego antes de pintar la página, para que no haya salto de color. */
 (function () {
@@ -30,7 +31,7 @@
 })();
 </script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=Martian+Mono:wght@400;700&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -59,6 +60,7 @@
 
   --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
   --font-body: 'Instrument Sans', system-ui, sans-serif;
+  --font-mono: 'Martian Mono', ui-monospace, monospace;
   --radius: 12px;
   --radius-card: 14px;
 }
@@ -104,6 +106,7 @@ a { color: var(--primary); }
   display: flex; align-items: center; justify-content: flex-end;
   gap: 12px; margin: 0 auto 8px; min-height: 48px;
 }
+.menu-btn { display: none; }
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
@@ -117,10 +120,123 @@ a { color: var(--primary); }
 .btn-secondary { background: transparent; border-color: var(--borde-fuerte); color: var(--text); }
 .btn-secondary:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
 
+.header-actions { display: flex; align-items: center; gap: 14px; }
+.lang-picker { position: relative; }
+.lang-icon-btn {
+  width: 40px; height: 40px; border-radius: 10px;
+  border: 2px solid var(--borde); background: transparent; color: var(--text);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.lang-icon-btn svg { width: 20px; height: 20px; }
+.lang-icon-btn:hover { border-color: var(--primary); color: var(--primary); }
+.lang-menu {
+  display: none; position: absolute; top: 48px; right: 0; z-index: 50;
+  min-width: 170px; padding: 6px;
+  background: var(--surface); border: 1px solid var(--borde-fuerte); border-radius: var(--radius-card);
+}
+.lang-menu.open { display: block; }
+.site-lang-option {
+  display: block; width: 100%; text-align: left;
+  border: 0; background: transparent; color: var(--text); cursor: pointer;
+  padding: 10px 12px; border-radius: 8px; font: 500 15px/1.2 var(--font-body);
+}
+.site-lang-option:hover { background: var(--crema-08); }
+.site-lang-option.selected { font-weight: 700; background: var(--crema-08); }
+
+.theme-picker { position: relative; }
+.theme-icon-btn {
+  width: 40px; height: 40px; border-radius: 10px;
+  border: 2px solid var(--borde); background: transparent; color: var(--text);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.theme-icon-btn svg { width: 20px; height: 20px; }
+.theme-icon-btn:hover { border-color: var(--primary); color: var(--primary); }
+.theme-menu {
+  display: none; position: absolute; top: 48px; right: 0; z-index: 50;
+  min-width: 190px; padding: 8px;
+  background: var(--surface); border: 1px solid var(--borde-fuerte); border-radius: var(--radius-card);
+}
+.theme-menu.open { display: block; }
+.theme-menu-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); padding: 8px 10px 4px; }
+.preset-grid { display: flex; flex-direction: column; gap: 2px; }
+.theme-option {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 12px; border: 0; border-radius: 10px; background: transparent;
+  color: var(--text); font: 500 15px/1.2 var(--font-body); text-align: left; cursor: pointer;
+}
+.theme-option:hover { background: var(--crema-08); }
+.theme-option.selected { font-weight: 700; background: var(--crema-08); }
+.theme-swatch { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; position: relative; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+.theme-swatch::after { content: ''; position: absolute; right: 0; bottom: 0; width: 50%; height: 50%; background: var(--sw2); }
+
+/* ---------- Menú lateral (mobile) ---------- */
+.side-menu-overlay {
+  display: none; position: fixed; inset: 0; z-index: 90;
+  background: rgba(0,0,0,.45);
+}
+.side-menu-overlay.open { display: block; }
+.side-menu {
+  position: fixed; top: 0; left: 0; bottom: 0; z-index: 91;
+  width: 78vw; max-width: 300px; background: var(--surface);
+  box-shadow: 4px 0 24px rgba(0,0,0,.25);
+  transform: translateX(-100%); transition: transform .2s ease;
+  display: flex; flex-direction: column; padding: 20px;
+}
+.side-menu.open { transform: translateX(0); }
+.side-menu-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.side-menu-brand { font-family: var(--font-display); font-weight: 800; font-size: 19px; color: var(--text); text-transform: lowercase; }
+.side-menu-close {
+  width: 36px; height: 36px; border-radius: 10px; border: 2px solid var(--borde);
+  background: transparent; color: var(--text); font-size: 18px; line-height: 1;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.side-menu nav { display: flex; flex-direction: column; gap: 4px; }
+.side-menu nav a {
+  color: var(--text); font-weight: 600; font-size: 16px; text-decoration: none;
+  padding: 12px 10px; border-radius: 10px;
+}
+.side-menu nav a:hover { background: var(--crema-08); text-decoration: none; }
+
 /* ---------- Hero ---------- */
 .hero { text-align: center; padding: 12px 0 40px; }
 .hero .wordmark { font-size: clamp(56px, 13vw, 96px); display: block; margin-bottom: 20px; }
 .hero p { font-size: 19px; color: var(--crema-72); max-width: 56ch; margin: 0 auto 28px; }
+
+/* ---------- Jugá ahora (campo + botón, mismo formato que jugar.html) ---------- */
+.label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.3;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+}
+.field { margin-bottom: 0; }
+.field input[type="text"] {
+  width: 100%; padding: 18px 22px; border-radius: var(--radius);
+  background: var(--surface); border: 2px solid var(--borde);
+  color: var(--text); font: 500 17px/1.3 var(--font-body);
+  caret-color: var(--pomelo); outline: none;
+  transition: border-color .15s;
+}
+.field input::placeholder { color: rgba(var(--fg-rgb), .45); }
+.field input[type="text"]:focus { border-color: var(--primary); }
+.btn-block { width: 100%; }
+.quickplay {
+  max-width: 400px; margin: 0 auto; text-align: left;
+  background: var(--surface); border: 1px solid var(--borde); border-radius: var(--radius-card);
+  padding: 28px;
+}
+.quickplay-kicker {
+  font-family: var(--font-display); font-weight: 800; font-size: 13px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--primary);
+  margin: 0 0 16px; text-align: center;
+}
+.quickplay form { display: flex; flex-direction: column; gap: 18px; }
 
 /* ---------- Tarjetas ---------- */
 .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 8px 0 44px; }
@@ -131,10 +247,28 @@ a { color: var(--primary); }
 .card h2 { font-size: 19px; margin: 0 0 8px; }
 .card p { margin: 0; color: var(--crema-72); font-size: 15px; }
 
+/* ---------- Cómo se juega (pasos, solo desktop) ---------- */
+.steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 20px 0 16px; }
+.step-card {
+  background: var(--surface); border: 1px solid var(--borde); border-radius: var(--radius-card);
+  padding: 20px;
+}
+.step-num {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--primary); color: var(--tinta);
+  font-family: var(--font-display); font-weight: 800; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+}
+.step-card h3 { font-family: var(--font-display); font-weight: 800; font-size: 16px; margin: 0 0 6px; color: var(--text); }
+.step-card p { font-size: 14px; color: var(--crema-72); margin: 0; line-height: 1.45; }
 section.info { margin-bottom: 24px; }
 section.info h2 { font-size: 26px; margin-bottom: 14px; }
 section.info p { color: var(--crema-72); margin: 0 0 12px; }
 section.info a { font-weight: 600; }
+
+.how-link { display: none; text-align: center; margin: 0 0 24px; }
+.how-link a { color: var(--text); font-weight: 600; font-size: 15px; }
 
 /* ---------- Footer ---------- */
 footer.site-footer { width: 100%; border-top: 1px solid var(--borde); padding: 28px 0; margin-top: 24px; }
@@ -146,60 +280,228 @@ footer.site-footer a { color: var(--text); font-size: 14px; font-weight: 600; te
 footer.site-footer a:hover { color: var(--primary); }
 footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
 
+@media (max-width: 640px) {
+  .top-bar { justify-content: space-between; }
+  .menu-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; border-radius: 10px;
+    border: 2px solid var(--borde); background: transparent; color: var(--text);
+    cursor: pointer; transition: border-color .15s, color .15s;
+  }
+  .menu-btn svg { width: 20px; height: 20px; }
+  .menu-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .grid-3 { display: none; }
+  section.info { display: none; }
+  .how-link { display: block; }
+}
+
 @media (max-width: 520px) {
   .btn { padding: 15px 24px; font-size: 16px; }
   footer.site-footer .wrap { flex-direction: column; align-items: flex-start; }
 }
 </style>
 </head>
-<body>
+<body data-i18n-title="home_title" data-i18n-description="home_description">
 
 <header class="top-bar">
-  <a class="btn btn-primary" href="jugar.html">Jugar ahora</a>
+  <button type="button" class="menu-btn" onclick="openSideMenu()" aria-label="Abrir menú">
+    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>
+  </button>
+  <div class="header-actions">
+    <div class="lang-picker" id="langPicker">
+      <button type="button" class="lang-icon-btn" onclick="toggleSiteLangMenu()" aria-label="Cambiar idioma / Change language / Mudar idioma">
+        <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm88,104a87.61,87.61,0,0,1-3.33,24H174.16a157.44,157.44,0,0,0,0-48h38.51A87.61,87.61,0,0,1,216,128ZM102,168H154a115.11,115.11,0,0,1-26,45A115.27,115.27,0,0,1,102,168Zm-3.9-16a140.84,140.84,0,0,1,0-48h59.8a140.84,140.84,0,0,1,0,48ZM40,128a87.61,87.61,0,0,1,3.33-24H81.84a157.44,157.44,0,0,0,0,48H43.33A87.61,87.61,0,0,1,40,128ZM154,88H102a115.11,115.11,0,0,1,26-45A115.27,115.27,0,0,1,154,88Zm52.36,0H170.7a135.28,135.28,0,0,0-22.3-45.6A88.29,88.29,0,0,1,206.37,88ZM107.6,42.4A135.28,135.28,0,0,0,85.3,88H49.63A88.29,88.29,0,0,1,107.6,42.4ZM49.63,168H85.3a135.28,135.28,0,0,0,22.3,45.6A88.29,88.29,0,0,1,49.63,168Zm98.77,45.6a135.28,135.28,0,0,0,22.3-45.6h35.67A88.29,88.29,0,0,1,148.4,213.6Z"/></svg>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <button type="button" class="site-lang-option" data-lang="es" onclick="setSiteLanguage('es')">Español</button>
+        <button type="button" class="site-lang-option" data-lang="en" onclick="setSiteLanguage('en')">English</button>
+        <button type="button" class="site-lang-option" data-lang="pt" onclick="setSiteLanguage('pt')">Português</button>
+      </div>
+    </div>
+    <div class="theme-picker" id="themePicker">
+      <button type="button" class="theme-icon-btn" onclick="toggleThemeMenu()" aria-label="Cambiar tema"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M203.57,51A107.9,107.9,0,0,0,20,128c0,44.72,27.6,82.25,72,97.94A36,36,0,0,0,140,192a12,12,0,0,1,12-12h46.21a35.79,35.79,0,0,0,35.1-28A108.6,108.6,0,0,0,236,127.09,107.23,107.23,0,0,0,203.57,51Zm6.34,95.67a11.91,11.91,0,0,1-11.7,9.3H152a36,36,0,0,0-36,36,12,12,0,0,1-16,11.3c-16.65-5.88-30.65-15.76-40.48-28.56A76,76,0,0,1,44,128a84,84,0,0,1,83.13-84H128a84.35,84.35,0,0,1,84,83.29A84.72,84.72,0,0,1,209.91,146.71ZM144,76a16,16,0,1,1-16-16A16,16,0,0,1,144,76Zm-44,24A16,16,0,1,1,84,84,16,16,0,0,1,100,100Zm0,56a16,16,0,1,1-16-16A16,16,0,0,1,100,156Zm88-56a16,16,0,1,1-16-16A16,16,0,0,1,188,100Z"/></svg></button>
+      <div class="theme-menu" id="themeMenu">
+        <p class="theme-menu-label">Temas</p>
+        <div class="preset-grid" id="presetGrid"></div>
+      </div>
+    </div>
+  </div>
 </header>
+
+<div class="side-menu-overlay" id="sideMenuOverlay" onclick="closeSideMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="side-menu-top">
+    <span class="side-menu-brand">tutti.frutti</span>
+    <button type="button" class="side-menu-close" onclick="closeSideMenu()" aria-label="Cerrar menú">&times;</button>
+  </div>
+  <nav>
+    <a href="index.html" data-i18n="nav_home">Inicio</a>
+    <a href="reglas.html" data-i18n="nav_reglas">Reglas del juego</a>
+    <a href="privacidad.html" data-i18n="nav_privacidad">Privacidad</a>
+    <a href="terminos.html" data-i18n="nav_terminos">Términos de uso</a>
+    <a href="contacto.html" data-i18n="nav_contacto">Contacto</a>
+  </nav>
+</div>
 
 <main class="wrap">
   <section class="hero">
     <span class="wordmark">tutti<span class="punto"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti</span>
-    <p>Tutti frutti online, con amigos o con un rival al azar. Armá una sala, invitá a quien quieras y jueguen en tiempo real: se sortea una letra, completan categorías a contrarreloj y un juez con inteligencia artificial resuelve las palabras en disputa.</p>
-    <a class="btn btn-primary" href="jugar.html">Jugar ahora</a>
+    <p data-i18n="home_hero_lead">Tutti frutti online, con amigos o con un rival al azar. Armá una sala, invitá a quien quieras y jueguen en tiempo real: se sortea una letra, completan categorías a contrarreloj y un juez con inteligencia artificial resuelve las palabras en disputa.</p>
+
+    <div class="quickplay">
+      <p class="quickplay-kicker" data-i18n="home_quickplay_kicker">Jugá ahora</p>
+      <form onsubmit="return goPlay(event)">
+        <div class="field">
+          <label class="label" for="homePlayerName" data-i18n="label_player_name">Tu nombre</label>
+          <input type="text" id="homePlayerName" placeholder="¿Cómo te llamás?" autocomplete="nickname" data-i18n-placeholder="player_name_placeholder" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="play_now_btn">Jugar ahora</button>
+      </form>
+    </div>
   </section>
 
   <div class="grid-3">
     <div class="card">
-      <h2>Salas privadas</h2>
-      <p>Creá una sala, compartí el código o el link con tus amigos y jueguen todos juntos en tiempo real.</p>
+      <h2 data-i18n="home_card1_title">Salas privadas</h2>
+      <p data-i18n="home_card1_body">Creá una sala, compartí el código o el link con tus amigos y jueguen todos juntos en tiempo real.</p>
     </div>
     <div class="card">
-      <h2>Rival al azar</h2>
-      <p>Si no tenés con quién jugar, buscamos un rival disponible en ese momento para armar la partida.</p>
+      <h2 data-i18n="home_card2_title">Rival al azar</h2>
+      <p data-i18n="home_card2_body">Si no tenés con quién jugar, buscamos un rival disponible en ese momento para armar la partida.</p>
     </div>
     <div class="card">
-      <h2>Juez con IA</h2>
-      <p>Cuando una respuesta se objeta y no hay acuerdo, un juez automático decide si vale o no, sin discusiones eternas.</p>
+      <h2 data-i18n="home_card3_title">Juez con IA</h2>
+      <p data-i18n="home_card3_body">Cuando una respuesta se objeta y no hay acuerdo, un juez automático decide si vale o no, sin discusiones eternas.</p>
     </div>
   </div>
 
   <section class="info">
-    <h2>¿Cómo se juega?</h2>
-    <p>En cada ronda se sortea una letra y todos completan al mismo tiempo categorías como Nombre, Animal, Comida o Color. Apenas alguien termina, toca <strong>¡Basta!</strong> y se corta la ronda para todos. Después hay una breve revisión donde se puede objetar cualquier respuesta antes de que se calculen los puntos.</p>
-    <p>Para conocer el detalle completo de puntajes, objeciones y el funcionamiento del juez con IA, mirá la página de <a href="reglas.html">reglas del juego</a>.</p>
+    <h2 data-i18n="home_how_heading">¿Cómo se juega?</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3 data-i18n="home_step1_title">Se sortea una letra</h3>
+        <p data-i18n="home_step1_desc">Al arrancar la ronda se elige una letra al azar entre las habilitadas para la sala.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3 data-i18n="home_step2_title">Completá las categorías</h3>
+        <p data-i18n="home_step2_desc">Escribí una palabra que empiece con esa letra en cada categoría, antes de que se acabe el tiempo.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3 data-i18n="home_step3_title">Tocá ¡Basta!</h3>
+        <p data-i18n="home_step3_desc">En cuanto termines, cualquiera puede tocar ¡Basta! y la ronda se corta para todos.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h3 data-i18n="home_step4_title">El juez resuelve las dudas</h3>
+        <p data-i18n="home_step4_desc">Si una respuesta se objeta y no hay acuerdo, un juez con IA decide si vale, sin discusiones eternas.</p>
+      </div>
+    </div>
+    <p data-i18n-html="home_how_p2_html">Para conocer el detalle completo de puntajes, objeciones y el funcionamiento del juez con IA, mirá la página de <a href="reglas.html">reglas del juego</a>.</p>
   </section>
+
+  <p class="how-link"><a href="reglas.html" data-i18n="home_how_link">¿Cómo se juega? Mirá las reglas completas →</a></p>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <nav>
-      <a href="reglas.html">Reglas del juego</a>
-      <a href="privacidad.html">Privacidad</a>
-      <a href="terminos.html">Términos de uso</a>
-      <a href="contacto.html">Contacto</a>
+      <a href="reglas.html" data-i18n="nav_reglas">Reglas del juego</a>
+      <a href="privacidad.html" data-i18n="nav_privacidad">Privacidad</a>
+      <a href="terminos.html" data-i18n="nav_terminos">Términos de uso</a>
+      <a href="contacto.html" data-i18n="nav_contacto">Contacto</a>
     </nav>
     <span class="copy">© <span id="year"></span> tutti.frutti</span>
   </div>
 </footer>
 
-<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+try {
+  var savedName = localStorage.getItem("tuttifruti_playerName");
+  if (savedName) document.getElementById("homePlayerName").value = savedName;
+} catch (e) { /* storage unavailable */ }
+
+function goPlay(event) {
+  event.preventDefault();
+  var name = document.getElementById("homePlayerName").value.trim();
+  try {
+    if (name) localStorage.setItem("tuttifruti_playerName", name);
+  } catch (e) { /* storage unavailable */ }
+  location.href = "jugar.html";
+  return false;
+}
+
+/* ---------- Selector de temas (mismos presets que jugar.html) ---------- */
+var BG_COLOR = { tinta: "#14101F", violeta: "#2A1F47", petroleo: "#103036", crema: "#FFF3E2", lavanda: "#ECE4FF" };
+var LIGHT_BACKGROUNDS = ["crema", "lavanda"];
+var PRESETS = [
+  { key: "pomelo__crema", theme: "pomelo", bg: "crema", label: "Pomelo", color: "#FF5E5B" },
+  { key: "cielo__violeta", theme: "cielo", bg: "violeta", label: "Cielo", color: "#35C8F2" },
+  { key: "uva__violeta", theme: "uva", bg: "violeta", label: "Uva", color: "#9C6BFF" },
+  { key: "lima__petroleo", theme: "lima", bg: "petroleo", label: "Lima", color: "#B6EF3C" },
+  { key: "mandarina__lavanda", theme: "mandarina", bg: "lavanda", label: "Mandarina", color: "#FFA62B" },
+];
+
+function renderPresetGrid() {
+  var grid = document.getElementById("presetGrid");
+  if (!grid || grid.childElementCount) return;
+  var currentPreset = document.documentElement.getAttribute("data-theme") + "__" + document.documentElement.getAttribute("data-bg");
+  grid.innerHTML = PRESETS.map(function (p) {
+    return '<button type="button" class="theme-option' + (p.key === currentPreset ? ' selected' : '') + '" data-preset="' + p.key + '" onclick="setPreset(\'' + p.key + '\')">' +
+      '<span class="theme-swatch" style="background:' + p.color + '; --sw2:' + BG_COLOR[p.bg] + ';"></span>' + p.label +
+      '</button>';
+  }).join("");
+}
+
+function toggleThemeMenu() {
+  renderPresetGrid();
+  document.getElementById("themeMenu").classList.toggle("open");
+}
+
+function setPreset(key) {
+  var preset = PRESETS.filter(function (p) { return p.key === key; })[0] || PRESETS[0];
+  document.documentElement.setAttribute("data-theme", preset.theme);
+  document.documentElement.setAttribute("data-bg", preset.bg);
+  if (LIGHT_BACKGROUNDS.indexOf(preset.bg) !== -1) {
+    document.documentElement.setAttribute("data-light", "");
+  } else {
+    document.documentElement.removeAttribute("data-light");
+  }
+  document.querySelectorAll(".theme-option[data-preset]").forEach(function (btn) {
+    btn.classList.toggle("selected", btn.dataset.preset === preset.key);
+  });
+  var menu = document.getElementById("themeMenu");
+  if (menu) menu.classList.remove("open");
+  try { localStorage.setItem("tuttifruti_preset", preset.key); } catch (e) { /* storage unavailable */ }
+}
+
+document.addEventListener("click", function (e) {
+  var picker = document.getElementById("themePicker");
+  var menu = document.getElementById("themeMenu");
+  if (picker && menu && !picker.contains(e.target)) {
+    menu.classList.remove("open");
+  }
+});
+
+/* ---------- Menú lateral (mobile) ---------- */
+function openSideMenu() {
+  document.getElementById("sideMenu").classList.add("open");
+  document.getElementById("sideMenuOverlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeSideMenu() {
+  document.getElementById("sideMenu").classList.remove("open");
+  document.getElementById("sideMenuOverlay").classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") closeSideMenu();
+});
+</script>
 <script src="cookie-consent.js"></script>
 </body>
 </html>

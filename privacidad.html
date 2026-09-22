@@ -11,8 +11,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="site.css" />
+<script src="site-i18n.js"></script>
 </head>
-<body>
+<body data-i18n-title="privacidad_title" data-i18n-description="privacidad_description">
 
 <header class="site-header">
   <div class="wrap">
@@ -20,63 +21,75 @@
       <svg class="simbolo" viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg>
       tutti<span class="punto"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti
     </a>
-    <a class="btn-play" href="jugar.html">Jugar ahora</a>
+    <div class="header-actions">
+      <div class="lang-picker" id="langPicker">
+        <button type="button" class="lang-icon-btn" onclick="toggleSiteLangMenu()" aria-label="Cambiar idioma / Change language / Mudar idioma">
+          <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm88,104a87.61,87.61,0,0,1-3.33,24H174.16a157.44,157.44,0,0,0,0-48h38.51A87.61,87.61,0,0,1,216,128ZM102,168H154a115.11,115.11,0,0,1-26,45A115.27,115.27,0,0,1,102,168Zm-3.9-16a140.84,140.84,0,0,1,0-48h59.8a140.84,140.84,0,0,1,0,48ZM40,128a87.61,87.61,0,0,1,3.33-24H81.84a157.44,157.44,0,0,0,0,48H43.33A87.61,87.61,0,0,1,40,128ZM154,88H102a115.11,115.11,0,0,1,26-45A115.27,115.27,0,0,1,154,88Zm52.36,0H170.7a135.28,135.28,0,0,0-22.3-45.6A88.29,88.29,0,0,1,206.37,88ZM107.6,42.4A135.28,135.28,0,0,0,85.3,88H49.63A88.29,88.29,0,0,1,107.6,42.4ZM49.63,168H85.3a135.28,135.28,0,0,0,22.3,45.6A88.29,88.29,0,0,1,49.63,168Zm98.77,45.6a135.28,135.28,0,0,0,22.3-45.6h35.67A88.29,88.29,0,0,1,148.4,213.6Z"/></svg>
+        </button>
+        <div class="lang-menu" id="langMenu">
+          <button type="button" class="site-lang-option" data-lang="es" onclick="setSiteLanguage('es')">Español</button>
+          <button type="button" class="site-lang-option" data-lang="en" onclick="setSiteLanguage('en')">English</button>
+          <button type="button" class="site-lang-option" data-lang="pt" onclick="setSiteLanguage('pt')">Português</button>
+        </div>
+      </div>
+      <a class="btn-play" href="jugar.html" data-i18n="play_now_btn">Jugar ahora</a>
+    </div>
   </div>
 </header>
 
 <main>
   <div class="wrap">
-    <h1>Política de privacidad</h1>
-    <p class="lead">Última actualización: <span id="fecha"></span>.</p>
+    <h1 data-i18n="privacidad_h1">Política de privacidad</h1>
+    <p class="lead"><span data-i18n="last_updated_prefix">Última actualización:</span> <span id="fecha"></span>.</p>
 
     <section>
-      <p>Esta política explica qué información recolecta tutti.frutti (el "Sitio"), cómo se usa y qué opciones tenés al respecto. Al usar el Sitio, aceptás esta política.</p>
+      <p data-i18n="privacidad_intro">Esta política explica qué información recolecta tutti.frutti (el "Sitio"), cómo se usa y qué opciones tenés al respecto. Al usar el Sitio, aceptás esta política.</p>
     </section>
 
     <section>
-      <h2>Qué datos recolectamos</h2>
-      <h3>Datos que ingresás vos</h3>
+      <h2 data-i18n="privacidad_s1_heading">Qué datos recolectamos</h2>
+      <h3 data-i18n="privacidad_s1_sub1_heading">Datos que ingresás vos</h3>
       <ul>
-        <li><strong>Nombre de jugador:</strong> el que escribís antes de jugar. No pedimos apellido, email ni ningún dato que te identifique fuera del juego.</li>
-        <li><strong>Respuestas de la partida:</strong> las palabras que escribís en cada categoría durante una ronda, para poder compararlas con las de los demás jugadores y calcular el puntaje.</li>
-        <li><strong>Código de sala:</strong> se genera automáticamente al crear una partida.</li>
+        <li data-i18n-html="privacidad_s1_li1_html"><strong>Nombre de jugador:</strong> el que escribís antes de jugar. No pedimos apellido, email ni ningún dato que te identifique fuera del juego.</li>
+        <li data-i18n-html="privacidad_s1_li2_html"><strong>Respuestas de la partida:</strong> las palabras que escribís en cada categoría durante una ronda, para poder compararlas con las de los demás jugadores y calcular el puntaje.</li>
+        <li data-i18n-html="privacidad_s1_li3_html"><strong>Código de sala:</strong> se genera automáticamente al crear una partida.</li>
       </ul>
-      <p>Estos datos se guardan temporalmente en una base de datos (Firebase, de Google) asociados a un identificador aleatorio de sesión, no a tu identidad real. Las salas y sus datos no están pensados para conservarse indefinidamente.</p>
+      <p data-i18n="privacidad_s1_p1">Estos datos se guardan temporalmente en una base de datos (Firebase, de Google) asociados a un identificador aleatorio de sesión, no a tu identidad real. Las salas y sus datos no están pensados para conservarse indefinidamente.</p>
 
-      <h3>Datos guardados en tu dispositivo</h3>
-      <p>Usamos el almacenamiento local del navegador (localStorage) para recordar, únicamente en tu propio dispositivo, tu nombre de jugador, si preferís el sonido silenciado y el tema de color elegido. Esta información nunca se envía a nuestros servidores ni a terceros.</p>
+      <h3 data-i18n="privacidad_s1_sub2_heading">Datos guardados en tu dispositivo</h3>
+      <p data-i18n="privacidad_s1_sub2_p">Usamos el almacenamiento local del navegador (localStorage) para recordar, únicamente en tu propio dispositivo, tu nombre de jugador, si preferís el sonido silenciado y el tema de color elegido. Esta información nunca se envía a nuestros servidores ni a terceros.</p>
 
-      <h3>El juez con inteligencia artificial</h3>
-      <p>Cuando una respuesta queda en disputa y nadie la resuelve antes, la palabra objetada y su categoría se envían a un servicio de inteligencia artificial (Anthropic) para que decida si es válida. Solo se envían la palabra, la categoría y la letra de la ronda — nunca tu nombre ni ningún otro dato personal.</p>
+      <h3 data-i18n="privacidad_s1_sub3_heading">El juez con inteligencia artificial</h3>
+      <p data-i18n="privacidad_s1_sub3_p">Cuando una respuesta queda en disputa y nadie la resuelve antes, la palabra objetada y su categoría se envían a un servicio de inteligencia artificial (Anthropic) para que decida si es válida. Solo se envían la palabra, la categoría y la letra de la ronda — nunca tu nombre ni ningún otro dato personal.</p>
     </section>
 
     <section>
-      <h2>Publicidad y cookies</h2>
-      <p>Este Sitio puede mostrar anuncios a través de Google AdSense. Google y sus socios publicitarios pueden usar cookies y tecnologías similares para mostrar anuncios en base a tus visitas a este y otros sitios. La primera vez que entrás, un aviso te permite aceptar o rechazar estas cookies antes de que se usen.</p>
+      <h2 data-i18n="privacidad_s2_heading">Publicidad y cookies</h2>
+      <p data-i18n="privacidad_s2_p">Este Sitio puede mostrar anuncios a través de Google AdSense. Google y sus socios publicitarios pueden usar cookies y tecnologías similares para mostrar anuncios en base a tus visitas a este y otros sitios. La primera vez que entrás, un aviso te permite aceptar o rechazar estas cookies antes de que se usen.</p>
       <ul>
-        <li>Podés conocer cómo Google usa esta información en <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">policies.google.com/technologies/ads</a>.</li>
-        <li>Podés inhabilitar la publicidad personalizada en <a href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.</li>
+        <li data-i18n-html="privacidad_s2_li1_html">Podés conocer cómo Google usa esta información en <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">policies.google.com/technologies/ads</a>.</li>
+        <li data-i18n-html="privacidad_s2_li2_html">Podés inhabilitar la publicidad personalizada en <a href="https://adssettings.google.com" target="_blank" rel="noopener">adssettings.google.com</a>.</li>
       </ul>
     </section>
 
     <section>
-      <h2>Con quién compartimos información</h2>
-      <p>No vendemos datos personales. Compartimos información únicamente con los proveedores necesarios para que el Sitio funcione: Firebase (Google) para la sincronización de salas en tiempo real, Anthropic para el juez con inteligencia artificial, y Google AdSense para la publicidad, cada uno sujeto a sus propias políticas de privacidad.</p>
+      <h2 data-i18n="privacidad_s3_heading">Con quién compartimos información</h2>
+      <p data-i18n="privacidad_s3_p">No vendemos datos personales. Compartimos información únicamente con los proveedores necesarios para que el Sitio funcione: Firebase (Google) para la sincronización de salas en tiempo real, Anthropic para el juez con inteligencia artificial, y Google AdSense para la publicidad, cada uno sujeto a sus propias políticas de privacidad.</p>
     </section>
 
     <section>
-      <h2>Menores de edad</h2>
-      <p>Este Sitio no está dirigido específicamente a menores de 13 años y no recolectamos a sabiendas datos personales de niños. Si creés que un menor nos proporcionó información personal, escribinos y lo eliminaremos.</p>
+      <h2 data-i18n="privacidad_s4_heading">Menores de edad</h2>
+      <p data-i18n="privacidad_s4_p">Este Sitio no está dirigido específicamente a menores de 13 años y no recolectamos a sabiendas datos personales de niños. Si creés que un menor nos proporcionó información personal, escribinos y lo eliminaremos.</p>
     </section>
 
     <section>
-      <h2>Cambios a esta política</h2>
-      <p>Podemos actualizar esta política ocasionalmente. Los cambios se van a reflejar en esta misma página con su fecha de actualización.</p>
+      <h2 data-i18n="privacidad_s5_heading">Cambios a esta política</h2>
+      <p data-i18n="privacidad_s5_p">Podemos actualizar esta política ocasionalmente. Los cambios se van a reflejar en esta misma página con su fecha de actualización.</p>
     </section>
 
     <section>
-      <h2>Contacto</h2>
-      <p>Si tenés preguntas sobre esta política, escribinos a <a href="mailto:bauengames@gmail.com">bauengames@gmail.com</a>.</p>
+      <h2 data-i18n="privacidad_s6_heading">Contacto</h2>
+      <p data-i18n-html="privacidad_s6_p_html">Si tenés preguntas sobre esta política, escribinos a <a href="mailto:bauengames@gmail.com">bauengames@gmail.com</a>.</p>
     </section>
   </div>
 </main>
@@ -84,10 +97,10 @@
 <footer class="site-footer">
   <div class="wrap">
     <nav>
-      <a href="index.html">Inicio</a>
-      <a href="reglas.html">Reglas del juego</a>
-      <a href="terminos.html">Términos de uso</a>
-      <a href="contacto.html">Contacto</a>
+      <a href="index.html" data-i18n="nav_home">Inicio</a>
+      <a href="reglas.html" data-i18n="nav_reglas">Reglas del juego</a>
+      <a href="terminos.html" data-i18n="nav_terminos">Términos de uso</a>
+      <a href="contacto.html" data-i18n="nav_contacto">Contacto</a>
     </nav>
     <span class="copy">© <span id="year"></span> tutti.frutti</span>
   </div>
@@ -95,7 +108,7 @@
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
-  document.getElementById("fecha").textContent = new Date().toLocaleDateString("es-AR", { year: "numeric", month: "long", day: "numeric" });
+  document.getElementById("fecha").textContent = new Date().toLocaleDateString(window.__siteLang === "en" ? "en-US" : "es-AR", { year: "numeric", month: "long", day: "numeric" });
 </script>
 <script src="cookie-consent.js"></script>
 </body>

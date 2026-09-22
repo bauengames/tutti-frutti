@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>tutti.frutti · Tutti frutti online con amigos</title>
-<meta name="description" content="Tutti frutti online gratis para jugar con amigos. Armá la sala, se sortea la letra y gana el más rápido." />
+<meta name="description" content="Tutti frutti online gratis para jugar con amigos (conocido también como Stop o Basta en otros países). Armá la sala, se sortea la letra y gana el más rápido." />
 <meta name="theme-color" content="#14101F" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -107,6 +107,8 @@ strong { font-weight: 700; }
 .lead { color: var(--crema-72); font-size: 17px; margin: 0 0 20px; max-width: 60ch; }
 
 /* ---------- Wordmark ---------- */
+.wordmark-link { display: inline-block; text-decoration: none; transition: opacity .15s; }
+.wordmark-link:hover { opacity: .8; }
 .wordmark {
   font-family: var(--font-display);
   font-weight: 800;
@@ -259,6 +261,9 @@ html[data-light] .room-row button.copied { color: var(--tinta); border-color: va
   transition: border-color .15s, color .15s, background-color .15s;
 }
 .cat-pick-chip:hover { border-color: var(--primary); background: var(--crema-08); color: var(--text); }
+.cat-pick-chip-random { border-style: dashed; border-color: var(--primary); color: var(--primary); }
+.cat-pick-chip-random:hover { background: rgba(255,94,91,.12); }
+html[data-light] .cat-pick-chip-random { color: var(--tinta); }
 
 .cat-chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .cat-chip-row:not(:empty) { margin-top: 10px; }
@@ -466,6 +471,11 @@ html[data-light] .text-positive { color: var(--tinta); }
 .result-badge { text-align: center; font-size: 64px; line-height: 1; margin: 0 0 12px; animation: letra-cae .5s cubic-bezier(.34,1.56,.64,1); }
 .result-badge:empty { display: none; }
 
+.player-dot {
+  display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+  margin-right: 7px; vertical-align: middle; flex-shrink: 0;
+}
+
 .ranking { margin-top: 28px; }
 .rank-row {
   display: flex; align-items: center; gap: 14px;
@@ -485,6 +495,52 @@ html[data-light] .rank-score { color: var(--tinta); }
 .actions-row .secondary { background: transparent; color: var(--text); border: 2px solid var(--borde-fuerte); font-weight: 600; }
 .actions-row button { border: none; border-radius: var(--radius); padding: 18px 16px; font-family: var(--font-body); font-size: 14px; cursor: pointer; transition: filter .15s, border-color .15s, color .15s, transform .08s; }
 .actions-row button:active { transform: translateY(2px); }
+
+/* ---------- Categoría comodín (x2) ---------- */
+.wildcard-note {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin: 4px 0 0; font-size: 13px; color: var(--mandarina); font-weight: 600;
+}
+html[data-light] .wildcard-note { color: var(--tinta); }
+.wildcard-badge {
+  display: inline-block; margin-left: 6px; padding: 2px 7px; border-radius: 999px;
+  background: var(--mandarina); color: var(--tinta); font: 700 10px var(--font-mono);
+  vertical-align: middle; letter-spacing: .02em;
+}
+
+/* ---------- Barra de progreso (revisión) ---------- */
+.progress-track {
+  width: 100%; height: 8px; border-radius: 999px; background: var(--crema-08);
+  overflow: hidden; margin: 10px 0;
+}
+.progress-fill {
+  height: 100%; border-radius: 999px; background: var(--lima);
+  transition: width .25s linear, background-color .25s linear;
+}
+.progress-fill.urgent { background: var(--pomelo); }
+
+/* ---------- Reacciones rápidas (revisión) ---------- */
+.reaction-row { display: flex; align-items: center; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
+.reaction-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  border: 1.5px solid var(--borde-fuerte); background: transparent; border-radius: var(--radius-pill);
+  padding: 3px 9px; font-size: 13px; cursor: pointer; color: var(--crema-72);
+  transition: border-color .15s, background-color .15s;
+}
+.reaction-btn:hover { border-color: var(--pomelo-claro); }
+.reaction-btn.mine { border-color: var(--pomelo); background: rgba(255,94,91,.12); color: var(--text); }
+.reaction-btn .count { font: 700 11px var(--font-mono); }
+
+/* ---------- Estadísticas y ranking de racha ---------- */
+.stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 20px 0; }
+.stat-card { background: var(--surface); border-radius: var(--radius-card); padding: 18px; text-align: center; }
+.stat-card .stat-value { font: 700 26px var(--font-mono); color: var(--lima); display: block; }
+html[data-light] .stat-card .stat-value { color: var(--tinta); }
+.stat-card .stat-label { font-size: 12px; color: var(--text-muted); margin-top: 4px; display: block; }
+.streak-history-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 12px 0; }
+
+/* ---------- Compartir resultado ---------- */
+.share-preview { display: none; }
 
 /* ---------- Búsqueda ---------- */
 .searching { text-align: center; padding-top: 32px; }
@@ -550,16 +606,24 @@ html[data-light] .rank-score { color: var(--tinta); }
 <body>
 
 <header class="top-bar">
-  <button type="button" class="brand-mini" onclick="goToLobby()" aria-label="Ir al inicio">
+  <button type="button" class="brand-mini" onclick="goToLobby()" aria-label="Ir al inicio" data-i18n-aria="brand_home_aria">
     <svg class="simbolo" viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg>
     <span class="wordmark">tutti<span class="apple-dot"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span><span class="sr-only">.</span>frutti</span>
   </button>
   <div class="top-actions">
     <div class="theme-picker" id="themePicker">
-      <button type="button" class="icon-btn" onclick="toggleThemeMenu()" aria-label="Cambiar tema"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M203.57,51A107.9,107.9,0,0,0,20,128c0,44.72,27.6,82.25,72,97.94A36,36,0,0,0,140,192a12,12,0,0,1,12-12h46.21a35.79,35.79,0,0,0,35.1-28A108.6,108.6,0,0,0,236,127.09,107.23,107.23,0,0,0,203.57,51Zm6.34,95.67a11.91,11.91,0,0,1-11.7,9.3H152a36,36,0,0,0-36,36,12,12,0,0,1-16,11.3c-16.65-5.88-30.65-15.76-40.48-28.56A76,76,0,0,1,44,128a84,84,0,0,1,83.13-84H128a84.35,84.35,0,0,1,84,83.29A84.72,84.72,0,0,1,209.91,146.71ZM144,76a16,16,0,1,1-16-16A16,16,0,0,1,144,76Zm-44,24A16,16,0,1,1,84,84,16,16,0,0,1,100,100Zm0,56a16,16,0,1,1-16-16A16,16,0,0,1,100,156Zm88-56a16,16,0,1,1-16-16A16,16,0,0,1,188,100Z"/></svg></button>
+      <button type="button" class="icon-btn" onclick="toggleThemeMenu()" aria-label="Cambiar tema" data-i18n-aria="theme_btn_aria"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M203.57,51A107.9,107.9,0,0,0,20,128c0,44.72,27.6,82.25,72,97.94A36,36,0,0,0,140,192a12,12,0,0,1,12-12h46.21a35.79,35.79,0,0,0,35.1-28A108.6,108.6,0,0,0,236,127.09,107.23,107.23,0,0,0,203.57,51Zm6.34,95.67a11.91,11.91,0,0,1-11.7,9.3H152a36,36,0,0,0-36,36,12,12,0,0,1-16,11.3c-16.65-5.88-30.65-15.76-40.48-28.56A76,76,0,0,1,44,128a84,84,0,0,1,83.13-84H128a84.35,84.35,0,0,1,84,83.29A84.72,84.72,0,0,1,209.91,146.71ZM144,76a16,16,0,1,1-16-16A16,16,0,0,1,144,76Zm-44,24A16,16,0,1,1,84,84,16,16,0,0,1,100,100Zm0,56a16,16,0,1,1-16-16A16,16,0,0,1,100,156Zm88-56a16,16,0,1,1-16-16A16,16,0,0,1,188,100Z"/></svg></button>
       <div class="theme-menu" id="themeMenu">
-        <p class="theme-menu-label">Temas</p>
+        <p class="theme-menu-label" data-i18n="theme_menu_label">Temas</p>
         <div class="preset-grid" id="presetGrid"></div>
+      </div>
+    </div>
+    <div class="theme-picker" id="langPicker">
+      <button type="button" class="icon-btn" onclick="toggleLangMenu()" aria-label="Cambiar idioma" data-i18n-aria="lang_btn_aria"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm88,104a87.61,87.61,0,0,1-3.33,24H174.16a157.44,157.44,0,0,0,0-48h38.51A87.61,87.61,0,0,1,216,128ZM102,168H154a115.11,115.11,0,0,1-26,45A115.27,115.27,0,0,1,102,168Zm-3.9-16a140.84,140.84,0,0,1,0-48h59.8a140.84,140.84,0,0,1,0,48ZM40,128a87.61,87.61,0,0,1,3.33-24H81.84a157.44,157.44,0,0,0,0,48H43.33A87.61,87.61,0,0,1,40,128ZM154,88H102a115.11,115.11,0,0,1,26-45A115.27,115.27,0,0,1,154,88Zm52.36,0H170.7a135.28,135.28,0,0,0-22.3-45.6A88.29,88.29,0,0,1,206.37,88ZM107.6,42.4A135.28,135.28,0,0,0,85.3,88H49.63A88.29,88.29,0,0,1,107.6,42.4ZM49.63,168H85.3a135.28,135.28,0,0,0,22.3,45.6A88.29,88.29,0,0,1,49.63,168Zm98.77,45.6a135.28,135.28,0,0,0,22.3-45.6h35.67A88.29,88.29,0,0,1,148.4,213.6Z"/></svg></button>
+      <div class="theme-menu" id="langMenu">
+        <button type="button" class="theme-option lang-option selected" data-lang="es" onclick="setLanguage('es')">Español</button>
+        <button type="button" class="theme-option lang-option" data-lang="en" onclick="setLanguage('en')">English</button>
+        <button type="button" class="theme-option lang-option" data-lang="pt" onclick="setLanguage('pt')">Português</button>
       </div>
     </div>
     <button type="button" id="muteBtn" class="icon-btn" onclick="toggleMute()" aria-label="Silenciar sonido"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M157.27,21.22a12,12,0,0,0-12.64,1.31L75.88,76H32A20,20,0,0,0,12,96v64a20,20,0,0,0,20,20H75.88l68.75,53.47A12,12,0,0,0,164,224V32A12,12,0,0,0,157.27,21.22ZM36,100H68v56H36Zm104,99.46L92,162.13V93.87l48-37.33ZM212,128a44,44,0,0,1-11,29.11,12,12,0,1,1-18-15.88,20,20,0,0,0,0-26.43,12,12,0,0,1,18-15.86A43.94,43.94,0,0,1,212,128Zm40,0a83.87,83.87,0,0,1-21.39,56,12,12,0,0,1-17.89-16,60,60,0,0,0,0-80,12,12,0,1,1,17.88-16A83.87,83.87,0,0,1,252,128Z"/></svg></button>
@@ -570,102 +634,138 @@ html[data-light] .rank-score { color: var(--tinta); }
 <div class="screen active" id="screen-lobby">
   <div class="wrap lobby">
     <div class="lobby-hero">
-      <h1 class="wordmark">tutti<span class="apple-dot" aria-hidden="true"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span><span class="sr-only">.</span>frutti</h1>
-      <p class="lead">Tutti frutti online. Elegí categorías, invitá a tus amigos y que empiece la ronda.</p>
+      <a href="index.html" class="wordmark-link" aria-label="Ir a la página de inicio" data-i18n-aria="brand_home_aria">
+        <h1 class="wordmark">tutti<span class="apple-dot" aria-hidden="true"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span><span class="sr-only">.</span>frutti</h1>
+      </a>
+      <p class="lead" data-i18n="lobby_lead">Tutti frutti online. Elegí categorías, invitá a tus amigos y que empiece la ronda.</p>
     </div>
 
     <div class="mode-tabs">
-      <button type="button" class="mode-tab active" id="tabCreate" onclick="setMode('create')">Crear sala</button>
-      <button type="button" class="mode-tab" id="tabJoin" onclick="setMode('join')">Unirme</button>
-      <button type="button" class="mode-tab" id="tabRandom" onclick="setMode('random')">Al azar</button>
+      <button type="button" class="mode-tab active" id="tabCreate" onclick="setMode('create')" data-i18n="tab_create">Crear sala</button>
+      <button type="button" class="mode-tab" id="tabJoin" onclick="setMode('join')" data-i18n="tab_join">Unirme</button>
+      <button type="button" class="mode-tab" id="tabRandom" onclick="setMode('random')" data-i18n="tab_random">Al azar</button>
+      <button type="button" class="mode-tab" id="tabStreak" onclick="setMode('streak')" data-i18n="tab_streak">Contrarreloj</button>
     </div>
 
-    <p class="online-note">
+    <p class="online-note" data-i18n-html="online_note_main_html">
       Se sortea una letra, todos completan las categorías al mismo tiempo y cualquiera puede tocar <strong>¡Basta!</strong> para cortar la ronda. Después de cada ronda pueden revisar y objetar respuestas antes de que se calcule el puntaje.
     </p>
 
-    <p class="online-note" id="joinNote" style="display:none;">
+    <p class="online-note" id="joinNote" style="display:none;" data-i18n="join_note">
       Pedile el código de sala a quien la creó y entrás directo a jugar con ella.
     </p>
 
-    <p class="online-note" id="randomNote" style="display:none;">
+    <p class="online-note" id="randomNote" style="display:none;" data-i18n="random_note">
       Te busca un rival real entre quienes estén buscando partida en este momento, sin código que compartir. Se juega con categorías y reglas fijas, ya que no hay forma de ponerse de acuerdo con un desconocido antes de arrancar. Si nadie aparece en unos segundos, podés seguir esperando o jugar contra un rival de prueba.
     </p>
 
+    <p class="online-note" id="streakNote" style="display:none;" data-i18n="streak_note">
+      Jugás solo, contra el reloj: completá todas las categorías antes de que se acabe el tiempo para pasar a la siguiente letra. Cada ronda superada suma puntos y te queda un poco menos de tiempo — la racha termina en cuanto te quede una categoría sin completar.
+    </p>
+
     <div class="field">
-      <label class="label" for="playerName">Tu nombre</label>
-      <input type="text" id="playerName" placeholder="¿Cómo te llamás?" oninput="checkCanPlay()" autocomplete="nickname" />
+      <label class="label" for="playerName" data-i18n="label_player_name">Tu nombre</label>
+      <input type="text" id="playerName" placeholder="¿Cómo te llamás?" oninput="checkCanPlay()" autocomplete="nickname" data-i18n-placeholder="player_name_placeholder" />
     </div>
 
     <div class="field" id="roomFieldCreate">
-      <label class="label" for="roomCode">Sala (compartí este código con tus amigos)</label>
+      <label class="label" for="roomCode" data-i18n="label_room_create">Sala (compartí este código con tus amigos)</label>
       <div class="room-row">
         <input type="text" id="roomCode" readonly class="input-code room-code-value" />
-        <button type="button" id="copyRoomBtn" onclick="copyRoomCode()">Copiar</button>
-        <button type="button" id="shareRoomBtn" onclick="shareRoomLink()">Compartir</button>
+        <button type="button" id="copyRoomBtn" onclick="copyRoomCode()" data-i18n="copy_btn">Copiar</button>
+        <button type="button" id="shareRoomBtn" onclick="shareRoomLink()" data-i18n="share_btn">Compartir</button>
       </div>
-      <p class="hint">El link entra directo a la sala; solo falta poner el nombre.</p>
+      <p class="hint" data-i18n="hint_room_link">El link entra directo a la sala; solo falta poner el nombre.</p>
     </div>
 
     <div class="field" id="roomFieldJoin" style="display:none;">
-      <label class="label" for="joinCodeInput">Código de sala</label>
+      <label class="label" for="joinCodeInput" data-i18n="label_room_join">Código de sala</label>
       <input type="text" id="joinCodeInput" class="input-code" placeholder="Ingresá el código que te pasaron"
-        oninput="this.value=this.value.toUpperCase(); checkCanPlay();" autocomplete="off" />
+        oninput="this.value=this.value.toUpperCase(); checkCanPlay();" autocomplete="off" data-i18n-placeholder="join_code_placeholder" />
     </div>
 
     <div id="hostConfigFields">
-      <div class="field">
-        <span class="label">Categorías (tocá las que quieras agregar)</span>
+      <div class="field" id="categoriesField">
+        <span class="label" data-i18n="categories_label">Categorías (tocá las que quieras agregar)</span>
         <div class="pack-row">
-          <button type="button" class="pack-btn" onclick="loadPack('clasico')">Clásico</button>
-          <button type="button" class="pack-btn" onclick="loadPack('argento')">Cultura argentina</button>
+          <button type="button" class="pack-btn" onclick="loadPack('clasico')" data-i18n="pack_clasico">Clásico</button>
+          <button type="button" class="pack-btn" onclick="loadPack('argento')" data-i18n="pack_argento">Cultura argentina</button>
+          <button type="button" class="pack-btn" onclick="loadPack('random')" data-i18n="pack_random">Random</button>
         </div>
-        <div class="cat-picker-grid" id="categoryPicker"></div>
-        <div class="cat-chip-row" id="catChipRow"></div>
-        <div class="add-cat">
-          <input type="text" id="newCatInput" placeholder="O escribí una categoría propia" onkeydown="if(event.key==='Enter') addCategory()" />
-          <button type="button" onclick="addCategory()">Agregar</button>
+        <p class="online-note" id="randomCategoriesNote" style="display:none;" data-i18n="random_categories_note">Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!</p>
+        <div id="categoryEditor">
+          <div class="cat-picker-grid" id="categoryPicker"></div>
+          <div class="cat-chip-row" id="catChipRow"></div>
+          <div class="add-cat">
+            <input type="text" id="newCatInput" placeholder="O escribí una categoría propia" onkeydown="if(event.key==='Enter') addCategory()" data-i18n-placeholder="new_cat_placeholder" />
+            <button type="button" onclick="addCategory()" data-i18n="add_btn">Agregar</button>
+          </div>
         </div>
       </div>
 
       <div class="field-row">
-        <div class="field">
-          <label class="label" for="durationSelect">Tiempo por ronda</label>
+        <div class="field" id="durationField">
+          <label class="label" for="durationSelect" data-i18n="duration_label">Tiempo por ronda</label>
           <select id="durationSelect">
-            <option value="30">30 segundos</option>
-            <option value="45" selected>45 segundos</option>
-            <option value="60">60 segundos</option>
-            <option value="90">90 segundos</option>
+            <option value="30" data-i18n="duration_30">30 segundos</option>
+            <option value="45" selected data-i18n="duration_45">45 segundos</option>
+            <option value="60" data-i18n="duration_60">60 segundos</option>
+            <option value="90" data-i18n="duration_90">90 segundos</option>
           </select>
         </div>
 
-        <div class="field">
-          <label class="label" for="roundsSelect">Cantidad de rondas</label>
+        <div class="field" id="roundsField">
+          <label class="label" for="roundsSelect" data-i18n="rounds_label">Cantidad de rondas</label>
           <select id="roundsSelect">
-            <option value="3">3 rondas</option>
-            <option value="5" selected>5 rondas</option>
-            <option value="7">7 rondas</option>
-            <option value="10">10 rondas</option>
-            <option value="0">Sin límite</option>
+            <option value="1" data-i18n="rounds_1">1 ronda</option>
+            <option value="3" data-i18n="rounds_3">3 rondas</option>
+            <option value="5" selected data-i18n="rounds_5">5 rondas</option>
+            <option value="7" data-i18n="rounds_7">7 rondas</option>
+            <option value="10" data-i18n="rounds_10">10 rondas</option>
+            <option value="0" data-i18n="rounds_unlimited">Sin límite</option>
           </select>
         </div>
       </div>
 
       <div class="field">
-        <span class="label">Letras en juego (sacá las que no quieras)</span>
+        <span class="label" data-i18n="letters_label">Letras en juego (sacá las que no quieras)</span>
         <div class="letter-grid" id="letterGrid"></div>
         <div class="letter-actions">
-          <button type="button" class="letter-action-btn" onclick="resetLetters()">Clásicas</button>
-          <button type="button" class="letter-action-btn" onclick="setAllLetters(true)">Todas</button>
-          <button type="button" class="letter-action-btn" onclick="setAllLetters(false)">Ninguna</button>
+          <button type="button" class="letter-action-btn" onclick="resetLetters()" data-i18n="letters_classic_btn">Clásicas</button>
+          <button type="button" class="letter-action-btn" onclick="setAllLetters(true)" data-i18n="letters_all_btn">Todas</button>
+          <button type="button" class="letter-action-btn" onclick="setAllLetters(false)" data-i18n="letters_none_btn">Ninguna</button>
         </div>
       </div>
     </div>
 
-    <p class="online-note" id="joinConfigNote" style="display:none;">La persona que creó la sala ya eligió las categorías, el tiempo por ronda y las letras — vas a jugar con esa configuración.</p>
+    <p class="online-note" id="joinConfigNote" style="display:none;" data-i18n="join_config_note">La persona que creó la sala ya eligió las categorías, el tiempo por ronda y las letras — vas a jugar con esa configuración.</p>
 
     <div class="lobby-footer">
       <button class="btn btn-primary btn-block" id="playBtn" disabled onclick="beginGame()">Empezar a jugar</button>
+      <button type="button" class="btn btn-ghost btn-block" onclick="showStatsScreen()" style="margin-top:8px;" data-i18n="view_stats_btn">Ver mis estadísticas</button>
+    </div>
+  </div>
+</div>
+
+<!-- ESTADÍSTICAS PERSONALES -->
+<div class="screen" id="screen-stats">
+  <div class="results">
+    <div class="results-card">
+      <div class="hero-band">
+        <h2 data-i18n="stats_heading">Tus estadísticas</h2>
+        <p data-i18n="stats_lead">Guardadas en este dispositivo — nadie más las ve.</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><span class="stat-value" id="statGames">0</span><span class="stat-label" data-i18n="stats_games">Partidas jugadas</span></div>
+        <div class="stat-card"><span class="stat-value" id="statRounds">0</span><span class="stat-label" data-i18n="stats_rounds">Rondas jugadas</span></div>
+        <div class="stat-card"><span class="stat-value" id="statLetter">–</span><span class="stat-label" data-i18n="stats_top_letter">Letra más frecuente</span></div>
+        <div class="stat-card"><span class="stat-value" id="statStreakBest">0</span><span class="stat-label" data-i18n="stats_streak_best">Mejor puntaje contrarreloj</span></div>
+      </div>
+      <h2 class="section-title" data-i18n="stats_streak_top_heading">Mejores rachas</h2>
+      <div id="streakHistoryList"></div>
+      <div class="actions-row">
+        <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
+      </div>
     </div>
   </div>
 </div>
@@ -674,17 +774,17 @@ html[data-light] .rank-score { color: var(--tinta); }
 <div class="screen" id="screen-waiting">
   <div class="wrap">
     <div class="code-card">
-      <span class="label">Código de sala</span>
+      <span class="label" data-i18n="waiting_room_code_label">Código de sala</span>
       <span class="room-code-big" id="waitingRoomCode">----</span>
-      <p class="hint" id="waitingSubtitle">Compartí este código para que se sumen.</p>
+      <p class="hint" id="waitingSubtitle" data-i18n="waiting_subtitle">Compartí este código para que se sumen.</p>
     </div>
-    <h2 class="section-title"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M164.38,181.1a52,52,0,1,0-72.76,0,75.89,75.89,0,0,0-30,28.89,12,12,0,0,0,20.78,12,53,53,0,0,1,91.22,0,12,12,0,1,0,20.78-12A75.89,75.89,0,0,0,164.38,181.1ZM100,144a28,28,0,1,1,28,28A28,28,0,0,1,100,144Zm147.21,9.59a12,12,0,0,1-16.81-2.39c-8.33-11.09-19.85-19.59-29.33-21.64a12,12,0,0,1-1.82-22.91,20,20,0,1,0-24.78-28.3,12,12,0,1,1-21-11.6,44,44,0,1,1,73.28,48.35,92.18,92.18,0,0,1,22.85,21.69A12,12,0,0,1,247.21,153.59Zm-192.28-24c-9.48,2.05-21,10.55-29.33,21.65A12,12,0,0,1,6.41,136.79,92.37,92.37,0,0,1,29.26,115.1a44,44,0,1,1,73.28-48.35,12,12,0,1,1-21,11.6,20,20,0,1,0-24.78,28.3,12,12,0,0,1-1.82,22.91Z"/></svg>Jugadores</h2>
+    <h2 class="section-title"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M164.38,181.1a52,52,0,1,0-72.76,0,75.89,75.89,0,0,0-30,28.89,12,12,0,0,0,20.78,12,53,53,0,0,1,91.22,0,12,12,0,1,0,20.78-12A75.89,75.89,0,0,0,164.38,181.1ZM100,144a28,28,0,1,1,28,28A28,28,0,0,1,100,144Zm147.21,9.59a12,12,0,0,1-16.81-2.39c-8.33-11.09-19.85-19.59-29.33-21.64a12,12,0,0,1-1.82-22.91,20,20,0,1,0-24.78-28.3,12,12,0,1,1-21-11.6,44,44,0,1,1,73.28,48.35,92.18,92.18,0,0,1,22.85,21.69A12,12,0,0,1,247.21,153.59Zm-192.28-24c-9.48,2.05-21,10.55-29.33,21.65A12,12,0,0,1,6.41,136.79,92.37,92.37,0,0,1,29.26,115.1a44,44,0,1,1,73.28-48.35,12,12,0,1,1-21,11.6,20,20,0,1,0-24.78,28.3,12,12,0,0,1-1.82,22.91Z"/></svg><span data-i18n="players_heading">Jugadores</span></h2>
     <div class="ranking" style="margin-top:0;">
       <div id="waitingPlayers"></div>
     </div>
-    <button class="btn btn-primary btn-block" id="startGameBtn" onclick="hostStartGame()" style="display:none; margin-top:14px;">Empezar partida</button>
+    <button class="btn btn-primary btn-block" id="startGameBtn" onclick="hostStartGame()" style="display:none; margin-top:14px;" data-i18n="start_game_btn">Empezar partida</button>
     <p class="hint" id="waitingNote" style="margin-top:14px; text-align:center;"></p>
-    <button class="btn btn-ghost btn-block" style="margin-top:10px;" onclick="leaveRoom()">Salir de la sala</button>
+    <button class="btn btn-ghost btn-block" style="margin-top:10px;" onclick="leaveRoom()" data-i18n="leave_room_btn">Salir de la sala</button>
   </div>
 </div>
 
@@ -693,7 +793,7 @@ html[data-light] .rank-score { color: var(--tinta); }
   <div class="board">
     <div class="topline">
       <div class="medal-wrap">
-        <p class="label letra-label">Letra de la ronda</p>
+        <p class="label letra-label" data-i18n="letra_label">Letra de la ronda</p>
         <div class="medal" id="medal" aria-live="polite">A</div>
         <p class="round-label" id="roundLabel">Ronda 1 · Sala ----</p>
       </div>
@@ -712,12 +812,13 @@ html[data-light] .rank-score { color: var(--tinta); }
       <span class="chip" style="opacity:0.6;"><span class="dot"></span><span id="chipOpp2">Cami</span></span>
     </div>
     <div class="letter-history" id="letterHistory"></div>
+    <p class="wildcard-note" id="wildcardNote" style="display:none;"></p>
   </div>
 
   <div class="grid" id="catGrid" style="display:none;"></div>
 
   <div class="basta-wrap" id="bastaWrap" style="display:none;">
-    <button class="basta" onclick="onBastaTap()"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M188,84a32,32,0,0,0-8,1V60a32,32,0,0,0-43.21-30A32,32,0,0,0,76,44v1A32,32,0,0,0,36,76v76a92,92,0,0,0,184,0V116A32,32,0,0,0,188,84Zm8,68a68,68,0,0,1-136,0V76a8,8,0,0,1,16,0v40a12,12,0,0,0,24,0V44a8,8,0,0,1,16,0v64a12,12,0,0,0,24,0V60a8,8,0,0,1,16,0v65.4A52.09,52.09,0,0,0,116,176a12,12,0,0,0,24,0,28,28,0,0,1,28-28,12,12,0,0,0,12-12V116a8,8,0,0,1,16,0Z"/></svg>¡Basta!</button>
+    <button class="basta" onclick="onBastaTap()"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M188,84a32,32,0,0,0-8,1V60a32,32,0,0,0-43.21-30A32,32,0,0,0,76,44v1A32,32,0,0,0,36,76v76a92,92,0,0,0,184,0V116A32,32,0,0,0,188,84Zm8,68a68,68,0,0,1-136,0V76a8,8,0,0,1,16,0v40a12,12,0,0,0,24,0V44a8,8,0,0,1,16,0v64a12,12,0,0,0,24,0V60a8,8,0,0,1,16,0v65.4A52.09,52.09,0,0,0,116,176a12,12,0,0,0,24,0,28,28,0,0,1,28-28,12,12,0,0,0,12-12V116a8,8,0,0,1,16,0Z"/></svg><span data-i18n="basta_btn">¡Basta!</span></button>
   </div>
 </div>
 
@@ -725,14 +826,15 @@ html[data-light] .rank-score { color: var(--tinta); }
 <div class="screen" id="screen-review">
   <div class="results">
     <div class="results-card">
-      <h2>Revisá las respuestas</h2>
-      <p class="lead">Objetá cualquier respuesta que te parezca inválida. El autor puede aceptar la objeción (vale 0), o si no, decide un juez con IA al cerrar esta pantalla. Ojo: si el juez le da la razón al autor, cada uno que objetó pierde 5 puntos.</p>
+      <h2 data-i18n="review_heading">Revisá las respuestas</h2>
+      <p class="lead" data-i18n="review_lead">Objetá cualquier respuesta que te parezca inválida. El autor puede aceptar la objeción (vale 0), o si no, decide un juez con IA al cerrar esta pantalla. Ojo: si el juez le da la razón al autor, cada uno que objetó pierde 5 puntos.</p>
       <div id="reviewList"></div>
       <p class="hint" id="reviewReadyStatus" style="text-align:center;"></p>
+      <div class="progress-track"><div class="progress-fill" id="reviewProgressFill" style="width:100%;"></div></div>
       <p class="hint" id="reviewCountdown" style="text-align:center;"></p>
       <div class="review-actions">
-        <button class="btn btn-primary btn-block" id="reviewReadyBtn" onclick="markReviewReady()"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M176.49,95.51a12,12,0,0,1,0,17l-56,56a12,12,0,0,1-17,0l-24-24a12,12,0,1,1,17-17L112,143l47.51-47.52A12,12,0,0,1,176.49,95.51ZM236,128A108,108,0,1,1,128,20,108.12,108.12,0,0,1,236,128Zm-24,0a84,84,0,1,0-84,84A84.09,84.09,0,0,0,212,128Z"/></svg>Listo, ya revisé</button>
-        <button class="btn btn-secondary btn-block" id="reviewFinalizeBtn" style="display:none;" onclick="hostFinalizeReviewNow()">Calcular puntaje ahora</button>
+        <button class="btn btn-primary btn-block" id="reviewReadyBtn" onclick="markReviewReady()"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M176.49,95.51a12,12,0,0,1,0,17l-56,56a12,12,0,0,1-17,0l-24-24a12,12,0,1,1,17-17L112,143l47.51-47.52A12,12,0,0,1,176.49,95.51ZM236,128A108,108,0,1,1,128,20,108.12,108.12,0,0,1,236,128Zm-24,0a84,84,0,1,0-84,84A84.09,84.09,0,0,0,212,128Z"/></svg><span data-i18n="review_ready_btn">Listo, ya revisé</span></button>
+        <button class="btn btn-secondary btn-block" id="reviewFinalizeBtn" style="display:none;" onclick="hostFinalizeReviewNow()" data-i18n="review_finalize_btn">Calcular puntaje ahora</button>
       </div>
     </div>
   </div>
@@ -742,7 +844,7 @@ html[data-light] .rank-score { color: var(--tinta); }
 <div class="screen" id="screen-judging">
   <div class="wrap searching">
     <div class="search-spinner"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></div>
-    <p class="lead">El juez está revisando las palabras en disputa...</p>
+    <p class="lead" data-i18n="judging_text">El juez está revisando las palabras en disputa...</p>
   </div>
 </div>
 
@@ -753,22 +855,24 @@ html[data-light] .rank-score { color: var(--tinta); }
       <div class="hero-band">
         <h2 id="resultsTitle">Resultados de la ronda</h2>
         <p id="resultsSummary"></p>
-        <p class="score-key"><span><span>0</span>vacía o inválida</span><span><span>5</span>repetida</span><span><span>10</span>nadie más la puso</span><span><span>20</span>sos el único que completó</span></p>
+        <p class="score-key"><span><span>0</span><span data-i18n="score_key_0">vacía o inválida</span></span><span><span>5</span><span data-i18n="score_key_5">repetida</span></span><span><span>10</span><span data-i18n="score_key_10">nadie más la puso</span></span><span><span>20</span><span data-i18n="score_key_20">sos el único que completó</span></span></p>
       </div>
       <div id="answerList"></div>
 
       <div id="myObjectionsOutcome"></div>
 
       <div class="ranking">
-        <h2 class="section-title"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M232,60H212V48a12,12,0,0,0-12-12H56A12,12,0,0,0,44,48V60H24A20,20,0,0,0,4,80V96a44.05,44.05,0,0,0,44,44h.77A84.18,84.18,0,0,0,116,195.15V212H96a12,12,0,0,0,0,24h64a12,12,0,0,0,0-24H140V195.11c30.94-4.51,56.53-26.2,67-55.11h1a44.05,44.05,0,0,0,44-44V80A20,20,0,0,0,232,60ZM28,96V84H44v28c0,1.21,0,2.41.09,3.61A20,20,0,0,1,28,96Zm160,15.1c0,33.33-26.71,60.65-59.54,60.9A60,60,0,0,1,68,112V60H188ZM228,96a20,20,0,0,1-16.12,19.62c.08-1.5.12-3,.12-4.52V84h16Z"/></svg>Ranking de la sala</h2>
+        <h2 class="section-title"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M232,60H212V48a12,12,0,0,0-12-12H56A12,12,0,0,0,44,48V60H24A20,20,0,0,0,4,80V96a44.05,44.05,0,0,0,44,44h.77A84.18,84.18,0,0,0,116,195.15V212H96a12,12,0,0,0,0,24h64a12,12,0,0,0,0-24H140V195.11c30.94-4.51,56.53-26.2,67-55.11h1a44.05,44.05,0,0,0,44-44V80A20,20,0,0,0,232,60ZM28,96V84H44v28c0,1.21,0,2.41.09,3.61A20,20,0,0,1,28,96Zm160,15.1c0,33.33-26.71,60.65-59.54,60.9A60,60,0,0,1,68,112V60H188ZM228,96a20,20,0,0,1-16.12,19.62c.08-1.5.12-3,.12-4.52V84h16Z"/></svg><span data-i18n="ranking_heading">Ranking de la sala</span></h2>
         <div id="rankingList"></div>
       </div>
 
       <p class="hint" id="waitingHostNote" style="display:none; text-align:center;">Esperando a que el anfitrión empiece la próxima ronda...</p>
 
+      <button type="button" class="btn btn-secondary btn-block" id="shareResultBtn" style="display:none; margin-top:14px;" data-i18n="share_result_btn">Compartir resultado</button>
+
       <div class="actions-row">
-        <button class="secondary" onclick="goToLobby()">Volver al lobby</button>
-        <button class="primary" id="nextRoundBtn" onclick="playAnotherRound()">Jugar otra ronda</button>
+        <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
+        <button class="primary" id="nextRoundBtn" onclick="playAnotherRound()" data-i18n="play_another_round_btn">Jugar otra ronda</button>
       </div>
     </div>
   </div>
@@ -780,15 +884,17 @@ html[data-light] .rank-score { color: var(--tinta); }
     <div class="results-card">
       <div class="hero-band">
         <div class="result-badge" id="finalResultBadge"></div>
-        <h2>¡Partida terminada!</h2>
+        <h2 data-i18n="final_heading">¡Partida terminada!</h2>
         <p id="finalSummary"></p>
       </div>
       <div class="ranking">
         <div id="finalRankingList"></div>
       </div>
+      <button type="button" class="btn btn-secondary btn-block" style="margin-top:14px;" onclick="shareFinalResult()" data-i18n="share_result_btn">Compartir resultado</button>
+      <p class="hint" id="waitingFinalNote" style="display:none; text-align:center; margin-top:14px;"></p>
       <div class="actions-row">
-        <button class="secondary" onclick="goToLobby()">Volver al lobby</button>
-        <button class="primary" id="finalPlayAgainBtn" onclick="beginGame()">Jugar de nuevo</button>
+        <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
+        <button class="primary" id="finalPlayAgainBtn" onclick="beginGame()" data-i18n="play_again_btn">Jugar de nuevo</button>
       </div>
     </div>
   </div>
@@ -798,13 +904,13 @@ html[data-light] .rank-score { color: var(--tinta); }
 <div class="screen" id="screen-searching">
   <div class="wrap searching">
     <div class="search-spinner" id="searchSpinner"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></div>
-    <p class="lead" id="searchingText">Buscando un rival al azar...</p>
+    <p class="lead" id="searchingText" data-i18n="searching_text">Buscando un rival al azar...</p>
     <div id="searchTimeoutOptions" style="display:none;">
-      <p class="lead" style="font-size:14px;">No encontramos a nadie todavía.</p>
-      <button type="button" class="btn btn-primary btn-block" onclick="keepSearching()">Seguir buscando</button>
-      <button type="button" class="btn btn-secondary btn-block" onclick="startSimulatedMatch()">Jugar con un rival de prueba</button>
+      <p class="lead" style="font-size:14px;" data-i18n="searching_none_found">No encontramos a nadie todavía.</p>
+      <button type="button" class="btn btn-primary btn-block" onclick="keepSearching()" data-i18n="keep_searching_btn">Seguir buscando</button>
+      <button type="button" class="btn btn-secondary btn-block" onclick="startSimulatedMatch()" data-i18n="play_test_opponent_btn">Jugar con un rival de prueba</button>
     </div>
-    <button type="button" class="btn btn-ghost btn-block" onclick="goToLobby()">Cancelar búsqueda</button>
+    <button type="button" class="btn btn-ghost btn-block" onclick="goToLobby()" data-i18n="cancel_search_btn">Cancelar búsqueda</button>
   </div>
 </div>
 
@@ -849,6 +955,608 @@ const CATEGORY_PACKS = {
   clasico: ["Nombre", "Apellido", "País", "Ciudad", "Animal", "Comida", "Color", "Objeto"],
   argento: ["Equipo de fútbol", "Comida argentina", "Palabra en lunfardo", "Geografía local", "Personaje histórico", "Cantante o banda"],
 };
+const RANDOM_PACK_CATEGORY_COUNT = 8;
+
+// Elige `count` categorías al azar del pool completo — se usa tanto para el
+// pack "Random" (sorteo nuevo en cada ronda) como para el modo Contrarreloj.
+function pickRandomCategorySet(count) {
+  const shuffled = [...CATEGORY_POOL].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, count);
+}
+
+// ---------- Idioma ----------
+// Las categorías se guardan y comparan SIEMPRE en español (son la clave real
+// del juego: se usan como paths de Firebase y para comparar respuestas entre
+// jugadores). CATEGORY_LABELS solo controla cómo se MUESTRAN en pantalla.
+const CATEGORY_LABELS = {
+  "Nombre": { es: "Nombre", en: "Name", pt: "Nome" },
+  "Apellido": { es: "Apellido", en: "Last name", pt: "Sobrenome" },
+  "País": { es: "País", en: "Country", pt: "País" },
+  "Ciudad": { es: "Ciudad", en: "City", pt: "Cidade" },
+  "Mundo": { es: "Mundo", en: "World", pt: "Mundo" },
+  "Animal": { es: "Animal", en: "Animal", pt: "Animal" },
+  "Comida": { es: "Comida", en: "Food", pt: "Comida" },
+  "Color": { es: "Color", en: "Color", pt: "Cor" },
+  "Objeto": { es: "Objeto", en: "Object", pt: "Objeto" },
+  "Fruta": { es: "Fruta", en: "Fruit", pt: "Fruta" },
+  "Verdura": { es: "Verdura", en: "Vegetable", pt: "Verdura" },
+  "Deporte": { es: "Deporte", en: "Sport", pt: "Esporte" },
+  "Película": { es: "Película", en: "Movie", pt: "Filme" },
+  "Marca": { es: "Marca", en: "Brand", pt: "Marca" },
+  "Profesión": { es: "Profesión", en: "Profession", pt: "Profissão" },
+  "Instrumento musical": { es: "Instrumento musical", en: "Musical instrument", pt: "Instrumento musical" },
+  "Personaje ficticio": { es: "Personaje ficticio", en: "Fictional character", pt: "Personagem fictício" },
+  "Bebida": { es: "Bebida", en: "Drink", pt: "Bebida" },
+  "Parte del cuerpo": { es: "Parte del cuerpo", en: "Body part", pt: "Parte do corpo" },
+  "Programa de TV": { es: "Programa de TV", en: "TV show", pt: "Programa de TV" },
+  "Cantante o banda": { es: "Cantante o banda", en: "Singer or band", pt: "Cantor ou banda" },
+  "Equipo de fútbol": { es: "Equipo de fútbol", en: "Soccer team", pt: "Time de futebol" },
+  "Comida argentina": { es: "Comida argentina", en: "Argentine food", pt: "Comida argentina" },
+  "Palabra en lunfardo": { es: "Palabra en lunfardo", en: "Lunfardo (Argentine slang) word", pt: "Palavra em lunfardo (gíria argentina)" },
+  "Geografía local": { es: "Geografía local", en: "Local geography", pt: "Geografia local" },
+  "Personaje histórico": { es: "Personaje histórico", en: "Historical figure", pt: "Personagem histórico" },
+};
+
+// Un "slot sorpresa" es un comodín que el host agregó desde el chip Random
+// del selector de categorías: no se sabe qué categoría es en realidad hasta
+// que arranca la ronda (ver resolveCategories()).
+function isMysterySlot(cat) {
+  return typeof cat === "string" && cat.indexOf("__random_") === 0;
+}
+
+function catLabel(cat) {
+  if (isMysterySlot(cat)) return t("mystery_category_label");
+  const entry = CATEGORY_LABELS[cat];
+  return (entry && entry[state.lang]) || cat;
+}
+
+const I18N = {
+  es: {
+    theme_menu_label: "Temas",
+    theme_btn_aria: "Cambiar tema",
+    lang_btn_aria: "Cambiar idioma",
+    mute_btn_aria_on: "Silenciar sonido",
+    mute_btn_aria_off: "Activar sonido",
+    brand_home_aria: "Ir al inicio",
+    lobby_lead: "Tutti frutti online. Elegí categorías, invitá a tus amigos y que empiece la ronda.",
+    tab_create: "Crear sala",
+    tab_join: "Unirme",
+    tab_random: "Al azar",
+    online_note_main_html: 'Se sortea una letra, todos completan las categorías al mismo tiempo y cualquiera puede tocar <strong>¡Basta!</strong> para cortar la ronda. Después de cada ronda pueden revisar y objetar respuestas antes de que se calcule el puntaje.',
+    join_note: "Pedile el código de sala a quien la creó y entrás directo a jugar con ella.",
+    random_note: "Te busca un rival real entre quienes estén buscando partida en este momento, sin código que compartir. Se juega con categorías y reglas fijas, ya que no hay forma de ponerse de acuerdo con un desconocido antes de arrancar. Si nadie aparece en unos segundos, podés seguir esperando o jugar contra un rival de prueba.",
+    label_player_name: "Tu nombre",
+    player_name_placeholder: "¿Cómo te llamás?",
+    label_room_create: "Sala (compartí este código con tus amigos)",
+    copy_btn: "Copiar",
+    copied_btn: "¡Copiado!",
+    share_btn: "Compartir",
+    hint_room_link: "El link entra directo a la sala; solo falta poner el nombre.",
+    label_room_join: "Código de sala",
+    join_code_placeholder: "Ingresá el código que te pasaron",
+    categories_label: "Categorías (tocá las que quieras agregar)",
+    pack_clasico: "Clásico",
+    pack_argento: "Cultura argentina",
+    pack_random: "Random",
+    random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
+    random_category_chip: "Random",
+    mystery_category_label: "❓ Sorpresa",
+    new_cat_placeholder: "O escribí una categoría propia",
+    add_btn: "Agregar",
+    duration_label: "Tiempo por ronda",
+    duration_30: "30 segundos",
+    duration_45: "45 segundos",
+    duration_60: "60 segundos",
+    duration_90: "90 segundos",
+    rounds_label: "Cantidad de rondas",
+    rounds_1: "1 ronda",
+    rounds_3: "3 rondas",
+    rounds_5: "5 rondas",
+    rounds_7: "7 rondas",
+    rounds_10: "10 rondas",
+    rounds_unlimited: "Sin límite",
+    letters_label: "Letras en juego (sacá las que no quieras)",
+    letters_classic_btn: "Clásicas",
+    letters_all_btn: "Todas",
+    letters_none_btn: "Ninguna",
+    join_config_note: "La persona que creó la sala ya eligió las categorías, el tiempo por ronda y las letras — vas a jugar con esa configuración.",
+    play_btn_create: "Crear sala y jugar",
+    play_btn_join: "Unirme y jugar",
+    play_btn_random: "Buscar partida y jugar",
+    waiting_room_code_label: "Código de sala",
+    waiting_subtitle: "Compartí este código para que se sumen.",
+    players_heading: "Jugadores",
+    start_game_btn: "Empezar partida",
+    waiting_note_host: "Cuando estén todos, tocá empezar.",
+    waiting_note_guest: "Esperando a que {name} empiece la partida...",
+    leave_room_btn: "Salir de la sala",
+    letra_label: "Letra de la ronda",
+    basta_btn: "¡Basta!",
+    review_heading: "Revisá las respuestas",
+    review_lead: "Objetá cualquier respuesta que te parezca inválida. El autor puede aceptar la objeción (vale 0), o si no, decide un juez con IA al cerrar esta pantalla. Ojo: si el juez le da la razón al autor, cada uno que objetó pierde 5 puntos.",
+    review_ready_btn: "Listo, ya revisé",
+    review_ready_waiting: "Listo ✓ — esperando a los demás",
+    review_finalize_btn: "Calcular puntaje ahora",
+    ready_count: "{ready} de {total} listos",
+    calculating_score_in: "Calculando puntaje en {left}s...",
+    calculating_score: "Calculando puntaje...",
+    judging_text: "El juez está revisando las palabras en disputa...",
+    objected_btn: "Objetada",
+    object_btn: "Objetar",
+    accepted_zero: "Aceptada · vale 0",
+    in_dispute: "En disputa ({count})",
+    accept_objection_btn: "La acepto",
+    no_answer: "sin respuesta",
+    you_suffix: " (vos)",
+    host_suffix: " · anfitrión",
+    the_host_fallback: "el anfitrión",
+    results_title: "Resultados de la ronda {round}",
+    letter_word: "Letra",
+    points_won_word: "Puntos ganados",
+    includes_penalty: " (incluye {penalty} por objetar mal)",
+    score_key_0: "vacía o inválida",
+    score_key_5: "repetida",
+    score_key_10: "nadie más la puso",
+    score_key_20: "sos el único que completó",
+    score_label_0: "vacío",
+    score_label_5: "repetida",
+    score_label_10: "única",
+    score_label_20: "solo vos",
+    you_accepted_objection: "Aceptaste la objeción",
+    everyone_objected: "La objetaron todos los demás",
+    doesnt_start_with: "No empieza con {letter}",
+    answer_too_short: "Es solo la letra, no cuenta como palabra",
+    judge_valid: "Válida",
+    judge_invalid: "No válida",
+    judge_no_response: " (el juez no respondió, se aceptó por defecto)",
+    your_objections_heading: "Tus objeciones",
+    you_objected_to: 'Objetaste a {name} en "{cat}"',
+    outcome_author_accepted: "El autor la aceptó — no contó",
+    outcome_majority_invalidated: "Entre todos la invalidaron — no contó",
+    outcome_judge_disagreed: "El juez no te dio la razón: la palabra vale igual, y perdiste 5 puntos",
+    outcome_judge_agreed: "El juez te dio la razón: la palabra no contó",
+    ranking_heading: "Ranking de la sala",
+    waiting_host_next_round: "Esperando a que {name} empiece la próxima ronda...",
+    waiting_host_final: "Esperando a que {name} muestre el resultado final...",
+    lobby_btn: "Volver al lobby",
+    play_another_round_btn: "Jugar otra ronda",
+    view_final_result_btn: "Ver resultado final",
+    final_heading: "¡Partida terminada!",
+    play_again_btn: "Jugar de nuevo",
+    rematch_btn: "Revancha",
+    waiting_host_rematch: "Esperando a que {name} arranque la revancha...",
+    won_summary: "Ganó <strong>{name}</strong> con {score} puntos, después de {round} {roundWord}.",
+    round_word_singular: "ronda",
+    round_word_plural: "rondas",
+    no_scores_yet: "Todavía no hay puntajes.",
+    searching_text: "Buscando un rival al azar...",
+    searching_none_found: "No encontramos a nadie todavía.",
+    keep_searching_btn: "Seguir buscando",
+    play_test_opponent_btn: "Jugar con un rival de prueba",
+    cancel_search_btn: "Cancelar búsqueda",
+    round_label: "Ronda {round} · Sala {room}",
+    round_label_of: "Ronda {round} de {total} · Sala {room}",
+    remove_category_aria: "Quitar {cat}",
+    alert_room_not_found: "No encontramos ninguna sala con ese código. Revisá que esté bien escrito.",
+    alert_room_full: "Esta sala ya está completa (máximo {max} jugadores).",
+    alert_opponent_disconnected: "El rival se desconectó antes de empezar. Probá buscar de nuevo.",
+    opponent_1: "Rival 1",
+    opponent_2: "Rival 2",
+    opponent_generic: "Rival",
+    loser_consolations: [
+      "¡Buena partida! La próxima la das vuelta.",
+      "Casi... ¡a por la revancha!",
+      "¡Bien jugado igual! Que gane el mejor la próxima.",
+    ],
+    tab_streak: "Contrarreloj",
+    streak_note: "Jugás solo, contra el reloj: completá todas las categorías antes de que se acabe el tiempo para pasar a la siguiente letra. Cada ronda superada suma puntos y te queda un poco menos de tiempo — la racha termina en cuanto te quede una categoría sin completar.",
+    play_btn_streak: "Jugar contrarreloj",
+    streak_round_label: "Racha · Ronda {n}",
+    streak_result_title: "¡Se terminó la racha!",
+    streak_result_rounds: "Rondas superadas: {n}",
+    streak_result_score: "Puntaje: {score}",
+    streak_new_record: "¡Nuevo récord personal! 🎉",
+    streak_current_record: "Tu récord: {score} pts ({rounds} rondas)",
+    streak_retry_btn: "Otra racha",
+    streak_top_scores_heading: "Tus mejores rachas",
+    view_stats_btn: "Ver mis estadísticas",
+    stats_heading: "Tus estadísticas",
+    stats_lead: "Guardadas en este dispositivo — nadie más las ve.",
+    stats_games: "Partidas jugadas",
+    stats_rounds: "Rondas jugadas",
+    stats_top_letter: "Letra más frecuente",
+    stats_streak_best: "Mejor puntaje contrarreloj",
+    stats_streak_top_heading: "Mejores rachas",
+    stats_no_streaks: "Todavía no jugaste ninguna racha.",
+    wildcard_note: "Categoría doble esta ronda: {cat}",
+    share_result_btn: "Compartir resultado",
+    share_streak_subtitle: "{rounds} rondas superadas en el Contrarreloj de tutti.frutti",
+    share_streak_text: "¡Hice {score} puntos y superé {rounds} rondas en el Contrarreloj de tutti.frutti! Jugá vos también:",
+    share_final_subtitle: "puntos en una partida de tutti.frutti",
+    share_final_won_subtitle: "¡Gané la partida de tutti.frutti!",
+    share_final_text: "Hice {score} puntos en una partida de tutti.frutti. Jugá vos también:",
+    share_final_won_text: "¡Gané una partida de tutti.frutti con {score} puntos! Jugá vos también:",
+  },
+  en: {
+    theme_menu_label: "Themes",
+    theme_btn_aria: "Change theme",
+    lang_btn_aria: "Change language",
+    mute_btn_aria_on: "Mute sound",
+    mute_btn_aria_off: "Unmute sound",
+    brand_home_aria: "Go home",
+    lobby_lead: "Tutti frutti online. Pick your categories, invite your friends and let the round begin.",
+    tab_create: "Create room",
+    tab_join: "Join",
+    tab_random: "Random",
+    online_note_main_html: 'A letter is drawn, everyone fills in the categories at the same time, and anyone can tap <strong>Stop!</strong> to end the round. After each round you can review and challenge answers before the score is calculated.',
+    join_note: "Ask whoever created the room for the code and you'll jump straight into the game.",
+    random_note: "We'll match you with a real opponent among the people looking for a game right now, with no code to share. It's played with fixed categories and rules, since there's no way to agree on them with a stranger before starting. If no one shows up in a few seconds, you can keep waiting or play against a test opponent.",
+    label_player_name: "Your name",
+    player_name_placeholder: "What's your name?",
+    label_room_create: "Room (share this code with your friends)",
+    copy_btn: "Copy",
+    copied_btn: "Copied!",
+    share_btn: "Share",
+    hint_room_link: "The link jumps straight into the room; you just need to enter your name.",
+    label_room_join: "Room code",
+    join_code_placeholder: "Enter the code you were given",
+    categories_label: "Categories (tap the ones you want to add)",
+    pack_clasico: "Classic",
+    pack_argento: "Argentine culture",
+    pack_random: "Random",
+    random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
+    random_category_chip: "Random",
+    mystery_category_label: "❓ Surprise",
+    new_cat_placeholder: "Or type your own category",
+    add_btn: "Add",
+    duration_label: "Time per round",
+    duration_30: "30 seconds",
+    duration_45: "45 seconds",
+    duration_60: "60 seconds",
+    duration_90: "90 seconds",
+    rounds_label: "Number of rounds",
+    rounds_1: "1 round",
+    rounds_3: "3 rounds",
+    rounds_5: "5 rounds",
+    rounds_7: "7 rounds",
+    rounds_10: "10 rounds",
+    rounds_unlimited: "No limit",
+    letters_label: "Letters in play (remove the ones you don't want)",
+    letters_classic_btn: "Classic",
+    letters_all_btn: "All",
+    letters_none_btn: "None",
+    join_config_note: "Whoever created the room already chose the categories, time per round and letters — you'll play with that setup.",
+    play_btn_create: "Create room and play",
+    play_btn_join: "Join and play",
+    play_btn_random: "Find a match and play",
+    waiting_room_code_label: "Room code",
+    waiting_subtitle: "Share this code so others can join.",
+    players_heading: "Players",
+    start_game_btn: "Start game",
+    waiting_note_host: "Once everyone's in, tap start.",
+    waiting_note_guest: "Waiting for {name} to start the game...",
+    leave_room_btn: "Leave room",
+    letra_label: "Round letter",
+    basta_btn: "Stop!",
+    review_heading: "Review the answers",
+    review_lead: "Challenge any answer that looks invalid to you. The author can accept the challenge (it's worth 0), or if not, an AI judge decides when this screen closes. Careful: if the judge sides with the author, everyone who challenged it loses 5 points.",
+    review_ready_btn: "Done, I reviewed",
+    review_ready_waiting: "Done ✓ — waiting for the others",
+    review_finalize_btn: "Calculate score now",
+    ready_count: "{ready} of {total} ready",
+    calculating_score_in: "Calculating score in {left}s...",
+    calculating_score: "Calculating score...",
+    judging_text: "The judge is reviewing the disputed words...",
+    objected_btn: "Challenged",
+    object_btn: "Challenge",
+    accepted_zero: "Accepted · worth 0",
+    in_dispute: "Disputed ({count})",
+    accept_objection_btn: "I accept it",
+    no_answer: "no answer",
+    you_suffix: " (you)",
+    host_suffix: " · host",
+    the_host_fallback: "the host",
+    results_title: "Round {round} results",
+    letter_word: "Letter",
+    points_won_word: "Points earned",
+    includes_penalty: " (includes {penalty} for a wrong challenge)",
+    score_key_0: "empty or invalid",
+    score_key_5: "someone else wrote it",
+    score_key_10: "no one else wrote it",
+    score_key_20: "you're the only one who filled it in",
+    score_label_0: "empty",
+    score_label_5: "repeated",
+    score_label_10: "unique",
+    score_label_20: "only you",
+    you_accepted_objection: "You accepted the challenge",
+    everyone_objected: "Everyone else challenged it",
+    doesnt_start_with: "Doesn't start with {letter}",
+    answer_too_short: "It's just the letter, it doesn't count as a word",
+    judge_valid: "Valid",
+    judge_invalid: "Not valid",
+    judge_no_response: " (the judge didn't respond, it was accepted by default)",
+    your_objections_heading: "Your challenges",
+    you_objected_to: 'You challenged {name} on "{cat}"',
+    outcome_author_accepted: "The author accepted it — it didn't count",
+    outcome_majority_invalidated: "Everyone invalidated it — it didn't count",
+    outcome_judge_disagreed: "The judge didn't side with you: the word still counts, and you lost 5 points",
+    outcome_judge_agreed: "The judge sided with you: the word didn't count",
+    ranking_heading: "Room ranking",
+    waiting_host_next_round: "Waiting for {name} to start the next round...",
+    waiting_host_final: "Waiting for {name} to show the final result...",
+    lobby_btn: "Back to lobby",
+    play_another_round_btn: "Play another round",
+    view_final_result_btn: "View final result",
+    final_heading: "Game over!",
+    play_again_btn: "Play again",
+    rematch_btn: "Rematch",
+    waiting_host_rematch: "Waiting for {name} to start a rematch...",
+    won_summary: "<strong>{name}</strong> won with {score} points, after {round} {roundWord}.",
+    round_word_singular: "round",
+    round_word_plural: "rounds",
+    no_scores_yet: "No scores yet.",
+    searching_text: "Looking for a random opponent...",
+    searching_none_found: "We haven't found anyone yet.",
+    keep_searching_btn: "Keep searching",
+    play_test_opponent_btn: "Play against a test opponent",
+    cancel_search_btn: "Cancel search",
+    round_label: "Round {round} · Room {room}",
+    round_label_of: "Round {round} of {total} · Room {room}",
+    remove_category_aria: "Remove {cat}",
+    alert_room_not_found: "We couldn't find a room with that code. Check that it's typed correctly.",
+    alert_room_full: "This room is already full (max {max} players).",
+    alert_opponent_disconnected: "The opponent disconnected before starting. Try searching again.",
+    opponent_1: "Opponent 1",
+    opponent_2: "Opponent 2",
+    opponent_generic: "Opponent",
+    loser_consolations: [
+      "Good game! You'll turn it around next time.",
+      "So close... time for a rematch!",
+      "Well played anyway! May the best one win next time.",
+    ],
+    tab_streak: "Time attack",
+    streak_note: "You play solo, against the clock: fill in every category before time runs out to move on to the next letter. Each round you clear adds points and gives you a little less time — the streak ends the moment you leave one category unfilled.",
+    play_btn_streak: "Play time attack",
+    streak_round_label: "Streak · Round {n}",
+    streak_result_title: "Streak over!",
+    streak_result_rounds: "Rounds cleared: {n}",
+    streak_result_score: "Score: {score}",
+    streak_new_record: "New personal best! 🎉",
+    streak_current_record: "Your best: {score} pts ({rounds} rounds)",
+    streak_retry_btn: "Try again",
+    streak_top_scores_heading: "Your best streaks",
+    view_stats_btn: "View my stats",
+    stats_heading: "Your stats",
+    stats_lead: "Saved on this device — no one else can see them.",
+    stats_games: "Games played",
+    stats_rounds: "Rounds played",
+    stats_top_letter: "Most frequent letter",
+    stats_streak_best: "Best time-attack score",
+    stats_streak_top_heading: "Best streaks",
+    stats_no_streaks: "You haven't played a streak yet.",
+    wildcard_note: "Double-points category this round: {cat}",
+    share_result_btn: "Share result",
+    share_streak_subtitle: "{rounds} rounds cleared in tutti.frutti's Time Attack",
+    share_streak_text: "I scored {score} points and cleared {rounds} rounds in tutti.frutti's Time Attack! Play too:",
+    share_final_subtitle: "points in a tutti.frutti match",
+    share_final_won_subtitle: "I won a tutti.frutti match!",
+    share_final_text: "I scored {score} points in a tutti.frutti match. Play too:",
+    share_final_won_text: "I won a tutti.frutti match with {score} points! Play too:",
+  },
+  pt: {
+    theme_menu_label: "Temas",
+    theme_btn_aria: "Mudar tema",
+    lang_btn_aria: "Mudar idioma",
+    mute_btn_aria_on: "Silenciar som",
+    mute_btn_aria_off: "Ativar som",
+    brand_home_aria: "Ir para o início",
+    lobby_lead: "Tutti frutti online. Escolha categorias, convide seus amigos e que comece a rodada.",
+    tab_create: "Criar sala",
+    tab_join: "Entrar",
+    tab_random: "Aleatório",
+    online_note_main_html: 'Sorteia-se uma letra, todos preenchem as categorias ao mesmo tempo e qualquer um pode apertar <strong>Basta!</strong> para encerrar a rodada. Depois de cada rodada é possível revisar e contestar respostas antes de calcular a pontuação.',
+    join_note: "Peça o código da sala a quem a criou e você entra direto para jogar com ela.",
+    random_note: "Você é pareado com um adversário real entre quem estiver procurando partida nesse momento, sem código para compartilhar. Joga-se com categorias e regras fixas, já que não há como combinar com um desconhecido antes de começar. Se ninguém aparecer em alguns segundos, você pode continuar esperando ou jogar contra um adversário de teste.",
+    label_player_name: "Seu nome",
+    player_name_placeholder: "Qual é o seu nome?",
+    label_room_create: "Sala (compartilhe este código com seus amigos)",
+    copy_btn: "Copiar",
+    copied_btn: "Copiado!",
+    share_btn: "Compartilhar",
+    hint_room_link: "O link entra direto na sala; só falta colocar o nome.",
+    label_room_join: "Código da sala",
+    join_code_placeholder: "Digite o código que te passaram",
+    categories_label: "Categorias (toque nas que quiser adicionar)",
+    pack_clasico: "Clássico",
+    pack_argento: "Cultura argentina",
+    pack_random: "Random",
+    random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
+    random_category_chip: "Random",
+    mystery_category_label: "❓ Surpresa",
+    new_cat_placeholder: "Ou digite uma categoria própria",
+    add_btn: "Adicionar",
+    duration_label: "Tempo por rodada",
+    duration_30: "30 segundos",
+    duration_45: "45 segundos",
+    duration_60: "60 segundos",
+    duration_90: "90 segundos",
+    rounds_label: "Quantidade de rodadas",
+    rounds_1: "1 rodada",
+    rounds_3: "3 rodadas",
+    rounds_5: "5 rodadas",
+    rounds_7: "7 rodadas",
+    rounds_10: "10 rodadas",
+    rounds_unlimited: "Sem limite",
+    letters_label: "Letras em jogo (remova as que não quiser)",
+    letters_classic_btn: "Clássicas",
+    letters_all_btn: "Todas",
+    letters_none_btn: "Nenhuma",
+    join_config_note: "Quem criou a sala já escolheu as categorias, o tempo por rodada e as letras — você vai jogar com essa configuração.",
+    play_btn_create: "Criar sala e jogar",
+    play_btn_join: "Entrar e jogar",
+    play_btn_random: "Buscar partida e jogar",
+    waiting_room_code_label: "Código da sala",
+    waiting_subtitle: "Compartilhe este código para que outros entrem.",
+    players_heading: "Jogadores",
+    start_game_btn: "Começar partida",
+    waiting_note_host: "Quando todos estiverem prontos, toque em começar.",
+    waiting_note_guest: "Esperando {name} começar a partida...",
+    leave_room_btn: "Sair da sala",
+    letra_label: "Letra da rodada",
+    basta_btn: "Basta!",
+    review_heading: "Revise as respostas",
+    review_lead: "Conteste qualquer resposta que pareça inválida. O autor pode aceitar a contestação (vale 0), ou então um juiz com IA decide ao fechar esta tela. Atenção: se o juiz der razão ao autor, cada um que contestou perde 5 pontos.",
+    review_ready_btn: "Pronto, já revisei",
+    review_ready_waiting: "Pronto ✓ — esperando os demais",
+    review_finalize_btn: "Calcular pontuação agora",
+    ready_count: "{ready} de {total} prontos",
+    calculating_score_in: "Calculando pontuação em {left}s...",
+    calculating_score: "Calculando pontuação...",
+    judging_text: "O juiz está revisando as palavras em disputa...",
+    objected_btn: "Contestada",
+    object_btn: "Contestar",
+    accepted_zero: "Aceita · vale 0",
+    in_dispute: "Em disputa ({count})",
+    accept_objection_btn: "Aceito",
+    no_answer: "sem resposta",
+    you_suffix: " (você)",
+    host_suffix: " · anfitrião",
+    the_host_fallback: "o anfitrião",
+    results_title: "Resultados da rodada {round}",
+    letter_word: "Letra",
+    points_won_word: "Pontos ganhos",
+    includes_penalty: " (inclui {penalty} por contestar errado)",
+    score_key_0: "vazia ou inválida",
+    score_key_5: "repetida",
+    score_key_10: "ninguém mais escreveu",
+    score_key_20: "você foi o único que preencheu",
+    score_label_0: "vazio",
+    score_label_5: "repetida",
+    score_label_10: "única",
+    score_label_20: "só você",
+    you_accepted_objection: "Você aceitou a contestação",
+    everyone_objected: "Todos os outros contestaram",
+    doesnt_start_with: "Não começa com {letter}",
+    answer_too_short: "É só a letra, não conta como palavra",
+    judge_valid: "Válida",
+    judge_invalid: "Não válida",
+    judge_no_response: " (o juiz não respondeu, foi aceita por padrão)",
+    your_objections_heading: "Suas contestações",
+    you_objected_to: 'Você contestou {name} em "{cat}"',
+    outcome_author_accepted: "O autor aceitou — não valeu",
+    outcome_majority_invalidated: "Todos invalidaram — não valeu",
+    outcome_judge_disagreed: "O juiz não te deu razão: a palavra vale do mesmo jeito, e você perdeu 5 pontos",
+    outcome_judge_agreed: "O juiz te deu razão: a palavra não valeu",
+    ranking_heading: "Ranking da sala",
+    waiting_host_next_round: "Esperando {name} começar a próxima rodada...",
+    waiting_host_final: "Esperando {name} mostrar o resultado final...",
+    lobby_btn: "Voltar ao lobby",
+    play_another_round_btn: "Jogar outra rodada",
+    view_final_result_btn: "Ver resultado final",
+    final_heading: "Partida encerrada!",
+    play_again_btn: "Jogar de novo",
+    rematch_btn: "Revanche",
+    waiting_host_rematch: "Esperando {name} começar a revanche...",
+    won_summary: "<strong>{name}</strong> venceu com {score} pontos, depois de {round} {roundWord}.",
+    round_word_singular: "rodada",
+    round_word_plural: "rodadas",
+    no_scores_yet: "Ainda não há pontuações.",
+    searching_text: "Procurando um adversário aleatório...",
+    searching_none_found: "Ainda não encontramos ninguém.",
+    keep_searching_btn: "Continuar procurando",
+    play_test_opponent_btn: "Jogar contra um adversário de teste",
+    cancel_search_btn: "Cancelar busca",
+    round_label: "Rodada {round} · Sala {room}",
+    round_label_of: "Rodada {round} de {total} · Sala {room}",
+    remove_category_aria: "Remover {cat}",
+    alert_room_not_found: "Não encontramos nenhuma sala com esse código. Confira se está escrito corretamente.",
+    alert_room_full: "Esta sala já está completa (máximo de {max} jogadores).",
+    alert_opponent_disconnected: "O adversário se desconectou antes de começar. Tente procurar de novo.",
+    opponent_1: "Adversário 1",
+    opponent_2: "Adversário 2",
+    opponent_generic: "Adversário",
+    loser_consolations: [
+      "Boa partida! Na próxima você vira o jogo.",
+      "Quase... vamos para a revanche!",
+      "Bem jogado mesmo assim! Que vença o melhor da próxima vez.",
+    ],
+    tab_streak: "Contrarrelógio",
+    streak_note: "Você joga sozinho, contra o relógio: preencha todas as categorias antes que o tempo acabe para passar para a próxima letra. Cada rodada superada soma pontos e sobra um pouco menos de tempo — a sequência termina assim que faltar uma categoria por preencher.",
+    play_btn_streak: "Jogar contrarrelógio",
+    streak_round_label: "Sequência · Rodada {n}",
+    streak_result_title: "A sequência acabou!",
+    streak_result_rounds: "Rodadas superadas: {n}",
+    streak_result_score: "Pontuação: {score}",
+    streak_new_record: "Novo recorde pessoal! 🎉",
+    streak_current_record: "Seu recorde: {score} pts ({rounds} rodadas)",
+    streak_retry_btn: "Outra sequência",
+    streak_top_scores_heading: "Suas melhores sequências",
+    view_stats_btn: "Ver minhas estatísticas",
+    stats_heading: "Suas estatísticas",
+    stats_lead: "Salvas neste dispositivo — mais ninguém as vê.",
+    stats_games: "Partidas jogadas",
+    stats_rounds: "Rodadas jogadas",
+    stats_top_letter: "Letra mais frequente",
+    stats_streak_best: "Melhor pontuação no contrarrelógio",
+    stats_streak_top_heading: "Melhores sequências",
+    stats_no_streaks: "Você ainda não jogou nenhuma sequência.",
+    wildcard_note: "Categoria em dobro nesta rodada: {cat}",
+    share_result_btn: "Compartilhar resultado",
+    share_streak_subtitle: "{rounds} rodadas superadas no Contrarrelógio do tutti.frutti",
+    share_streak_text: "Fiz {score} pontos e superei {rounds} rodadas no Contrarrelógio do tutti.frutti! Jogue também:",
+    share_final_subtitle: "pontos em uma partida de tutti.frutti",
+    share_final_won_subtitle: "Ganhei uma partida de tutti.frutti!",
+    share_final_text: "Fiz {score} pontos em uma partida de tutti.frutti. Jogue também:",
+    share_final_won_text: "Ganhei uma partida de tutti.frutti com {score} pontos! Jogue também:",
+  },
+};
+
+function t(key, vars) {
+  const table = I18N[state.lang] || I18N.es;
+  let str = table[key] != null ? table[key] : (I18N.es[key] != null ? I18N.es[key] : key);
+  if (vars) {
+    Object.keys(vars).forEach(k => { str = str.replace(new RegExp("\\{" + k + "\\}", "g"), vars[k]); });
+  }
+  return str;
+}
+
+function applyStaticTranslations() {
+  document.documentElement.lang = state.lang;
+  document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => { el.placeholder = t(el.dataset.i18nPlaceholder); });
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); });
+}
+
+function setLanguage(lang) {
+  state.lang = (lang === "en" || lang === "pt") ? lang : "es";
+  try { localStorage.setItem("tuttifruti_lang", state.lang); } catch (e) { /* storage unavailable */ }
+  applyStaticTranslations();
+  document.querySelectorAll(".lang-option").forEach(btn => {
+    btn.classList.toggle("selected", btn.dataset.lang === state.lang);
+  });
+  const menu = document.getElementById("langMenu");
+  if (menu) menu.classList.remove("open");
+  document.getElementById("muteBtn").setAttribute("aria-label", state.muted ? t("mute_btn_aria_off") : t("mute_btn_aria_on"));
+  renderCatChips();
+  if (document.getElementById("tabCreate")) setMode(state.mode);
+
+  // Best-effort: si hay una pantalla dinámica visible con datos ya conocidos,
+  // se vuelve a renderizar en el nuevo idioma (sin tocar el tablero de juego,
+  // para no perder lo que el jugador ya escribió en las respuestas).
+  const activeId = document.querySelector(".screen.active") && document.querySelector(".screen.active").id;
+  if (activeId === "screen-waiting" && state.room) renderWaitingRoom(state.room);
+  if (activeId === "screen-review" && state.room) renderReviewAnswers(state.room);
+  if (activeId === "screen-results") {
+    if (state.online && state.room) renderOnlineResults(state.room);
+    else if (!state.online && state.roundScores) renderResults();
+  }
+}
+
+function toggleLangMenu() {
+  document.getElementById("langMenu").classList.toggle("open");
+}
+
 const FULL_ALPHABET = "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split("");
 const DEFAULT_LETTERS = "ABCDEFGHIJLMNOPQRSTUV".split("");
 
@@ -863,18 +1571,40 @@ const RANDOM_MATCH_CONFIG = {
 const RANDOM_SEARCH_TIMEOUT = 25000;
 const MAX_PLAYERS_PER_ROOM = 6;
 
+// Colores fijos por jugador (no dependen del tema elegido) para poder
+// identificar de un vistazo quién es quién en la franja de jugadores, la
+// revisión y los rankings. Se asignan por orden de aparición en `players`.
+const PLAYER_COLORS = ["#FF5E5B", "#35C8F2", "#B6EF3C", "#FFA62B", "#9C6BFF", "#FF8583"];
+
+function playerColor(pid, players) {
+  const idx = Object.keys(players || {}).indexOf(pid);
+  return PLAYER_COLORS[(idx >= 0 ? idx : 0) % PLAYER_COLORS.length];
+}
+
+function playerDotHtml(pid, players) {
+  return `<span class="player-dot" style="background:${playerColor(pid, players)};"></span>`;
+}
+
 let state = {
   playerName: "",
   mode: "create",
   roomCode: "",
   categories: [],
+  categoriesMode: "fixed",
   duration: 45,
   totalRounds: 5,
   letter: "",
+  wildcardCategory: null,
   letterPool: [...DEFAULT_LETTERS],
   usedLetters: [],
   mockOpponentNames: [],
   muted: false,
+  lang: "es",
+  streakMode: false,
+  streakRound: 1,
+  streakScore: 0,
+  streakDuration: 45,
+  categoriesBeforeStreak: null,
   answers: {},
   secondsLeft: 0,
   round: 1,
@@ -917,6 +1647,75 @@ function rememberLetter(letter) {
   } catch (e) { /* storage unavailable */ }
 }
 
+// ---------- Estadísticas personales (guardadas solo en este dispositivo) ----------
+const STATS_KEY = "tuttifruti_stats";
+
+function getStats() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(STATS_KEY) || "null");
+    if (raw && typeof raw === "object") {
+      return {
+        gamesPlayed: raw.gamesPlayed || 0,
+        roundsPlayed: raw.roundsPlayed || 0,
+        letterCounts: raw.letterCounts || {},
+      };
+    }
+  } catch (e) { /* storage unavailable */ }
+  return { gamesPlayed: 0, roundsPlayed: 0, letterCounts: {} };
+}
+
+function saveStats(stats) {
+  try { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); } catch (e) { /* storage unavailable */ }
+}
+
+function recordGameStart() {
+  const stats = getStats();
+  stats.gamesPlayed += 1;
+  saveStats(stats);
+}
+
+function recordRoundPlayed(letter) {
+  const stats = getStats();
+  stats.roundsPlayed += 1;
+  stats.letterCounts[letter] = (stats.letterCounts[letter] || 0) + 1;
+  saveStats(stats);
+}
+
+function topLetter(letterCounts) {
+  let top = null, max = 0;
+  Object.keys(letterCounts).forEach(l => {
+    if (letterCounts[l] > max) { max = letterCounts[l]; top = l; }
+  });
+  return top;
+}
+
+function showStatsScreen() {
+  const stats = getStats();
+  document.getElementById("statGames").textContent = stats.gamesPlayed;
+  document.getElementById("statRounds").textContent = stats.roundsPlayed;
+  document.getElementById("statLetter").textContent = topLetter(stats.letterCounts) || "–";
+  const history = getStreakHistory();
+  document.getElementById("statStreakBest").textContent = history.length ? history[0].score : 0;
+
+  const list = document.getElementById("streakHistoryList");
+  list.innerHTML = "";
+  if (history.length === 0) {
+    list.innerHTML = `<p class="streak-history-empty">${t("stats_no_streaks")}</p>`;
+  } else {
+    history.slice(0, 10).forEach((run, i) => {
+      const row = document.createElement("div");
+      row.className = "rank-row";
+      row.innerHTML = `
+        <span class="rank-pos">${i + 1}</span>
+        <span class="rank-name">${t("streak_result_rounds", { n: run.rounds })}</span>
+        <span class="rank-score">${run.score} pts</span>
+      `;
+      list.appendChild(row);
+    });
+  }
+  showScreen("screen-stats");
+}
+
 function getPlayerId() {
   // sessionStorage (no localStorage): cada pestaña/ventana tiene su propio ID,
   // así dos jugadores en la misma compu no terminan compartiendo identidad.
@@ -951,6 +1750,7 @@ function drawLetter() {
   const letter = available[Math.floor(Math.random() * available.length)];
   state.usedLetters.push(letter);
   rememberLetter(letter);
+  recordRoundPlayed(letter);
   return letter;
 }
 
@@ -1050,7 +1850,9 @@ function vibrate(pattern) {
 
 function toggleMute() {
   state.muted = !state.muted;
-  document.getElementById("muteBtn").textContent = state.muted ? "🔇" : "🔊";
+  const btn = document.getElementById("muteBtn");
+  btn.textContent = state.muted ? "🔇" : "🔊";
+  btn.setAttribute("aria-label", state.muted ? t("mute_btn_aria_off") : t("mute_btn_aria_on"));
   try { localStorage.setItem("tuttifruti_muted", state.muted ? "1" : "0"); } catch (e) { /* storage unavailable */ }
 }
 
@@ -1108,10 +1910,22 @@ document.addEventListener("click", function (e) {
   if (picker && !picker.contains(e.target)) {
     document.getElementById("themeMenu").classList.remove("open");
   }
+  const langPicker = document.getElementById("langPicker");
+  if (langPicker && !langPicker.contains(e.target)) {
+    document.getElementById("langMenu").classList.remove("open");
+  }
 });
 
 function loadPack(name) {
-  state.categories = [...(CATEGORY_PACKS[name] || [])];
+  if (name === "random") {
+    state.categoriesMode = "random";
+    // Solo para mostrar algo en la vista previa — las categorías reales de
+    // cada ronda se vuelven a sortear cuando arranca (ver hostStartGame()).
+    state.categories = pickRandomCategorySet(RANDOM_PACK_CATEGORY_COUNT);
+  } else {
+    state.categoriesMode = "fixed";
+    state.categories = [...(CATEGORY_PACKS[name] || [])];
+  }
   renderCatChips();
 }
 
@@ -1123,10 +1937,9 @@ function showScreen(id) {
 function copyRoomCode() {
   const btn = document.getElementById("copyRoomBtn");
   const done = () => {
-    const original = "Copiar";
-    btn.textContent = "¡Copiado!";
+    btn.textContent = t("copied_btn");
     btn.classList.add("copied");
-    setTimeout(() => { btn.textContent = original; btn.classList.remove("copied"); }, 1500);
+    setTimeout(() => { btn.textContent = t("copy_btn"); btn.classList.remove("copied"); }, 1500);
   };
   if (navigator.clipboard) {
     navigator.clipboard.writeText(state.roomCode).then(done).catch(() => {
@@ -1159,12 +1972,12 @@ function shareRoomLink() {
   const link = roomShareLink();
   const done = () => {
     if (!btn) return;
-    const original = "Compartir";
-    btn.textContent = "¡Copiado!";
+    btn.textContent = t("copied_btn");
     btn.classList.add("copied");
-    setTimeout(() => { btn.textContent = original; btn.classList.remove("copied"); }, 1500);
+    setTimeout(() => { btn.textContent = t("share_btn"); btn.classList.remove("copied"); }, 1500);
   };
-  const shareData = { title: "tutti.frutti", text: "Unite a mi sala de tutti.frutti", url: link };
+  const shareTexts = { es: "Unite a mi sala de tutti.frutti", en: "Join my tutti.frutti room", pt: "Entre na minha sala de tutti.frutti" };
+  const shareData = { title: "tutti.frutti", text: shareTexts[state.lang] || shareTexts.es, url: link };
 
   if (isMobileDevice() && navigator.share) {
     navigator.share(shareData).catch(() => {});
@@ -1193,11 +2006,20 @@ function applyRoomLinkFromUrl() {
 function renderCategoryPicker() {
   const picker = document.getElementById("categoryPicker");
   picker.innerHTML = "";
-  CATEGORY_POOL.filter(c => !state.categories.includes(c)).forEach(cat => {
+  const available = CATEGORY_POOL.filter(c => !state.categories.includes(c));
+  if (available.length > 0) {
+    const randomBtn = document.createElement("button");
+    randomBtn.type = "button";
+    randomBtn.className = "cat-pick-chip cat-pick-chip-random";
+    randomBtn.textContent = "🎲 " + t("random_category_chip");
+    randomBtn.onclick = () => pickRandomSingleCategory();
+    picker.appendChild(randomBtn);
+  }
+  available.forEach(cat => {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "cat-pick-chip";
-    btn.textContent = cat;
+    btn.textContent = catLabel(cat);
     btn.onclick = () => pickCategory(cat);
     picker.appendChild(btn);
   });
@@ -1208,17 +2030,50 @@ function pickCategory(cat) {
   renderCatChips();
 }
 
+// Agrega un slot "sorpresa" a la lista: no revela qué categoría es todavía
+// (eso recién se sortea cuando arranca la ronda, ver resolveCategories()) —
+// distinto del pack "Random" (que reemplaza TODA la lista y sortea de nuevo
+// en cada ronda).
+let mysterySlotCounter = 0;
+function pickRandomSingleCategory() {
+  mysterySlotCounter += 1;
+  state.categories.push("__random_" + mysterySlotCounter + "__");
+  renderCatChips();
+}
+
+// Reemplaza cada slot sorpresa por una categoría real, elegida al azar entre
+// las que no estén ya en uso (ni como categoría fija ni como otro slot ya
+// resuelto en esta misma ronda).
+function resolveCategories(categories) {
+  const resolved = [];
+  categories.forEach(cat => {
+    if (!isMysterySlot(cat)) { resolved.push(cat); return; }
+    const available = CATEGORY_POOL.filter(c => !categories.includes(c) && !resolved.includes(c));
+    const pick = available.length > 0
+      ? available[Math.floor(Math.random() * available.length)]
+      : CATEGORY_POOL[Math.floor(Math.random() * CATEGORY_POOL.length)];
+    resolved.push(pick);
+  });
+  return resolved;
+}
+
 function renderCatChips() {
   const row = document.getElementById("catChipRow");
   row.innerHTML = "";
   state.categories.forEach(cat => {
     const span = document.createElement("span");
     span.className = "cat-chip";
-    span.innerHTML = `${cat} <button aria-label="Quitar ${cat}" onclick="removeCategory('${cat.replace(/'/g,"\\'")}')">×</button>`;
+    span.innerHTML = `${catLabel(cat)} <button aria-label="${t('remove_category_aria', { cat: catLabel(cat) })}" onclick="removeCategory('${cat.replace(/'/g,"\\'")}')">×</button>`;
     row.appendChild(span);
   });
   renderCategoryPicker();
   checkCanPlay();
+
+  const isRandomPack = state.categoriesMode === "random";
+  const editor = document.getElementById("categoryEditor");
+  const note = document.getElementById("randomCategoriesNote");
+  if (editor) editor.style.display = isRandomPack ? "none" : "block";
+  if (note) note.style.display = isRandomPack ? "block" : "none";
 }
 
 function removeCategory(cat) {
@@ -1241,21 +2096,26 @@ function setMode(mode) {
   document.getElementById("tabCreate").classList.toggle("active", mode === "create");
   document.getElementById("tabJoin").classList.toggle("active", mode === "join");
   document.getElementById("tabRandom").classList.toggle("active", mode === "random");
+  document.getElementById("tabStreak").classList.toggle("active", mode === "streak");
   document.getElementById("roomFieldCreate").style.display = mode === "create" ? "block" : "none";
   document.getElementById("roomFieldJoin").style.display = mode === "join" ? "block" : "none";
   document.getElementById("joinNote").style.display = mode === "join" ? "block" : "none";
   document.getElementById("randomNote").style.display = mode === "random" ? "block" : "none";
+  document.getElementById("streakNote").style.display = mode === "streak" ? "block" : "none";
   document.getElementById("hostConfigFields").style.display = (mode === "join" || mode === "random") ? "none" : "block";
+  document.getElementById("categoriesField").style.display = mode === "streak" ? "none" : "block";
+  document.getElementById("durationField").style.display = mode === "streak" ? "none" : "block";
+  document.getElementById("roundsField").style.display = mode === "streak" ? "none" : "block";
   document.getElementById("joinConfigNote").style.display = mode === "join" ? "block" : "none";
-  const labels = { create: "Crear sala y jugar", join: "Unirme y jugar", random: "Buscar partida y jugar" };
-  document.getElementById("playBtn").textContent = labels[mode];
+  const labelKeys = { create: "play_btn_create", join: "play_btn_join", random: "play_btn_random", streak: "play_btn_streak" };
+  document.getElementById("playBtn").textContent = t(labelKeys[mode]);
   checkCanPlay();
 }
 
 function checkCanPlay() {
   const name = document.getElementById("playerName").value.trim();
   let roomOk = true;
-  let categoriesOk = state.categories.length > 0;
+  let categoriesOk = state.categoriesMode === "random" ? true : state.categories.length > 0;
   let lettersOk = state.letterPool.length > 0;
   if (state.mode === "join") {
     roomOk = document.getElementById("joinCodeInput").value.trim().length > 0;
@@ -1263,6 +2123,8 @@ function checkCanPlay() {
   } else if (state.mode === "random") {
     categoriesOk = true; // "Sala al azar" usa reglas fijas
     lettersOk = true;
+  } else if (state.mode === "streak") {
+    categoriesOk = true; // el modo elige categorías al azar en cada ronda
   }
   document.getElementById("playBtn").disabled = !(name && categoriesOk && roomOk && lettersOk);
 }
@@ -1273,7 +2135,9 @@ function startRound() {
   document.getElementById("catGrid").style.display = "none";
   document.getElementById("bastaWrap").style.display = "none";
   document.getElementById("roundLabel").textContent =
-    `Ronda ${state.round}${state.totalRounds ? " de " + state.totalRounds : ""} · Sala ${state.roomCode}`;
+    state.totalRounds
+    ? t("round_label_of", { round: state.round, total: state.totalRounds, room: state.roomCode })
+    : t("round_label", { round: state.round, room: state.roomCode });
 
   const medal = document.getElementById("medal");
   medal.classList.add("spinning");
@@ -1290,10 +2154,23 @@ function startRound() {
       setTimeout(() => medal.classList.remove("bounce"), 500);
       state.answers = {};
       state.secondsLeft = state.duration;
+      state.wildcardCategory = pickWildcard(state.categories);
       renderLetterHistory();
+      renderWildcardNote();
       beginPlaying();
     }
   }, 80);
+}
+
+function renderWildcardNote() {
+  const note = document.getElementById("wildcardNote");
+  if (!note) return;
+  if (state.wildcardCategory) {
+    note.style.display = "flex";
+    note.textContent = "⭐ " + t("wildcard_note", { cat: catLabel(state.wildcardCategory) });
+  } else {
+    note.style.display = "none";
+  }
 }
 
 // ---------- Online (Firebase) multiplayer ----------
@@ -1316,7 +2193,8 @@ function createRoomOnline() {
       usedLetters: getRecentLetters().filter(l => state.letterPool.includes(l)),
       bastaBy: null,
       config: {
-        categories: state.categories,
+        categories: state.categoriesMode === "random" ? [] : state.categories,
+        categoriesMode: state.categoriesMode,
         duration: state.duration,
         totalRounds: state.totalRounds,
         letterPool: state.letterPool,
@@ -1325,6 +2203,7 @@ function createRoomOnline() {
     };
     await window.FB.set(roomsRef(), roomData);
     state.isHost = true;
+    recordGameStart();
     setupDisconnectHandling();
     subscribeToRoom();
     showScreen("screen-waiting");
@@ -1335,7 +2214,7 @@ function joinRoomOnline() {
   whenFirebaseReady(async () => {
     const snap = await window.FB.get(roomsRef());
     if (!snap.exists()) {
-      alert("No encontramos ninguna sala con ese código. Revisá que esté bien escrito.");
+      alert(t("alert_room_not_found"));
       goToLobby();
       return;
     }
@@ -1343,7 +2222,7 @@ function joinRoomOnline() {
     const existingPlayers = data.players || {};
     const alreadyIn = !!existingPlayers[state.playerId];
     if (!alreadyIn && Object.keys(existingPlayers).length >= MAX_PLAYERS_PER_ROOM) {
-      alert(`Esta sala ya está completa (máximo ${MAX_PLAYERS_PER_ROOM} jugadores).`);
+      alert(t("alert_room_full", { max: MAX_PLAYERS_PER_ROOM }));
       goToLobby();
       return;
     }
@@ -1352,6 +2231,7 @@ function joinRoomOnline() {
     state.duration = (data.config && data.config.duration) || state.duration;
     state.totalRounds = (data.config && data.config.totalRounds) != null ? data.config.totalRounds : state.totalRounds;
     await window.FB.update(window.FB.ref(window.FB.db, "rooms/" + state.roomCode + "/players/" + state.playerId), myPlayerLabel());
+    recordGameStart();
     setupDisconnectHandling();
     subscribeToRoom();
     showScreen("screen-waiting");
@@ -1479,12 +2359,13 @@ async function claimOpponent(candidateId) {
     },
     players: {
       [state.playerId]: myPlayerLabel(),
-      [candidateId]: { name: candidateData.name || "Rival", score: 0, connected: true },
+      [candidateId]: { name: candidateData.name || t("opponent_generic"), score: 0, connected: true },
     },
   };
   await window.FB.set(roomsRef(), roomData);
   state.isHost = true;
   state.room = roomData; // disponible ya mismo, sin esperar a que llegue el primer snapshot de la suscripción
+  recordGameStart();
   setupDisconnectHandling();
 
   await window.FB.update(queueEntryRef(candidateId), { status: "matched", roomCode: state.roomCode });
@@ -1501,7 +2382,7 @@ function joinMatchedRoom(roomCode) {
   state.online = true;
   window.FB.get(roomsRef()).then(snap => {
     if (!snap.exists()) {
-      alert("El rival se desconectó antes de empezar. Probá buscar de nuevo.");
+      alert(t("alert_opponent_disconnected"));
       goToLobby();
       return;
     }
@@ -1510,6 +2391,7 @@ function joinMatchedRoom(roomCode) {
     state.categories = (data.config && data.config.categories) || RANDOM_MATCH_CONFIG.categories;
     state.duration = (data.config && data.config.duration) || RANDOM_MATCH_CONFIG.duration;
     state.totalRounds = (data.config && data.config.totalRounds) != null ? data.config.totalRounds : RANDOM_MATCH_CONFIG.totalRounds;
+    recordGameStart();
     setupDisconnectHandling();
     subscribeToRoom();
   });
@@ -1576,9 +2458,12 @@ function handleRoomUpdate(data) {
     state.bastaTriggered = false;
     state.round = data.round;
     state.letter = data.letter;
+    state.categories = data.categories || (data.config && data.config.categories) || state.categories;
+    state.wildcardCategory = data.wildcard || null;
     state.usedLetters = data.usedLetters || [];
     state.answers = {};
     rememberLetter(data.letter);
+    recordRoundPlayed(data.letter);
     playOnlineRoundIntro(data);
   } else if (data.status === "collecting" && lastHandledStatus !== "collecting") {
     lastHandledStatus = "collecting";
@@ -1614,7 +2499,7 @@ function renderWaitingRoom(data) {
     row.className = "rank-row" + (pid === state.playerId ? " me" : "");
     row.innerHTML = `
       <span class="chip" style="background:none; border:none; padding:0;"><span class="dot" style="background:${p.connected === false ? 'var(--pomelo)' : 'var(--lima)'};"></span></span>
-      <span class="rank-name">${p.name}${pid === data.hostId ? " · anfitrión" : ""}</span>
+      <span class="rank-name">${playerDotHtml(pid, players)}${p.name}${pid === data.hostId ? t("host_suffix") : ""}</span>
     `;
     list.appendChild(row);
   });
@@ -1622,11 +2507,11 @@ function renderWaitingRoom(data) {
   const note = document.getElementById("waitingNote");
   if (state.isHost) {
     startBtn.style.display = "block";
-    note.textContent = "Cuando estén todos, tocá empezar.";
+    note.textContent = t("waiting_note_host");
   } else {
     startBtn.style.display = "none";
-    const hostName = (players[data.hostId] && players[data.hostId].name) || "el anfitrión";
-    note.textContent = `Esperando a que ${hostName} empiece la partida...`;
+    const hostName = (players[data.hostId] && players[data.hostId].name) || t("the_host_fallback");
+    note.textContent = t("waiting_note_guest", { name: hostName });
   }
 }
 
@@ -1643,15 +2528,25 @@ function hostStartGame() {
   }
   const letter = available[Math.floor(Math.random() * available.length)];
   used = [...used, letter];
-  window.FB.update(roomsRef(), {
+  const isRandomCategories = !!(state.room.config && state.room.config.categoriesMode === "random");
+  const baseCategories = (state.room.config && state.room.config.categories) || [];
+  const hasMysterySlots = baseCategories.some(isMysterySlot);
+  const roundCategories = isRandomCategories
+    ? pickRandomCategorySet(RANDOM_PACK_CATEGORY_COUNT)
+    : (hasMysterySlots ? resolveCategories(baseCategories) : baseCategories);
+  const wildcard = pickWildcard(roundCategories);
+  const updates = {
     status: "playing",
     round: (state.room.round || 1),
     letter,
+    wildcard,
     usedLetters: used,
     roundStartAt: window.FB.serverTimestamp(),
     bastaBy: null,
     [`answers/${state.room.round || 1}`]: null,
-  });
+  };
+  if (isRandomCategories || hasMysterySlots) updates.categories = roundCategories;
+  window.FB.update(roomsRef(), updates);
 }
 
 function playOnlineRoundIntro(data) {
@@ -1660,7 +2555,9 @@ function playOnlineRoundIntro(data) {
   document.getElementById("catGrid").style.display = "none";
   document.getElementById("bastaWrap").style.display = "none";
   document.getElementById("roundLabel").textContent =
-    `Ronda ${state.round}${state.totalRounds ? " de " + state.totalRounds : ""} · Sala ${state.roomCode}`;
+    state.totalRounds
+    ? t("round_label_of", { round: state.round, total: state.totalRounds, room: state.roomCode })
+    : t("round_label", { round: state.round, room: state.roomCode });
   renderOnlinePlayersStrip(data);
 
   const medal = document.getElementById("medal");
@@ -1676,6 +2573,7 @@ function playOnlineRoundIntro(data) {
       medal.classList.add("bounce");
       setTimeout(() => medal.classList.remove("bounce"), 500);
       renderLetterHistory();
+      renderWildcardNote();
       beginPlayingOnline(data.roundStartAt);
     }
   }, 80);
@@ -1684,12 +2582,12 @@ function playOnlineRoundIntro(data) {
 function renderOfflinePlayersStrip() {
   const strip = document.querySelector(".players-strip");
   strip.innerHTML = "";
-  const names = [state.playerName, state.mockOpponentNames[0] || "Rival 1", state.mockOpponentNames[1] || "Rival 2"];
+  const names = [state.playerName, state.mockOpponentNames[0] || t("opponent_1"), state.mockOpponentNames[1] || t("opponent_2")];
   names.forEach((name, i) => {
     const span = document.createElement("span");
     span.className = "chip";
     if (i > 0) span.style.opacity = "0.6";
-    span.innerHTML = `<span class="dot"></span><span>${name}</span>`;
+    span.innerHTML = `<span class="dot" style="background:${PLAYER_COLORS[i % PLAYER_COLORS.length]};"></span><span>${name}</span>`;
     strip.appendChild(span);
   });
 }
@@ -1703,7 +2601,7 @@ function renderOnlinePlayersStrip(data) {
     const span = document.createElement("span");
     span.className = "chip";
     if (pid !== state.playerId) span.style.opacity = "0.6";
-    span.innerHTML = `<span class="dot"></span><span>${p.name}${pid === state.playerId ? " (vos)" : ""}</span>`;
+    span.innerHTML = `<span class="dot" style="background:${playerColor(pid, players)};"></span><span>${p.name}${pid === state.playerId ? t("you_suffix") : ""}</span>`;
     strip.appendChild(span);
   });
 }
@@ -1731,7 +2629,9 @@ function beginPlayingOnline(roundStartAt) {
 }
 
 function onBastaTap() {
-  if (state.online) {
+  if (state.streakMode) {
+    onStreakReadyTap();
+  } else if (state.online) {
     triggerBasta();
   } else {
     playDing();
@@ -1796,17 +2696,55 @@ function answerMatchesLetter(raw, letter) {
   return norm.charAt(0) === normalizeAnswer(letter).charAt(0);
 }
 
+// Una respuesta de un solo carácter (p. ej. escribir nada más que la letra
+// de la ronda) nunca es una palabra real para ninguna categoría.
+function isTrivialAnswer(raw) {
+  return normalizeAnswer(raw).length < 2;
+}
+
+// Distancia de edición (Levenshtein) — se usa para tolerar errores de tipeo
+// menores (un plural, una letra de más/menos) al comparar respuestas repetidas.
+function levenshteinDistance(a, b) {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+    }
+  }
+  return dp[m][n];
+}
+
+// Dos respuestas ya normalizadas cuentan como "la misma" si son idénticas, o
+// si son lo bastante largas (5+ letras) y difieren en un solo carácter —
+// para no penalizar a alguien por un plural o una letra de más/menos.
+// Con palabras cortas exige coincidencia exacta (si no, "gato" y "pato"
+// terminarían contando como la misma respuesta).
+function answersAreSimilar(a, b) {
+  if (a === b) return true;
+  if (!a || !b) return false;
+  if (a.length < 5 || b.length < 5) return false;
+  if (Math.abs(a.length - b.length) > 1) return false;
+  return levenshteinDistance(a, b) <= 1;
+}
+
 function startReviewPhase(data) {
   showScreen("screen-review");
   clearInterval(state.timerId);
   state.reviewReadySent = false;
   const readyBtn = document.getElementById("reviewReadyBtn");
   readyBtn.disabled = false;
-  readyBtn.textContent = "Listo, ya revisé";
+  readyBtn.textContent = t("review_ready_btn");
   renderReviewAnswers(data);
 
   const startMs = typeof data.reviewStartAt === "number" ? data.reviewStartAt : Date.now();
   clearInterval(state.reviewCountdownId);
+  lastReviewTickSecond = null;
   updateReviewCountdown(startMs);
   state.reviewCountdownId = setInterval(() => updateReviewCountdown(startMs), 250);
 
@@ -1826,7 +2764,7 @@ function markReviewReady() {
   state.reviewReadySent = true;
   const readyBtn = document.getElementById("reviewReadyBtn");
   readyBtn.disabled = true;
-  readyBtn.textContent = "Listo ✓ — esperando a los demás";
+  readyBtn.textContent = t("review_ready_waiting");
   const round = state.room.round;
   const path = `rooms/${state.roomCode}/reviewReady/${round}/${state.playerId}`;
   window.FB.set(window.FB.ref(window.FB.db, path), true);
@@ -1843,7 +2781,7 @@ function renderReviewReadyStatus(data) {
   const connected = connectedPlayerIds(data);
   const readyCount = connected.filter(pid => readyMap[pid]).length;
   const el = document.getElementById("reviewReadyStatus");
-  if (el) el.textContent = `${readyCount} de ${connected.length} listos`;
+  if (el) el.textContent = t("ready_count", { ready: readyCount, total: connected.length });
 }
 
 function checkAllReviewReady(data) {
@@ -1858,20 +2796,57 @@ function checkAllReviewReady(data) {
   }
 }
 
+let lastReviewTickSecond = null;
 function updateReviewCountdown(startMs) {
   const elapsed = (Date.now() - startMs) / 1000;
   const left = Math.max(0, Math.ceil(REVIEW_SECONDS - elapsed));
   const el = document.getElementById("reviewCountdown");
-  if (el) el.textContent = left > 0 ? `Calculando puntaje en ${left}s...` : "Calculando puntaje...";
+  if (el) el.textContent = left > 0 ? t("calculating_score_in", { left }) : t("calculating_score");
+  const fill = document.getElementById("reviewProgressFill");
+  if (fill) {
+    const pct = Math.max(0, Math.min(100, (left / REVIEW_SECONDS) * 100));
+    fill.style.width = pct + "%";
+    fill.classList.toggle("urgent", left <= 10);
+  }
+  if (left !== lastReviewTickSecond) {
+    lastReviewTickSecond = left;
+    if (left > 0 && left <= 5) {
+      playTic();
+      vibrate(50);
+    }
+  }
   if (left <= 0) clearInterval(state.reviewCountdownId);
+}
+
+const REACTION_EMOJIS = ["😂", "👍", "😱"];
+
+function renderReactionRow(cat, targetPid, reactionsForThis) {
+  const catEsc = cat.replace(/'/g, "\\'");
+  const buttons = REACTION_EMOJIS.map(emoji => {
+    const reactors = Object.keys((reactionsForThis && reactionsForThis[emoji]) || {});
+    const count = reactors.length;
+    const mine = reactors.includes(state.playerId);
+    return `<button type="button" class="reaction-btn${mine ? " mine" : ""}" onclick="toggleReaction('${catEsc}','${targetPid}','${emoji}')">${emoji}${count > 0 ? `<span class="count">${count}</span>` : ""}</button>`;
+  }).join("");
+  return `<div class="reaction-row" style="flex-basis:100%;">${buttons}</div>`;
+}
+
+function toggleReaction(cat, targetPid, emoji) {
+  if (!state.room) return;
+  const round = state.room.round;
+  const reactions = state.room.reactions || {};
+  const current = ((((reactions[round] || {})[cat] || {})[targetPid] || {})[emoji] || {})[state.playerId];
+  const path = `rooms/${state.roomCode}/reactions/${round}/${cat}/${targetPid}/${emoji}/${state.playerId}`;
+  window.FB.set(window.FB.ref(window.FB.db, path), current ? null : true);
 }
 
 function renderReviewAnswers(data) {
   const round = data.round;
-  const categories = (data.config && data.config.categories) || [];
+  const categories = data.categories || (data.config && data.config.categories) || [];
   const answers = (data.answers && data.answers[round]) || {};
   const objectionsForRound = (data.objections && data.objections[round]) || {};
   const acceptedForRound = (data.accepted && data.accepted[round]) || {};
+  const reactionsForRound = (data.reactions && data.reactions[round]) || {};
   const players = data.players || {};
   const pids = Object.keys(players);
 
@@ -1881,7 +2856,8 @@ function renderReviewAnswers(data) {
     const block = document.createElement("div");
     block.style.marginBottom = "18px";
     const catEsc = cat.replace(/'/g, "\\'");
-    let rows = `<p class="card-label" style="font-size:13px; font-weight:700; color:var(--text); margin-bottom:6px;">${cat}</p>`;
+    const isWild = cat === data.wildcard;
+    let rows = `<p class="card-label" style="font-size:13px; font-weight:700; color:var(--text); margin-bottom:6px;">${catLabel(cat)}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</p>`;
     pids.forEach(pid => {
       const val = ((answers[pid] || {})[cat] || "").trim();
       const isMine = pid === state.playerId;
@@ -1893,24 +2869,27 @@ function renderReviewAnswers(data) {
 
       let statusHtml = "";
       if (!isMine && val) {
-        statusHtml = `<button type="button" class="objection-btn${objectedByMe ? " active" : ""}" onclick="toggleObjection('${catEsc}','${pid}')">${objectedByMe ? "Objetada" : "Objetar"}${count > 0 ? " (" + count + ")" : ""}</button>`;
+        statusHtml = `<button type="button" class="objection-btn${objectedByMe ? " active" : ""}" onclick="toggleObjection('${catEsc}','${pid}')">${objectedByMe ? t("objected_btn") : t("object_btn")}${count > 0 ? " (" + count + ")" : ""}</button>`;
       } else if (isMine && val && count > 0) {
         if (isAccepted) {
-          statusHtml = `<span class="objection-btn active" style="cursor:default;">Aceptada · vale 0</span>`;
+          statusHtml = `<span class="objection-btn active" style="cursor:default;">${t("accepted_zero")}</span>`;
         } else {
           statusHtml = `
             <span style="display:flex; gap:6px; align-items:center;">
-              <span class="objection-btn active" style="cursor:default;">En disputa (${count})</span>
-              <button type="button" class="objection-btn" onclick="acceptObjection('${catEsc}','${pid}')">La acepto</button>
+              <span class="objection-btn active" style="cursor:default;">${t("in_dispute", { count })}</span>
+              <button type="button" class="objection-btn" onclick="acceptObjection('${catEsc}','${pid}')">${t("accept_objection_btn")}</button>
             </span>`;
         }
       }
 
+      const reactionsForThis = (reactionsForRound[cat] || {})[pid];
+
       rows += `
-        <div class="answer-row">
-          <span class="answer-cat">${name}${isMine ? " (vos)" : ""}</span>
-          <span class="answer-val ${val ? "" : "empty"}">${val || "sin respuesta"}</span>
+        <div class="answer-row" style="flex-wrap:wrap;">
+          <span class="answer-cat">${playerDotHtml(pid, players)}${name}${isMine ? t("you_suffix") : ""}</span>
+          <span class="answer-val ${val ? "" : "empty"}">${val || t("no_answer")}</span>
           ${statusHtml}
+          ${val ? renderReactionRow(cat, pid, reactionsForThis) : ""}
         </div>
       `;
     });
@@ -1960,7 +2939,7 @@ async function callJudge(roomCode, round, letter, disputas) {
     const res = await fetch("/.netlify/functions/juez", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ salaId: roomCode, ronda: round, letra: letter, disputas }),
+      body: JSON.stringify({ salaId: roomCode, ronda: round, letra: letter, disputas, idioma: state.lang }),
       signal: controller.signal,
     });
     clearTimeout(timeoutId);
@@ -1979,13 +2958,14 @@ async function callJudge(roomCode, round, letter, disputas) {
 }
 
 async function computeAndApplyScores(data, round) {
-  const categories = (data.config && data.config.categories) || [];
+  const categories = data.categories || (data.config && data.config.categories) || [];
   const answers = (data.answers && data.answers[round]) || {};
   const objectionsForRound = (data.objections && data.objections[round]) || {};
   const acceptedForRound = (data.accepted && data.accepted[round]) || {};
   const players = data.players || {};
   const pids = Object.keys(players);
   const letter = data.letter;
+  const wildcard = data.wildcard || null;
 
   // Paso 1: clasificar cada respuesta objetada o no, sin consultar todavía
   // al juez (eso solo pasa si de verdad hace falta).
@@ -1997,6 +2977,7 @@ async function computeAndApplyScores(data, round) {
       const raw = ((answers[pid] || {})[cat] || "").trim();
       if (!raw) { classification[cat][pid] = { status: "empty" }; return; }
       if (!answerMatchesLetter(raw, letter)) { classification[cat][pid] = { status: "badLetter" }; return; }
+      if (isTrivialAnswer(raw)) { classification[cat][pid] = { status: "tooShort" }; return; }
 
       const objectorsForThis = (objectionsForRound[cat] && objectionsForRound[cat][pid]) || {};
       const objectorIds = Object.keys(objectorsForThis);
@@ -2064,6 +3045,8 @@ async function computeAndApplyScores(data, round) {
         judgeInfo[`${cat}|${pid}`] = { mayoria: true };
       } else if (c.status === "badLetter") {
         judgeInfo[`${cat}|${pid}`] = { letraInvalida: true };
+      } else if (c.status === "tooShort") {
+        judgeInfo[`${cat}|${pid}`] = { demasiadoCorta: true };
       }
       normalized[cat][pid] = isValid ? normalizeAnswer(raw) : "";
     });
@@ -2073,12 +3056,13 @@ async function computeAndApplyScores(data, round) {
   pids.forEach(pid => { roundScores[pid] = {}; });
   categories.forEach(cat => {
     const filled = pids.filter(pid => normalized[cat][pid]);
+    const multiplier = cat === wildcard ? 2 : 1;
     pids.forEach(pid => {
       const norm = normalized[cat][pid];
       if (!norm) { roundScores[pid][cat] = 0; return; }
-      if (filled.length === 1) { roundScores[pid][cat] = 20; return; }
-      const count = filled.filter(p2 => normalized[cat][p2] === norm).length;
-      roundScores[pid][cat] = count === 1 ? 10 : 5;
+      if (filled.length === 1) { roundScores[pid][cat] = 20 * multiplier; return; }
+      const count = filled.filter(p2 => answersAreSimilar(normalized[cat][p2], norm)).length;
+      roundScores[pid][cat] = (count === 1 ? 10 : 5) * multiplier;
     });
   });
 
@@ -2097,7 +3081,7 @@ async function computeAndApplyScores(data, round) {
 function renderMyObjectionsOutcome(data, round) {
   const container = document.getElementById("myObjectionsOutcome");
   if (!container) return;
-  const categories = (data.config && data.config.categories) || [];
+  const categories = data.categories || (data.config && data.config.categories) || [];
   const objectionsForRound = (data.objections && data.objections[round]) || {};
   const acceptedForRound = (data.accepted && data.accepted[round]) || {};
   const judgeInfo = (data.judgeInfo && data.judgeInfo[round]) || {};
@@ -2118,17 +3102,17 @@ function renderMyObjectionsOutcome(data, round) {
       let outcome = "";
       let colorClass = "";
       if (isAccepted) {
-        outcome = "El autor la aceptó — no contó";
+        outcome = t("outcome_author_accepted");
         colorClass = "text-positive";
       } else if (info && info.mayoria) {
-        outcome = "Entre todos la invalidaron — no contó";
+        outcome = t("outcome_majority_invalidated");
         colorClass = "text-positive";
       } else if (info && typeof info.valida === "boolean") {
         if (info.valida) {
-          outcome = "El juez no te dio la razón: la palabra vale igual, y perdiste 5 puntos";
+          outcome = t("outcome_judge_disagreed");
           colorClass = "text-negative";
         } else {
-          outcome = "El juez te dio la razón: la palabra no contó" + (info.motivo ? " — " + info.motivo : "");
+          outcome = t("outcome_judge_agreed") + (info.motivo ? " — " + info.motivo : "");
           colorClass = "text-positive";
         }
       } else {
@@ -2137,8 +3121,8 @@ function renderMyObjectionsOutcome(data, round) {
 
       rows.push(`
         <div class="answer-row" style="flex-wrap:wrap;">
-          <span class="answer-cat">Objetaste a ${targetName} en "${cat}"</span>
-          <span class="answer-val">${word || "sin respuesta"}</span>
+          <span class="answer-cat">${t("you_objected_to", { name: targetName, cat: catLabel(cat) })}</span>
+          <span class="answer-val">${word || t("no_answer")}</span>
           <div class="${colorClass}" style="flex-basis:100%; font-size:12px;">${outcome}</div>
         </div>
       `);
@@ -2146,22 +3130,23 @@ function renderMyObjectionsOutcome(data, round) {
   });
 
   container.innerHTML = rows.length
-    ? `<p class="lead" style="margin:14px 0 4px; font-size:13px;">Tus objeciones</p>${rows.join("")}`
+    ? `<p class="lead" style="margin:14px 0 4px; font-size:13px;">${t("your_objections_heading")}</p>${rows.join("")}`
     : "";
 }
 
 function renderOnlineResults(data) {
+  document.getElementById("shareResultBtn").style.display = "none";
   const round = data.round || 1;
-  const categories = (data.config && data.config.categories) || [];
+  const categories = data.categories || (data.config && data.config.categories) || [];
   const myScores = (data.roundScores && data.roundScores[round] && data.roundScores[round][state.playerId]) || {};
   const myAnswers = (data.answers && data.answers[round] && data.answers[round][state.playerId]) || {};
   const judgeInfo = (data.judgeInfo && data.judgeInfo[round]) || {};
   const myPenalty = (data.penalties && data.penalties[round] && data.penalties[round][state.playerId]) || 0;
   const total = categories.reduce((sum, c) => sum + (myScores[c] || 0), 0) + myPenalty;
 
-  document.getElementById("resultsTitle").textContent = `Resultados de la ronda ${round}`;
-  let summaryHtml = `Letra: <strong>${data.letter}</strong> · Puntos ganados: <strong>${total}</strong>`;
-  if (myPenalty) summaryHtml += ` <span class="text-negative">(incluye ${myPenalty} por objetar mal)</span>`;
+  document.getElementById("resultsTitle").textContent = t("results_title", { round });
+  let summaryHtml = `${t("letter_word")}: <strong>${data.letter}</strong> · ${t("points_won_word")}: <strong>${total}</strong>`;
+  if (myPenalty) summaryHtml += ` <span class="text-negative">${t("includes_penalty", { penalty: myPenalty })}</span>`;
   document.getElementById("resultsSummary").innerHTML = summaryHtml;
 
   const list = document.getElementById("answerList");
@@ -2169,27 +3154,31 @@ function renderOnlineResults(data) {
   categories.forEach(cat => {
     const val = (myAnswers[cat] || "").trim();
     const pts = myScores[cat] || 0;
+    const isWild = cat === data.wildcard;
+    const basePts = isWild ? pts / 2 : pts;
     const info = judgeInfo[`${cat}|${state.playerId}`];
     let extra = "";
     if (info) {
       if (info.aceptada) {
-        extra = `<div style="font-size:11px; color:var(--text-support);">Aceptaste la objeción</div>`;
+        extra = `<div style="font-size:11px; color:var(--text-support);">${t("you_accepted_objection")}</div>`;
       } else if (info.mayoria) {
-        extra = `<div style="font-size:11px; color:var(--text-support);">La objetaron todos los demás</div>`;
+        extra = `<div style="font-size:11px; color:var(--text-support);">${t("everyone_objected")}</div>`;
       } else if (info.letraInvalida) {
-        extra = `<div style="font-size:11px; color:var(--text-support);">No empieza con ${data.letter}</div>`;
+        extra = `<div style="font-size:11px; color:var(--text-support);">${t("doesnt_start_with", { letter: data.letter })}</div>`;
+      } else if (info.demasiadoCorta) {
+        extra = `<div style="font-size:11px; color:var(--text-support);">${t("answer_too_short")}</div>`;
       } else if (typeof info.valida === "boolean") {
         const colorClass = info.valida ? "text-positive" : "text-negative";
-        extra = `<div class="${colorClass}" style="font-size:11px;">Juez: ${info.valida ? "Válida" : "No válida"}${info.motivo ? " — " + info.motivo : ""}${info.sinRespuesta ? " (el juez no respondió, se aceptó por defecto)" : ""}</div>`;
+        extra = `<div class="${colorClass}" style="font-size:11px;">${state.lang === "en" ? "Judge" : "Juez"}: ${info.valida ? t("judge_valid") : t("judge_invalid")}${info.motivo ? " — " + info.motivo : ""}${info.sinRespuesta ? t("judge_no_response") : ""}</div>`;
       }
     }
     const row = document.createElement("div");
     row.className = "answer-row";
     row.style.flexWrap = "wrap";
     row.innerHTML = `
-      <span class="answer-cat">${cat}</span>
-      <span class="answer-val ${val ? "" : "empty"}">${val || "sin respuesta"}</span>
-      <span class="points points-${pts}" title="${SCORE_LABELS[pts]}">+${pts}</span>
+      <span class="answer-cat">${catLabel(cat)}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
+      <span class="answer-val ${val ? "" : "empty"}">${val || t("no_answer")}</span>
+      <span class="points points-${basePts}" title="${t('score_label_' + basePts)}">+${pts}</span>
       ${extra ? `<div style="flex-basis:100%;">${extra}</div>` : ""}
     `;
     list.appendChild(row);
@@ -2207,7 +3196,7 @@ function renderOnlineResults(data) {
     row.className = `rank-row ${p.pid === state.playerId ? "me" : ""}`;
     row.innerHTML = `
       <span class="rank-pos">${i + 1}</span>
-      <span class="rank-name">${p.name}</span>
+      <span class="rank-name">${playerDotHtml(p.pid, players)}${p.name}</span>
       <span class="rank-score">${p.score} pts</span>
     `;
     rankList.appendChild(row);
@@ -2218,15 +3207,15 @@ function renderOnlineResults(data) {
   const isLastRound = data.config.totalRounds && round >= data.config.totalRounds;
   if (state.isHost) {
     nextBtn.style.display = "block";
-    nextBtn.textContent = isLastRound ? "Ver resultado final" : "Jugar otra ronda";
+    nextBtn.textContent = isLastRound ? t("view_final_result_btn") : t("play_another_round_btn");
     nextBtn.onclick = () => hostNextRoundOrFinal(data, isLastRound);
     waitingNote.style.display = "none";
   } else {
     nextBtn.style.display = "none";
-    const hostName = (players[data.hostId] && players[data.hostId].name) || "el anfitrión";
+    const hostName = (players[data.hostId] && players[data.hostId].name) || t("the_host_fallback");
     waitingNote.textContent = isLastRound
-      ? `Esperando a que ${hostName} muestre el resultado final...`
-      : `Esperando a que ${hostName} empiece la próxima ronda...`;
+      ? t("waiting_host_final", { name: hostName })
+      : t("waiting_host_next_round", { name: hostName });
     waitingNote.style.display = "block";
   }
 }
@@ -2247,7 +3236,7 @@ function renderOnlineFinal(data) {
     .sort((a, b) => b.score - a.score);
   const winner = sorted[0];
   document.getElementById("finalSummary").innerHTML = winner
-    ? `Ganó <strong>${winner.name}</strong> con ${winner.score} puntos, después de ${data.round} ronda${data.round === 1 ? "" : "s"}.`
+    ? t("won_summary", { name: winner.name, score: winner.score, round: data.round, roundWord: data.round === 1 ? t("round_word_singular") : t("round_word_plural") })
     : "";
   const list = document.getElementById("finalRankingList");
   list.innerHTML = "";
@@ -2256,15 +3245,63 @@ function renderOnlineFinal(data) {
     row.className = `rank-row ${p.pid === state.playerId ? "me" : ""}`;
     row.innerHTML = `
       <span class="rank-pos">${i + 1}</span>
-      <span class="rank-name">${p.name}${i === 0 ? " 🏆" : ""}</span>
+      <span class="rank-name">${playerDotHtml(p.pid, players)}${p.name}${i === 0 ? " 🏆" : ""}</span>
       <span class="rank-score">${p.score} pts</span>
     `;
     list.appendChild(row);
   });
   const playAgainBtn = document.getElementById("finalPlayAgainBtn");
-  if (playAgainBtn) playAgainBtn.style.display = "none";
+  const waitingNote = document.getElementById("waitingFinalNote");
+  if (playAgainBtn) {
+    if (state.isHost) {
+      playAgainBtn.style.display = "block";
+      playAgainBtn.textContent = t("rematch_btn");
+      playAgainBtn.onclick = hostRematch;
+      if (waitingNote) waitingNote.style.display = "none";
+    } else {
+      playAgainBtn.style.display = "none";
+      if (waitingNote) {
+        const hostName = (players[data.hostId] && players[data.hostId].name) || t("the_host_fallback");
+        waitingNote.textContent = t("waiting_host_rematch", { name: hostName });
+        waitingNote.style.display = "block";
+      }
+    }
+  }
+  const me = sorted.find(p => p.pid === state.playerId);
+  state._finalShareInfo = { score: me ? me.score : 0, won: !!(winner && winner.pid === state.playerId) };
   showScreen("screen-final");
   showFinalOutcomeFor(winner && winner.pid === state.playerId);
+}
+
+function hostRematch() {
+  if (!state.isHost || !state.room) return;
+  const players = state.room.players || {};
+  const resetPlayers = {};
+  Object.keys(players).forEach(pid => { resetPlayers[pid] = { ...players[pid], score: 0 }; });
+  const pool = (state.room.config && state.room.config.letterPool && state.room.config.letterPool.length)
+    ? state.room.config.letterPool
+    : DEFAULT_LETTERS;
+  const updates = {
+    round: 1,
+    players: resetPlayers,
+    usedLetters: getRecentLetters().filter(l => pool.includes(l)),
+    roundScores: null,
+    objections: null,
+    accepted: null,
+    judgeInfo: null,
+    penalties: null,
+    reactions: null,
+    reviewReady: null,
+    wildcard: null,
+    bastaBy: null,
+  };
+  // Se aplica localmente ya mismo (sin esperar a que vuelva por la
+  // suscripción) para que hostStartGame() lea el estado ya reseteado —
+  // mismo motivo por el que claimOpponent() hace lo mismo al emparejar.
+  state.room = { ...state.room, ...updates };
+  window.FB.update(roomsRef(), updates).then(() => {
+    hostStartGame();
+  });
 }
 
 function leaveRoom() {
@@ -2301,6 +3338,8 @@ function beginGame() {
     state.roomCode = document.getElementById("joinCodeInput").value.trim().toUpperCase();
     state.online = true;
     joinRoomOnline();
+  } else if (state.mode === "streak") {
+    startStreakMode();
   } else {
     startRandomMatch();
   }
@@ -2319,6 +3358,7 @@ function startSimulatedMatch() {
   state.mockOpponentNames = pickOpponents(2);
   renderOfflinePlayersStrip();
   state.roomCode = uid().slice(0, 5);
+  recordGameStart();
   showSearchingScreen();
   setTimeout(startRound, 1400);
 }
@@ -2371,9 +3411,10 @@ function renderCatGrid() {
     const card = document.createElement("div");
     card.className = "card";
     card.style.animationDelay = (i * 0.05) + "s";
+    const isWild = cat === state.wildcardCategory;
     card.innerHTML = `
       <div class="card-pin"></div>
-      <p class="card-label">${cat}</p>
+      <p class="card-label">${catLabel(cat)}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</p>
       <input type="text" placeholder="${state.letter}..." data-cat="${cat}" oninput="onAnswerInput(this)" onkeydown="onAnswerKeydown(event, this)" />
     `;
     grid.appendChild(card);
@@ -2396,12 +3437,12 @@ function onAnswerInput(el) {
   state.answers[el.dataset.cat] = el.value;
 }
 
-const SCORE_LABELS = {
-  0: "vacío",
-  5: "repetida",
-  10: "única",
-  20: "solo vos",
-};
+// Elige, entre las categorías de la ronda, una "comodín" que vale el doble
+// de puntos — se sortea de nuevo en cada ronda para no repetir siempre la misma.
+function pickWildcard(categories) {
+  if (!categories || categories.length === 0) return null;
+  return categories[Math.floor(Math.random() * categories.length)];
+}
 
 function computeRoundScores() {
   // Simulates how bastaonline.net scores each category:
@@ -2410,7 +3451,7 @@ function computeRoundScores() {
   const scores = {};
   state.categories.forEach(cat => {
     const val = (state.answers[cat] || "").trim();
-    if (!val) {
+    if (!val || !answerMatchesLetter(val, state.letter) || isTrivialAnswer(val)) {
       scores[cat] = 0;
       return;
     }
@@ -2418,6 +3459,7 @@ function computeRoundScores() {
     if (roll < 0.2) scores[cat] = 20;
     else if (roll < 0.55) scores[cat] = 5;
     else scores[cat] = 10;
+    if (cat === state.wildcardCategory) scores[cat] *= 2;
   });
   return scores;
 }
@@ -2431,22 +3473,25 @@ function finishRound() {
 }
 
 function renderResults() {
-  document.getElementById("resultsTitle").textContent = `Resultados de la ronda ${state.round}`;
+  document.getElementById("shareResultBtn").style.display = "none";
+  document.getElementById("resultsTitle").textContent = t("results_title", { round: state.round });
   const scores = state.roundScores || {};
   const total = state.categories.reduce((sum, c) => sum + (scores[c] || 0), 0);
-  document.getElementById("resultsSummary").innerHTML = `Letra: <strong>${state.letter}</strong> · Puntos ganados: <strong>${total}</strong>`;
+  document.getElementById("resultsSummary").innerHTML = `${t("letter_word")}: <strong>${state.letter}</strong> · ${t("points_won_word")}: <strong>${total}</strong>`;
 
   const list = document.getElementById("answerList");
   list.innerHTML = "";
   state.categories.forEach(cat => {
     const val = (state.answers[cat] || "").trim();
     const pts = scores[cat] || 0;
+    const isWild = cat === state.wildcardCategory;
+    const basePts = isWild ? pts / 2 : pts;
     const row = document.createElement("div");
     row.className = "answer-row";
     row.innerHTML = `
-      <span class="answer-cat">${cat}</span>
-      <span class="answer-val ${val ? "" : "empty"}">${val || "sin respuesta"}</span>
-      <span class="points points-${pts}" title="${SCORE_LABELS[pts]}">+${pts}</span>
+      <span class="answer-cat">${catLabel(cat)}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
+      <span class="answer-val ${val ? "" : "empty"}">${val || t("no_answer")}</span>
+      <span class="points points-${basePts}" title="${t('score_label_' + basePts)}">+${pts}</span>
     `;
     list.appendChild(row);
   });
@@ -2454,7 +3499,7 @@ function renderResults() {
   state._pendingTotal = total;
   const isLastRound = state.totalRounds && state.round >= state.totalRounds;
   const nextBtn = document.getElementById("nextRoundBtn");
-  nextBtn.textContent = isLastRound ? "Ver resultado final" : "Jugar otra ronda";
+  nextBtn.textContent = isLastRound ? t("view_final_result_btn") : t("play_another_round_btn");
   nextBtn.style.display = "block";
   nextBtn.onclick = playAnotherRound;
   renderRanking();
@@ -2465,19 +3510,263 @@ function renderRanking() {
   rankList.innerHTML = "";
   const sorted = [...state.ranking].sort((a, b) => b.score - a.score);
   if (sorted.length === 0) {
-    rankList.innerHTML = `<p style="font-size:13px; color:var(--text-support);">Todavía no hay puntajes.</p>`;
+    rankList.innerHTML = `<p style="font-size:13px; color:var(--text-support);">${t("no_scores_yet")}</p>`;
     return;
   }
   sorted.forEach((p, i) => {
     const row = document.createElement("div");
     row.className = `rank-row ${p.name === state.playerName ? "me" : ""}`;
+    const dotColor = PLAYER_COLORS[i % PLAYER_COLORS.length];
     row.innerHTML = `
       <span class="rank-pos">${i + 1}</span>
-      <span class="rank-name">${p.name}</span>
+      <span class="rank-name"><span class="player-dot" style="background:${dotColor};"></span>${p.name}</span>
       <span class="rank-score">${p.score} pts</span>
     `;
     rankList.appendChild(row);
   });
+}
+
+// ---------- Modo Contrarreloj (solo, contra el reloj, categorías al azar) ----------
+const STREAK_POINTS_PER_CATEGORY = 10;
+const STREAK_START_DURATION = 45;
+const STREAK_DURATION_STEP = 3;
+const STREAK_MIN_DURATION = 18;
+const STREAK_CATEGORY_COUNT = 6;
+const STREAK_HISTORY_KEY = "tuttifruti_streak_history";
+const STREAK_HISTORY_LIMIT = 20;
+
+function pickStreakCategories() {
+  return pickRandomCategorySet(STREAK_CATEGORY_COUNT);
+}
+
+// Guarda el historial de rachas jugadas (no solo la mejor), para poder
+// mostrar un mini-ranking personal en vez de un único récord.
+function getStreakHistory() {
+  try {
+    const raw = localStorage.getItem(STREAK_HISTORY_KEY);
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) return arr;
+    }
+    // Migración desde la versión anterior, que solo guardaba el mejor puntaje.
+    const legacy = JSON.parse(localStorage.getItem("tuttifruti_streak_best") || "null");
+    if (legacy && typeof legacy.score === "number") {
+      return [{ score: legacy.score, rounds: legacy.rounds || 0 }];
+    }
+  } catch (e) { /* storage unavailable */ }
+  return [];
+}
+
+function saveStreakRun(score, rounds) {
+  const history = getStreakHistory();
+  history.push({ score, rounds, date: new Date().toISOString() });
+  history.sort((a, b) => b.score - a.score);
+  const trimmed = history.slice(0, STREAK_HISTORY_LIMIT);
+  try { localStorage.setItem(STREAK_HISTORY_KEY, JSON.stringify(trimmed)); } catch (e) { /* storage unavailable */ }
+  return trimmed;
+}
+
+function startStreakMode() {
+  cleanupRandomSearch();
+  if (!state.streakMode) {
+    // Guarda la selección de categorías que el jugador tenía en el lobby,
+    // para devolvérsela intacta cuando salga del modo contrarreloj — acá
+    // las categorías las elige el modo, al azar, en cada ronda.
+    state.categoriesBeforeStreak = state.categories;
+  }
+  state.streakMode = true;
+  state.online = false;
+  state.streakRound = 1;
+  state.streakScore = 0;
+  state.streakDuration = STREAK_START_DURATION;
+  state.usedLetters = getRecentLetters().filter(l => state.letterPool.includes(l));
+  recordGameStart();
+  renderStreakPlayersStrip();
+  startStreakRound();
+}
+
+function renderStreakPlayersStrip() {
+  const strip = document.querySelector(".players-strip");
+  strip.innerHTML = `<span class="chip"><span class="dot"></span><span>${state.playerName}</span></span>`;
+}
+
+function startStreakRound() {
+  state.categories = pickStreakCategories();
+  state.wildcardCategory = pickWildcard(state.categories);
+  showScreen("screen-game");
+  document.getElementById("timerWrap").style.display = "none";
+  document.getElementById("catGrid").style.display = "none";
+  document.getElementById("bastaWrap").style.display = "none";
+  document.getElementById("roundLabel").textContent = t("streak_round_label", { n: state.streakRound });
+
+  const medal = document.getElementById("medal");
+  medal.classList.add("spinning");
+  let ticks = 0;
+  state.spinId = setInterval(() => {
+    medal.textContent = randomLetter();
+    ticks++;
+    if (ticks > 12) {
+      clearInterval(state.spinId);
+      medal.classList.remove("spinning");
+      state.letter = drawLetter();
+      medal.textContent = state.letter;
+      medal.classList.add("bounce");
+      setTimeout(() => medal.classList.remove("bounce"), 500);
+      state.answers = {};
+      state.duration = state.streakDuration;
+      state.secondsLeft = state.duration;
+      renderLetterHistory();
+      renderWildcardNote();
+      beginPlayingStreak();
+    }
+  }, 80);
+}
+
+function beginPlayingStreak() {
+  document.getElementById("timerWrap").style.display = "block";
+  renderCatGrid();
+  document.getElementById("catGrid").style.display = "grid";
+  document.getElementById("bastaWrap").style.display = "flex";
+  focusFirstAnswer();
+  updateTimerDisplay();
+  state.timerId = setInterval(tickStreak, 1000);
+}
+
+function tickStreak() {
+  state.secondsLeft--;
+  updateTimerDisplay();
+  if (state.secondsLeft > 0 && state.secondsLeft <= 5) {
+    playTic();
+    vibrate(50);
+  }
+  if (state.secondsLeft <= 0) {
+    playTimeUp();
+    finishStreakRound();
+  }
+}
+
+function onStreakReadyTap() {
+  playDing();
+  vibrate([30, 40, 30]);
+  finishStreakRound();
+}
+
+async function finishStreakRound() {
+  clearInterval(state.timerId);
+  clearInterval(state.spinId);
+  const letter = state.letter;
+  const round = state.streakRound;
+
+  // Paso 1: lo que se puede resolver sin el juez, gratis — vacía o con una
+  // letra que no corresponde, igual que en las salas multijugador.
+  const results = state.categories.map(cat => {
+    const val = (state.answers[cat] || "").trim();
+    if (!val) return { cat, val, valid: false };
+    if (!answerMatchesLetter(val, letter)) return { cat, val, valid: false };
+    if (isTrivialAnswer(val)) return { cat, val, valid: false };
+    return { cat, val, valid: null }; // pendiente de que la revise el juez
+  });
+
+  const pending = results.filter(r => r.valid === null);
+  if (pending.length > 0) {
+    showScreen("screen-judging");
+    const disputas = pending.map(r => ({ id: r.cat, categoria: r.cat, palabra: r.val }));
+    const judged = await callJudge(state.roomCode, round, letter, disputas);
+    pending.forEach(r => {
+      const v = judged.verdicts[r.cat];
+      r.valid = judged.failed || !v ? true : v.valida !== false;
+    });
+  }
+
+  const allValid = results.length > 0 && results.every(r => r.valid);
+  if (allValid) {
+    results.forEach(r => {
+      state.streakScore += r.cat === state.wildcardCategory ? STREAK_POINTS_PER_CATEGORY * 2 : STREAK_POINTS_PER_CATEGORY;
+    });
+    state.streakRound++;
+    state.streakDuration = Math.max(STREAK_MIN_DURATION, state.streakDuration - STREAK_DURATION_STEP);
+    startStreakRound();
+  } else {
+    renderStreakResult(results);
+    showScreen("screen-results");
+  }
+}
+
+function renderStreakResult(results) {
+  const roundsCleared = state.streakRound - 1;
+  const prevBest = getStreakHistory()[0] || { score: 0, rounds: 0 };
+  const isNewRecord = state.streakScore > prevBest.score;
+  const history = saveStreakRun(state.streakScore, roundsCleared);
+
+  document.getElementById("resultsTitle").textContent = t("streak_result_title");
+  document.getElementById("resultsSummary").innerHTML =
+    `${t("streak_result_rounds", { n: roundsCleared })} · ${t("streak_result_score", { score: state.streakScore })}`;
+  const scoreKey = document.querySelector("#screen-results .score-key");
+  if (scoreKey) scoreKey.style.display = "none";
+
+  const list = document.getElementById("answerList");
+  list.innerHTML = "";
+  results.forEach(r => {
+    const isWild = r.cat === state.wildcardCategory;
+    const basePts = r.valid ? STREAK_POINTS_PER_CATEGORY : 0;
+    const pts = isWild ? basePts * 2 : basePts;
+    const row = document.createElement("div");
+    row.className = "answer-row";
+    row.innerHTML = `
+      <span class="answer-cat">${catLabel(r.cat)}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
+      <span class="answer-val ${r.val ? "" : "empty"}">${r.val || t("no_answer")}</span>
+      <span class="points points-${basePts}" title="${t(basePts ? "score_label_20" : "score_label_0")}">+${pts}</span>
+    `;
+    list.appendChild(row);
+  });
+
+  const recordNote = document.createElement("p");
+  recordNote.className = "hint";
+  recordNote.style.textAlign = "center";
+  recordNote.style.marginTop = "14px";
+  recordNote.textContent = isNewRecord
+    ? t("streak_new_record")
+    : t("streak_current_record", { score: prevBest.score, rounds: prevBest.rounds });
+  list.appendChild(recordNote);
+
+  if (history.length > 1) {
+    const historyBlock = document.createElement("div");
+    historyBlock.style.marginTop = "18px";
+    let html = `<p class="card-label" style="font-size:12px; font-weight:700; color:var(--text-muted); margin:0 0 8px; text-align:center;">${t("streak_top_scores_heading")}</p>`;
+    history.slice(0, 5).forEach((run, i) => {
+      const isThisRun = run.score === state.streakScore && run.rounds === roundsCleared;
+      html += `
+        <div class="rank-row${isThisRun ? " me" : ""}">
+          <span class="rank-pos">${i + 1}</span>
+          <span class="rank-name">${t("streak_result_rounds", { n: run.rounds })}</span>
+          <span class="rank-score">${run.score} pts</span>
+        </div>
+      `;
+    });
+    historyBlock.innerHTML = html;
+    list.appendChild(historyBlock);
+  }
+
+  const objContainer = document.getElementById("myObjectionsOutcome");
+  if (objContainer) objContainer.innerHTML = "";
+  const rankingSection = document.querySelector("#screen-results .ranking");
+  if (rankingSection) rankingSection.style.display = "none";
+  document.getElementById("waitingHostNote").style.display = "none";
+
+  const shareBtn = document.getElementById("shareResultBtn");
+  if (shareBtn) {
+    shareBtn.style.display = "block";
+    shareBtn.onclick = () => shareStreakResult(state.streakScore, roundsCleared);
+  }
+
+  const nextBtn = document.getElementById("nextRoundBtn");
+  nextBtn.textContent = t("streak_retry_btn");
+  nextBtn.style.display = "block";
+  nextBtn.onclick = restartStreak;
+}
+
+function restartStreak() {
+  startStreakMode();
 }
 
 function playAnotherRound() {
@@ -2490,8 +3779,8 @@ function playAnotherRound() {
     state.ranking.push({ name: state.playerName, score: total });
   }
   if (!hadAnyone) {
-    state.ranking.push({ name: state.mockOpponentNames[0] || "Rival 1", score: Math.round(total * 0.8) + 10 });
-    state.ranking.push({ name: state.mockOpponentNames[1] || "Rival 2", score: Math.round(total * 0.6) + 5 });
+    state.ranking.push({ name: state.mockOpponentNames[0] || t("opponent_1"), score: Math.round(total * 0.8) + 10 });
+    state.ranking.push({ name: state.mockOpponentNames[1] || t("opponent_2"), score: Math.round(total * 0.6) + 5 });
   }
 
   if (state.totalRounds && state.round >= state.totalRounds) {
@@ -2530,33 +3819,36 @@ function launchConfetti() {
 
 function showFinalScreen() {
   const playAgainBtn = document.getElementById("finalPlayAgainBtn");
-  if (playAgainBtn) playAgainBtn.style.display = "block";
+  const waitingNote = document.getElementById("waitingFinalNote");
+  if (playAgainBtn) {
+    playAgainBtn.style.display = "block";
+    playAgainBtn.textContent = t("play_again_btn");
+    playAgainBtn.onclick = beginGame;
+  }
+  if (waitingNote) waitingNote.style.display = "none";
   const sorted = [...state.ranking].sort((a, b) => b.score - a.score);
   const winner = sorted[0];
   document.getElementById("finalSummary").innerHTML = winner
-    ? `Ganó <strong>${winner.name}</strong> con ${winner.score} puntos, después de ${state.round} ronda${state.round === 1 ? "" : "s"}.`
+    ? t("won_summary", { name: winner.name, score: winner.score, round: state.round, roundWord: state.round === 1 ? t("round_word_singular") : t("round_word_plural") })
     : "";
   const list = document.getElementById("finalRankingList");
   list.innerHTML = "";
   sorted.forEach((p, i) => {
     const row = document.createElement("div");
     row.className = `rank-row ${p.name === state.playerName ? "me" : ""}`;
+    const dotColor = PLAYER_COLORS[i % PLAYER_COLORS.length];
     row.innerHTML = `
       <span class="rank-pos">${i + 1}</span>
-      <span class="rank-name">${p.name}${i === 0 ? " 🏆" : ""}</span>
+      <span class="rank-name"><span class="player-dot" style="background:${dotColor};"></span>${p.name}${i === 0 ? " 🏆" : ""}</span>
       <span class="rank-score">${p.score} pts</span>
     `;
     list.appendChild(row);
   });
+  const mine = sorted.find(p => p.name === state.playerName);
+  state._finalShareInfo = { score: mine ? mine.score : 0, won: !!(winner && winner.name === state.playerName) };
   showScreen("screen-final");
   showFinalOutcomeFor(winner && winner.name === state.playerName);
 }
-
-const LOSER_CONSOLATIONS = [
-  "¡Buena partida! La próxima la das vuelta.",
-  "Casi... ¡a por la revancha!",
-  "¡Bien jugado igual! Que gane el mejor la próxima.",
-];
 
 function showFinalOutcomeFor(iWon) {
   const badge = document.getElementById("finalResultBadge");
@@ -2566,13 +3858,118 @@ function showFinalOutcomeFor(iWon) {
   } else {
     badge.textContent = "👏";
     const note = document.getElementById("finalSummary");
-    const consolation = LOSER_CONSOLATIONS[Math.floor(Math.random() * LOSER_CONSOLATIONS.length)];
+    const consolations = t("loser_consolations");
+    const consolation = consolations[Math.floor(Math.random() * consolations.length)];
     note.innerHTML += `<br><span style="font-size:13px;">${consolation}</span>`;
   }
 }
 
+// ---------- Compartir resultado (tarjeta con puntaje) ----------
+function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = text.split(" ");
+  let line = "";
+  let cy = y;
+  words.forEach(word => {
+    const test = line ? line + " " + word : word;
+    if (line && ctx.measureText(test).width > maxWidth) {
+      ctx.fillText(line, x, cy);
+      line = word;
+      cy += lineHeight;
+    } else {
+      line = test;
+    }
+  });
+  if (line) ctx.fillText(line, x, cy);
+  return cy;
+}
+
+function buildShareCanvas(big, subtitle) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1080;
+  canvas.height = 1080;
+  const ctx = canvas.getContext("2d");
+  const styles = getComputedStyle(document.documentElement);
+  const bg = (styles.getPropertyValue("--bg") || "#14101F").trim() || "#14101F";
+  const primary = (styles.getPropertyValue("--primary") || "#FF5E5B").trim() || "#FF5E5B";
+  const text = (styles.getPropertyValue("--text") || "#FFF3E2").trim() || "#FFF3E2";
+
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = primary;
+  ctx.beginPath();
+  ctx.arc(canvas.width / 2, 260, 64, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.textAlign = "center";
+  ctx.fillStyle = text;
+  ctx.font = "800 58px 'Bricolage Grotesque', sans-serif";
+  ctx.fillText("tutti.frutti", canvas.width / 2, 400);
+
+  ctx.fillStyle = primary;
+  ctx.font = "800 120px 'Bricolage Grotesque', sans-serif";
+  ctx.fillText(big, canvas.width / 2, 620);
+
+  ctx.fillStyle = text;
+  ctx.font = "500 44px 'Instrument Sans', sans-serif";
+  wrapCanvasText(ctx, subtitle, canvas.width / 2, 730, 880, 56);
+
+  ctx.globalAlpha = 0.65;
+  ctx.font = "600 32px 'Instrument Sans', sans-serif";
+  ctx.fillText("tuttipuntofrutti.netlify.app", canvas.width / 2, canvas.height - 80);
+  ctx.globalAlpha = 1;
+
+  return canvas;
+}
+
+function shareCanvasImage(canvas, shareText) {
+  canvas.toBlob(blob => {
+    if (!blob) return;
+    let file = null;
+    try { file = new File([blob], "tutti-frutti.png", { type: "image/png" }); } catch (e) { file = null; }
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: "tutti.frutti", text: shareText }).catch(() => {});
+      return;
+    }
+    if (navigator.share) {
+      navigator.share({ title: "tutti.frutti", text: shareText + " " + location.origin }).catch(() => {});
+      return;
+    }
+    // Fallback de escritorio: descarga la imagen para compartirla a mano.
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png");
+    link.download = "tutti-frutti.png";
+    link.click();
+  }, "image/png");
+}
+
+function shareStreakResult(score, rounds) {
+  const canvas = buildShareCanvas(score + " pts", t("share_streak_subtitle", { rounds }));
+  shareCanvasImage(canvas, t("share_streak_text", { score, rounds }));
+}
+
+function shareFinalResult() {
+  const info = state._finalShareInfo || { score: 0, won: false };
+  const canvas = buildShareCanvas(info.score + " pts", info.won ? t("share_final_won_subtitle") : t("share_final_subtitle"));
+  shareCanvasImage(canvas, info.won ? t("share_final_won_text", { score: info.score }) : t("share_final_text", { score: info.score }));
+}
+
 function goToLobby() {
   cleanupRandomSearch();
+  if (state.streakMode) {
+    clearInterval(state.timerId);
+    clearInterval(state.spinId);
+    state.streakMode = false;
+    if (state.categoriesBeforeStreak) {
+      state.categories = state.categoriesBeforeStreak;
+      state.categoriesBeforeStreak = null;
+      renderCatChips();
+    }
+    const scoreKey = document.querySelector("#screen-results .score-key");
+    if (scoreKey) scoreKey.style.display = "";
+    const rankingSection = document.querySelector("#screen-results .ranking");
+    if (rankingSection) rankingSection.style.display = "";
+  }
   if (state.online) {
     unsubscribeFromRoom();
     state.online = false;
@@ -2586,6 +3983,25 @@ function goToLobby() {
 }
 
 // init
+try {
+  const savedLang = localStorage.getItem("tuttifruti_lang");
+  if (savedLang === "en" || savedLang === "es" || savedLang === "pt") {
+    state.lang = savedLang;
+  } else {
+    // Primera visita: no hay preferencia guardada todavía, así que se usa el
+    // idioma del navegador como punto de partida (se puede cambiar siempre
+    // a mano con el selector, y esa elección manual queda guardada).
+    const browserLang = (navigator.language || (navigator.languages && navigator.languages[0]) || "es").toLowerCase();
+    if (browserLang.indexOf("en") === 0) state.lang = "en";
+    else if (browserLang.indexOf("pt") === 0) state.lang = "pt";
+    else state.lang = "es";
+  }
+} catch (e) { state.lang = "es"; }
+applyStaticTranslations();
+document.querySelectorAll(".lang-option").forEach(btn => {
+  btn.classList.toggle("selected", btn.dataset.lang === state.lang);
+});
+
 state.playerId = getPlayerId();
 state.roomCode = uid().slice(0, 5);
 document.getElementById("roomCode").value = state.roomCode;
@@ -2602,6 +4018,7 @@ try {
     state.muted = true;
     document.getElementById("muteBtn").textContent = "🔇";
   }
+  document.getElementById("muteBtn").setAttribute("aria-label", state.muted ? t("mute_btn_aria_off") : t("mute_btn_aria_on"));
   renderPresetGrid();
   const savedPreset = localStorage.getItem("tuttifruti_preset");
   setPreset(savedPreset && PRESETS.some(p => p.key === savedPreset) ? savedPreset : "pomelo__crema");
@@ -2610,6 +4027,7 @@ try {
   setPreset("pomelo__crema");
 }
 applyRoomLinkFromUrl();
+setMode(state.mode);
 checkCanPlay();
 </script>
 <div class="confetti-container" id="confettiContainer"></div>

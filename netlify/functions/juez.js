@@ -25,7 +25,8 @@ function estaBloqueadoPorRateLimit(ip) {
   return false;
 }
 
-const PROMPT_SISTEMA = `Sos el juez de un juego de tutti frutti en español rioplatense (Argentina).
+const PROMPTS_SISTEMA = {
+  es: `Sos el juez de un juego de tutti frutti en español rioplatense (Argentina).
 Recibís una letra y una lista de respuestas objetadas, cada una con su categoría.
 Para cada respuesta decidí si es válida.
 
@@ -38,7 +39,32 @@ Criterios:
 
 Respondé SOLO con JSON, sin texto adicional ni bloques de código, con este formato:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
-Completá "motivo" con una frase breve solo cuando "valida" sea false.`;
+Completá "motivo" con una frase breve EN ESPAÑOL solo cuando "valida" sea false.`,
+  en: `You are the judge of a word game (tutti frutti / Scattergories-style). You receive a letter and a list of challenged answers, each with its category. For each answer, decide whether it's valid.
+
+Criteria:
+- It must start with the given letter (ignoring accents and case).
+- It must reasonably belong to the category.
+- Accept regional terms, slang, common names and real brands when the category allows it.
+- Accept minor spelling mistakes if the word is clearly recognizable.
+- When in reasonable doubt, the answer is valid.
+
+Respond ONLY with JSON, no extra text or code fences, in this format:
+{"veredictos":[{"id":"...","valida":true,"motivo":""}]}
+Fill in "motivo" with a short reason IN ENGLISH only when "valida" is false.`,
+  pt: `Você é o juiz de um jogo de palavras (tutti frutti / estilo Adedanha). Você recebe uma letra e uma lista de respostas contestadas, cada uma com sua categoria. Para cada resposta, decida se ela é válida.
+
+Critérios:
+- Deve começar com a letra indicada (ignorando acentos e maiúsculas/minúsculas).
+- Deve pertencer razoavelmente à categoria.
+- Aceite regionalismos, gírias, nomes populares e marcas reais quando a categoria permitir.
+- Aceite pequenos erros de ortografia se a palavra for claramente reconhecível.
+- Em caso de dúvida razoável, a resposta é válida.
+
+Responda APENAS com JSON, sem texto adicional nem blocos de código, neste formato:
+{"veredictos":[{"id":"...","valida":true,"motivo":""}]}
+Preencha "motivo" com uma frase breve EM PORTUGUÊS somente quando "valida" for false.`,
+};
 
 function jsonResponse(statusCode, body) {
   return {
@@ -72,10 +98,11 @@ exports.handler = async (event) => {
     return jsonResponse(400, { error: "JSON inválido" });
   }
 
-  const { salaId, ronda, letra, disputas } = body;
+  const { salaId, ronda, letra, disputas, idioma } = body;
   if (typeof salaId !== "string" || typeof letra !== "string" || !Array.isArray(disputas)) {
     return jsonResponse(400, { error: "Formato de pedido inválido" });
   }
+  const promptSistema = PROMPTS_SISTEMA[idioma] || PROMPTS_SISTEMA.es;
   if (disputas.length === 0) {
     return jsonResponse(200, { veredictos: [] });
   }
@@ -116,7 +143,7 @@ exports.handler = async (event) => {
         model: "claude-haiku-4-5",
         max_tokens: 1000,
         temperature: 0,
-        system: PROMPT_SISTEMA,
+        system: promptSistema,
         messages: [{ role: "user", content: contenidoUsuario }],
       }),
       signal: controller.signal,
