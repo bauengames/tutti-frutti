@@ -647,7 +647,7 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
       <button type="button" class="mode-tab" id="tabStreak" onclick="setMode('streak')" data-i18n="tab_streak">Contrarreloj</button>
     </div>
 
-    <p class="online-note" data-i18n-html="online_note_main_html">
+    <p class="online-note" id="mainNote" data-i18n-html="online_note_main_html">
       Se sortea una letra, todos completan las categorías al mismo tiempo y cualquiera puede tocar <strong>¡Basta!</strong> para cortar la ronda. Después de cada ronda pueden revisar y objetar respuestas antes de que se calcule el puntaje.
     </p>
 
@@ -996,6 +996,33 @@ const CATEGORY_LABELS = {
   "Geografía local": { es: "Geografía local", en: "Local geography", pt: "Geografia local" },
   "Personaje histórico": { es: "Personaje histórico", en: "Historical figure", pt: "Personagem histórico" },
 };
+
+// Nombres de jugador, categorías propias y respuestas escritas por cualquier
+// jugador viajan libres por Firebase y se muestran en pantallas que todos
+// los demás ven — hay que escapar HTML antes de insertarlos con innerHTML,
+// si no cualquiera podría inyectar <script>/onerror y correr JS en el
+// navegador de otro jugador con solo escribirlo como nombre o respuesta.
+function escapeHtml(str) {
+  if (str == null) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// Para cuando ese mismo texto encima va DENTRO de un atributo
+// onclick="fn('...')": primero escapa backslashes y comillas simples (para
+// no romper el string de JS), y ese resultado se pasa por escapeHtml (para
+// no romper el atributo HTML en sí) — el navegador decodifica las entidades
+// antes de ejecutar el JS, así que las dos capas se resuelven solas.
+function escapeForJsAttr(str) {
+  const jsEscaped = String(str == null ? "" : str)
+    .replace(/\\/g, "\\\\")
+    .replace(/'/g, "\\'");
+  return escapeHtml(jsEscaped);
+}
 
 // Un "slot sorpresa" es un comodín que el host agregó desde el chip Random
 // del selector de categorías: no se sabe qué categoría es en realidad hasta
@@ -1515,7 +1542,10 @@ function t(key, vars) {
   const table = I18N[state.lang] || I18N.es;
   let str = table[key] != null ? table[key] : (I18N.es[key] != null ? I18N.es[key] : key);
   if (vars) {
-    Object.keys(vars).forEach(k => { str = str.replace(new RegExp("\\{" + k + "\\}", "g"), vars[k]); });
+    // El reemplazo va en una función (no un string) para que un nombre o
+    // respuesta de jugador con un "$" adentro (p. ej. "$&") no dispare los
+    // patrones especiales de String.replace y rompa el texto.
+    Object.keys(vars).forEach(k => { str = str.replace(new RegExp("\\{" + k + "\\}", "g"), () => vars[k]); });
   }
   return str;
 }
@@ -2063,7 +2093,7 @@ function renderCatChips() {
   state.categories.forEach(cat => {
     const span = document.createElement("span");
     span.className = "cat-chip";
-    span.innerHTML = `${catLabel(cat)} <button aria-label="${t('remove_category_aria', { cat: catLabel(cat) })}" onclick="removeCategory('${cat.replace(/'/g,"\\'")}')">×</button>`;
+    span.innerHTML = `${escapeHtml(catLabel(cat))} <button aria-label="${escapeHtml(t('remove_category_aria', { cat: catLabel(cat) }))}" onclick="removeCategory('${escapeForJsAttr(cat)}')">×</button>`;
     row.appendChild(span);
   });
   renderCategoryPicker();
@@ -2099,6 +2129,7 @@ function setMode(mode) {
   document.getElementById("tabStreak").classList.toggle("active", mode === "streak");
   document.getElementById("roomFieldCreate").style.display = mode === "create" ? "block" : "none";
   document.getElementById("roomFieldJoin").style.display = mode === "join" ? "block" : "none";
+  document.getElementById("mainNote").style.display = (mode === "create" || mode === "join") ? "block" : "none";
   document.getElementById("joinNote").style.display = mode === "join" ? "block" : "none";
   document.getElementById("randomNote").style.display = mode === "random" ? "block" : "none";
   document.getElementById("streakNote").style.display = mode === "streak" ? "block" : "none";
@@ -2499,7 +2530,7 @@ function renderWaitingRoom(data) {
     row.className = "rank-row" + (pid === state.playerId ? " me" : "");
     row.innerHTML = `
       <span class="chip" style="background:none; border:none; padding:0;"><span class="dot" style="background:${p.connected === false ? 'var(--pomelo)' : 'var(--lima)'};"></span></span>
-      <span class="rank-name">${playerDotHtml(pid, players)}${p.name}${pid === data.hostId ? t("host_suffix") : ""}</span>
+      <span class="rank-name">${playerDotHtml(pid, players)}${escapeHtml(p.name)}${pid === data.hostId ? t("host_suffix") : ""}</span>
     `;
     list.appendChild(row);
   });
@@ -2587,7 +2618,7 @@ function renderOfflinePlayersStrip() {
     const span = document.createElement("span");
     span.className = "chip";
     if (i > 0) span.style.opacity = "0.6";
-    span.innerHTML = `<span class="dot" style="background:${PLAYER_COLORS[i % PLAYER_COLORS.length]};"></span><span>${name}</span>`;
+    span.innerHTML = `<span class="dot" style="background:${PLAYER_COLORS[i % PLAYER_COLORS.length]};"></span><span>${escapeHtml(name)}</span>`;
     strip.appendChild(span);
   });
 }
@@ -2601,7 +2632,7 @@ function renderOnlinePlayersStrip(data) {
     const span = document.createElement("span");
     span.className = "chip";
     if (pid !== state.playerId) span.style.opacity = "0.6";
-    span.innerHTML = `<span class="dot" style="background:${playerColor(pid, players)};"></span><span>${p.name}${pid === state.playerId ? t("you_suffix") : ""}</span>`;
+    span.innerHTML = `<span class="dot" style="background:${playerColor(pid, players)};"></span><span>${escapeHtml(p.name)}${pid === state.playerId ? t("you_suffix") : ""}</span>`;
     strip.appendChild(span);
   });
 }
@@ -2821,7 +2852,7 @@ function updateReviewCountdown(startMs) {
 const REACTION_EMOJIS = ["😂", "👍", "😱"];
 
 function renderReactionRow(cat, targetPid, reactionsForThis) {
-  const catEsc = cat.replace(/'/g, "\\'");
+  const catEsc = escapeForJsAttr(cat);
   const buttons = REACTION_EMOJIS.map(emoji => {
     const reactors = Object.keys((reactionsForThis && reactionsForThis[emoji]) || {});
     const count = reactors.length;
@@ -2855,9 +2886,9 @@ function renderReviewAnswers(data) {
   categories.forEach(cat => {
     const block = document.createElement("div");
     block.style.marginBottom = "18px";
-    const catEsc = cat.replace(/'/g, "\\'");
+    const catEsc = escapeForJsAttr(cat);
     const isWild = cat === data.wildcard;
-    let rows = `<p class="card-label" style="font-size:13px; font-weight:700; color:var(--text); margin-bottom:6px;">${catLabel(cat)}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</p>`;
+    let rows = `<p class="card-label" style="font-size:13px; font-weight:700; color:var(--text); margin-bottom:6px;">${escapeHtml(catLabel(cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</p>`;
     pids.forEach(pid => {
       const val = ((answers[pid] || {})[cat] || "").trim();
       const isMine = pid === state.playerId;
@@ -2886,8 +2917,8 @@ function renderReviewAnswers(data) {
 
       rows += `
         <div class="answer-row" style="flex-wrap:wrap;">
-          <span class="answer-cat">${playerDotHtml(pid, players)}${name}${isMine ? t("you_suffix") : ""}</span>
-          <span class="answer-val ${val ? "" : "empty"}">${val || t("no_answer")}</span>
+          <span class="answer-cat">${playerDotHtml(pid, players)}${escapeHtml(name)}${isMine ? t("you_suffix") : ""}</span>
+          <span class="answer-val ${val ? "" : "empty"}">${val ? escapeHtml(val) : t("no_answer")}</span>
           ${statusHtml}
           ${val ? renderReactionRow(cat, pid, reactionsForThis) : ""}
         </div>
@@ -3112,7 +3143,7 @@ function renderMyObjectionsOutcome(data, round) {
           outcome = t("outcome_judge_disagreed");
           colorClass = "text-negative";
         } else {
-          outcome = t("outcome_judge_agreed") + (info.motivo ? " — " + info.motivo : "");
+          outcome = t("outcome_judge_agreed") + (info.motivo ? " — " + escapeHtml(info.motivo) : "");
           colorClass = "text-positive";
         }
       } else {
@@ -3121,8 +3152,8 @@ function renderMyObjectionsOutcome(data, round) {
 
       rows.push(`
         <div class="answer-row" style="flex-wrap:wrap;">
-          <span class="answer-cat">${t("you_objected_to", { name: targetName, cat: catLabel(cat) })}</span>
-          <span class="answer-val">${word || t("no_answer")}</span>
+          <span class="answer-cat">${t("you_objected_to", { name: escapeHtml(targetName), cat: escapeHtml(catLabel(cat)) })}</span>
+          <span class="answer-val">${word ? escapeHtml(word) : t("no_answer")}</span>
           <div class="${colorClass}" style="flex-basis:100%; font-size:12px;">${outcome}</div>
         </div>
       `);
@@ -3169,15 +3200,15 @@ function renderOnlineResults(data) {
         extra = `<div style="font-size:11px; color:var(--text-support);">${t("answer_too_short")}</div>`;
       } else if (typeof info.valida === "boolean") {
         const colorClass = info.valida ? "text-positive" : "text-negative";
-        extra = `<div class="${colorClass}" style="font-size:11px;">${state.lang === "en" ? "Judge" : "Juez"}: ${info.valida ? t("judge_valid") : t("judge_invalid")}${info.motivo ? " — " + info.motivo : ""}${info.sinRespuesta ? t("judge_no_response") : ""}</div>`;
+        extra = `<div class="${colorClass}" style="font-size:11px;">${state.lang === "en" ? "Judge" : "Juez"}: ${info.valida ? t("judge_valid") : t("judge_invalid")}${info.motivo ? " — " + escapeHtml(info.motivo) : ""}${info.sinRespuesta ? t("judge_no_response") : ""}</div>`;
       }
     }
     const row = document.createElement("div");
     row.className = "answer-row";
     row.style.flexWrap = "wrap";
     row.innerHTML = `
-      <span class="answer-cat">${catLabel(cat)}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
-      <span class="answer-val ${val ? "" : "empty"}">${val || t("no_answer")}</span>
+      <span class="answer-cat">${escapeHtml(catLabel(cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
+      <span class="answer-val ${val ? "" : "empty"}">${val ? escapeHtml(val) : t("no_answer")}</span>
       <span class="points points-${basePts}" title="${t('score_label_' + basePts)}">+${pts}</span>
       ${extra ? `<div style="flex-basis:100%;">${extra}</div>` : ""}
     `;
@@ -3196,7 +3227,7 @@ function renderOnlineResults(data) {
     row.className = `rank-row ${p.pid === state.playerId ? "me" : ""}`;
     row.innerHTML = `
       <span class="rank-pos">${i + 1}</span>
-      <span class="rank-name">${playerDotHtml(p.pid, players)}${p.name}</span>
+      <span class="rank-name">${playerDotHtml(p.pid, players)}${escapeHtml(p.name)}</span>
       <span class="rank-score">${p.score} pts</span>
     `;
     rankList.appendChild(row);
@@ -3236,7 +3267,7 @@ function renderOnlineFinal(data) {
     .sort((a, b) => b.score - a.score);
   const winner = sorted[0];
   document.getElementById("finalSummary").innerHTML = winner
-    ? t("won_summary", { name: winner.name, score: winner.score, round: data.round, roundWord: data.round === 1 ? t("round_word_singular") : t("round_word_plural") })
+    ? t("won_summary", { name: escapeHtml(winner.name), score: winner.score, round: data.round, roundWord: data.round === 1 ? t("round_word_singular") : t("round_word_plural") })
     : "";
   const list = document.getElementById("finalRankingList");
   list.innerHTML = "";
@@ -3245,7 +3276,7 @@ function renderOnlineFinal(data) {
     row.className = `rank-row ${p.pid === state.playerId ? "me" : ""}`;
     row.innerHTML = `
       <span class="rank-pos">${i + 1}</span>
-      <span class="rank-name">${playerDotHtml(p.pid, players)}${p.name}${i === 0 ? " 🏆" : ""}</span>
+      <span class="rank-name">${playerDotHtml(p.pid, players)}${escapeHtml(p.name)}${i === 0 ? " 🏆" : ""}</span>
       <span class="rank-score">${p.score} pts</span>
     `;
     list.appendChild(row);
@@ -3414,8 +3445,8 @@ function renderCatGrid() {
     const isWild = cat === state.wildcardCategory;
     card.innerHTML = `
       <div class="card-pin"></div>
-      <p class="card-label">${catLabel(cat)}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</p>
-      <input type="text" placeholder="${state.letter}..." data-cat="${cat}" oninput="onAnswerInput(this)" onkeydown="onAnswerKeydown(event, this)" />
+      <p class="card-label">${escapeHtml(catLabel(cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</p>
+      <input type="text" placeholder="${escapeHtml(state.letter)}..." data-cat="${escapeHtml(cat)}" oninput="onAnswerInput(this)" onkeydown="onAnswerKeydown(event, this)" />
     `;
     grid.appendChild(card);
   });
@@ -3489,8 +3520,8 @@ function renderResults() {
     const row = document.createElement("div");
     row.className = "answer-row";
     row.innerHTML = `
-      <span class="answer-cat">${catLabel(cat)}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
-      <span class="answer-val ${val ? "" : "empty"}">${val || t("no_answer")}</span>
+      <span class="answer-cat">${escapeHtml(catLabel(cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
+      <span class="answer-val ${val ? "" : "empty"}">${val ? escapeHtml(val) : t("no_answer")}</span>
       <span class="points points-${basePts}" title="${t('score_label_' + basePts)}">+${pts}</span>
     `;
     list.appendChild(row);
@@ -3519,7 +3550,7 @@ function renderRanking() {
     const dotColor = PLAYER_COLORS[i % PLAYER_COLORS.length];
     row.innerHTML = `
       <span class="rank-pos">${i + 1}</span>
-      <span class="rank-name"><span class="player-dot" style="background:${dotColor};"></span>${p.name}</span>
+      <span class="rank-name"><span class="player-dot" style="background:${dotColor};"></span>${escapeHtml(p.name)}</span>
       <span class="rank-score">${p.score} pts</span>
     `;
     rankList.appendChild(row);
@@ -3587,7 +3618,7 @@ function startStreakMode() {
 
 function renderStreakPlayersStrip() {
   const strip = document.querySelector(".players-strip");
-  strip.innerHTML = `<span class="chip"><span class="dot"></span><span>${state.playerName}</span></span>`;
+  strip.innerHTML = `<span class="chip"><span class="dot"></span><span>${escapeHtml(state.playerName)}</span></span>`;
 }
 
 function startStreakRound() {
@@ -3713,8 +3744,8 @@ function renderStreakResult(results) {
     const row = document.createElement("div");
     row.className = "answer-row";
     row.innerHTML = `
-      <span class="answer-cat">${catLabel(r.cat)}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
-      <span class="answer-val ${r.val ? "" : "empty"}">${r.val || t("no_answer")}</span>
+      <span class="answer-cat">${escapeHtml(catLabel(r.cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
+      <span class="answer-val ${r.val ? "" : "empty"}">${r.val ? escapeHtml(r.val) : t("no_answer")}</span>
       <span class="points points-${basePts}" title="${t(basePts ? "score_label_20" : "score_label_0")}">+${pts}</span>
     `;
     list.appendChild(row);
@@ -3829,7 +3860,7 @@ function showFinalScreen() {
   const sorted = [...state.ranking].sort((a, b) => b.score - a.score);
   const winner = sorted[0];
   document.getElementById("finalSummary").innerHTML = winner
-    ? t("won_summary", { name: winner.name, score: winner.score, round: state.round, roundWord: state.round === 1 ? t("round_word_singular") : t("round_word_plural") })
+    ? t("won_summary", { name: escapeHtml(winner.name), score: winner.score, round: state.round, roundWord: state.round === 1 ? t("round_word_singular") : t("round_word_plural") })
     : "";
   const list = document.getElementById("finalRankingList");
   list.innerHTML = "";
@@ -3839,7 +3870,7 @@ function showFinalScreen() {
     const dotColor = PLAYER_COLORS[i % PLAYER_COLORS.length];
     row.innerHTML = `
       <span class="rank-pos">${i + 1}</span>
-      <span class="rank-name"><span class="player-dot" style="background:${dotColor};"></span>${p.name}${i === 0 ? " 🏆" : ""}</span>
+      <span class="rank-name"><span class="player-dot" style="background:${dotColor};"></span>${escapeHtml(p.name)}${i === 0 ? " 🏆" : ""}</span>
       <span class="rank-score">${p.score} pts</span>
     `;
     list.appendChild(row);
