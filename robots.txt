@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tuttipuntofrutti.netlify.app/sitemap.xml
+Sitemap: https://tuttipuntofrutti.com/sitemap.xml
