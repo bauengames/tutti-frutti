@@ -1,0 +1,7 @@
+[build.environment]
+  # La apiKey de Firebase en jugar.html no es un secreto real: Firebase la
+  # diseña para vivir en el código del cliente (la seguridad la dan las
+  # Reglas de Seguridad de Firebase, no ocultar esta clave). El escáner de
+  # secretos de Netlify la marca igual por el prefijo "AIza", así que se
+  # excluye este archivo puntual de ese chequeo.
+  SECRETS_SCAN_OMIT_PATHS = "jugar.html"
