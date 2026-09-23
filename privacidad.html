@@ -73,8 +73,13 @@
     </section>
 
     <section>
+      <h2 data-i18n="privacidad_s2b_heading">Estadísticas de uso (Google Analytics)</h2>
+      <p data-i18n="privacidad_s2b_p">Usamos Google Analytics para entender cuánta gente visita el Sitio y qué páginas usa más, con el fin de mejorarlo. Al igual que con la publicidad, esto solo se activa si aceptás las cookies en el aviso inicial.</p>
+    </section>
+
+    <section>
       <h2 data-i18n="privacidad_s3_heading">Con quién compartimos información</h2>
-      <p data-i18n="privacidad_s3_p">No vendemos datos personales. Compartimos información únicamente con los proveedores necesarios para que el Sitio funcione: Firebase (Google) para la sincronización de salas en tiempo real, Anthropic para el juez con inteligencia artificial, y Google AdSense para la publicidad, cada uno sujeto a sus propias políticas de privacidad.</p>
+      <p data-i18n="privacidad_s3_p">No vendemos datos personales. Compartimos información únicamente con los proveedores necesarios para que el Sitio funcione: Firebase (Google) para la sincronización de salas en tiempo real, Anthropic para el juez con inteligencia artificial, y Google AdSense y Google Analytics para publicidad y estadísticas, cada uno sujeto a sus propias políticas de privacidad.</p>
     </section>
 
     <section>
@@ -111,5 +116,6 @@
   document.getElementById("fecha").textContent = new Date().toLocaleDateString(window.__siteLang === "en" ? "en-US" : "es-AR", { year: "numeric", month: "long", day: "numeric" });
 </script>
 <script src="cookie-consent.js"></script>
+<script src="analytics.js"></script>
 </body>
 </html>

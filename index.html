@@ -120,18 +120,18 @@ a { color: var(--primary); }
 .btn-secondary { background: transparent; border-color: var(--borde-fuerte); color: var(--text); }
 .btn-secondary:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
 
-.header-actions { display: flex; align-items: center; gap: 14px; }
+.header-actions { display: flex; align-items: center; gap: 8px; }
 .lang-picker { position: relative; }
 .lang-icon-btn {
-  width: 40px; height: 40px; border-radius: 10px;
+  width: 48px; height: 48px; border-radius: var(--radius);
   border: 2px solid var(--borde); background: transparent; color: var(--text);
   display: flex; align-items: center; justify-content: center; cursor: pointer;
   transition: border-color .15s, color .15s;
 }
-.lang-icon-btn svg { width: 20px; height: 20px; }
+.lang-icon-btn svg { width: 22px; height: 22px; }
 .lang-icon-btn:hover { border-color: var(--primary); color: var(--primary); }
 .lang-menu {
-  display: none; position: absolute; top: 48px; right: 0; z-index: 50;
+  display: none; position: absolute; top: 56px; right: 0; z-index: 50;
   min-width: 170px; padding: 6px;
   background: var(--surface); border: 1px solid var(--borde-fuerte); border-radius: var(--radius-card);
 }
@@ -146,15 +146,15 @@ a { color: var(--primary); }
 
 .theme-picker { position: relative; }
 .theme-icon-btn {
-  width: 40px; height: 40px; border-radius: 10px;
+  width: 48px; height: 48px; border-radius: var(--radius);
   border: 2px solid var(--borde); background: transparent; color: var(--text);
   display: flex; align-items: center; justify-content: center; cursor: pointer;
   transition: border-color .15s, color .15s;
 }
-.theme-icon-btn svg { width: 20px; height: 20px; }
+.theme-icon-btn svg { width: 22px; height: 22px; }
 .theme-icon-btn:hover { border-color: var(--primary); color: var(--primary); }
 .theme-menu {
-  display: none; position: absolute; top: 48px; right: 0; z-index: 50;
+  display: none; position: absolute; top: 56px; right: 0; z-index: 50;
   min-width: 190px; padding: 8px;
   background: var(--surface); border: 1px solid var(--borde-fuerte); border-radius: var(--radius-card);
 }
@@ -201,7 +201,7 @@ a { color: var(--primary); }
 
 /* ---------- Hero ---------- */
 .hero { text-align: center; padding: 12px 0 40px; }
-.hero .wordmark { font-size: clamp(56px, 13vw, 96px); display: block; margin-bottom: 20px; }
+.hero .wordmark { font-size: clamp(64px, 17vw, 112px); display: block; margin-bottom: 20px; }
 .hero p { font-size: 19px; color: var(--crema-72); max-width: 56ch; margin: 28px auto 8px; }
 
 /* ---------- Jugá ahora (campo + botón, mismo formato que jugar.html) ---------- */
@@ -284,11 +284,11 @@ footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
   .top-bar { justify-content: space-between; }
   .menu-btn {
     display: flex; align-items: center; justify-content: center;
-    width: 40px; height: 40px; border-radius: 10px;
+    width: 48px; height: 48px; border-radius: var(--radius);
     border: 2px solid var(--borde); background: transparent; color: var(--text);
     cursor: pointer; transition: border-color .15s, color .15s;
   }
-  .menu-btn svg { width: 20px; height: 20px; }
+  .menu-btn svg { width: 22px; height: 22px; }
   .menu-btn:hover { border-color: var(--primary); color: var(--primary); }
   .grid-3 { display: none; }
   section.info { display: none; }
@@ -300,6 +300,11 @@ footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
 @media (max-width: 520px) {
   .btn { padding: 15px 24px; font-size: 16px; }
   footer.site-footer .wrap { flex-direction: column; align-items: flex-start; }
+}
+
+/* Mismo salto de tamaño del logo que usa jugar.html en pantallas grandes. */
+@media (min-width: 900px) {
+  .hero .wordmark { font-size: clamp(72px, 8vw, 128px); }
 }
 </style>
 </head>
@@ -506,5 +511,6 @@ document.addEventListener("keydown", function (e) {
 });
 </script>
 <script src="cookie-consent.js"></script>
+<script src="analytics.js"></script>
 </body>
 </html>

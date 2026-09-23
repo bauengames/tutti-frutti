@@ -67,6 +67,8 @@ html { background: var(--bg); }
 body {
   margin: 0;
   min-height: 100vh;
+  position: relative;
+  z-index: 0;
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
@@ -79,6 +81,15 @@ body {
   -webkit-font-smoothing: antialiased;
   transition: background-color .3s ease, color .3s ease;
 }
+
+/* ---------- Fondo con manchas de color (se adapta solo al tema elegido) ---------- */
+.bg-blobs { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.bg-blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .35; transition: background-color .3s ease; }
+.bg-blob-1 { width: 420px; height: 420px; top: -140px; left: -120px; background: var(--primary); }
+.bg-blob-2 { width: 380px; height: 380px; bottom: -160px; right: -100px; background: var(--secondary); }
+.bg-blob-3 { width: 320px; height: 320px; top: 45%; left: 55%; background: var(--lima); opacity: .22; }
+html[data-light] .bg-blob { opacity: .16; }
+html[data-light] .bg-blob-3 { opacity: .12; }
 
 :focus-visible { outline: 2px solid var(--pomelo); outline-offset: 2px; }
 ::selection { background: var(--pomelo); color: var(--tinta); }
@@ -348,8 +359,12 @@ html[data-light] .room-code-big { color: var(--tinta); }
 }
 .medal.spinning { animation: letra-sorteo .12s steps(2) infinite; color: var(--secondary); }
 @keyframes letra-sorteo { 50% { opacity: .55; } }
-.medal.bounce { animation: letra-cae .45s cubic-bezier(.34, 1.56, .64, 1); }
-@keyframes letra-cae { 0% { transform: scale(.6); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+.medal.bounce { animation: letra-cae .6s cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes letra-cae {
+  0% { transform: scale(.6); filter: drop-shadow(0 0 0 transparent); }
+  55% { transform: scale(1.12); filter: drop-shadow(0 0 22px var(--primary)); }
+  100% { transform: scale(1); filter: drop-shadow(0 0 0 transparent); }
+}
 .round-label { color: var(--crema-72); font-size: 16px; font-weight: 500; margin: 0; overflow-wrap: anywhere; }
 
 .timer { position: relative; width: 84px; height: 84px; flex-shrink: 0; margin-bottom: 8px; }
@@ -401,6 +416,10 @@ html[data-light] .timer-num.urgent { color: var(--tinta); }
 .card input::placeholder { color: rgba(var(--fg-rgb), .3); font-weight: 500; }
 .card input:focus { border-color: var(--primary); }
 .card:focus-within .card-label { color: var(--text); }
+.card input.filled { border-color: var(--lima); background: rgba(182, 239, 60, .08); }
+html[data-light] .card input.filled { background: rgba(182, 239, 60, .18); }
+.card input.pop { animation: input-pop .25s ease; }
+@keyframes input-pop { 0% { transform: scale(1); } 45% { transform: scale(1.035); } 100% { transform: scale(1); } }
 
 .basta-wrap { position: sticky; bottom: 16px; z-index: 5; margin-top: 32px; display: flex; justify-content: center; width: 100%; max-width: 760px; }
 .basta {
@@ -604,6 +623,12 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
 </style>
 </head>
 <body>
+
+<div class="bg-blobs" aria-hidden="true">
+  <span class="bg-blob bg-blob-1"></span>
+  <span class="bg-blob bg-blob-2"></span>
+  <span class="bg-blob bg-blob-3"></span>
+</div>
 
 <header class="top-bar">
   <button type="button" class="brand-mini" onclick="goToLobby()" aria-label="Ir al inicio" data-i18n-aria="brand_home_aria">
@@ -2182,7 +2207,7 @@ function startRound() {
       state.letter = drawLetter();
       medal.textContent = state.letter;
       medal.classList.add("bounce");
-      setTimeout(() => medal.classList.remove("bounce"), 500);
+      setTimeout(() => medal.classList.remove("bounce"), 650);
       state.answers = {};
       state.secondsLeft = state.duration;
       state.wildcardCategory = pickWildcard(state.categories);
@@ -2602,7 +2627,7 @@ function playOnlineRoundIntro(data) {
       medal.classList.remove("spinning");
       medal.textContent = state.letter;
       medal.classList.add("bounce");
-      setTimeout(() => medal.classList.remove("bounce"), 500);
+      setTimeout(() => medal.classList.remove("bounce"), 650);
       renderLetterHistory();
       renderWildcardNote();
       beginPlayingOnline(data.roundStartAt);
@@ -3466,6 +3491,16 @@ function onAnswerKeydown(e, el) {
 
 function onAnswerInput(el) {
   state.answers[el.dataset.cat] = el.value;
+  const isFilled = el.value.trim().length > 0;
+  const wasFilled = el.classList.contains("filled");
+  el.classList.toggle("filled", isFilled);
+  if (isFilled && !wasFilled) {
+    // Reinicia la animación aunque ya estuviera aplicada (poco probable, pero
+    // así siempre "late" al pasar de vacío a completo).
+    el.classList.remove("pop");
+    void el.offsetWidth;
+    el.classList.add("pop");
+  }
 }
 
 // Elige, entre las categorías de la ronda, una "comodín" que vale el doble
@@ -3642,7 +3677,7 @@ function startStreakRound() {
       state.letter = drawLetter();
       medal.textContent = state.letter;
       medal.classList.add("bounce");
-      setTimeout(() => medal.classList.remove("bounce"), 500);
+      setTimeout(() => medal.classList.remove("bounce"), 650);
       state.answers = {};
       state.duration = state.streakDuration;
       state.secondsLeft = state.duration;
@@ -3832,14 +3867,27 @@ function launchConfetti() {
     styles.getPropertyValue("--lima").trim() || "#B6EF3C",
     styles.getPropertyValue("--cielo").trim() || "#35C8F2",
   ];
+  const crema = styles.getPropertyValue("--crema").trim() || "#FFF3E2";
   const count = 90;
   for (let i = 0; i < count; i++) {
     const piece = document.createElement("div");
     piece.className = "confetti-piece";
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    const size = 10 + Math.random() * 8;
     piece.style.left = Math.random() * 100 + "vw";
-    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-    piece.style.width = (6 + Math.random() * 6) + "px";
-    piece.style.height = (10 + Math.random() * 8) + "px";
+    piece.style.width = size + "px";
+    if (Math.random() < 0.75) {
+      // Gajito de fruta: redondo, con un tono más claro adentro (como un
+      // cachito de cítrico visto de frente).
+      piece.style.height = size + "px";
+      piece.style.borderRadius = "50%";
+      piece.style.background = `radial-gradient(circle at 35% 30%, ${crema} 0%, ${crema} 8%, ${color} 48%, ${color} 100%)`;
+    } else {
+      // El resto, tiritas finas para variar (como una hojita).
+      piece.style.height = (size * 1.6) + "px";
+      piece.style.borderRadius = "2px";
+      piece.style.background = color;
+    }
     piece.style.animationDuration = (2.2 + Math.random() * 1.6) + "s";
     piece.style.animationDelay = (Math.random() * 0.4) + "s";
     piece.style.transform = `rotate(${Math.random() * 360}deg)`;
@@ -4064,5 +4112,6 @@ checkCanPlay();
 <div class="confetti-container" id="confettiContainer"></div>
 
 <script src="cookie-consent.js"></script>
+<script src="analytics.js"></script>
 </body>
 </html>

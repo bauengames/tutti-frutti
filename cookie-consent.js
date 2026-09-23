@@ -44,7 +44,7 @@
     banner.setAttribute("aria-live", "polite");
     banner.innerHTML =
       '<div class="ccb-wrap">' +
-      '<p>Usamos cookies propias y de anuncios (Google AdSense) para mostrar publicidad y, si la aceptás, personalizarla. Más info en nuestra <a href="privacidad.html">política de privacidad</a>.</p>' +
+      '<p>Usamos cookies propias, de anuncios (Google AdSense) y de estadísticas (Google Analytics) para mostrar publicidad y entender cómo se usa el sitio. Más info en nuestra <a href="privacidad.html">política de privacidad</a>.</p>' +
       '<div class="ccb-actions">' +
       '<button type="button" class="ccb-reject" id="ccbReject">Rechazar</button>' +
       '<button type="button" class="ccb-accept" id="ccbAccept">Aceptar</button>' +
