@@ -202,7 +202,7 @@ a { color: var(--primary); }
 /* ---------- Hero ---------- */
 .hero { text-align: center; padding: 12px 0 40px; }
 .hero .wordmark { font-size: clamp(56px, 13vw, 96px); display: block; margin-bottom: 20px; }
-.hero p { font-size: 19px; color: var(--crema-72); max-width: 56ch; margin: 0 auto 28px; }
+.hero p { font-size: 19px; color: var(--crema-72); max-width: 56ch; margin: 28px auto 8px; }
 
 /* ---------- Jugá ahora (campo + botón, mismo formato que jugar.html) ---------- */
 .label {
@@ -293,6 +293,8 @@ footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
   .grid-3 { display: none; }
   section.info { display: none; }
   .how-link { display: block; }
+  .hero p { display: none; }
+  footer.site-footer { display: none; }
 }
 
 @media (max-width: 520px) {
@@ -346,7 +348,6 @@ footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
 <main class="wrap">
   <section class="hero">
     <span class="wordmark">tutti<span class="punto"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti</span>
-    <p data-i18n="home_hero_lead">Tutti frutti online, con amigos o con un rival al azar. Armá una sala, invitá a quien quieras y jueguen en tiempo real: se sortea una letra, completan categorías a contrarreloj y un juez con inteligencia artificial resuelve las palabras en disputa.</p>
 
     <div class="quickplay">
       <p class="quickplay-kicker" data-i18n="home_quickplay_kicker">Jugá ahora</p>
@@ -358,6 +359,8 @@ footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
         <button type="submit" class="btn btn-primary btn-block" data-i18n="play_now_btn">Jugar ahora</button>
       </form>
     </div>
+
+    <p data-i18n="home_hero_lead">Tutti frutti online, con amigos o con un rival al azar. Armá una sala, invitá a quien quieras y jueguen en tiempo real: se sortea una letra, completan categorías a contrarreloj y un juez con inteligencia artificial resuelve las palabras en disputa.</p>
   </section>
 
   <div class="grid-3">

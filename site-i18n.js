@@ -14,7 +14,7 @@ var SITE_I18N = {
 
     home_title: "tutti.frutti · Tutti frutti online con amigos",
     home_description: "Jugá al tutti frutti online gratis con amigos o con un rival al azar (el mismo juego que en otros países se conoce como Stop o Basta). Armá la sala, se sortea la letra y un juez con IA resuelve las dudas.",
-    home_hero_lead: "Tutti frutti online, con amigos o con un rival al azar. Armá una sala, invitá a quien quieras y jueguen en tiempo real: se sortea una letra, completan categorías a contrarreloj y un juez con inteligencia artificial resuelve las palabras en disputa.",
+    home_hero_lead: "Tutti frutti online —también conocido como Stop o Basta—, con amigos o con un rival al azar. Armá una sala, invitá a quien quieras y jueguen en tiempo real: se sortea una letra, completan categorías a contrarreloj y un juez con inteligencia artificial resuelve las palabras en disputa.",
     home_card1_title: "Salas privadas",
     home_card1_body: "Creá una sala, compartí el código o el link con tus amigos y jueguen todos juntos en tiempo real.",
     home_card2_title: "Rival al azar",
@@ -136,7 +136,7 @@ var SITE_I18N = {
 
     home_title: "tutti.frutti · Play tutti frutti online with friends",
     home_description: "Play tutti frutti online for free with friends or a random opponent (the same game known in other countries as Stop or Basta). Set up the room, a letter is drawn, and an AI judge settles any disputes.",
-    home_hero_lead: "Tutti frutti online, with friends or a random opponent. Set up a room, invite whoever you want and play in real time: a letter is drawn, everyone fills in categories against the clock, and an AI judge resolves any disputed words.",
+    home_hero_lead: "Tutti frutti online — also known as Stop or Basta — with friends or a random opponent. Set up a room, invite whoever you want and play in real time: a letter is drawn, everyone fills in categories against the clock, and an AI judge resolves any disputed words.",
     home_card1_title: "Private rooms",
     home_card1_body: "Create a room, share the code or link with your friends, and play together in real time.",
     home_card2_title: "Random opponent",
@@ -258,7 +258,7 @@ var SITE_I18N = {
 
     home_title: "tutti.frutti · Jogue Adedanha/Stop online com amigos",
     home_description: "Jogue tutti frutti online grátis com amigos ou com um adversário aleatório (o mesmo jogo conhecido como Adedanha, Stop ou Basta). Monte a sala, sorteia-se a letra e um juiz com IA resolve as dúvidas.",
-    home_hero_lead: "Tutti frutti online, com amigos ou com um adversário aleatório. Monte uma sala, convide quem quiser e joguem em tempo real: sorteia-se uma letra, todos preenchem categorias contra o relógio e um juiz com inteligência artificial resolve as palavras em disputa.",
+    home_hero_lead: "Tutti frutti online — também conhecido como Adedanha ou Stop — com amigos ou com um adversário aleatório. Monte uma sala, convide quem quiser e joguem em tempo real: sorteia-se uma letra, todos preenchem categorias contra o relógio e um juiz com inteligência artificial resolve as palavras em disputa.",
     home_card1_title: "Salas privadas",
     home_card1_body: "Crie uma sala, compartilhe o código ou o link com seus amigos e joguem todos juntos em tempo real.",
     home_card2_title: "Adversário aleatório",
