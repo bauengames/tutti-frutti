@@ -1,4 +1,1 @@
-# Reemplazá la línea de abajo con la que te da tu cuenta de Google AdSense
-# (Panel de AdSense > Sitios > "Cómo arreglar" te da el texto exacto para copiar).
-# El formato es: google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
-google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+google.com, pub-9897296561814312, DIRECT, f08c47fec0942fa0
