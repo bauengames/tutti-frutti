@@ -9,9 +9,16 @@
 <meta name="google-site-verification" content="11IeCqdOInhFBmkUuvxaYK9JlKZoHk9tQVQZTIyQ_-w" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
 <link rel="canonical" href="https://tuttipuntofrutti.com/" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="tutti.frutti" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <script src="site-i18n.js"></script>
+<script src="fruits.js"></script>
 <script>
 /* Aplica el mismo tema/fondo elegido en el juego antes de pintar la página, para que no haya salto de color. */
 (function () {
@@ -236,6 +243,7 @@ a { color: var(--primary); }
 .field input::placeholder { color: rgba(var(--fg-rgb), .45); }
 .field input[type="text"]:focus { border-color: var(--primary); }
 .btn-block { width: 100%; }
+.install-btn { margin-top: 12px; padding: 12px 20px; font-size: 15px; }
 .quickplay {
   max-width: 400px; margin: 0 auto; text-align: left;
   background: var(--surface); border: 1px solid var(--borde); border-radius: var(--radius-card);
@@ -255,6 +263,8 @@ a { color: var(--primary); }
 }
 .avatar-option:hover { border-color: var(--primary); }
 .avatar-option.selected { border-color: var(--primary); background: var(--crema-08); transform: scale(1.08); }
+.avatar-option { display: flex; align-items: center; justify-content: center; }
+.avatar-option svg { width: 72%; height: 72%; display: block; }
 
 /* ---------- Tarjetas ---------- */
 .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 8px 0 44px; }
@@ -266,7 +276,7 @@ a { color: var(--primary); }
 .card p { margin: 0; color: var(--crema-72); font-size: 15px; }
 
 /* ---------- Cómo se juega (pasos, solo desktop) ---------- */
-.steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 20px 0 16px; }
+.steps-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 20px 0 16px; }
 .step-card {
   background: var(--surface); border: 1px solid var(--borde); border-radius: var(--radius-card);
   padding: 20px;
@@ -393,6 +403,7 @@ footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
         </div>
         <button type="submit" class="btn btn-primary btn-block" data-i18n="play_now_btn">Jugar ahora</button>
       </form>
+      <button type="button" class="btn btn-secondary btn-block install-btn" id="installAppBtn" style="display:none;" onclick="installApp()"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/></svg><span data-install-label data-i18n="install_app_btn">Instalar la app</span></button>
     </div>
 
     <p data-i18n="home_hero_lead">Tutti frutti online, con amigos o con un rival al azar. Armá una sala, invitá a quien quieras y jueguen en tiempo real: se sortea una letra, completan categorías a contrarreloj y un juez con inteligencia artificial resuelve las palabras en disputa.</p>
@@ -490,7 +501,7 @@ function renderHomeAvatarPicker() {
   if (!picker) return;
   var mine = getHomeAvatar();
   picker.innerHTML = AVATARS.map(function (a) {
-    return '<button type="button" class="avatar-option' + (a === mine ? " selected" : "") + '" role="radio" aria-checked="' + (a === mine) + '" aria-label="' + a + '" onclick="setHomeAvatar(\'' + a + '\')">' + a + "</button>";
+    return '<button type="button" class="avatar-option' + (a === mine ? " selected" : "") + '" role="radio" aria-checked="' + (a === mine) + '" aria-label="' + a + '" onclick="setHomeAvatar(\'' + a + '\')">' + fruitSvg(a) + "</button>";
   }).join("");
 }
 renderHomeAvatarPicker();
@@ -574,5 +585,6 @@ document.addEventListener("keydown", function (e) {
 </script>
 <script src="cookie-consent.js"></script>
 <script src="analytics.js"></script>
+<script src="pwa.js"></script>
 </body>
 </html>

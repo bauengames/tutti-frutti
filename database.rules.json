@@ -87,6 +87,14 @@
           "$playerId": {
             ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000"
           }
+        },
+        "votes": {
+          "$round": {
+            "$playerId": {
+              ".write": "auth != null && auth.uid === $playerId && root.child('rooms').child($roomCode).child('players').child(auth.uid).exists() && root.child('rooms').child($roomCode).child('status').val() === 'voting'",
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 2"
+            }
+          }
         }
       }
     },

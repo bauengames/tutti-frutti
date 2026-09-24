@@ -8,6 +8,12 @@
 <meta name="theme-color" content="#14101F" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
 <link rel="canonical" href="https://tuttipuntofrutti.com/jugar.html" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="tutti.frutti" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <style>
@@ -200,6 +206,7 @@ body:has(#screen-lobby.active) .brand-mini { visibility: hidden; }
 }
 .btn .ph { font-size: 22px; }
 .btn-block { width: 100%; }
+.install-btn { margin-top: 10px; gap: 8px; }
 .btn-primary { background: var(--primary); color: var(--tinta); font-weight: 700; }
 .btn-primary:hover:not(:disabled) { filter: brightness(1.1); }
 .btn-primary:active:not(:disabled) { filter: brightness(.9); transform: translateY(2px); }
@@ -488,7 +495,8 @@ html[data-light] .text-positive { color: var(--tinta); }
 .hero-band .score-key { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 16px 0 0; font-size: 15px; color: var(--tinta); opacity: .85; }
 .hero-band .score-key span { font-family: var(--font-mono); font-weight: 700; margin-right: 4px; }
 
-.result-badge { text-align: center; font-size: 64px; line-height: 1; margin: 0 0 12px; animation: letra-cae .5s cubic-bezier(.34,1.56,.64,1); }
+.result-badge { margin: 0 0 12px; animation: letra-cae .5s cubic-bezier(.34,1.56,.64,1); }
+.result-badge .mascot-wrap { justify-content: flex-start; }
 .result-badge:empty { display: none; }
 
 .player-dot {
@@ -576,7 +584,7 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
   position: absolute; top: -32px; line-height: 1; animation: confetti-fall linear forwards;
   opacity: .95; --confetti-rotate: 720deg;
 }
-.confetti-piece-rotten { opacity: .8; filter: grayscale(.55) saturate(.7); }
+.confetti-piece-rotten { opacity: .85; filter: grayscale(.3) sepia(.9) hue-rotate(-25deg) saturate(.8) brightness(.7); }
 @keyframes confetti-fall { to { transform: translateY(110vh) rotate(var(--confetti-rotate)); opacity: .4; } }
 
 /* ---------- Sorteo de letra tipo tragamonedas ---------- */
@@ -602,7 +610,8 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
   font-size: 15px; line-height: 1; vertical-align: middle;
   background: var(--crema-08); box-shadow: inset 0 0 0 2px var(--pc, transparent);
 }
-.chip .player-avatar { width: 20px; height: 20px; margin-right: 0; font-size: 12px; }
+.chip .player-avatar { width: 22px; height: 22px; margin-right: 0; }
+.player-avatar svg { width: 82%; height: 82%; display: block; }
 .avatar-picker { display: flex; flex-wrap: wrap; gap: 8px; }
 .avatar-option {
   width: 46px; height: 46px; border-radius: 12px; cursor: pointer;
@@ -611,6 +620,42 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
 }
 .avatar-option:hover { border-color: var(--primary); }
 .avatar-option.selected { border-color: var(--primary); background: var(--crema-08); transform: scale(1.08); }
+.avatar-option { display: flex; align-items: center; justify-content: center; padding: 0; }
+.avatar-option svg { width: 72%; height: 72%; display: block; }
+.medal-fruit { display: inline-flex; width: .9em; height: .9em; vertical-align: middle; }
+.medal-fruit svg { width: 100%; height: 100%; display: block; }
+.confetti-piece svg { width: 100%; height: 100%; display: block; }
+
+/* ---------- Mascota ---------- */
+.mascot-wrap { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 0 auto; }
+.mascot { width: 92px; height: 92px; flex-shrink: 0; }
+.mascot svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.mascot.small { width: 64px; height: 64px; }
+.mascot.mood-happy { animation: mascot-jump .9s ease-in-out infinite; }
+.mascot.mood-angry { animation: mascot-shake .5s ease-in-out infinite; }
+.mascot.mood-sad { animation: mascot-droop 2.4s ease-in-out infinite; transform-origin: 50% 100%; }
+.mascot.mood-thinking { animation: mascot-sway 1.8s ease-in-out infinite; transform-origin: 50% 100%; }
+.mascot.mood-sleepy { animation: mascot-breathe 3s ease-in-out infinite; transform-origin: 50% 100%; }
+.mascot.mood-surprised { animation: letra-cae .5s cubic-bezier(.34, 1.56, .64, 1); }
+@keyframes mascot-jump { 0%, 100% { transform: translateY(0) scale(1, 1); } 30% { transform: translateY(-12px) scale(.96, 1.05); } 55% { transform: translateY(0) scale(1.06, .94); } 70% { transform: translateY(0) scale(1, 1); } }
+@keyframes mascot-shake { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
+@keyframes mascot-droop { 0%, 100% { transform: rotate(-3deg) translateY(2px); } 50% { transform: rotate(3deg) translateY(4px); } }
+@keyframes mascot-sway { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+@keyframes mascot-breathe { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.04, .97); } }
+.mascot-bubble {
+  position: relative; max-width: 230px; padding: 10px 14px; border-radius: 16px;
+  background: var(--crema); color: var(--tinta); font: 700 15px/1.3 var(--font-body); text-align: left;
+  box-shadow: 0 6px 18px rgba(0,0,0,.18);
+}
+html[data-light] .mascot-bubble { background: var(--tinta); color: #FFF3E2; }
+.mascot-bubble::before {
+  content: ''; position: absolute; left: -7px; top: 50%; transform: translateY(-50%);
+  border: 8px solid transparent; border-left: 0; border-right-color: var(--crema);
+}
+html[data-light] .mascot-bubble::before { border-right-color: var(--tinta); }
+.hero-band .mascot-wrap { margin-bottom: 10px; justify-content: flex-start; }
+.round-mascot { margin: 0 0 16px; }
+.round-mascot .mascot-wrap { justify-content: flex-start; }
 
 /* ---------- Resultados animados ---------- */
 .answer-row.reveal { animation: row-in .35s ease both; }
@@ -641,7 +686,11 @@ html[data-light] .wor-label { color: var(--tinta); }
 }
 .daily-banner:hover { filter: brightness(1.08); }
 .daily-banner:active { transform: translateY(2px); }
-.daily-banner .daily-icon { font-size: 32px; line-height: 1; animation: sun-spin 12s linear infinite; }
+.daily-banner .daily-icon { width: 38px; height: 38px; flex-shrink: 0; animation: sun-spin 12s linear infinite; }
+.daily-banner .daily-icon svg, .achievement .ach-icon svg, .toast .toast-icon svg, .twist-chip .twist-icon svg, .reaction-icon svg { width: 100%; height: 100%; display: block; }
+.inline-icon { display: inline-flex; width: 1.15em; height: 1.15em; vertical-align: -.2em; margin: 0 .3em; }
+.inline-icon svg { width: 100%; height: 100%; display: block; }
+.reaction-icon { display: inline-flex; width: 20px; height: 20px; }
 @keyframes sun-spin { to { transform: rotate(360deg); } }
 .daily-banner .daily-text { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .daily-banner strong { font: 800 18px var(--font-display); letter-spacing: -.01em; }
@@ -660,7 +709,7 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
   background: var(--surface); border-radius: var(--radius-card); padding: 14px 12px; text-align: center;
   border: 2px solid var(--lima);
 }
-.achievement .ach-icon { font-size: 30px; line-height: 1; display: block; margin-bottom: 6px; }
+.achievement .ach-icon { width: 40px; height: 40px; display: block; margin: 0 auto 6px; }
 .achievement .ach-title { font: 800 15px var(--font-display); display: block; color: var(--text); }
 .achievement .ach-desc { font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px; line-height: 1.35; }
 .achievement.locked { border-color: transparent; opacity: .55; }
@@ -673,10 +722,39 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
   box-shadow: 0 10px 30px rgba(0,0,0,.3); font-size: 14px; line-height: 1.35;
   animation: toast-in .4s cubic-bezier(.34, 1.56, .64, 1) both;
 }
-.toast .toast-icon { font-size: 30px; line-height: 1; }
+.toast .toast-icon { width: 38px; height: 38px; flex-shrink: 0; }
 .toast.out { animation: toast-out .4s ease forwards; }
 @keyframes toast-in { from { opacity: 0; transform: translateY(-16px) scale(.95); } to { opacity: 1; transform: none; } }
 @keyframes toast-out { to { opacity: 0; transform: translateY(-16px); } }
+
+/* ---------- Vueltas de tuerca ---------- */
+.twist-list { display: flex; flex-direction: column; gap: 8px; }
+.twist-chip {
+  display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
+  padding: 12px 14px; border-radius: var(--radius-card); cursor: pointer;
+  border: 2px solid var(--borde); background: var(--surface); color: var(--text); font-family: var(--font-body);
+  transition: border-color .15s, background-color .15s;
+}
+.twist-chip:hover { border-color: var(--primary); }
+.twist-chip[aria-pressed="true"] { border-color: var(--primary); background: var(--crema-08); }
+.twist-chip .twist-icon { width: 30px; height: 30px; flex-shrink: 0; filter: grayscale(1); opacity: .6; transition: filter .15s, opacity .15s; }
+.twist-chip[aria-pressed="true"] .twist-icon { filter: none; opacity: 1; }
+.twist-chip .twist-text { display: flex; flex-direction: column; gap: 2px; }
+.twist-chip strong { font-size: 15px; }
+.twist-chip small { font-size: 13px; color: var(--text-muted); line-height: 1.35; }
+.twist-note { color: var(--pomelo); }
+html[data-light] .twist-note { color: var(--tinta); }
+.vote-options { display: flex; flex-direction: column; gap: 10px; margin: 20px 0 14px; }
+.vote-option {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%;
+  padding: 18px 20px; border-radius: var(--radius-card); cursor: pointer;
+  border: 2px solid var(--borde-fuerte); background: var(--surface); color: var(--text);
+  font: 700 19px var(--font-display); text-align: left; transition: border-color .15s, transform .08s;
+}
+.vote-option:hover { border-color: var(--primary); }
+.vote-option:active { transform: translateY(2px); }
+.vote-option.mine { border-color: var(--primary); background: var(--crema-08); }
+.vote-option .vote-count { font: 700 14px var(--font-mono); color: var(--text-muted); white-space: nowrap; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 520px) {
@@ -699,6 +777,8 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
   .actions-row { flex-direction: column-reverse; }
 }
 @media (max-width: 380px) {
+  .mode-tabs { flex-wrap: wrap; }
+  .mode-tab { flex: 1 1 calc(50% - 5px); padding: 14px 8px; }
   .grid { grid-template-columns: 1fr; }
   .players-strip .chip:nth-child(3) { display: none; }
 }
@@ -757,7 +837,7 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
         <button type="button" class="theme-option lang-option" data-lang="pt" onclick="setLanguage('pt')">Português</button>
       </div>
     </div>
-    <button type="button" id="muteBtn" class="icon-btn" onclick="toggleMute()" aria-label="Silenciar sonido"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M157.27,21.22a12,12,0,0,0-12.64,1.31L75.88,76H32A20,20,0,0,0,12,96v64a20,20,0,0,0,20,20H75.88l68.75,53.47A12,12,0,0,0,164,224V32A12,12,0,0,0,157.27,21.22ZM36,100H68v56H36Zm104,99.46L92,162.13V93.87l48-37.33ZM212,128a44,44,0,0,1-11,29.11,12,12,0,1,1-18-15.88,20,20,0,0,0,0-26.43,12,12,0,0,1,18-15.86A43.94,43.94,0,0,1,212,128Zm40,0a83.87,83.87,0,0,1-21.39,56,12,12,0,0,1-17.89-16,60,60,0,0,0,0-80,12,12,0,1,1,17.88-16A83.87,83.87,0,0,1,252,128Z"/></svg></button>
+    <button type="button" id="muteBtn" class="icon-btn" onclick="toggleMute()" aria-label="Silenciar sonido"><svg class="ph" viewBox="0 0 256 256" aria-hidden="true"><path d="M40 100 H84 L148 48 V208 L84 156 H40 Z" fill="none" stroke="currentColor" stroke-width="18" stroke-linejoin="round"/><path d="M184 100 A40 40 0 0 1 184 156 M206 74 A76 76 0 0 1 206 182" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round"/></svg></button>
   </div>
 </header>
 
@@ -772,7 +852,7 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
     </div>
 
     <button type="button" class="daily-banner" id="dailyBanner" onclick="openDaily()">
-      <span class="daily-icon" aria-hidden="true">☀️</span>
+      <span class="daily-icon" aria-hidden="true" id="dailyBannerIcon"></span>
       <span class="daily-text">
         <strong data-i18n="daily_banner_title">Desafío del día</strong>
         <span class="daily-sub" id="dailyBannerSub"></span>
@@ -881,6 +961,24 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
           <button type="button" class="letter-action-btn" onclick="setAllLetters(false)" data-i18n="letters_none_btn">Ninguna</button>
         </div>
       </div>
+
+      <div class="field" id="twistsField">
+        <span class="label" data-i18n="twists_label">Vueltas de tuerca (opcional)</span>
+        <div class="twist-list">
+          <button type="button" class="twist-chip" id="twist-hard" aria-pressed="false" onclick="toggleTwist('hard')">
+            <span class="twist-icon" aria-hidden="true" data-icon="flame"></span>
+            <span class="twist-text"><strong data-i18n="twist_hard_title">Letras difíciles</strong><small data-i18n="twist_hard_desc">Entran la K, Ñ, Q, W, X, Y y Z. Si sale una, esa ronda vale el doble.</small></span>
+          </button>
+          <button type="button" class="twist-chip" id="twist-flash" aria-pressed="false" onclick="toggleTwist('flash')">
+            <span class="twist-icon" aria-hidden="true" data-icon="bolt"></span>
+            <span class="twist-text"><strong data-i18n="twist_flash_title">Rondas relámpago</strong><small data-i18n="twist_flash_desc">De vez en cuando toca una ronda de solo 20 segundos.</small></span>
+          </button>
+          <button type="button" class="twist-chip" id="twist-vote" aria-pressed="false" onclick="toggleTwist('vote')">
+            <span class="twist-icon" aria-hidden="true" data-icon="ballot"></span>
+            <span class="twist-text"><strong data-i18n="twist_vote_title">Categoría doble votada</strong><small data-i18n="twist_vote_desc">Antes de cada ronda votan qué categoría vale el doble.</small></span>
+          </button>
+        </div>
+      </div>
     </div>
 
     <p class="online-note" id="joinConfigNote" style="display:none;" data-i18n="join_config_note">La persona que creó la sala ya eligió las categorías, el tiempo por ronda y las letras — vas a jugar con esa configuración.</p>
@@ -889,6 +987,7 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
       <button class="btn btn-primary btn-block" id="playBtn" disabled onclick="beginGame()">Empezar a jugar</button>
       <button type="button" class="btn btn-ghost btn-block" onclick="showStatsScreen()" style="margin-top:8px;" data-i18n="view_stats_btn">Ver mis estadísticas</button>
     </div>
+    <button type="button" class="btn btn-ghost btn-block install-btn" id="installAppBtn" style="display:none;" onclick="installApp()"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/></svg><span data-install-label data-i18n="install_app_btn">Instalar la app</span></button>
   </div>
 </div>
 
@@ -929,6 +1028,7 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
       <span class="room-code-big" id="waitingRoomCode">----</span>
       <p class="hint" id="waitingSubtitle" data-i18n="waiting_subtitle">Compartí este código para que se sumen.</p>
     </div>
+    <div class="round-mascot" id="waitingMascot"></div>
     <h2 class="section-title"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M164.38,181.1a52,52,0,1,0-72.76,0,75.89,75.89,0,0,0-30,28.89,12,12,0,0,0,20.78,12,53,53,0,0,1,91.22,0,12,12,0,1,0,20.78-12A75.89,75.89,0,0,0,164.38,181.1ZM100,144a28,28,0,1,1,28,28A28,28,0,0,1,100,144Zm147.21,9.59a12,12,0,0,1-16.81-2.39c-8.33-11.09-19.85-19.59-29.33-21.64a12,12,0,0,1-1.82-22.91,20,20,0,1,0-24.78-28.3,12,12,0,1,1-21-11.6,44,44,0,1,1,73.28,48.35,92.18,92.18,0,0,1,22.85,21.69A12,12,0,0,1,247.21,153.59Zm-192.28-24c-9.48,2.05-21,10.55-29.33,21.65A12,12,0,0,1,6.41,136.79,92.37,92.37,0,0,1,29.26,115.1a44,44,0,1,1,73.28-48.35,12,12,0,1,1-21,11.6,20,20,0,1,0-24.78,28.3,12,12,0,0,1-1.82,22.91Z"/></svg><span data-i18n="players_heading">Jugadores</span></h2>
     <div class="ranking" style="margin-top:0;">
       <div id="waitingPlayers"></div>
@@ -964,6 +1064,7 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
     </div>
     <div class="letter-history" id="letterHistory"></div>
     <p class="wildcard-note" id="wildcardNote" style="display:none;"></p>
+    <p class="wildcard-note twist-note" id="twistNote" style="display:none;"></p>
   </div>
 
   <div class="grid" id="catGrid" style="display:none;"></div>
@@ -994,8 +1095,22 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
 <!-- JUDGING (el juez con IA está resolviendo las palabras en disputa) -->
 <div class="screen" id="screen-judging">
   <div class="wrap searching">
-    <div class="search-spinner"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></div>
+    <div id="judgingMascot"></div>
     <p class="lead" data-i18n="judging_text">El juez está revisando las palabras en disputa...</p>
+  </div>
+</div>
+
+<!-- VOTING (categoría doble votada) -->
+<div class="screen" id="screen-voting">
+  <div class="results">
+    <div class="results-card">
+      <div class="round-mascot" id="votingMascot"></div>
+      <h2 data-i18n="vote_heading">¿Qué categoría vale el doble esta ronda?</h2>
+      <p class="lead" data-i18n="vote_lead">Votá rápido: la más votada suma el doble.</p>
+      <div class="vote-options" id="voteOptions"></div>
+      <div class="progress-track"><div class="progress-fill" id="voteProgressFill" style="width:100%;"></div></div>
+      <p class="hint" id="voteStatus" style="text-align:center;"></p>
+    </div>
   </div>
 </div>
 
@@ -1008,6 +1123,7 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
         <p id="resultsSummary"></p>
         <p class="score-key"><span><span>0</span><span data-i18n="score_key_0">vacía o inválida</span></span><span><span>5</span><span data-i18n="score_key_5">repetida</span></span><span><span>10</span><span data-i18n="score_key_10">nadie más la puso</span></span><span><span>20</span><span data-i18n="score_key_20">sos el único que completó</span></span></p>
       </div>
+      <div class="round-mascot" id="roundMascot"></div>
       <div id="wordOfRound"></div>
       <div id="answerList"></div>
 
@@ -1061,7 +1177,7 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
 <!-- SEARCHING (random matchmaking) -->
 <div class="screen" id="screen-searching">
   <div class="wrap searching">
-    <div class="search-spinner" id="searchSpinner"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></div>
+    <div id="searchSpinner"></div>
     <p class="lead" id="searchingText" data-i18n="searching_text">Buscando un rival al azar...</p>
     <div id="searchTimeoutOptions" style="display:none;">
       <p class="lead" style="font-size:14px;" data-i18n="searching_none_found">No encontramos a nadie todavía.</p>
@@ -1071,6 +1187,7 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
   </div>
 </div>
 
+<script src="fruits.js"></script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import {
@@ -1245,7 +1362,7 @@ const I18N = {
     pack_random: "Random",
     random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
     random_category_chip: "Random",
-    mystery_category_label: "❓ Sorpresa",
+    mystery_category_label: "Sorpresa",
     new_cat_placeholder: "O escribí una categoría propia",
     add_btn: "Agregar",
     duration_label: "Tiempo por ronda",
@@ -1360,7 +1477,7 @@ const I18N = {
     streak_result_title: "¡Se terminó la racha!",
     streak_result_rounds: "Rondas superadas: {n}",
     streak_result_score: "Puntaje: {score}",
-    streak_new_record: "¡Nuevo récord personal! 🎉",
+    streak_new_record: "¡Nuevo récord personal!",
     streak_current_record: "Tu récord: {score} pts ({rounds} rondas)",
     streak_retry_btn: "Otra racha",
     streak_top_scores_heading: "Tus mejores rachas",
@@ -1382,6 +1499,34 @@ const I18N = {
     share_final_text: "Hice {score} puntos en una partida de tutti.frutti. Jugá vos también:",
     share_final_won_text: "¡Gané una partida de tutti.frutti con {score} puntos! Jugá vos también:",
     avatar_label: "Tu fruta",
+    install_app_btn: "Instalar la app",
+    twists_label: "Vueltas de tuerca (opcional)",
+    twist_hard_title: "Letras difíciles",
+    twist_hard_desc: "Entran la K, Ñ, Q, W, X, Y y Z. Si sale una, esa ronda vale el doble.",
+    twist_flash_title: "Rondas relámpago",
+    twist_flash_desc: "De vez en cuando toca una ronda de solo 20 segundos.",
+    twist_vote_title: "Categoría doble votada",
+    twist_vote_desc: "Antes de cada ronda votan qué categoría vale el doble.",
+    hard_letter_note: "Letra difícil: esta ronda vale el doble",
+    flash_round_note: "Ronda relámpago: {s} segundos",
+    hard_letter_summary: "letra difícil, puntos ×2",
+    vote_heading: "¿Qué categoría vale el doble esta ronda?",
+    vote_lead: "Votá rápido: la más votada suma el doble.",
+    vote_count_one: "1 voto",
+    vote_count_many: "{n} votos",
+    vote_status: "Votaron {n} de {total}",
+    mascot_win: ["¡Sos una máquina!", "¡Qué partidazo!", "Así se juega, eh.", "¡Qué nivel!"],
+    mascot_lose: ["La próxima es tuya.", "Uff, estuvo cerca.", "Hoy no era el día... ¿revancha?", "Me pusiste triste, eh."],
+    mascot_judge_reject: ["¡Ni ahí eso vale!", "El juez no te la dejó pasar.", "¿Esa palabra existe? El juez dice que no.", "Me enojé por vos."],
+    mascot_round_good: ["¡Qué ronda!", "Nadie te para.", "¡Eso es jugar!"],
+    mascot_round_ok: ["Bien ahí.", "Vamos por la próxima.", "Se puede más, eh."],
+    mascot_thinking: ["Mmm, dejame pensar...", "Consultando el diccionario...", "Esto está bravo..."],
+    mascot_waiting_alone: ["¿Y los demás? Me duermo...", "Compartí el código así arrancamos.", "Zzz... avisame cuando lleguen."],
+    mascot_waiting_ready: ["¡Ya estamos! Cuando quieran.", "¡Qué lindo equipo!", "Estoy listo, ¿ustedes?"],
+    mascot_searching: ["Buscando a alguien con ganas de jugar...", "Ya aparece, ya aparece...", "¿Hay alguien por ahí?"],
+    mascot_streak_over: ["¡Se cortó la racha!", "El reloj no perdona.", "Casi, casi..."],
+    mascot_daily_perfect: ["¡Todas bien! Sos crack.", "Perfecto. Mañana más."],
+    mascot_daily_ok: ["Nada mal para hoy.", "Mañana hay revancha."],
     daily_banner_title: "Desafío del día",
     daily_banner_play: "La misma letra para todos · una sola oportunidad",
     daily_banner_done: "Ya jugaste hoy: {score} pts · ver ranking",
@@ -1459,7 +1604,7 @@ const I18N = {
     pack_random: "Random",
     random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
     random_category_chip: "Random",
-    mystery_category_label: "❓ Surprise",
+    mystery_category_label: "Surprise",
     new_cat_placeholder: "Or type your own category",
     add_btn: "Add",
     duration_label: "Time per round",
@@ -1574,7 +1719,7 @@ const I18N = {
     streak_result_title: "Streak over!",
     streak_result_rounds: "Rounds cleared: {n}",
     streak_result_score: "Score: {score}",
-    streak_new_record: "New personal best! 🎉",
+    streak_new_record: "New personal best!",
     streak_current_record: "Your best: {score} pts ({rounds} rounds)",
     streak_retry_btn: "Try again",
     streak_top_scores_heading: "Your best streaks",
@@ -1596,6 +1741,34 @@ const I18N = {
     share_final_text: "I scored {score} points in a tutti.frutti match. Play too:",
     share_final_won_text: "I won a tutti.frutti match with {score} points! Play too:",
     avatar_label: "Your fruit",
+    install_app_btn: "Install the app",
+    twists_label: "Twists (optional)",
+    twist_hard_title: "Hard letters",
+    twist_hard_desc: "K, Ñ, Q, W, X, Y and Z join the pool. If one comes up, that round is worth double.",
+    twist_flash_title: "Lightning rounds",
+    twist_flash_desc: "Every now and then you get a round of just 20 seconds.",
+    twist_vote_title: "Voted double category",
+    twist_vote_desc: "Before each round you vote on which category is worth double.",
+    hard_letter_note: "Hard letter: this round is worth double",
+    flash_round_note: "Lightning round: {s} seconds",
+    hard_letter_summary: "hard letter, points ×2",
+    vote_heading: "Which category is worth double this round?",
+    vote_lead: "Vote fast: the most voted one scores double.",
+    vote_count_one: "1 vote",
+    vote_count_many: "{n} votes",
+    vote_status: "{n} of {total} voted",
+    mascot_win: ["You're a machine!", "What a game!", "That's how it's done.", "Fruit champion!"],
+    mascot_lose: ["Next one's yours.", "Ooh, that was close.", "Not your day... rematch?", "You made me sad."],
+    mascot_judge_reject: ["No way that counts!", "The judge didn't let it slide.", "Is that even a word? The judge says no.", "I'm mad for you."],
+    mascot_round_good: ["What a round!", "Nobody can stop you.", "Now that's playing!"],
+    mascot_round_ok: ["Nice.", "On to the next one.", "You can do better!"],
+    mascot_thinking: ["Hmm, let me think...", "Checking the dictionary...", "This one's tough..."],
+    mascot_waiting_alone: ["Where is everyone? I'm falling asleep...", "Share the code so we can start.", "Zzz... wake me when they arrive."],
+    mascot_waiting_ready: ["We're all here! Whenever you're ready.", "What a team!", "I'm ready, are you?"],
+    mascot_searching: ["Looking for someone who wants to play...", "Almost there...", "Anybody out there?"],
+    mascot_streak_over: ["Streak's over!", "The clock shows no mercy.", "So close..."],
+    mascot_daily_perfect: ["All correct! You rock.", "Perfect. More tomorrow."],
+    mascot_daily_ok: ["Not bad for today.", "Rematch tomorrow."],
     daily_banner_title: "Daily challenge",
     daily_banner_play: "Same letter for everyone · one try only",
     daily_banner_done: "You played today: {score} pts · see ranking",
@@ -1673,7 +1846,7 @@ const I18N = {
     pack_random: "Random",
     random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
     random_category_chip: "Random",
-    mystery_category_label: "❓ Surpresa",
+    mystery_category_label: "Surpresa",
     new_cat_placeholder: "Ou digite uma categoria própria",
     add_btn: "Adicionar",
     duration_label: "Tempo por rodada",
@@ -1788,7 +1961,7 @@ const I18N = {
     streak_result_title: "A sequência acabou!",
     streak_result_rounds: "Rodadas superadas: {n}",
     streak_result_score: "Pontuação: {score}",
-    streak_new_record: "Novo recorde pessoal! 🎉",
+    streak_new_record: "Novo recorde pessoal!",
     streak_current_record: "Seu recorde: {score} pts ({rounds} rodadas)",
     streak_retry_btn: "Outra sequência",
     streak_top_scores_heading: "Suas melhores sequências",
@@ -1810,6 +1983,34 @@ const I18N = {
     share_final_text: "Fiz {score} pontos em uma partida de tutti.frutti. Jogue também:",
     share_final_won_text: "Ganhei uma partida de tutti.frutti com {score} pontos! Jogue também:",
     avatar_label: "Sua fruta",
+    install_app_btn: "Instalar o app",
+    twists_label: "Reviravoltas (opcional)",
+    twist_hard_title: "Letras difíceis",
+    twist_hard_desc: "Entram K, Ñ, Q, W, X, Y e Z. Se sair uma, essa rodada vale o dobro.",
+    twist_flash_title: "Rodadas relâmpago",
+    twist_flash_desc: "De vez em quando cai uma rodada de só 20 segundos.",
+    twist_vote_title: "Categoria dupla votada",
+    twist_vote_desc: "Antes de cada rodada vocês votam qual categoria vale o dobro.",
+    hard_letter_note: "Letra difícil: esta rodada vale o dobro",
+    flash_round_note: "Rodada relâmpago: {s} segundos",
+    hard_letter_summary: "letra difícil, pontos ×2",
+    vote_heading: "Qual categoria vale o dobro nesta rodada?",
+    vote_lead: "Vote rápido: a mais votada vale o dobro.",
+    vote_count_one: "1 voto",
+    vote_count_many: "{n} votos",
+    vote_status: "Votaram {n} de {total}",
+    mascot_win: ["Você é uma máquina!", "Que partidaça!", "É assim que se joga.", "Campeão das frutas!"],
+    mascot_lose: ["A próxima é sua.", "Ufa, foi por pouco.", "Hoje não era o dia... revanche?", "Fiquei triste, hein."],
+    mascot_judge_reject: ["Nem pensar que isso vale!", "O juiz não deixou passar.", "Essa palavra existe? O juiz diz que não.", "Fiquei bravo por você."],
+    mascot_round_good: ["Que rodada!", "Ninguém te segura.", "Isso é jogar!"],
+    mascot_round_ok: ["Boa.", "Vamos para a próxima.", "Dá pra mais, hein."],
+    mascot_thinking: ["Hmm, deixa eu pensar...", "Consultando o dicionário...", "Essa está difícil..."],
+    mascot_waiting_alone: ["Cadê o pessoal? Vou dormir...", "Compartilhe o código pra gente começar.", "Zzz... me avisa quando chegarem."],
+    mascot_waiting_ready: ["Estamos todos! Quando quiserem.", "Que time!", "Estou pronto, e vocês?"],
+    mascot_searching: ["Procurando alguém com vontade de jogar...", "Já aparece, já aparece...", "Tem alguém aí?"],
+    mascot_streak_over: ["A sequência acabou!", "O relógio não perdoa.", "Quase, quase..."],
+    mascot_daily_perfect: ["Todas certas! Você é fera.", "Perfeito. Amanhã tem mais."],
+    mascot_daily_ok: ["Nada mal pra hoje.", "Amanhã tem revanche."],
     daily_banner_title: "Desafio do dia",
     daily_banner_play: "A mesma letra para todos · uma única chance",
     daily_banner_done: "Você já jogou hoje: {score} pts · ver ranking",
@@ -1966,12 +2167,12 @@ function renderAvatarPicker() {
   if (!picker) return;
   const mine = getMyAvatar();
   picker.innerHTML = AVATARS.map(a =>
-    `<button type="button" class="avatar-option${a === mine ? " selected" : ""}" role="radio" aria-checked="${a === mine}" aria-label="${a}" onclick="setMyAvatar('${a}')">${a}</button>`
+    `<button type="button" class="avatar-option${a === mine ? " selected" : ""}" role="radio" aria-checked="${a === mine}" aria-label="${a}" onclick="setMyAvatar('${a}')">${fruitSvg(a)}</button>`
   ).join("");
 }
 
 function playerDotHtml(pid, players) {
-  return `<span class="player-avatar" style="--pc:${playerColor(pid, players)};">${avatarOf((players || {})[pid])}</span>`;
+  return `<span class="player-avatar" style="--pc:${playerColor(pid, players)};">${fruitSvg(avatarOf((players || {})[pid]))}</span>`;
 }
 
 let state = {
@@ -2015,6 +2216,10 @@ let state = {
   queueRef: null,
   randomSearchTimeoutId: null,
   randomRetryTimeoutId: null,
+  twists: { hard: false, flash: false, vote: false },
+  pendingRound: null,
+  voteTimeoutId: null,
+  voteCountdownId: null,
 };
 
 // Recuerda, por dispositivo, qué letras ya salieron entre partidas (no solo dentro de
@@ -2087,7 +2292,7 @@ function showStatsScreen() {
   const history = getStreakHistory();
   document.getElementById("statStreakBest").textContent = history.length ? history[0].score : 0;
   const progress = getProgress();
-  document.getElementById("statDayStreak").textContent = currentDayStreak(progress) + (currentDayStreak(progress) ? " 🔥" : "");
+  document.getElementById("statDayStreak").innerHTML = currentDayStreak(progress) + (currentDayStreak(progress) ? inlineIcon("flame") : "");
   document.getElementById("statWins").textContent = progress.wins;
   renderAchievements();
   renderLeaderboard(`weekly/${weekKey()}`, document.getElementById("statsWeeklyBoard"), "weekly_board_empty");
@@ -2243,10 +2448,13 @@ function vibrate(pattern) {
   }
 }
 
+const SPEAKER_ON_SVG = `<svg class="ph" viewBox="0 0 256 256" aria-hidden="true"><path d="M40 100 H84 L148 48 V208 L84 156 H40 Z" fill="none" stroke="currentColor" stroke-width="18" stroke-linejoin="round"/><path d="M184 100 A40 40 0 0 1 184 156 M206 74 A76 76 0 0 1 206 182" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round"/></svg>`;
+const SPEAKER_OFF_SVG = `<svg class="ph" viewBox="0 0 256 256" aria-hidden="true"><path d="M40 100 H84 L148 48 V208 L84 156 H40 Z" fill="none" stroke="currentColor" stroke-width="18" stroke-linejoin="round"/><path d="M180 100 L232 156 M232 100 L180 156" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round"/></svg>`;
+
 function toggleMute() {
   state.muted = !state.muted;
   const btn = document.getElementById("muteBtn");
-  btn.textContent = state.muted ? "🔇" : "🔊";
+  btn.innerHTML = state.muted ? SPEAKER_OFF_SVG : SPEAKER_ON_SVG;
   btn.setAttribute("aria-label", state.muted ? t("mute_btn_aria_off") : t("mute_btn_aria_on"));
   try { localStorage.setItem("tuttifruti_muted", state.muted ? "1" : "0"); } catch (e) { /* storage unavailable */ }
 }
@@ -2327,6 +2535,28 @@ function loadPack(name) {
 function showScreen(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
+  if (id === "screen-judging") setMascot("judgingMascot", "thinking", "mascot_thinking");
+}
+
+function inlineIcon(name) {
+  return `<span class="inline-icon">${iconSvg(name)}</span>`;
+}
+
+// ---------- Mascota (la manzana del logo, con caras) ----------
+function mascotHtml(mood, lineKey, size = "") {
+  const lines = lineKey ? t(lineKey) : null;
+  const line = Array.isArray(lines) ? lines[Math.floor(Math.random() * lines.length)] : "";
+  return `<div class="mascot-wrap">
+    <div class="mascot ${size} mood-${mood}">${mascotSvg(mood)}</div>
+    ${line ? `<div class="mascot-bubble">${escapeHtml(line)}</div>` : ""}
+  </div>`;
+}
+
+function setMascot(elementId, mood, lineKey, size = "") {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  el.innerHTML = mascotHtml(mood, lineKey, size);
+  el.dataset.mood = mood;
 }
 
 function copyRoomCode() {
@@ -2406,7 +2636,7 @@ function renderCategoryPicker() {
     const randomBtn = document.createElement("button");
     randomBtn.type = "button";
     randomBtn.className = "cat-pick-chip cat-pick-chip-random";
-    randomBtn.textContent = "🎲 " + t("random_category_chip");
+    randomBtn.innerHTML = inlineIcon("dice") + escapeHtml(t("random_category_chip"));
     randomBtn.onclick = () => pickRandomSingleCategory();
     picker.appendChild(randomBtn);
   }
@@ -2503,6 +2733,7 @@ function setMode(mode) {
   document.getElementById("durationField").style.display = mode === "streak" ? "none" : "block";
   document.getElementById("roundsField").style.display = mode === "streak" ? "none" : "block";
   document.getElementById("joinConfigNote").style.display = mode === "join" ? "block" : "none";
+  document.getElementById("twistsField").style.display = mode === "create" ? "block" : "none";
   const labelKeys = { create: "play_btn_create", join: "play_btn_join", random: "play_btn_random", streak: "play_btn_streak" };
   document.getElementById("playBtn").textContent = t(labelKeys[mode]);
   checkCanPlay();
@@ -2558,7 +2789,6 @@ function startRound() {
   }, 80);
 }
 
-const REEL_FRUITS = ["🍎", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓", "🍒", "🍍"];
 
 // Sorteo tipo tragamonedas: primero pasan frutas rápido, después letras cada
 // vez más lentas, y recién ahí cae la letra real.
@@ -2582,7 +2812,11 @@ function spinLetterReveal(finalLetter, onDone) {
       return;
     }
     const step = steps[i++];
-    medal.textContent = step.fruit ? REEL_FRUITS[Math.floor(Math.random() * REEL_FRUITS.length)] : randomLetter();
+    if (step.fruit) {
+      medal.innerHTML = `<span class="medal-fruit">${fruitSvg(FRUIT_KEYS[Math.floor(Math.random() * FRUIT_KEYS.length)])}</span>`;
+    } else {
+      medal.textContent = randomLetter();
+    }
     medal.style.setProperty("--reel-ms", step.ms + "ms");
     medal.classList.remove("reel-step");
     void medal.offsetWidth;
@@ -2598,7 +2832,7 @@ function renderWildcardNote() {
   if (!note) return;
   if (state.wildcardCategory) {
     note.style.display = "flex";
-    note.textContent = "⭐ " + t("wildcard_note", { cat: catLabel(state.wildcardCategory) });
+    note.innerHTML = inlineIcon("star") + escapeHtml(t("wildcard_note", { cat: catLabel(state.wildcardCategory) }));
   } else {
     note.style.display = "none";
   }
@@ -2629,6 +2863,7 @@ function createRoomOnline() {
         duration: state.duration,
         totalRounds: state.totalRounds,
         letterPool: state.letterPool,
+        twists: { ...state.twists },
       },
       players: { [state.playerId]: myPlayerLabel() },
     };
@@ -2681,6 +2916,7 @@ function queueEntryRef(pid) {
 }
 
 function showSearchingScreen() {
+  setMascot("searchSpinner", "thinking", "mascot_searching");
   document.getElementById("searchSpinner").style.display = "block";
   document.getElementById("searchingText").style.display = "block";
   document.getElementById("searchTimeoutOptions").style.display = "none";
@@ -2879,6 +3115,13 @@ function handleRoomUpdate(data) {
   if (currentScreen === "screen-waiting") {
     renderWaitingRoom(data);
   }
+  if (currentScreen === "screen-voting" && data.status === "voting") {
+    renderVoting(data);
+  }
+  if (state.isHost && data.status === "voting" && state.pendingRound && state.pendingRound.round === data.round) {
+    const voters = Object.keys(((data.votes || {})[data.round]) || {}).length;
+    if (voters >= connectedPlayerIds(data).length) hostFinishVote();
+  }
   if (currentScreen === "screen-review" && data.status === "review") {
     renderReviewAnswers(data);
     if (state.isHost) checkAllReviewReady(data);
@@ -2893,10 +3136,15 @@ function handleRoomUpdate(data) {
     state.categories = data.categories || (data.config && data.config.categories) || state.categories;
     state.wildcardCategory = data.wildcard || null;
     state.usedLetters = data.usedLetters || [];
+    state.duration = data.roundDuration || (data.config && data.config.duration) || state.duration;
+    clearInterval(state.voteCountdownId);
     state.answers = {};
     rememberLetter(data.letter);
     recordRoundPlayed(data.letter);
     playOnlineRoundIntro(data);
+  } else if (data.status === "voting" && lastHandledStatus !== "voting") {
+    lastHandledStatus = "voting";
+    showVoting(data);
   } else if (data.status === "collecting" && lastHandledStatus !== "collecting") {
     lastHandledStatus = "collecting";
     onRoundCollecting();
@@ -2924,6 +3172,11 @@ function renderWaitingRoom(data) {
   document.getElementById("waitingRoomCode").textContent = state.roomCode;
   const list = document.getElementById("waitingPlayers");
   const players = data.players || {};
+  const waitingMood = Object.keys(players).length > 1 ? "happy" : "sleepy";
+  const waitingMascot = document.getElementById("waitingMascot");
+  if (waitingMascot && waitingMascot.dataset.mood !== waitingMood) {
+    setMascot("waitingMascot", waitingMood, waitingMood === "happy" ? "mascot_waiting_ready" : "mascot_waiting_alone", "small");
+  }
   list.innerHTML = "";
   Object.keys(players).forEach(pid => {
     const p = players[pid];
@@ -2947,11 +3200,55 @@ function renderWaitingRoom(data) {
   }
 }
 
+const HARD_LETTERS = ["K", "Ñ", "Q", "W", "X", "Y", "Z"];
+const FLASH_DURATION = 20;
+const FLASH_CHANCE = 0.3;
+const VOTE_SECONDS = 8;
+const TWISTS_KEY = "tuttifruti_twists";
+
+function loadTwists() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(TWISTS_KEY) || "null");
+    if (saved && typeof saved === "object") return { hard: !!saved.hard, flash: !!saved.flash, vote: !!saved.vote };
+  } catch (e) { /* storage unavailable */ }
+  return { hard: false, flash: false, vote: false };
+}
+
+function renderTwists() {
+  ["hard", "flash", "vote"].forEach(key => {
+    const btn = document.getElementById("twist-" + key);
+    if (btn) btn.setAttribute("aria-pressed", String(!!state.twists[key]));
+  });
+}
+
+function toggleTwist(key) {
+  state.twists = { ...state.twists, [key]: !state.twists[key] };
+  try { localStorage.setItem(TWISTS_KEY, JSON.stringify(state.twists)); } catch (e) { /* storage unavailable */ }
+  renderTwists();
+}
+
+// Multiplicador de una categoría en una ronda: la categoría doble y la letra
+// difícil se acumulan (una categoría doble con letra difícil vale ×4).
+function roundMultiplier(data, cat) {
+  return (cat === data.wildcard ? 2 : 1) * (data.hardLetter ? 2 : 1);
+}
+
+function renderTwistNote(hardLetter, flashSeconds) {
+  const note = document.getElementById("twistNote");
+  if (!note) return;
+  const parts = [];
+  if (hardLetter) parts.push(inlineIcon("flame") + escapeHtml(t("hard_letter_note")));
+  if (flashSeconds) parts.push(inlineIcon("bolt") + escapeHtml(t("flash_round_note", { s: flashSeconds })));
+  note.innerHTML = parts.join(" · ");
+  note.style.display = parts.length ? "flex" : "none";
+}
+
 function hostStartGame() {
   if (!state.room) return;
-  const pool = (state.room.config && state.room.config.letterPool && state.room.config.letterPool.length)
-    ? state.room.config.letterPool
-    : DEFAULT_LETTERS;
+  const config = state.room.config || {};
+  const twists = config.twists || {};
+  const basePool = (config.letterPool && config.letterPool.length) ? config.letterPool : DEFAULT_LETTERS;
+  const pool = twists.hard ? [...new Set([...basePool, ...HARD_LETTERS])] : basePool;
   let used = state.room.usedLetters || [];
   let available = pool.filter(l => !used.includes(l));
   if (available.length === 0) {
@@ -2960,25 +3257,95 @@ function hostStartGame() {
   }
   const letter = available[Math.floor(Math.random() * available.length)];
   used = [...used, letter];
-  const isRandomCategories = !!(state.room.config && state.room.config.categoriesMode === "random");
-  const baseCategories = (state.room.config && state.room.config.categories) || [];
+  const round = state.room.round || 1;
+  const isRandomCategories = config.categoriesMode === "random";
+  const baseCategories = config.categories || [];
   const hasMysterySlots = baseCategories.some(isMysterySlot);
   const roundCategories = isRandomCategories
     ? pickRandomCategorySet(RANDOM_PACK_CATEGORY_COUNT)
     : (hasMysterySlots ? resolveCategories(baseCategories) : baseCategories);
   const wildcard = pickWildcard(roundCategories);
+  const flash = !!twists.flash && round > 1 && Math.random() < FLASH_CHANCE;
   const updates = {
     status: "playing",
-    round: (state.room.round || 1),
+    round,
     letter,
     wildcard,
     usedLetters: used,
+    hardLetter: !!twists.hard && HARD_LETTERS.includes(letter),
+    roundDuration: flash ? FLASH_DURATION : (config.duration || state.duration),
     roundStartAt: window.FB.serverTimestamp(),
     bastaBy: null,
-    [`answers/${state.room.round || 1}`]: null,
+    [`answers/${round}`]: null,
   };
   if (isRandomCategories || hasMysterySlots) updates.categories = roundCategories;
+
+  if (twists.vote && roundCategories.length > 1) {
+    // Primero se vota la categoría doble; la ronda arranca cuando votan
+    // todos o se acaba el tiempo (ver hostFinishVote).
+    const options = [...roundCategories].sort(() => Math.random() - 0.5).slice(0, 3);
+    state.pendingRound = { round, updates, options };
+    clearTimeout(state.voteTimeoutId);
+    state.voteTimeoutId = setTimeout(hostFinishVote, VOTE_SECONDS * 1000);
+    window.FB.update(roomsRef(), {
+      status: "voting",
+      round,
+      voteOptions: options,
+      voteStartAt: window.FB.serverTimestamp(),
+      [`votes/${round}`]: null,
+      bastaBy: null,
+    });
+    return;
+  }
   window.FB.update(roomsRef(), updates);
+}
+
+function hostFinishVote() {
+  const pending = state.pendingRound;
+  if (!pending || !state.room) return;
+  state.pendingRound = null;
+  clearTimeout(state.voteTimeoutId);
+  const votes = ((state.room.votes || {})[pending.round]) || {};
+  const counts = pending.options.map(() => 0);
+  Object.values(votes).forEach(v => { if (counts[v] != null) counts[v]++; });
+  const max = Math.max(...counts);
+  const top = pending.options.filter((_, i) => counts[i] === max);
+  const wildcard = top[Math.floor(Math.random() * top.length)];
+  window.FB.update(roomsRef(), { ...pending.updates, wildcard, roundStartAt: window.FB.serverTimestamp() });
+}
+
+function showVoting(data) {
+  showScreen("screen-voting");
+  setMascot("votingMascot", "thinking", null, "small");
+  renderVoting(data);
+  clearInterval(state.voteCountdownId);
+  state.voteCountdownId = setInterval(() => {
+    const start = state.room && typeof state.room.voteStartAt === "number" ? state.room.voteStartAt : Date.now();
+    const left = Math.max(0, VOTE_SECONDS * 1000 - (Date.now() - start));
+    const fill = document.getElementById("voteProgressFill");
+    fill.style.width = (left / (VOTE_SECONDS * 10)) + "%";
+    fill.classList.toggle("urgent", left < 3000);
+    if (left <= 0) clearInterval(state.voteCountdownId);
+  }, 200);
+}
+
+function renderVoting(data) {
+  const options = data.voteOptions || [];
+  const votes = ((data.votes || {})[data.round]) || {};
+  const mine = votes[state.playerId];
+  const counts = options.map((_, i) => Object.values(votes).filter(v => v === i).length);
+  document.getElementById("voteOptions").innerHTML = options.map((opt, i) => `
+    <button type="button" class="vote-option${mine === i ? " mine" : ""}" onclick="castVote(${i})">
+      <span>${escapeHtml(catLabel(opt))}</span>
+      <span class="vote-count">${counts[i] === 1 ? t("vote_count_one") : t("vote_count_many", { n: counts[i] })}</span>
+    </button>`).join("");
+  document.getElementById("voteStatus").textContent = t("vote_status", { n: Object.keys(votes).length, total: connectedPlayerIds(data).length });
+}
+
+function castVote(index) {
+  if (!state.room || state.room.status !== "voting") return;
+  const path = `rooms/${state.roomCode}/votes/${state.room.round}/${state.playerId}`;
+  window.FB.set(window.FB.ref(window.FB.db, path), index);
 }
 
 function playOnlineRoundIntro(data) {
@@ -2992,9 +3359,12 @@ function playOnlineRoundIntro(data) {
     : t("round_label", { round: state.round, room: state.roomCode });
   renderOnlinePlayersStrip(data);
 
+  const configDuration = (data.config && data.config.duration) || state.duration;
+  const flashSeconds = data.roundDuration && data.roundDuration < configDuration ? data.roundDuration : 0;
   spinLetterReveal(state.letter, () => {
     renderLetterHistory();
     renderWildcardNote();
+    renderTwistNote(!!data.hardLetter, flashSeconds);
     beginPlayingOnline(data.roundStartAt);
   });
 }
@@ -3245,6 +3615,7 @@ function updateReviewCountdown(startMs) {
 }
 
 const REACTION_EMOJIS = ["😂", "👍", "😱"];
+const REACTION_ICONS = { "😂": () => mascotSvg("happy"), "👍": () => iconSvg("thumb"), "😱": () => mascotSvg("surprised") };
 
 function renderReactionRow(cat, targetPid, reactionsForThis) {
   const catEsc = escapeForJsAttr(cat);
@@ -3252,7 +3623,7 @@ function renderReactionRow(cat, targetPid, reactionsForThis) {
     const reactors = Object.keys((reactionsForThis && reactionsForThis[emoji]) || {});
     const count = reactors.length;
     const mine = reactors.includes(state.playerId);
-    return `<button type="button" class="reaction-btn${mine ? " mine" : ""}" onclick="toggleReaction('${catEsc}','${targetPid}','${emoji}')">${emoji}${count > 0 ? `<span class="count">${count}</span>` : ""}</button>`;
+    return `<button type="button" class="reaction-btn${mine ? " mine" : ""}" onclick="toggleReaction('${catEsc}','${targetPid}','${emoji}')"><span class="reaction-icon">${REACTION_ICONS[emoji]()}</span>${count > 0 ? `<span class="count">${count}</span>` : ""}</button>`;
   }).join("");
   return `<div class="reaction-row" style="flex-basis:100%;">${buttons}</div>`;
 }
@@ -3491,7 +3862,7 @@ async function computeAndApplyScores(data, round) {
   pids.forEach(pid => { roundScores[pid] = {}; });
   categories.forEach(cat => {
     const filled = pids.filter(pid => normalized[cat][pid]);
-    const multiplier = cat === wildcard ? 2 : 1;
+    const multiplier = roundMultiplier(data, cat);
     pids.forEach(pid => {
       const norm = normalized[cat][pid];
       if (!norm) { roundScores[pid][cat] = 0; return; }
@@ -3580,19 +3951,26 @@ function renderOnlineResults(data) {
   const total = categories.reduce((sum, c) => sum + (myScores[c] || 0), 0) + myPenalty;
 
   document.getElementById("resultsTitle").textContent = t("results_title", { round });
-  let summaryHtml = `${t("letter_word")}: <strong>${escapeHtml(data.letter)}</strong> · ${t("points_won_word")}: <strong id="roundTotalCount">${total}</strong>`;
+  let summaryHtml = `${t("letter_word")}: <strong>${escapeHtml(data.letter)}</strong>${data.hardLetter ? ` (${t("hard_letter_summary")})` : ""} · ${t("points_won_word")}: <strong id="roundTotalCount">${total}</strong>`;
   if (myPenalty) summaryHtml += ` <span class="text-negative">${t("includes_penalty", { penalty: myPenalty })}</span>`;
   document.getElementById("resultsSummary").innerHTML = summaryHtml;
   animateCount(document.getElementById("roundTotalCount"), 0, total);
   document.getElementById("globalBoard").style.display = "none";
   renderWordOfRound(data, round, categories);
+  const judgeRejectedMe = categories.some(cat => {
+    const info = judgeInfo[`${cat}|${state.playerId}`];
+    return info && info.valida === false && !info.sinRespuesta;
+  });
+  if (judgeRejectedMe) setMascot("roundMascot", "angry", "mascot_judge_reject", "small");
+  else if (total >= categories.length * 10) setMascot("roundMascot", "happy", "mascot_round_good", "small");
+  else setMascot("roundMascot", "neutral", "mascot_round_ok", "small");
 
   // Para los logros: palabras que nadie más puso y objeciones que el juez te dio a favor.
   let uniqueCount = 0;
   let judgeWinCount = 0;
   categories.forEach(cat => {
     const pts = myScores[cat] || 0;
-    if ((cat === data.wildcard ? pts / 2 : pts) >= 10) uniqueCount++;
+    if (pts / roundMultiplier(data, cat) >= 10) uniqueCount++;
     const info = judgeInfo[`${cat}|${state.playerId}`];
     if (info && info.valida === true && !info.sinRespuesta) judgeWinCount++;
   });
@@ -3607,7 +3985,7 @@ function renderOnlineResults(data) {
     const val = (myAnswers[cat] || "").trim();
     const pts = myScores[cat] || 0;
     const isWild = cat === data.wildcard;
-    const basePts = isWild ? pts / 2 : pts;
+    const basePts = pts / roundMultiplier(data, cat);
     const info = judgeInfo[`${cat}|${state.playerId}`];
     let extra = "";
     if (info) {
@@ -3712,7 +4090,7 @@ function renderOnlineFinal(data) {
     row.className = `rank-row ${p.pid === state.playerId ? "me" : ""}`;
     row.innerHTML = `
       <span class="rank-pos">${i + 1}</span>
-      <span class="rank-name">${playerDotHtml(p.pid, players)}${escapeHtml(p.name)}${i === 0 ? " 🏆" : ""}</span>
+      <span class="rank-name">${playerDotHtml(p.pid, players)}${escapeHtml(p.name)}${i === 0 ? inlineIcon("trophy") : ""}</span>
       <span class="rank-score">${p.score} pts</span>
     `;
     list.appendChild(row);
@@ -3787,6 +4165,9 @@ function hostRematch() {
 }
 
 function leaveRoom() {
+  clearTimeout(state.voteTimeoutId);
+  clearInterval(state.voteCountdownId);
+  state.pendingRound = null;
   unsubscribeFromRoom();
   state.online = false;
   state.room = null;
@@ -4069,7 +4450,7 @@ function startStreakMode() {
 
 function renderStreakPlayersStrip() {
   const strip = document.querySelector(".players-strip");
-  strip.innerHTML = `<span class="chip"><span class="player-avatar">${getMyAvatar()}</span><span>${escapeHtml(state.playerName)}</span></span>`;
+  strip.innerHTML = `<span class="chip"><span class="player-avatar">${fruitSvg(getMyAvatar())}</span><span>${escapeHtml(state.playerName)}</span></span>`;
 }
 
 function startStreakRound() {
@@ -4088,6 +4469,7 @@ function startStreakRound() {
   spinLetterReveal(state.letter, () => {
     renderLetterHistory();
     renderWildcardNote();
+    renderTwistNote(false, 0);
     beginPlayingStreak();
   });
 }
@@ -4151,6 +4533,7 @@ function renderStreakResult(results) {
     `${t("streak_result_rounds", { n: roundsCleared })} · ${t("streak_result_score", { score: `<span id="streakScoreCount">${state.streakScore}</span>` })}`;
   animateCount(document.getElementById("streakScoreCount"), 0, state.streakScore);
   document.getElementById("wordOfRound").innerHTML = "";
+  setMascot("roundMascot", "sad", "mascot_streak_over", "small");
   bumpProgress(p => { p.bestStreakRounds = Math.max(p.bestStreakRounds, roundsCleared); });
   const weeklyScore = state.streakScore;
   const board = document.getElementById("globalBoard");
@@ -4285,7 +4668,7 @@ function pickWordOfRound(data, round, categories) {
   Object.keys(data.players || {}).forEach(pid => {
     categories.forEach(cat => {
       const pts = ((scores[pid] || {})[cat]) || 0;
-      const base = cat === data.wildcard ? pts / 2 : pts;
+      const base = pts / roundMultiplier(data, cat);
       if (base < 10) return;
       const word = (((answers[pid] || {})[cat]) || "").trim();
       if (!word) return;
@@ -4305,7 +4688,7 @@ function renderWordOfRound(data, round, categories) {
   const name = (players[best.pid] && players[best.pid].name) || "";
   box.innerHTML = `
     <div class="word-of-round">
-      <span class="wor-label">⭐ ${t("word_of_round")}</span>
+      <span class="wor-label">${inlineIcon("star")}${t("word_of_round")}</span>
       <span class="wor-word">${escapeHtml(best.word)}</span>
       <span class="wor-by">${playerDotHtml(best.pid, players)}${escapeHtml(name)} · ${escapeHtml(catLabel(best.cat))}</span>
     </div>`;
@@ -4375,17 +4758,17 @@ function markPlayedToday() {
 }
 
 const ACHIEVEMENTS = [
-  { id: "first_game", icon: "🍏", test: (p, s) => s.gamesPlayed >= 1 },
-  { id: "days_3", icon: "🔥", test: p => p.bestDayStreak >= 3 },
-  { id: "days_7", icon: "🗓️", test: p => p.bestDayStreak >= 7 },
-  { id: "first_win", icon: "🏆", test: p => p.wins >= 1 },
-  { id: "ten_wins", icon: "👑", test: p => p.wins >= 10 },
-  { id: "unique_10", icon: "💎", test: p => p.uniqueWords >= 10 },
-  { id: "unique_50", icon: "📚", test: p => p.uniqueWords >= 50 },
-  { id: "beat_judge", icon: "⚖️", test: p => p.judgeWins >= 1 },
-  { id: "streak_5", icon: "⏱️", test: p => p.bestStreakRounds >= 5 },
-  { id: "daily_1", icon: "☀️", test: p => p.dailyCount >= 1 },
-  { id: "daily_7", icon: "🌈", test: p => p.dailyCount >= 7 },
+  { id: "first_game", icon: () => fruitSvg("🍎"), test: (p, s) => s.gamesPlayed >= 1 },
+  { id: "days_3", icon: () => iconSvg("flame"), test: p => p.bestDayStreak >= 3 },
+  { id: "days_7", icon: () => iconSvg("calendar"), test: p => p.bestDayStreak >= 7 },
+  { id: "first_win", icon: () => iconSvg("trophy"), test: p => p.wins >= 1 },
+  { id: "ten_wins", icon: () => iconSvg("crown"), test: p => p.wins >= 10 },
+  { id: "unique_10", icon: () => iconSvg("gem"), test: p => p.uniqueWords >= 10 },
+  { id: "unique_50", icon: () => iconSvg("books"), test: p => p.uniqueWords >= 50 },
+  { id: "beat_judge", icon: () => iconSvg("scales"), test: p => p.judgeWins >= 1 },
+  { id: "streak_5", icon: () => iconSvg("stopwatch"), test: p => p.bestStreakRounds >= 5 },
+  { id: "daily_1", icon: () => iconSvg("sun"), test: p => p.dailyCount >= 1 },
+  { id: "daily_7", icon: () => iconSvg("rainbow"), test: p => p.dailyCount >= 7 },
 ];
 
 function checkAchievements() {
@@ -4403,7 +4786,7 @@ function showAchievementToast(a) {
   if (!stack) return;
   const el = document.createElement("div");
   el.className = "toast";
-  el.innerHTML = `<span class="toast-icon">${a.icon}</span><span><strong>${t("achievement_unlocked")}</strong><br>${t("ach_" + a.id + "_t")}</span>`;
+  el.innerHTML = `<span class="toast-icon">${a.icon()}</span><span><strong>${t("achievement_unlocked")}</strong><br>${t("ach_" + a.id + "_t")}</span>`;
   stack.appendChild(el);
   playDing();
   setTimeout(() => el.classList.add("out"), 3400);
@@ -4417,7 +4800,7 @@ function renderAchievements() {
   grid.innerHTML = ACHIEVEMENTS.map(a => {
     const on = p.unlocked.includes(a.id);
     return `<div class="achievement${on ? "" : " locked"}">
-      <span class="ach-icon">${a.icon}</span>
+      <span class="ach-icon">${a.icon()}</span>
       <span class="ach-title">${t("ach_" + a.id + "_t")}</span>
       <span class="ach-desc">${t("ach_" + a.id + "_d")}</span>
     </div>`;
@@ -4428,7 +4811,7 @@ function renderAchievements() {
 function leaderboardRowHtml(pos, row, isMe) {
   return `<div class="rank-row${isMe ? " me" : ""}">
     <span class="rank-pos">${pos}</span>
-    <span class="rank-name"><span class="player-avatar">${avatarOf(row)}</span>${escapeHtml(row.name)}</span>
+    <span class="rank-name"><span class="player-avatar">${fruitSvg(avatarOf(row))}</span>${escapeHtml(row.name)}</span>
     <span class="rank-score">${Number(row.score) || 0} pts</span>
   </div>`;
 }
@@ -4607,6 +4990,7 @@ function startDaily() {
   spinLetterReveal(ch.letter, () => {
     renderLetterHistory();
     renderWildcardNote();
+    renderTwistNote(false, 0);
     document.getElementById("timerWrap").style.display = "block";
     renderCatGrid();
     document.getElementById("catGrid").style.display = "grid";
@@ -4679,7 +5063,7 @@ function soloReasonText(r, letter) {
 }
 
 function showDailyResult(record, fresh) {
-  document.getElementById("resultsTitle").textContent = "☀️ " + t("daily_result_title") + " · " + formatDayLabel(record.date);
+  document.getElementById("resultsTitle").textContent = t("daily_result_title") + " · " + formatDayLabel(record.date);
   const summary = document.getElementById("resultsSummary");
   if (record.unfinished) {
     summary.textContent = t("daily_unfinished");
@@ -4690,6 +5074,8 @@ function showDailyResult(record, fresh) {
   const scoreKey = document.querySelector("#screen-results .score-key");
   if (scoreKey) scoreKey.style.display = "none";
   document.getElementById("wordOfRound").innerHTML = "";
+  const perfect = !record.unfinished && record.valid === record.total;
+  setMascot("roundMascot", perfect ? "happy" : (record.unfinished ? "sad" : "neutral"), perfect ? "mascot_daily_perfect" : "mascot_daily_ok", "small");
 
   const list = document.getElementById("answerList");
   list.innerHTML = "";
@@ -4740,10 +5126,12 @@ function showDailyResult(record, fresh) {
   showScreen("screen-results");
 }
 
-function shareDailyResult(record) {
+async function shareDailyResult(record) {
+  // La grilla de cuadraditos va en el TEXTO del mensaje (WhatsApp y otros no
+  // muestran dibujos en el texto), igual que el Wordle.
   const grid = (record.grid || "").split("").map(c => (c === "1" ? "🟩" : "🟥")).join("");
   const date = formatDayLabel(record.date);
-  const canvas = buildShareCanvas(record.score + " pts", t("share_daily_subtitle", { valid: record.valid, total: record.total, date }), "☀️");
+  const canvas = await buildShareCanvas(record.score + " pts", t("share_daily_subtitle", { valid: record.valid, total: record.total, date }), iconSvg("sun"));
   shareCanvasImage(canvas, t("share_daily_text", { date, score: record.score, grid }));
 }
 
@@ -4778,22 +5166,20 @@ async function judgeSoloAnswers(categories, answers, letter, round, salaId) {
   return results;
 }
 
-const WIN_CONFETTI_EMOJI = ["🍊", "🍋", "🍓", "🍇", "🍒", "🍍", "🍎", "🍌", "🍉"];
-const LOSE_CONFETTI_EMOJI = ["🍂", "🥀", "🪰", "🍄"];
 
 function launchFruitConfetti(kind) {
   const container = document.getElementById("confettiContainer");
   if (!container) return;
   const isWin = kind !== "lose";
-  const emojiSet = isWin ? WIN_CONFETTI_EMOJI : LOSE_CONFETTI_EMOJI;
-  const count = isWin ? 80 : 36;
+  const count = isWin ? 70 : 32;
   for (let i = 0; i < count; i++) {
     const piece = document.createElement("div");
     piece.className = "confetti-piece" + (isWin ? "" : " confetti-piece-rotten");
-    piece.textContent = emojiSet[Math.floor(Math.random() * emojiSet.length)];
-    const size = isWin ? (20 + Math.random() * 12) : (18 + Math.random() * 10);
+    piece.innerHTML = fruitSvg(FRUIT_KEYS[Math.floor(Math.random() * FRUIT_KEYS.length)]);
+    const size = isWin ? (24 + Math.random() * 14) : (22 + Math.random() * 10);
     piece.style.left = Math.random() * 100 + "vw";
-    piece.style.fontSize = size + "px";
+    piece.style.width = size + "px";
+    piece.style.height = size + "px";
     piece.style.animationDuration = (isWin ? (2.2 + Math.random() * 1.6) : (3.2 + Math.random() * 2)) + "s";
     piece.style.animationDelay = (Math.random() * (isWin ? 0.4 : 0.8)) + "s";
     piece.style.setProperty("--confetti-rotate", `${(Math.random() < 0.5 ? -1 : 1) * (isWin ? 720 : 200)}deg`);
@@ -4828,7 +5214,7 @@ function showFinalScreen() {
     const dotColor = PLAYER_COLORS[i % PLAYER_COLORS.length];
     row.innerHTML = `
       <span class="rank-pos">${i + 1}</span>
-      <span class="rank-name"><span class="player-dot" style="background:${dotColor};"></span>${escapeHtml(p.name)}${i === 0 ? " 🏆" : ""}</span>
+      <span class="rank-name"><span class="player-dot" style="background:${dotColor};"></span>${escapeHtml(p.name)}${i === 0 ? inlineIcon("trophy") : ""}</span>
       <span class="rank-score">${p.score} pts</span>
     `;
     list.appendChild(row);
@@ -4840,17 +5226,11 @@ function showFinalScreen() {
 }
 
 function showFinalOutcomeFor(iWon) {
-  const badge = document.getElementById("finalResultBadge");
+  setMascot("finalResultBadge", iWon ? "happy" : "sad", iWon ? "mascot_win" : "mascot_lose");
   if (iWon) {
-    badge.textContent = "🏆";
     launchConfetti();
   } else {
-    badge.textContent = "👏";
     launchFruitConfetti("lose");
-    const note = document.getElementById("finalSummary");
-    const consolations = t("loser_consolations");
-    const consolation = consolations[Math.floor(Math.random() * consolations.length)];
-    note.innerHTML += `<br><span style="font-size:13px;">${consolation}</span>`;
   }
 }
 
@@ -4889,7 +5269,18 @@ function drawShareLogoIcon(ctx, cx, cy, size, colors) {
   ctx.restore();
 }
 
-function buildShareCanvas(big, subtitle, badgeEmoji) {
+// Los dibujos (SVG) se pasan a imagen para poder pintarlos en la tarjeta.
+function loadSvgImage(svgMarkup, size) {
+  return new Promise(resolve => {
+    const markup = svgMarkup.replace("<svg ", `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" `);
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(markup);
+  });
+}
+
+async function buildShareCanvas(big, subtitle, badgeSvg) {
   const canvas = document.createElement("canvas");
   canvas.width = 1080;
   canvas.height = 1080;
@@ -4923,18 +5314,16 @@ function buildShareCanvas(big, subtitle, badgeEmoji) {
   ctx.font = "800 58px 'Bricolage Grotesque', sans-serif";
   ctx.fillText("tutti.frutti", canvas.width / 2, 400);
 
-  if (badgeEmoji) {
-    ctx.font = "88px sans-serif";
-    ctx.fillText(badgeEmoji, canvas.width / 2, 500);
-  }
+  const badge = badgeSvg ? await loadSvgImage(badgeSvg, 200) : null;
+  if (badge) ctx.drawImage(badge, canvas.width / 2 - 55, 420, 110, 110);
 
   ctx.fillStyle = primary;
   ctx.font = "800 130px 'Bricolage Grotesque', sans-serif";
-  ctx.fillText(big, canvas.width / 2, badgeEmoji ? 660 : 600);
+  ctx.fillText(big, canvas.width / 2, badge ? 660 : 600);
 
   ctx.fillStyle = text;
   ctx.font = "500 42px 'Instrument Sans', sans-serif";
-  wrapCanvasText(ctx, subtitle, canvas.width / 2, badgeEmoji ? 750 : 690, 860, 54);
+  wrapCanvasText(ctx, subtitle, canvas.width / 2, badge ? 750 : 690, 860, 54);
 
   // Pastilla con el link, bien visible en vez de texto apagado.
   const pillY = canvas.height - 130;
@@ -4973,17 +5362,17 @@ function shareCanvasImage(canvas, shareText) {
   }, "image/png");
 }
 
-function shareStreakResult(score, rounds) {
-  const canvas = buildShareCanvas(score + " pts", t("share_streak_subtitle", { rounds }), "🔥");
+async function shareStreakResult(score, rounds) {
+  const canvas = await buildShareCanvas(score + " pts", t("share_streak_subtitle", { rounds }), iconSvg("flame"));
   shareCanvasImage(canvas, t("share_streak_text", { score, rounds }));
 }
 
-function shareFinalResult() {
+async function shareFinalResult() {
   const info = state._finalShareInfo || { score: 0, won: false };
-  const canvas = buildShareCanvas(
+  const canvas = await buildShareCanvas(
     info.score + " pts",
     info.won ? t("share_final_won_subtitle") : t("share_final_subtitle"),
-    info.won ? "🏆" : "👏"
+    mascotSvg(info.won ? "happy" : "sad")
   );
   shareCanvasImage(canvas, info.won ? t("share_final_won_text", { score: info.score }) : t("share_final_text", { score: info.score }));
 }
@@ -5018,9 +5407,14 @@ function goToLobby() {
   if (rankingSection) rankingSection.style.display = "";
   document.getElementById("globalBoard").style.display = "none";
   document.getElementById("wordOfRound").innerHTML = "";
+  document.getElementById("roundMascot").innerHTML = "";
+  document.getElementById("waitingMascot").dataset.mood = "";
   document.getElementById("nextRoundBtn").style.display = "";
   renderDailyBanner();
   if (state.online) {
+    clearTimeout(state.voteTimeoutId);
+    clearInterval(state.voteCountdownId);
+    state.pendingRound = null;
     unsubscribeFromRoom();
     state.online = false;
     state.room = null;
@@ -5066,7 +5460,7 @@ try {
   const savedMuted = localStorage.getItem("tuttifruti_muted");
   if (savedMuted === "1") {
     state.muted = true;
-    document.getElementById("muteBtn").textContent = "🔇";
+    document.getElementById("muteBtn").innerHTML = SPEAKER_OFF_SVG;
   }
   document.getElementById("muteBtn").setAttribute("aria-label", state.muted ? t("mute_btn_aria_off") : t("mute_btn_aria_on"));
   renderPresetGrid();
@@ -5079,6 +5473,10 @@ try {
 applyRoomLinkFromUrl();
 setMode(state.mode);
 checkCanPlay();
+document.getElementById("dailyBannerIcon").innerHTML = iconSvg("sun");
+document.querySelectorAll("[data-icon]").forEach(el => { el.innerHTML = iconSvg(el.dataset.icon); });
+state.twists = loadTwists();
+renderTwists();
 renderAvatarPicker();
 renderDailyBanner();
 checkAchievements();
@@ -5088,5 +5486,6 @@ checkAchievements();
 
 <script src="cookie-consent.js"></script>
 <script src="analytics.js"></script>
+<script src="pwa.js"></script>
 </body>
 </html>

@@ -1,0 +1,17 @@
+{
+  "name": "tutti.frutti",
+  "short_name": "tutti.frutti",
+  "description": "Tutti frutti online con amigos, rival al azar, contrarreloj y desafío del día.",
+  "lang": "es",
+  "start_url": "/jugar.html?source=app",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#14101F",
+  "theme_color": "#14101F",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
