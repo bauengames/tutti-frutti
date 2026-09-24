@@ -579,6 +579,105 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
 .confetti-piece-rotten { opacity: .8; filter: grayscale(.55) saturate(.7); }
 @keyframes confetti-fall { to { transform: translateY(110vh) rotate(var(--confetti-rotate)); opacity: .4; } }
 
+/* ---------- Sorteo de letra tipo tragamonedas ---------- */
+.medal.spinning.reel-step { animation: reel-step var(--reel-ms, 80ms) ease-out; }
+@keyframes reel-step {
+  from { transform: translateY(-38%); opacity: .25; filter: blur(3px); }
+  to { transform: translateY(0); opacity: 1; filter: blur(0); }
+}
+
+/* ---------- Últimos 10 segundos ---------- */
+.timer.final { animation: timer-beat 1s ease-in-out infinite; }
+@keyframes timer-beat { 0%, 100% { transform: scale(1); } 14% { transform: scale(1.14); } 28% { transform: scale(1); } 42% { transform: scale(1.07); } 56% { transform: scale(1); } }
+.board.shake { animation: board-shake .35s ease; }
+@keyframes board-shake {
+  0%, 100% { transform: translateX(0); } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); } 80% { transform: translateX(2px); }
+}
+
+/* ---------- Avatares de fruta ---------- */
+.player-avatar {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 26px; height: 26px; margin-right: 8px; border-radius: 50%;
+  font-size: 15px; line-height: 1; vertical-align: middle;
+  background: var(--crema-08); box-shadow: inset 0 0 0 2px var(--pc, transparent);
+}
+.chip .player-avatar { width: 20px; height: 20px; margin-right: 0; font-size: 12px; }
+.avatar-picker { display: flex; flex-wrap: wrap; gap: 8px; }
+.avatar-option {
+  width: 46px; height: 46px; border-radius: 12px; cursor: pointer;
+  border: 2px solid var(--borde); background: var(--surface); font-size: 24px; line-height: 1;
+  transition: border-color .15s, transform .1s;
+}
+.avatar-option:hover { border-color: var(--primary); }
+.avatar-option.selected { border-color: var(--primary); background: var(--crema-08); transform: scale(1.08); }
+
+/* ---------- Resultados animados ---------- */
+.answer-row.reveal { animation: row-in .35s ease both; }
+@keyframes row-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.answer-row.reveal .points { animation: points-pop .45s cubic-bezier(.34, 1.56, .64, 1) both; animation-delay: var(--pop-delay, 0s); }
+@keyframes points-pop { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+.word-of-round {
+  display: flex; flex-direction: column; align-items: center; gap: 4px; text-align: center;
+  padding: 18px; margin: 0 0 18px; border-radius: var(--radius-card);
+  background: var(--surface); border: 2px dashed var(--mandarina);
+  animation: row-in .5s ease both .2s;
+}
+.wor-label { font: 700 12px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--mandarina); }
+html[data-light] .wor-label { color: var(--tinta); }
+.wor-word { font: 800 34px/1.1 var(--font-display); letter-spacing: -.02em; color: var(--text); overflow-wrap: anywhere; }
+.wor-by { font-size: 14px; color: var(--crema-72); display: inline-flex; align-items: center; }
+.series-line { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; margin: 14px 0 0; font-size: 16px; }
+.series-line .series-label { font: 700 12px var(--font-mono); letter-spacing: .12em; text-transform: uppercase; opacity: .8; align-self: center; }
+.series-item { display: inline-flex; align-items: center; gap: 6px; }
+.series-item strong { font: 800 20px var(--font-display); }
+
+/* ---------- Desafío del día ---------- */
+.daily-banner {
+  width: 100%; display: flex; align-items: center; gap: 14px; text-align: left;
+  padding: 16px 18px; margin: 0 0 18px; border-radius: var(--radius-card); cursor: pointer;
+  border: 2px solid var(--mandarina); background: rgba(255,166,43,.12); color: var(--text);
+  font-family: var(--font-body); transition: transform .1s, filter .15s;
+}
+.daily-banner:hover { filter: brightness(1.08); }
+.daily-banner:active { transform: translateY(2px); }
+.daily-banner .daily-icon { font-size: 32px; line-height: 1; animation: sun-spin 12s linear infinite; }
+@keyframes sun-spin { to { transform: rotate(360deg); } }
+.daily-banner .daily-text { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.daily-banner strong { font: 800 18px var(--font-display); letter-spacing: -.01em; }
+.daily-banner .daily-sub { font-size: 14px; color: var(--crema-72); }
+.daily-banner .daily-arrow { font: 800 22px var(--font-display); color: var(--mandarina); }
+html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
+.daily-banner.done { border-style: dashed; background: var(--surface); }
+
+/* ---------- Rankings globales ---------- */
+.global-board { margin-top: 26px; }
+.global-board .board-me { text-align: center; margin: 10px 0 6px; }
+
+/* ---------- Logros ---------- */
+.achievements-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin: 0 0 28px; }
+.achievement {
+  background: var(--surface); border-radius: var(--radius-card); padding: 14px 12px; text-align: center;
+  border: 2px solid var(--lima);
+}
+.achievement .ach-icon { font-size: 30px; line-height: 1; display: block; margin-bottom: 6px; }
+.achievement .ach-title { font: 800 15px var(--font-display); display: block; color: var(--text); }
+.achievement .ach-desc { font-size: 12px; color: var(--text-muted); display: block; margin-top: 4px; line-height: 1.35; }
+.achievement.locked { border-color: transparent; opacity: .55; }
+.achievement.locked .ach-icon { filter: grayscale(1); opacity: .6; }
+
+.toast-stack { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 70; display: flex; flex-direction: column; gap: 8px; width: min(92vw, 380px); pointer-events: none; }
+.toast {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: var(--radius-card);
+  background: var(--surface); color: var(--text); border: 2px solid var(--lima);
+  box-shadow: 0 10px 30px rgba(0,0,0,.3); font-size: 14px; line-height: 1.35;
+  animation: toast-in .4s cubic-bezier(.34, 1.56, .64, 1) both;
+}
+.toast .toast-icon { font-size: 30px; line-height: 1; }
+.toast.out { animation: toast-out .4s ease forwards; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(-16px) scale(.95); } to { opacity: 1; transform: none; } }
+@keyframes toast-out { to { opacity: 0; transform: translateY(-16px); } }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 520px) {
   body { padding: 12px 14px 48px; }
@@ -672,6 +771,15 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
       <p class="lead" data-i18n="lobby_lead">Tutti frutti online. Elegí categorías, invitá a tus amigos y que empiece la ronda.</p>
     </div>
 
+    <button type="button" class="daily-banner" id="dailyBanner" onclick="openDaily()">
+      <span class="daily-icon" aria-hidden="true">☀️</span>
+      <span class="daily-text">
+        <strong data-i18n="daily_banner_title">Desafío del día</strong>
+        <span class="daily-sub" id="dailyBannerSub"></span>
+      </span>
+      <span class="daily-arrow" aria-hidden="true">→</span>
+    </button>
+
     <div class="mode-tabs">
       <button type="button" class="mode-tab active" id="tabCreate" onclick="setMode('create')" data-i18n="tab_create">Crear sala</button>
       <button type="button" class="mode-tab" id="tabJoin" onclick="setMode('join')" data-i18n="tab_join">Unirme</button>
@@ -698,6 +806,11 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
     <div class="field">
       <label class="label" for="playerName" data-i18n="label_player_name">Tu nombre</label>
       <input type="text" id="playerName" placeholder="¿Cómo te llamás?" oninput="checkCanPlay()" autocomplete="nickname" data-i18n-placeholder="player_name_placeholder" />
+    </div>
+
+    <div class="field">
+      <span class="label" id="avatarLabel" data-i18n="avatar_label">Tu fruta</span>
+      <div class="avatar-picker" id="avatarPicker" role="radiogroup" aria-labelledby="avatarLabel"></div>
     </div>
 
     <div class="field" id="roomFieldCreate">
@@ -792,8 +905,14 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
         <div class="stat-card"><span class="stat-value" id="statRounds">0</span><span class="stat-label" data-i18n="stats_rounds">Rondas jugadas</span></div>
         <div class="stat-card"><span class="stat-value" id="statLetter">–</span><span class="stat-label" data-i18n="stats_top_letter">Letra más frecuente</span></div>
         <div class="stat-card"><span class="stat-value" id="statStreakBest">0</span><span class="stat-label" data-i18n="stats_streak_best">Mejor puntaje contrarreloj</span></div>
+        <div class="stat-card"><span class="stat-value" id="statDayStreak">0</span><span class="stat-label" data-i18n="stats_day_streak">Días seguidos jugando</span></div>
+        <div class="stat-card"><span class="stat-value" id="statWins">0</span><span class="stat-label" data-i18n="stats_wins">Victorias online</span></div>
       </div>
-      <h2 class="section-title" data-i18n="stats_streak_top_heading">Mejores rachas</h2>
+      <h2 class="section-title" data-i18n="achievements_heading">Logros</h2>
+      <div class="achievements-grid" id="achievementsGrid"></div>
+      <h2 class="section-title" data-i18n="weekly_board_heading">Ranking contrarreloj de la semana</h2>
+      <div id="statsWeeklyBoard"></div>
+      <h2 class="section-title" style="margin-top:28px;" data-i18n="stats_streak_top_heading">Mejores rachas</h2>
       <div id="streakHistoryList"></div>
       <div class="actions-row">
         <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
@@ -889,7 +1008,13 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
         <p id="resultsSummary"></p>
         <p class="score-key"><span><span>0</span><span data-i18n="score_key_0">vacía o inválida</span></span><span><span>5</span><span data-i18n="score_key_5">repetida</span></span><span><span>10</span><span data-i18n="score_key_10">nadie más la puso</span></span><span><span>20</span><span data-i18n="score_key_20">sos el único que completó</span></span></p>
       </div>
+      <div id="wordOfRound"></div>
       <div id="answerList"></div>
+
+      <div class="global-board" id="globalBoard" style="display:none;">
+        <h2 class="section-title" id="globalBoardHeading"></h2>
+        <div id="globalBoardList"></div>
+      </div>
 
       <div id="myObjectionsOutcome"></div>
 
@@ -918,6 +1043,7 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
         <div class="result-badge" id="finalResultBadge"></div>
         <h2 data-i18n="final_heading">¡Partida terminada!</h2>
         <p id="finalSummary"></p>
+        <p class="series-line" id="finalSeries" style="display:none;"></p>
       </div>
       <div class="ranking">
         <div id="finalRankingList"></div>
@@ -949,10 +1075,10 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import {
     getDatabase, ref, set, get, update, onValue, off, runTransaction,
-    serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst
+    serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst, limitToLast
   } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
   import {
-    getAuth, signInAnonymously, setPersistence, browserSessionPersistence
+    getAuth, signInAnonymously, setPersistence, browserLocalPersistence
   } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
   const firebaseConfig = {
@@ -969,20 +1095,20 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
   const db = getDatabase(app);
 
   // Identidad anónima de Firebase: las reglas de la base la usan para que
-  // cada jugador solo pueda escribir sus propias respuestas. Persistencia por
-  // pestaña (sessionStorage), igual que el ID que se usaba antes: dos
-  // pestañas en la misma compu siguen siendo dos jugadores distintos.
+  // cada jugador solo pueda escribir sus propias respuestas. Queda guardada en
+  // el navegador, así el jugador sigue siendo el mismo en los rankings aunque
+  // cierre la pestaña (dos pestañas del mismo navegador son el mismo jugador).
   let uid = null;
   try {
     const auth = getAuth(app);
-    await setPersistence(auth, browserSessionPersistence);
+    await setPersistence(auth, browserLocalPersistence);
     const cred = await signInAnonymously(auth);
     uid = cred.user.uid;
   } catch (e) {
     console.error("No se pudo iniciar sesión anónima en Firebase", e);
   }
 
-  window.FB = { db, uid, ref, set, get, update, onValue, off, runTransaction, serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst };
+  window.FB = { db, uid, ref, set, get, update, onValue, off, runTransaction, serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst, limitToLast };
   window.dispatchEvent(new Event("firebase-ready"));
 </script>
 
@@ -1255,6 +1381,54 @@ const I18N = {
     share_final_won_subtitle: "¡Gané la partida de tutti.frutti!",
     share_final_text: "Hice {score} puntos en una partida de tutti.frutti. Jugá vos también:",
     share_final_won_text: "¡Gané una partida de tutti.frutti con {score} puntos! Jugá vos también:",
+    avatar_label: "Tu fruta",
+    daily_banner_title: "Desafío del día",
+    daily_banner_play: "La misma letra para todos · una sola oportunidad",
+    daily_banner_done: "Ya jugaste hoy: {score} pts · ver ranking",
+    daily_need_name: "Escribí tu nombre para jugar el desafío del día.",
+    daily_round_label: "Desafío del día · {date}",
+    daily_result_title: "Desafío del día",
+    daily_result_summary: "{valid} de {total} válidas · {score} pts",
+    daily_time_bonus: "Incluye {bonus} pts de bonus por los segundos que te sobraron.",
+    daily_come_back: "Mañana hay una letra nueva.",
+    daily_board_heading: "Ranking de hoy",
+    daily_board_empty: "Todavía nadie terminó el desafío de hoy.",
+    daily_unfinished: "Empezaste el desafío de hoy pero no lo terminaste. Mañana hay otro.",
+    share_daily_subtitle: "{valid}/{total} válidas en el desafío del {date}",
+    share_daily_text: "☀️ Desafío del día de tutti.frutti ({date}): {score} pts\n{grid}\n¿Vos cuántos hacés?",
+    weekly_board_heading: "Ranking contrarreloj de la semana",
+    weekly_board_empty: "Nadie jugó el contrarreloj esta semana todavía.",
+    board_loading: "Cargando ranking...",
+    board_error: "No se pudo cargar el ranking.",
+    board_outside_top: "Todavía no entrás en el top {limit}. Tu puntaje:",
+    word_of_round: "Palabra de la ronda",
+    series_label: "Serie",
+    stats_day_streak: "Días seguidos jugando",
+    stats_wins: "Victorias online",
+    achievements_heading: "Logros",
+    achievement_unlocked: "¡Logro desbloqueado!",
+    ach_first_game_t: "Primera partida",
+    ach_first_game_d: "Jugaste tu primera partida.",
+    ach_first_win_t: "Primera victoria",
+    ach_first_win_d: "Ganaste una partida online.",
+    ach_ten_wins_t: "Imparable",
+    ach_ten_wins_d: "Ganaste 10 partidas online.",
+    ach_unique_10_t: "Original",
+    ach_unique_10_d: "Pusiste 10 palabras que nadie más puso.",
+    ach_unique_50_t: "Diccionario andante",
+    ach_unique_50_d: "Pusiste 50 palabras que nadie más puso.",
+    ach_beat_judge_t: "Le ganaste al juez",
+    ach_beat_judge_d: "Te objetaron una palabra y el juez te dio la razón.",
+    ach_days_3_t: "Constante",
+    ach_days_3_d: "Jugaste 3 días seguidos.",
+    ach_days_7_t: "Fanático",
+    ach_days_7_d: "Jugaste 7 días seguidos.",
+    ach_streak_5_t: "Contra el reloj",
+    ach_streak_5_d: "Superaste 5 rondas en el contrarreloj.",
+    ach_daily_1_t: "Madrugador",
+    ach_daily_1_d: "Terminaste tu primer desafío del día.",
+    ach_daily_7_t: "Coleccionista",
+    ach_daily_7_d: "Terminaste 7 desafíos del día.",
   },
   en: {
     theme_menu_label: "Themes",
@@ -1421,6 +1595,54 @@ const I18N = {
     share_final_won_subtitle: "I won a tutti.frutti match!",
     share_final_text: "I scored {score} points in a tutti.frutti match. Play too:",
     share_final_won_text: "I won a tutti.frutti match with {score} points! Play too:",
+    avatar_label: "Your fruit",
+    daily_banner_title: "Daily challenge",
+    daily_banner_play: "Same letter for everyone · one try only",
+    daily_banner_done: "You played today: {score} pts · see ranking",
+    daily_need_name: "Type your name to play the daily challenge.",
+    daily_round_label: "Daily challenge · {date}",
+    daily_result_title: "Daily challenge",
+    daily_result_summary: "{valid} of {total} valid · {score} pts",
+    daily_time_bonus: "Includes a {bonus}-point bonus for the seconds you had left.",
+    daily_come_back: "A new letter comes out tomorrow.",
+    daily_board_heading: "Today's ranking",
+    daily_board_empty: "Nobody has finished today's challenge yet.",
+    daily_unfinished: "You started today's challenge but didn't finish it. There's a new one tomorrow.",
+    share_daily_subtitle: "{valid}/{total} valid in the {date} daily challenge",
+    share_daily_text: "☀️ tutti.frutti daily challenge ({date}): {score} pts\n{grid}\nHow many can you get?",
+    weekly_board_heading: "This week's time attack ranking",
+    weekly_board_empty: "Nobody has played time attack this week yet.",
+    board_loading: "Loading ranking...",
+    board_error: "Couldn't load the ranking.",
+    board_outside_top: "You're not in the top {limit} yet. Your score:",
+    word_of_round: "Word of the round",
+    series_label: "Series",
+    stats_day_streak: "Days in a row",
+    stats_wins: "Online wins",
+    achievements_heading: "Achievements",
+    achievement_unlocked: "Achievement unlocked!",
+    ach_first_game_t: "First game",
+    ach_first_game_d: "You played your first game.",
+    ach_first_win_t: "First win",
+    ach_first_win_d: "You won an online match.",
+    ach_ten_wins_t: "Unstoppable",
+    ach_ten_wins_d: "You won 10 online matches.",
+    ach_unique_10_t: "Original",
+    ach_unique_10_d: "You wrote 10 words nobody else wrote.",
+    ach_unique_50_t: "Walking dictionary",
+    ach_unique_50_d: "You wrote 50 words nobody else wrote.",
+    ach_beat_judge_t: "Beat the judge",
+    ach_beat_judge_d: "Someone challenged your word and the judge sided with you.",
+    ach_days_3_t: "Steady",
+    ach_days_3_d: "You played 3 days in a row.",
+    ach_days_7_t: "Hooked",
+    ach_days_7_d: "You played 7 days in a row.",
+    ach_streak_5_t: "Against the clock",
+    ach_streak_5_d: "You cleared 5 rounds in time attack.",
+    ach_daily_1_t: "Early bird",
+    ach_daily_1_d: "You finished your first daily challenge.",
+    ach_daily_7_t: "Collector",
+    ach_daily_7_d: "You finished 7 daily challenges.",
   },
   pt: {
     theme_menu_label: "Temas",
@@ -1587,6 +1809,54 @@ const I18N = {
     share_final_won_subtitle: "Ganhei uma partida de tutti.frutti!",
     share_final_text: "Fiz {score} pontos em uma partida de tutti.frutti. Jogue também:",
     share_final_won_text: "Ganhei uma partida de tutti.frutti com {score} pontos! Jogue também:",
+    avatar_label: "Sua fruta",
+    daily_banner_title: "Desafio do dia",
+    daily_banner_play: "A mesma letra para todos · uma única chance",
+    daily_banner_done: "Você já jogou hoje: {score} pts · ver ranking",
+    daily_need_name: "Escreva seu nome para jogar o desafio do dia.",
+    daily_round_label: "Desafio do dia · {date}",
+    daily_result_title: "Desafio do dia",
+    daily_result_summary: "{valid} de {total} válidas · {score} pts",
+    daily_time_bonus: "Inclui {bonus} pts de bônus pelos segundos que sobraram.",
+    daily_come_back: "Amanhã tem uma letra nova.",
+    daily_board_heading: "Ranking de hoje",
+    daily_board_empty: "Ninguém terminou o desafio de hoje ainda.",
+    daily_unfinished: "Você começou o desafio de hoje mas não terminou. Amanhã tem outro.",
+    share_daily_subtitle: "{valid}/{total} válidas no desafio de {date}",
+    share_daily_text: "☀️ Desafio do dia do tutti.frutti ({date}): {score} pts\n{grid}\nQuantos você consegue?",
+    weekly_board_heading: "Ranking do contra-relógio da semana",
+    weekly_board_empty: "Ninguém jogou o contra-relógio esta semana ainda.",
+    board_loading: "Carregando ranking...",
+    board_error: "Não foi possível carregar o ranking.",
+    board_outside_top: "Você ainda não está no top {limit}. Sua pontuação:",
+    word_of_round: "Palavra da rodada",
+    series_label: "Série",
+    stats_day_streak: "Dias seguidos jogando",
+    stats_wins: "Vitórias online",
+    achievements_heading: "Conquistas",
+    achievement_unlocked: "Conquista desbloqueada!",
+    ach_first_game_t: "Primeira partida",
+    ach_first_game_d: "Você jogou sua primeira partida.",
+    ach_first_win_t: "Primeira vitória",
+    ach_first_win_d: "Você ganhou uma partida online.",
+    ach_ten_wins_t: "Imparável",
+    ach_ten_wins_d: "Você ganhou 10 partidas online.",
+    ach_unique_10_t: "Original",
+    ach_unique_10_d: "Você escreveu 10 palavras que ninguém mais escreveu.",
+    ach_unique_50_t: "Dicionário ambulante",
+    ach_unique_50_d: "Você escreveu 50 palavras que ninguém mais escreveu.",
+    ach_beat_judge_t: "Venceu o juiz",
+    ach_beat_judge_d: "Contestaram sua palavra e o juiz te deu razão.",
+    ach_days_3_t: "Constante",
+    ach_days_3_d: "Você jogou 3 dias seguidos.",
+    ach_days_7_t: "Viciado",
+    ach_days_7_d: "Você jogou 7 dias seguidos.",
+    ach_streak_5_t: "Contra o relógio",
+    ach_streak_5_d: "Você passou 5 rodadas no contra-relógio.",
+    ach_daily_1_t: "Madrugador",
+    ach_daily_1_d: "Você terminou seu primeiro desafio do dia.",
+    ach_daily_7_t: "Colecionador",
+    ach_daily_7_d: "Você terminou 7 desafios do dia.",
   },
 };
 
@@ -1621,6 +1891,7 @@ function setLanguage(lang) {
   if (menu) menu.classList.remove("open");
   document.getElementById("muteBtn").setAttribute("aria-label", state.muted ? t("mute_btn_aria_off") : t("mute_btn_aria_on"));
   renderCatChips();
+  renderDailyBanner();
   if (document.getElementById("tabCreate")) setMode(state.mode);
 
   // Best-effort: si hay una pantalla dinámica visible con datos ya conocidos,
@@ -1663,8 +1934,44 @@ function playerColor(pid, players) {
   return PLAYER_COLORS[(idx >= 0 ? idx : 0) % PLAYER_COLORS.length];
 }
 
+// El avatar viaja por Firebase como texto libre: solo se muestra si es una de
+// estas frutas, así nadie puede meter HTML haciéndolo pasar por avatar.
+const AVATARS = ["🍎", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓", "🍒", "🍑", "🍍", "🥝", "🥥"];
+const AVATAR_KEY = "tuttifruti_avatar";
+
+function avatarOf(p) {
+  return p && AVATARS.includes(p.avatar) ? p.avatar : "🍏";
+}
+
+function getMyAvatar() {
+  try {
+    const saved = localStorage.getItem(AVATAR_KEY);
+    if (AVATARS.includes(saved)) return saved;
+    const picked = AVATARS[Math.floor(Math.random() * AVATARS.length)];
+    localStorage.setItem(AVATAR_KEY, picked);
+    return picked;
+  } catch (e) {
+    return AVATARS[0];
+  }
+}
+
+function setMyAvatar(avatar) {
+  if (!AVATARS.includes(avatar)) return;
+  try { localStorage.setItem(AVATAR_KEY, avatar); } catch (e) { /* storage unavailable */ }
+  renderAvatarPicker();
+}
+
+function renderAvatarPicker() {
+  const picker = document.getElementById("avatarPicker");
+  if (!picker) return;
+  const mine = getMyAvatar();
+  picker.innerHTML = AVATARS.map(a =>
+    `<button type="button" class="avatar-option${a === mine ? " selected" : ""}" role="radio" aria-checked="${a === mine}" aria-label="${a}" onclick="setMyAvatar('${a}')">${a}</button>`
+  ).join("");
+}
+
 function playerDotHtml(pid, players) {
-  return `<span class="player-dot" style="background:${playerColor(pid, players)};"></span>`;
+  return `<span class="player-avatar" style="--pc:${playerColor(pid, players)};">${avatarOf((players || {})[pid])}</span>`;
 }
 
 let state = {
@@ -1754,6 +2061,7 @@ function recordGameStart() {
   const stats = getStats();
   stats.gamesPlayed += 1;
   saveStats(stats);
+  markPlayedToday();
 }
 
 function recordRoundPlayed(letter) {
@@ -1778,6 +2086,11 @@ function showStatsScreen() {
   document.getElementById("statLetter").textContent = topLetter(stats.letterCounts) || "–";
   const history = getStreakHistory();
   document.getElementById("statStreakBest").textContent = history.length ? history[0].score : 0;
+  const progress = getProgress();
+  document.getElementById("statDayStreak").textContent = currentDayStreak(progress) + (currentDayStreak(progress) ? " 🔥" : "");
+  document.getElementById("statWins").textContent = progress.wins;
+  renderAchievements();
+  renderLeaderboard(`weekly/${weekKey()}`, document.getElementById("statsWeeklyBoard"), "weekly_board_empty");
 
   const list = document.getElementById("streakHistoryList");
   list.innerHTML = "";
@@ -2245,6 +2558,41 @@ function startRound() {
   }, 80);
 }
 
+const REEL_FRUITS = ["🍎", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓", "🍒", "🍍"];
+
+// Sorteo tipo tragamonedas: primero pasan frutas rápido, después letras cada
+// vez más lentas, y recién ahí cae la letra real.
+function spinLetterReveal(finalLetter, onDone) {
+  const medal = document.getElementById("medal");
+  clearTimeout(state.spinId);
+  medal.classList.remove("bounce");
+  medal.classList.add("spinning");
+  const steps = [];
+  for (let i = 0; i < 8; i++) steps.push({ fruit: true, ms: 70 });
+  [70, 80, 95, 115, 140, 170, 210, 260].forEach(ms => steps.push({ fruit: false, ms }));
+  let i = 0;
+  const next = () => {
+    if (i >= steps.length) {
+      medal.classList.remove("spinning", "reel-step");
+      medal.textContent = finalLetter;
+      medal.classList.add("bounce");
+      playDing();
+      setTimeout(() => medal.classList.remove("bounce"), 650);
+      onDone();
+      return;
+    }
+    const step = steps[i++];
+    medal.textContent = step.fruit ? REEL_FRUITS[Math.floor(Math.random() * REEL_FRUITS.length)] : randomLetter();
+    medal.style.setProperty("--reel-ms", step.ms + "ms");
+    medal.classList.remove("reel-step");
+    void medal.offsetWidth;
+    medal.classList.add("reel-step");
+    if (!step.fruit && step.ms >= 140) playTic();
+    state.spinId = setTimeout(next, step.ms);
+  };
+  next();
+}
+
 function renderWildcardNote() {
   const note = document.getElementById("wildcardNote");
   if (!note) return;
@@ -2263,7 +2611,7 @@ function roomsRef() {
 }
 
 function myPlayerLabel() {
-  return { name: state.playerName, score: 0, connected: true };
+  return { name: state.playerName, score: 0, connected: true, avatar: getMyAvatar() };
 }
 
 function createRoomOnline() {
@@ -2346,6 +2694,7 @@ function startRandomMatch() {
 
     await window.FB.set(queueEntryRef(state.playerId), {
       name: state.playerName,
+      avatar: getMyAvatar(),
       status: "waiting",
       createdAt: window.FB.serverTimestamp(),
       roomCode: null,
@@ -2442,7 +2791,7 @@ async function claimOpponent(candidateId) {
     },
     players: {
       [state.playerId]: myPlayerLabel(),
-      [candidateId]: { name: candidateData.name || t("opponent_generic"), score: 0, connected: true },
+      [candidateId]: { name: candidateData.name || t("opponent_generic"), score: 0, connected: true, avatar: avatarOf(candidateData) },
     },
   };
   await window.FB.set(roomsRef(), roomData);
@@ -2643,23 +2992,11 @@ function playOnlineRoundIntro(data) {
     : t("round_label", { round: state.round, room: state.roomCode });
   renderOnlinePlayersStrip(data);
 
-  const medal = document.getElementById("medal");
-  medal.classList.add("spinning");
-  let ticks = 0;
-  const spinId = setInterval(() => {
-    medal.textContent = randomLetter();
-    ticks++;
-    if (ticks > 10) {
-      clearInterval(spinId);
-      medal.classList.remove("spinning");
-      medal.textContent = state.letter;
-      medal.classList.add("bounce");
-      setTimeout(() => medal.classList.remove("bounce"), 650);
-      renderLetterHistory();
-      renderWildcardNote();
-      beginPlayingOnline(data.roundStartAt);
-    }
-  }, 80);
+  spinLetterReveal(state.letter, () => {
+    renderLetterHistory();
+    renderWildcardNote();
+    beginPlayingOnline(data.roundStartAt);
+  });
 }
 
 function renderOfflinePlayersStrip() {
@@ -2684,7 +3021,7 @@ function renderOnlinePlayersStrip(data) {
     const span = document.createElement("span");
     span.className = "chip";
     if (pid !== state.playerId) span.style.opacity = "0.6";
-    span.innerHTML = `<span class="dot" style="background:${playerColor(pid, players)};"></span><span>${escapeHtml(p.name)}${pid === state.playerId ? t("you_suffix") : ""}</span>`;
+    span.innerHTML = `${playerDotHtml(pid, players)}<span>${escapeHtml(p.name)}${pid === state.playerId ? t("you_suffix") : ""}</span>`;
     strip.appendChild(span);
   });
 }
@@ -2697,11 +3034,13 @@ function beginPlayingOnline(roundStartAt) {
   focusFirstAnswer();
   const startMs = typeof roundStartAt === "number" ? roundStartAt : Date.now();
   updateTimerDisplay();
+  let lastTicSecond = null;
   state.timerId = setInterval(() => {
     const elapsed = (Date.now() - startMs) / 1000;
     state.secondsLeft = Math.max(0, Math.ceil(state.duration - elapsed));
     updateTimerDisplay();
-    if (state.secondsLeft > 0 && state.secondsLeft <= 5) {
+    if (state.secondsLeft > 0 && state.secondsLeft <= 5 && state.secondsLeft !== lastTicSecond) {
+      lastTicSecond = state.secondsLeft;
       playTic();
       vibrate(50);
     }
@@ -2712,7 +3051,11 @@ function beginPlayingOnline(roundStartAt) {
 }
 
 function onBastaTap() {
-  if (state.streakMode) {
+  if (state.dailyMode) {
+    playDing();
+    vibrate([30, 40, 30]);
+    finishDailyRound();
+  } else if (state.streakMode) {
     onStreakReadyTap();
   } else if (state.online) {
     triggerBasta();
@@ -3237,13 +3580,30 @@ function renderOnlineResults(data) {
   const total = categories.reduce((sum, c) => sum + (myScores[c] || 0), 0) + myPenalty;
 
   document.getElementById("resultsTitle").textContent = t("results_title", { round });
-  let summaryHtml = `${t("letter_word")}: <strong>${data.letter}</strong> · ${t("points_won_word")}: <strong>${total}</strong>`;
+  let summaryHtml = `${t("letter_word")}: <strong>${escapeHtml(data.letter)}</strong> · ${t("points_won_word")}: <strong id="roundTotalCount">${total}</strong>`;
   if (myPenalty) summaryHtml += ` <span class="text-negative">${t("includes_penalty", { penalty: myPenalty })}</span>`;
   document.getElementById("resultsSummary").innerHTML = summaryHtml;
+  animateCount(document.getElementById("roundTotalCount"), 0, total);
+  document.getElementById("globalBoard").style.display = "none";
+  renderWordOfRound(data, round, categories);
+
+  // Para los logros: palabras que nadie más puso y objeciones que el juez te dio a favor.
+  let uniqueCount = 0;
+  let judgeWinCount = 0;
+  categories.forEach(cat => {
+    const pts = myScores[cat] || 0;
+    if ((cat === data.wildcard ? pts / 2 : pts) >= 10) uniqueCount++;
+    const info = judgeInfo[`${cat}|${state.playerId}`];
+    if (info && info.valida === true && !info.sinRespuesta) judgeWinCount++;
+  });
+  bumpProgress(p => {
+    p.uniqueWords += uniqueCount;
+    p.judgeWins += judgeWinCount;
+  }, `round:${state.roomCode}:${data.roundStartAt || ""}:${round}`);
 
   const list = document.getElementById("answerList");
   list.innerHTML = "";
-  categories.forEach(cat => {
+  categories.forEach((cat, rowIndex) => {
     const val = (myAnswers[cat] || "").trim();
     const pts = myScores[cat] || 0;
     const isWild = cat === data.wildcard;
@@ -3275,6 +3635,7 @@ function renderOnlineResults(data) {
       <span class="points points-${basePts}" title="${t('score_label_' + basePts)}">+${pts}</span>
       ${extra ? `<div style="flex-basis:100%;">${extra}</div>` : ""}
     `;
+    revealRow(row, rowIndex);
     list.appendChild(row);
   });
 
@@ -3283,6 +3644,8 @@ function renderOnlineResults(data) {
   const rankList = document.getElementById("rankingList");
   rankList.innerHTML = "";
   const players = data.players || {};
+  const roundGain = pid => categories.reduce((sum, c) => sum + ((((data.roundScores || {})[round] || {})[pid] || {})[c] || 0), 0)
+    + (((data.penalties || {})[round] || {})[pid] || 0);
   const sorted = Object.keys(players).map(pid => ({ pid, name: players[pid].name, score: players[pid].score || 0 }))
     .sort((a, b) => b.score - a.score);
   sorted.forEach((p, i) => {
@@ -3294,6 +3657,7 @@ function renderOnlineResults(data) {
       <span class="rank-score">${p.score} pts</span>
     `;
     rankList.appendChild(row);
+    animateCount(row.querySelector(".rank-score"), Math.max(0, p.score - roundGain(p.pid)), p.score, " pts", 1100);
   });
 
   const nextBtn = document.getElementById("nextRoundBtn");
@@ -3316,7 +3680,16 @@ function renderOnlineResults(data) {
 
 function hostNextRoundOrFinal(data, isLastRound) {
   if (isLastRound) {
-    window.FB.update(roomsRef(), { status: "final" });
+    // Suma una victoria al ganador para el marcador de la serie, que sobrevive
+    // a las revanchas. Un empate arriba no suma para nadie.
+    const players = data.players || {};
+    const top = Math.max(0, ...Object.values(players).map(p => p.score || 0));
+    const leaders = Object.keys(players).filter(pid => (players[pid].score || 0) === top);
+    const updates = { status: "final" };
+    if (top > 0 && leaders.length === 1) {
+      updates[`wins/${leaders[0]}`] = (((data.wins || {})[leaders[0]]) || 0) + 1;
+    }
+    window.FB.update(roomsRef(), updates);
     return;
   }
   window.FB.update(roomsRef(), { round: (data.round || 1) + 1 }).then(() => {
@@ -3361,10 +3734,25 @@ function renderOnlineFinal(data) {
       }
     }
   }
+  const wins = data.wins || {};
+  const totalGames = Object.values(wins).reduce((a, b) => a + (Number(b) || 0), 0);
+  const seriesEl = document.getElementById("finalSeries");
+  if (totalGames > 0 && sorted.length > 1) {
+    seriesEl.innerHTML = `<span class="series-label">${t("series_label")}</span>` + sorted.map(p =>
+      `<span class="series-item">${playerDotHtml(p.pid, players)}${escapeHtml(p.name)} <strong>${Number(wins[p.pid]) || 0}</strong></span>`
+    ).join("");
+    seriesEl.style.display = "flex";
+  } else {
+    seriesEl.style.display = "none";
+  }
+
   const me = sorted.find(p => p.pid === state.playerId);
-  state._finalShareInfo = { score: me ? me.score : 0, won: !!(winner && winner.pid === state.playerId) };
+  const iWon = !!(winner && winner.pid === state.playerId);
+  state._finalShareInfo = { score: me ? me.score : 0, won: iWon };
+  const tiedAtTop = sorted.length > 1 && sorted[0].score === sorted[1].score;
+  if (iWon && !tiedAtTop) bumpProgress(p => { p.wins += 1; }, `win:${state.roomCode}:${totalGames}`);
   showScreen("screen-final");
-  showFinalOutcomeFor(winner && winner.pid === state.playerId);
+  showFinalOutcomeFor(iWon);
 }
 
 function hostRematch() {
@@ -3466,13 +3854,21 @@ function updateTimerDisplay() {
   const c = 2 * Math.PI * 28;
   const pct = state.duration ? state.secondsLeft / state.duration : 0;
   const ring = document.getElementById("timerRing");
-  const urgent = state.secondsLeft <= 5;
+  const urgent = state.secondsLeft <= 10;
   ring.setAttribute("stroke-dasharray", c);
   ring.setAttribute("stroke-dashoffset", c * (1 - pct));
-  ring.setAttribute("stroke", urgent ? "#FF5E5B" : "#FFA62B");
+  ring.classList.toggle("low", urgent);
   const numEl = document.getElementById("timerNum");
   numEl.textContent = Math.max(0, state.secondsLeft);
   numEl.classList.toggle("urgent", urgent);
+  document.getElementById("timerWrap").classList.toggle("final", state.secondsLeft > 0 && urgent);
+  if (state.secondsLeft > 0 && state.secondsLeft <= 5 && state.lastShakeSecond !== state.secondsLeft) {
+    state.lastShakeSecond = state.secondsLeft;
+    const board = document.querySelector("#screen-game .board");
+    board.classList.remove("shake");
+    void board.offsetWidth;
+    board.classList.add("shake");
+  }
 }
 
 function focusFirstAnswer() {
@@ -3673,7 +4069,7 @@ function startStreakMode() {
 
 function renderStreakPlayersStrip() {
   const strip = document.querySelector(".players-strip");
-  strip.innerHTML = `<span class="chip"><span class="dot"></span><span>${escapeHtml(state.playerName)}</span></span>`;
+  strip.innerHTML = `<span class="chip"><span class="player-avatar">${getMyAvatar()}</span><span>${escapeHtml(state.playerName)}</span></span>`;
 }
 
 function startStreakRound() {
@@ -3685,27 +4081,15 @@ function startStreakRound() {
   document.getElementById("bastaWrap").style.display = "none";
   document.getElementById("roundLabel").textContent = t("streak_round_label", { n: state.streakRound });
 
-  const medal = document.getElementById("medal");
-  medal.classList.add("spinning");
-  let ticks = 0;
-  state.spinId = setInterval(() => {
-    medal.textContent = randomLetter();
-    ticks++;
-    if (ticks > 12) {
-      clearInterval(state.spinId);
-      medal.classList.remove("spinning");
-      state.letter = drawLetter();
-      medal.textContent = state.letter;
-      medal.classList.add("bounce");
-      setTimeout(() => medal.classList.remove("bounce"), 650);
-      state.answers = {};
-      state.duration = state.streakDuration;
-      state.secondsLeft = state.duration;
-      renderLetterHistory();
-      renderWildcardNote();
-      beginPlayingStreak();
-    }
-  }, 80);
+  state.letter = drawLetter();
+  state.answers = {};
+  state.duration = state.streakDuration;
+  state.secondsLeft = state.duration;
+  spinLetterReveal(state.letter, () => {
+    renderLetterHistory();
+    renderWildcardNote();
+    beginPlayingStreak();
+  });
 }
 
 function beginPlayingStreak() {
@@ -3740,33 +4124,7 @@ function onStreakReadyTap() {
 async function finishStreakRound() {
   clearInterval(state.timerId);
   clearInterval(state.spinId);
-  const letter = state.letter;
-  const round = state.streakRound;
-
-  // Paso 1: lo que se puede resolver sin el juez, gratis — vacía o con una
-  // letra que no corresponde, igual que en las salas multijugador.
-  const usedWords = new Set();
-  const results = state.categories.map(cat => {
-    const val = (state.answers[cat] || "").trim();
-    if (!val) return { cat, val, valid: false };
-    if (!answerMatchesLetter(val, letter)) return { cat, val, valid: false };
-    if (isTrivialAnswer(val)) return { cat, val, valid: false };
-    const norm = normalizeAnswer(val);
-    if (usedWords.has(norm)) return { cat, val, valid: false, repeated: true };
-    usedWords.add(norm);
-    return { cat, val, valid: null }; // pendiente de que la revise el juez
-  });
-
-  const pending = results.filter(r => r.valid === null);
-  if (pending.length > 0) {
-    showScreen("screen-judging");
-    const disputas = pending.map(r => ({ id: r.cat, categoria: r.cat, palabra: r.val }));
-    const judged = await callJudge(state.roomCode, round, letter, disputas);
-    pending.forEach(r => {
-      const v = judged.verdicts[r.cat];
-      r.valid = judged.failed || !v ? true : v.valida !== false;
-    });
-  }
+  const results = await judgeSoloAnswers(state.categories, state.answers, state.letter, state.streakRound, state.roomCode);
 
   const allValid = results.length > 0 && results.every(r => r.valid);
   if (allValid) {
@@ -3790,16 +4148,28 @@ function renderStreakResult(results) {
 
   document.getElementById("resultsTitle").textContent = t("streak_result_title");
   document.getElementById("resultsSummary").innerHTML =
-    `${t("streak_result_rounds", { n: roundsCleared })} · ${t("streak_result_score", { score: state.streakScore })}`;
+    `${t("streak_result_rounds", { n: roundsCleared })} · ${t("streak_result_score", { score: `<span id="streakScoreCount">${state.streakScore}</span>` })}`;
+  animateCount(document.getElementById("streakScoreCount"), 0, state.streakScore);
+  document.getElementById("wordOfRound").innerHTML = "";
+  bumpProgress(p => { p.bestStreakRounds = Math.max(p.bestStreakRounds, roundsCleared); });
+  const weeklyScore = state.streakScore;
+  const board = document.getElementById("globalBoard");
+  board.style.display = "block";
+  document.getElementById("globalBoardHeading").textContent = t("weekly_board_heading");
+  document.getElementById("globalBoardList").innerHTML = `<p class="streak-history-empty">${t("board_loading")}</p>`;
+  submitWeeklyScore(weeklyScore, roundsCleared).then(() => {
+    renderLeaderboard(`weekly/${weekKey()}`, document.getElementById("globalBoardList"), "weekly_board_empty");
+  });
   const scoreKey = document.querySelector("#screen-results .score-key");
   if (scoreKey) scoreKey.style.display = "none";
 
   const list = document.getElementById("answerList");
   list.innerHTML = "";
-  results.forEach(r => {
+  results.forEach((r, i) => {
     const isWild = r.cat === state.wildcardCategory;
     const basePts = r.valid ? STREAK_POINTS_PER_CATEGORY : 0;
     const pts = isWild ? basePts * 2 : basePts;
+    const reason = soloReasonText(r, state.letter);
     const row = document.createElement("div");
     row.className = "answer-row";
     row.style.flexWrap = "wrap";
@@ -3807,8 +4177,9 @@ function renderStreakResult(results) {
       <span class="answer-cat">${escapeHtml(catLabel(r.cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
       <span class="answer-val ${r.val ? "" : "empty"}">${r.val ? escapeHtml(r.val) : t("no_answer")}</span>
       <span class="points points-${basePts}" title="${t(basePts ? "score_label_20" : "score_label_0")}">+${pts}</span>
-      ${r.repeated ? `<div style="flex-basis:100%; font-size:11px; color:var(--text-support);">${t("answer_repeated_cat")}</div>` : ""}
+      ${reason ? `<div style="flex-basis:100%; font-size:11px; color:var(--text-support);">${reason}</div>` : ""}
     `;
+    revealRow(row, i);
     list.appendChild(row);
   });
 
@@ -3881,6 +4252,530 @@ function playAnotherRound() {
   }
   state.round++;
   startRound();
+}
+
+// ---------- Números que suben contando ----------
+function animateCount(el, from, to, suffix = "", ms = 800) {
+  if (!el) return;
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce || from === to) { el.textContent = to + suffix; return; }
+  const start = performance.now();
+  el.textContent = from + suffix;
+  const step = now => {
+    const k = Math.min(1, (now - start) / ms);
+    const eased = 1 - Math.pow(1 - k, 3);
+    el.textContent = Math.round(from + (to - from) * eased) + suffix;
+    if (k < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+function revealRow(row, index) {
+  row.classList.add("reveal");
+  row.style.animationDelay = (index * 70) + "ms";
+  row.style.setProperty("--pop-delay", (index * 70 + 180) + "ms");
+}
+
+// La palabra más larga que nadie más puso en la ronda. Todos los jugadores
+// reciben los mismos datos, así que todos ven la misma.
+function pickWordOfRound(data, round, categories) {
+  const answers = (data.answers && data.answers[round]) || {};
+  const scores = (data.roundScores && data.roundScores[round]) || {};
+  let best = null;
+  Object.keys(data.players || {}).forEach(pid => {
+    categories.forEach(cat => {
+      const pts = ((scores[pid] || {})[cat]) || 0;
+      const base = cat === data.wildcard ? pts / 2 : pts;
+      if (base < 10) return;
+      const word = (((answers[pid] || {})[cat]) || "").trim();
+      if (!word) return;
+      const len = normalizeAnswer(word).length;
+      if (!best || len > best.len) best = { pid, cat, word, len };
+    });
+  });
+  return best;
+}
+
+function renderWordOfRound(data, round, categories) {
+  const box = document.getElementById("wordOfRound");
+  if (!box) return;
+  const best = data ? pickWordOfRound(data, round, categories) : null;
+  if (!best) { box.innerHTML = ""; return; }
+  const players = data.players || {};
+  const name = (players[best.pid] && players[best.pid].name) || "";
+  box.innerHTML = `
+    <div class="word-of-round">
+      <span class="wor-label">⭐ ${t("word_of_round")}</span>
+      <span class="wor-word">${escapeHtml(best.word)}</span>
+      <span class="wor-by">${playerDotHtml(best.pid, players)}${escapeHtml(name)} · ${escapeHtml(catLabel(best.cat))}</span>
+    </div>`;
+}
+
+// ---------- Días, rachas de días y logros (guardados en este dispositivo) ----------
+const PROGRESS_KEY = "tuttifruti_progress";
+
+// Los días cambian a medianoche de Argentina (UTC-3), igual para todos,
+// así el desafío del día es el mismo en cualquier lugar.
+function dayKey(offsetDays = 0) {
+  return new Date(Date.now() - 3 * 3600 * 1000 + offsetDays * 86400 * 1000).toISOString().slice(0, 10);
+}
+
+function weekKey() {
+  const shifted = new Date(Date.now() - 3 * 3600 * 1000);
+  const date = new Date(Date.UTC(shifted.getUTCFullYear(), shifted.getUTCMonth(), shifted.getUTCDate()));
+  const dayNum = date.getUTCDay() || 7;
+  date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+  const week = Math.ceil(((date - yearStart) / 86400000 + 1) / 7);
+  return `${date.getUTCFullYear()}-W${String(week).padStart(2, "0")}`;
+}
+
+function formatDayLabel(key) {
+  const [, m, d] = key.split("-");
+  return state.lang === "en" ? `${m}/${d}` : `${d}/${m}`;
+}
+
+function getProgress() {
+  const base = { lastDay: null, dayStreak: 0, bestDayStreak: 0, wins: 0, uniqueWords: 0, judgeWins: 0, bestStreakRounds: 0, dailyCount: 0, unlocked: [], counted: [] };
+  try {
+    const raw = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "null");
+    if (raw && typeof raw === "object") return { ...base, ...raw };
+  } catch (e) { /* storage unavailable */ }
+  return base;
+}
+
+function saveProgress(p) {
+  try { localStorage.setItem(PROGRESS_KEY, JSON.stringify(p)); } catch (e) { /* storage unavailable */ }
+}
+
+function currentDayStreak(p) {
+  return (p.lastDay === dayKey() || p.lastDay === dayKey(-1)) ? p.dayStreak : 0;
+}
+
+// `onceKey` evita contar dos veces lo mismo si una pantalla se vuelve a dibujar.
+function bumpProgress(mutate, onceKey) {
+  const p = getProgress();
+  if (onceKey) {
+    if (p.counted.includes(onceKey)) return;
+    p.counted = [...p.counted, onceKey].slice(-80);
+  }
+  mutate(p);
+  saveProgress(p);
+  checkAchievements();
+}
+
+function markPlayedToday() {
+  bumpProgress(p => {
+    const today = dayKey();
+    if (p.lastDay === today) return;
+    p.dayStreak = p.lastDay === dayKey(-1) ? p.dayStreak + 1 : 1;
+    p.lastDay = today;
+    p.bestDayStreak = Math.max(p.bestDayStreak, p.dayStreak);
+  });
+}
+
+const ACHIEVEMENTS = [
+  { id: "first_game", icon: "🍏", test: (p, s) => s.gamesPlayed >= 1 },
+  { id: "days_3", icon: "🔥", test: p => p.bestDayStreak >= 3 },
+  { id: "days_7", icon: "🗓️", test: p => p.bestDayStreak >= 7 },
+  { id: "first_win", icon: "🏆", test: p => p.wins >= 1 },
+  { id: "ten_wins", icon: "👑", test: p => p.wins >= 10 },
+  { id: "unique_10", icon: "💎", test: p => p.uniqueWords >= 10 },
+  { id: "unique_50", icon: "📚", test: p => p.uniqueWords >= 50 },
+  { id: "beat_judge", icon: "⚖️", test: p => p.judgeWins >= 1 },
+  { id: "streak_5", icon: "⏱️", test: p => p.bestStreakRounds >= 5 },
+  { id: "daily_1", icon: "☀️", test: p => p.dailyCount >= 1 },
+  { id: "daily_7", icon: "🌈", test: p => p.dailyCount >= 7 },
+];
+
+function checkAchievements() {
+  const p = getProgress();
+  const stats = getStats();
+  const fresh = ACHIEVEMENTS.filter(a => !p.unlocked.includes(a.id) && a.test(p, stats));
+  if (!fresh.length) return;
+  p.unlocked = [...p.unlocked, ...fresh.map(a => a.id)];
+  saveProgress(p);
+  fresh.forEach((a, i) => setTimeout(() => showAchievementToast(a), i * 900));
+}
+
+function showAchievementToast(a) {
+  const stack = document.getElementById("toastStack");
+  if (!stack) return;
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.innerHTML = `<span class="toast-icon">${a.icon}</span><span><strong>${t("achievement_unlocked")}</strong><br>${t("ach_" + a.id + "_t")}</span>`;
+  stack.appendChild(el);
+  playDing();
+  setTimeout(() => el.classList.add("out"), 3400);
+  setTimeout(() => el.remove(), 3900);
+}
+
+function renderAchievements() {
+  const grid = document.getElementById("achievementsGrid");
+  if (!grid) return;
+  const p = getProgress();
+  grid.innerHTML = ACHIEVEMENTS.map(a => {
+    const on = p.unlocked.includes(a.id);
+    return `<div class="achievement${on ? "" : " locked"}">
+      <span class="ach-icon">${a.icon}</span>
+      <span class="ach-title">${t("ach_" + a.id + "_t")}</span>
+      <span class="ach-desc">${t("ach_" + a.id + "_d")}</span>
+    </div>`;
+  }).join("");
+}
+
+// ---------- Rankings globales (contrarreloj semanal y desafío del día) ----------
+function leaderboardRowHtml(pos, row, isMe) {
+  return `<div class="rank-row${isMe ? " me" : ""}">
+    <span class="rank-pos">${pos}</span>
+    <span class="rank-name"><span class="player-avatar">${avatarOf(row)}</span>${escapeHtml(row.name)}</span>
+    <span class="rank-score">${Number(row.score) || 0} pts</span>
+  </div>`;
+}
+
+// Solo baja los mejores `limit` puntajes (y el propio si quedó afuera): así cada
+// vista pesa lo mismo haya 10 o 10.000 jugadores, y no se agota la cuota de
+// descarga del plan gratis de Firebase.
+function renderLeaderboard(path, container, emptyKey, limit = 10) {
+  if (!container) return;
+  container.innerHTML = `<p class="streak-history-empty">${t("board_loading")}</p>`;
+  whenFirebaseReady(async () => {
+    try {
+      const topQuery = window.FB.query(window.FB.ref(window.FB.db, path), window.FB.orderByChild("score"), window.FB.limitToLast(limit));
+      const snap = await window.FB.get(topQuery);
+      const rows = [];
+      snap.forEach(child => { rows.push({ uid: child.key, ...child.val() }); });
+      rows.sort((a, b) => (Number(b.score) || 0) - (Number(a.score) || 0));
+      if (!rows.length) {
+        container.innerHTML = `<p class="streak-history-empty">${t(emptyKey)}</p>`;
+        return;
+      }
+      const myIdx = rows.findIndex(r => r.uid === window.FB.uid);
+      let html = rows.map((r, i) => leaderboardRowHtml(i + 1, r, i === myIdx)).join("");
+      if (myIdx < 0 && window.FB.uid) {
+        const mine = await window.FB.get(window.FB.ref(window.FB.db, `${path}/${window.FB.uid}`));
+        if (mine.exists()) {
+          html += `<p class="hint board-me">${t("board_outside_top", { limit })}</p>` + leaderboardRowHtml("–", mine.val(), true);
+        }
+      }
+      container.innerHTML = html;
+    } catch (e) {
+      container.innerHTML = `<p class="streak-history-empty">${t("board_error")}</p>`;
+    }
+  });
+}
+
+function showGlobalBoard(headingKey, path, emptyKey) {
+  const board = document.getElementById("globalBoard");
+  board.style.display = "block";
+  document.getElementById("globalBoardHeading").textContent = t(headingKey);
+  renderLeaderboard(path, document.getElementById("globalBoardList"), emptyKey);
+}
+
+// Guarda el mejor puntaje de la semana de este jugador (las reglas de la base
+// solo aceptan un puntaje nuevo si supera al anterior).
+function submitWeeklyScore(score, rounds) {
+  return new Promise(resolve => {
+    if (score <= 0) { resolve(); return; }
+    whenFirebaseReady(async () => {
+      try {
+        if (!window.FB.uid) return;
+        const ref = window.FB.ref(window.FB.db, `weekly/${weekKey()}/${window.FB.uid}`);
+        const snap = await window.FB.get(ref);
+        const prev = snap.exists() ? Number(snap.val().score) || 0 : -1;
+        if (score > prev) {
+          await window.FB.set(ref, { name: state.playerName.slice(0, 30), avatar: getMyAvatar(), score, rounds });
+        }
+      } catch (e) {
+        console.error("No se pudo guardar el puntaje semanal", e);
+      } finally {
+        resolve();
+      }
+    });
+  });
+}
+
+// ---------- Desafío del día ----------
+const DAILY_KEY = "tuttifruti_daily";
+const DAILY_DURATION = 60;
+const DAILY_CATEGORY_COUNT = 6;
+const DAILY_POINTS_PER_CATEGORY = 10;
+
+function hashString(s) {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+function seededRandom(seed) {
+  let a = seed;
+  return () => {
+    a = (a + 0x6D2B79F5) | 0;
+    let x = Math.imul(a ^ (a >>> 15), 1 | a);
+    x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x;
+    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// La letra y las categorías salen de la fecha: cualquiera que juegue el mismo
+// día recibe exactamente el mismo desafío, sin necesidad de un servidor.
+function getDailyChallenge(key = dayKey()) {
+  const rnd = seededRandom(hashString("tuttifrutti-" + key));
+  const letter = DEFAULT_LETTERS[Math.floor(rnd() * DEFAULT_LETTERS.length)];
+  const pool = CATEGORY_POOL.filter(c => !CATEGORY_PACKS.argento.includes(c));
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(rnd() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  const categories = pool.slice(0, DAILY_CATEGORY_COUNT);
+  const wildcard = categories[Math.floor(rnd() * categories.length)];
+  return { key, letter, categories, wildcard };
+}
+
+function getTodayDaily() {
+  try {
+    const d = JSON.parse(localStorage.getItem(DAILY_KEY) || "null");
+    return d && d.date === dayKey() ? d : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function saveDaily(record) {
+  try { localStorage.setItem(DAILY_KEY, JSON.stringify(record)); } catch (e) { /* storage unavailable */ }
+}
+
+function renderDailyBanner() {
+  const banner = document.getElementById("dailyBanner");
+  if (!banner) return;
+  const today = getTodayDaily();
+  banner.classList.toggle("done", !!today);
+  document.getElementById("dailyBannerSub").textContent = today
+    ? t("daily_banner_done", { score: today.score || 0 })
+    : t("daily_banner_play");
+}
+
+function openDaily() {
+  const today = getTodayDaily();
+  if (today) {
+    showDailyResult(today, false);
+    return;
+  }
+  const name = document.getElementById("playerName").value.trim();
+  if (!name) {
+    alert(t("daily_need_name"));
+    document.getElementById("playerName").focus();
+    return;
+  }
+  state.playerName = name;
+  try { localStorage.setItem("tuttifruti_playerName", name); } catch (e) { /* storage unavailable */ }
+  getAudioCtx();
+  startDaily();
+}
+
+function startDaily() {
+  cleanupRandomSearch();
+  const ch = getDailyChallenge();
+  if (!state.dailyMode) state.categoriesBeforeDaily = state.categories;
+  state.dailyMode = true;
+  state.dailyFinishing = false;
+  state.streakMode = false;
+  state.online = false;
+  state.dailyChallenge = ch;
+  state.categories = [...ch.categories];
+  state.wildcardCategory = ch.wildcard;
+  state.letter = ch.letter;
+  state.usedLetters = [];
+  state.answers = {};
+  state.duration = DAILY_DURATION;
+  state.secondsLeft = DAILY_DURATION;
+  // Un solo intento: queda marcado apenas arranca, así recargar la página no
+  // sirve para ver la letra y volver a jugar.
+  saveDaily({ date: ch.key, letter: ch.letter, score: 0, valid: 0, total: ch.categories.length, grid: "", results: [], unfinished: true });
+  recordGameStart();
+  recordRoundPlayed(ch.letter);
+  renderStreakPlayersStrip();
+
+  showScreen("screen-game");
+  document.getElementById("timerWrap").style.display = "none";
+  document.getElementById("catGrid").style.display = "none";
+  document.getElementById("bastaWrap").style.display = "none";
+  document.getElementById("roundLabel").textContent = t("daily_round_label", { date: formatDayLabel(ch.key) });
+  spinLetterReveal(ch.letter, () => {
+    renderLetterHistory();
+    renderWildcardNote();
+    document.getElementById("timerWrap").style.display = "block";
+    renderCatGrid();
+    document.getElementById("catGrid").style.display = "grid";
+    document.getElementById("bastaWrap").style.display = "flex";
+    focusFirstAnswer();
+    updateTimerDisplay();
+    state.timerId = setInterval(tickDaily, 1000);
+  });
+}
+
+function tickDaily() {
+  state.secondsLeft--;
+  updateTimerDisplay();
+  if (state.secondsLeft > 0 && state.secondsLeft <= 5) {
+    playTic();
+    vibrate(50);
+  }
+  if (state.secondsLeft <= 0) {
+    playTimeUp();
+    finishDailyRound();
+  }
+}
+
+async function finishDailyRound() {
+  if (state.dailyFinishing || !state.dailyMode) return;
+  state.dailyFinishing = true;
+  clearInterval(state.timerId);
+  clearTimeout(state.spinId);
+  const ch = state.dailyChallenge;
+  const secondsLeft = Math.max(0, state.secondsLeft);
+  const results = await judgeSoloAnswers(state.categories, state.answers, ch.letter, 1, "DIARIO");
+  let score = 0;
+  let valid = 0;
+  results.forEach(r => {
+    if (!r.valid) return;
+    valid++;
+    score += DAILY_POINTS_PER_CATEGORY * (r.cat === ch.wildcard ? 2 : 1);
+  });
+  const bonus = valid > 0 ? secondsLeft : 0;
+  score += bonus;
+  const record = {
+    date: ch.key, letter: ch.letter, wildcard: ch.wildcard, score, bonus, valid, total: results.length,
+    grid: results.map(r => (r.valid ? "1" : "0")).join(""),
+    results: results.map(r => ({ cat: r.cat, val: r.val, valid: !!r.valid, reason: r.reason || "", motivo: r.motivo || "" })),
+  };
+  saveDaily(record);
+  bumpProgress(p => { p.dailyCount += 1; }, "daily:" + ch.key);
+  whenFirebaseReady(() => {
+    if (!window.FB.uid) {
+      showGlobalBoard("daily_board_heading", `daily/${ch.key}`, "daily_board_empty");
+      return;
+    }
+    window.FB.set(window.FB.ref(window.FB.db, `daily/${ch.key}/${window.FB.uid}`), {
+      name: state.playerName.slice(0, 30), avatar: getMyAvatar(), score, valid, total: results.length, grid: record.grid,
+    }).catch(e => console.error("No se pudo guardar el desafío del día", e)).finally(() => {
+      showGlobalBoard("daily_board_heading", `daily/${ch.key}`, "daily_board_empty");
+    });
+  });
+  showDailyResult(record, true);
+  if (valid === results.length) launchConfetti();
+}
+
+function soloReasonText(r, letter) {
+  if (r.valid || !r.val) return "";
+  if (r.reason === "letter") return t("doesnt_start_with", { letter });
+  if (r.reason === "short") return t("answer_too_short");
+  if (r.reason === "repeated") return t("answer_repeated_cat");
+  if (r.reason === "judge") return `${t("judge_invalid")}${r.motivo ? " — " + escapeHtml(r.motivo) : ""}`;
+  return "";
+}
+
+function showDailyResult(record, fresh) {
+  document.getElementById("resultsTitle").textContent = "☀️ " + t("daily_result_title") + " · " + formatDayLabel(record.date);
+  const summary = document.getElementById("resultsSummary");
+  if (record.unfinished) {
+    summary.textContent = t("daily_unfinished");
+  } else {
+    summary.innerHTML = `${t("letter_word")}: <strong>${escapeHtml(record.letter)}</strong> · ${t("daily_result_summary", { valid: record.valid, total: record.total, score: `<strong id="dailyScoreCount">${record.score}</strong>` })}`;
+    if (fresh) animateCount(document.getElementById("dailyScoreCount"), 0, record.score);
+  }
+  const scoreKey = document.querySelector("#screen-results .score-key");
+  if (scoreKey) scoreKey.style.display = "none";
+  document.getElementById("wordOfRound").innerHTML = "";
+
+  const list = document.getElementById("answerList");
+  list.innerHTML = "";
+  (record.results || []).forEach((r, i) => {
+    const isWild = r.cat === record.wildcard;
+    const basePts = r.valid ? DAILY_POINTS_PER_CATEGORY : 0;
+    const reason = soloReasonText(r, record.letter);
+    const row = document.createElement("div");
+    row.className = "answer-row";
+    row.style.flexWrap = "wrap";
+    row.innerHTML = `
+      <span class="answer-cat">${escapeHtml(catLabel(r.cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
+      <span class="answer-val ${r.val ? "" : "empty"}">${r.val ? escapeHtml(r.val) : t("no_answer")}</span>
+      <span class="points points-${r.valid ? 10 : 0}">+${isWild ? basePts * 2 : basePts}</span>
+      ${reason ? `<div style="flex-basis:100%; font-size:11px; color:var(--text-support);">${reason}</div>` : ""}
+    `;
+    if (fresh) revealRow(row, i);
+    list.appendChild(row);
+  });
+  const note = document.createElement("p");
+  note.className = "hint";
+  note.style.textAlign = "center";
+  note.style.marginTop = "14px";
+  note.textContent = (record.bonus ? t("daily_time_bonus", { bonus: record.bonus }) + " " : "") + t("daily_come_back");
+  list.appendChild(note);
+
+  const objContainer = document.getElementById("myObjectionsOutcome");
+  if (objContainer) objContainer.innerHTML = "";
+  const rankingSection = document.querySelector("#screen-results .ranking");
+  if (rankingSection) rankingSection.style.display = "none";
+  document.getElementById("waitingHostNote").style.display = "none";
+  document.getElementById("nextRoundBtn").style.display = "none";
+
+  const shareBtn = document.getElementById("shareResultBtn");
+  shareBtn.style.display = record.unfinished ? "none" : "block";
+  shareBtn.onclick = () => shareDailyResult(record);
+
+  // Recién terminado, el ranking se muestra después de guardar el puntaje
+  // (ver finishDailyRound); si se vuelve a abrir, se carga directo.
+  if (fresh) {
+    const board = document.getElementById("globalBoard");
+    board.style.display = "block";
+    document.getElementById("globalBoardHeading").textContent = t("daily_board_heading");
+    document.getElementById("globalBoardList").innerHTML = `<p class="streak-history-empty">${t("board_loading")}</p>`;
+  } else {
+    showGlobalBoard("daily_board_heading", `daily/${record.date}`, "daily_board_empty");
+  }
+  showScreen("screen-results");
+}
+
+function shareDailyResult(record) {
+  const grid = (record.grid || "").split("").map(c => (c === "1" ? "🟩" : "🟥")).join("");
+  const date = formatDayLabel(record.date);
+  const canvas = buildShareCanvas(record.score + " pts", t("share_daily_subtitle", { valid: record.valid, total: record.total, date }), "☀️");
+  shareCanvasImage(canvas, t("share_daily_text", { date, score: record.score, grid }));
+}
+
+// Valida las respuestas de una partida individual (contrarreloj o desafío del
+// día): lo obvio se resuelve acá gratis y el resto se lo pregunta al juez.
+async function judgeSoloAnswers(categories, answers, letter, round, salaId) {
+  const usedWords = new Set();
+  const results = categories.map(cat => {
+    const val = (answers[cat] || "").trim();
+    if (!val) return { cat, val, valid: false, reason: "empty" };
+    if (!answerMatchesLetter(val, letter)) return { cat, val, valid: false, reason: "letter" };
+    if (isTrivialAnswer(val)) return { cat, val, valid: false, reason: "short" };
+    const norm = normalizeAnswer(val);
+    if (usedWords.has(norm)) return { cat, val, valid: false, reason: "repeated", repeated: true };
+    usedWords.add(norm);
+    return { cat, val, valid: null };
+  });
+  const pending = results.filter(r => r.valid === null);
+  if (pending.length > 0) {
+    showScreen("screen-judging");
+    const disputas = pending.map(r => ({ id: r.cat, categoria: r.cat, palabra: r.val }));
+    const judged = await callJudge(salaId, round, letter, disputas);
+    pending.forEach(r => {
+      const v = judged.verdicts[r.cat];
+      r.valid = judged.failed || !v ? true : v.valida !== false;
+      if (!r.valid) {
+        r.reason = "judge";
+        r.motivo = (v && v.motivo) || "";
+      }
+    });
+  }
+  return results;
 }
 
 const WIN_CONFETTI_EMOJI = ["🍊", "🍋", "🍓", "🍇", "🍒", "🍍", "🍎", "🍌", "🍉"];
@@ -4104,11 +4999,27 @@ function goToLobby() {
       state.categoriesBeforeStreak = null;
       renderCatChips();
     }
-    const scoreKey = document.querySelector("#screen-results .score-key");
-    if (scoreKey) scoreKey.style.display = "";
-    const rankingSection = document.querySelector("#screen-results .ranking");
-    if (rankingSection) rankingSection.style.display = "";
   }
+  if (state.dailyMode) {
+    clearInterval(state.timerId);
+    clearTimeout(state.spinId);
+    state.dailyMode = false;
+    if (state.categoriesBeforeDaily) {
+      state.categories = state.categoriesBeforeDaily;
+      state.categoriesBeforeDaily = null;
+      renderCatChips();
+    }
+  }
+  // La pantalla de resultados la comparten todos los modos: se deja como la
+  // esperan las salas online.
+  const scoreKey = document.querySelector("#screen-results .score-key");
+  if (scoreKey) scoreKey.style.display = "";
+  const rankingSection = document.querySelector("#screen-results .ranking");
+  if (rankingSection) rankingSection.style.display = "";
+  document.getElementById("globalBoard").style.display = "none";
+  document.getElementById("wordOfRound").innerHTML = "";
+  document.getElementById("nextRoundBtn").style.display = "";
+  renderDailyBanner();
   if (state.online) {
     unsubscribeFromRoom();
     state.online = false;
@@ -4168,8 +5079,12 @@ try {
 applyRoomLinkFromUrl();
 setMode(state.mode);
 checkCanPlay();
+renderAvatarPicker();
+renderDailyBanner();
+checkAchievements();
 </script>
 <div class="confetti-container" id="confettiContainer"></div>
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
 <script src="cookie-consent.js"></script>
 <script src="analytics.js"></script>

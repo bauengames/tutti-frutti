@@ -247,6 +247,14 @@ a { color: var(--primary); }
   margin: 0 0 16px; text-align: center;
 }
 .quickplay form { display: flex; flex-direction: column; gap: 18px; }
+.avatar-picker { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.avatar-option {
+  width: 100%; aspect-ratio: 1; padding: 0; border-radius: 12px; cursor: pointer;
+  border: 2px solid var(--borde); background: var(--surface); font-size: 24px; line-height: 1;
+  transition: border-color .15s, transform .1s;
+}
+.avatar-option:hover { border-color: var(--primary); }
+.avatar-option.selected { border-color: var(--primary); background: var(--crema-08); transform: scale(1.08); }
 
 /* ---------- Tarjetas ---------- */
 .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 8px 0 44px; }
@@ -379,6 +387,10 @@ footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
           <label class="label" for="homePlayerName" data-i18n="label_player_name">Tu nombre</label>
           <input type="text" id="homePlayerName" placeholder="¿Cómo te llamás?" autocomplete="nickname" data-i18n-placeholder="player_name_placeholder" />
         </div>
+        <div class="field">
+          <span class="label" id="homeAvatarLabel" data-i18n="avatar_label">Tu fruta</span>
+          <div class="avatar-picker" id="homeAvatarPicker" role="radiogroup" aria-labelledby="homeAvatarLabel"></div>
+        </div>
         <button type="submit" class="btn btn-primary btn-block" data-i18n="play_now_btn">Jugar ahora</button>
       </form>
     </div>
@@ -450,6 +462,38 @@ try {
   var savedName = localStorage.getItem("tuttifruti_playerName");
   if (savedName) document.getElementById("homePlayerName").value = savedName;
 } catch (e) { /* storage unavailable */ }
+
+/* ---------- Fruta del jugador (misma lista y misma clave que jugar.html) ---------- */
+var AVATARS = ["🍎", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓", "🍒", "🍑", "🍍", "🥝", "🥥"];
+var AVATAR_KEY = "tuttifruti_avatar";
+
+function getHomeAvatar() {
+  try {
+    var saved = localStorage.getItem(AVATAR_KEY);
+    if (AVATARS.indexOf(saved) !== -1) return saved;
+    var picked = AVATARS[Math.floor(Math.random() * AVATARS.length)];
+    localStorage.setItem(AVATAR_KEY, picked);
+    return picked;
+  } catch (e) {
+    return AVATARS[0];
+  }
+}
+
+function setHomeAvatar(avatar) {
+  if (AVATARS.indexOf(avatar) === -1) return;
+  try { localStorage.setItem(AVATAR_KEY, avatar); } catch (e) { /* storage unavailable */ }
+  renderHomeAvatarPicker();
+}
+
+function renderHomeAvatarPicker() {
+  var picker = document.getElementById("homeAvatarPicker");
+  if (!picker) return;
+  var mine = getHomeAvatar();
+  picker.innerHTML = AVATARS.map(function (a) {
+    return '<button type="button" class="avatar-option' + (a === mine ? " selected" : "") + '" role="radio" aria-checked="' + (a === mine) + '" aria-label="' + a + '" onclick="setHomeAvatar(\'' + a + '\')">' + a + "</button>";
+  }).join("");
+}
+renderHomeAvatarPicker();
 
 function goPlay(event) {
   event.preventDefault();

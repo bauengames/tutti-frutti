@@ -17,6 +17,9 @@
             },
             "connected": {
               ".validate": "newData.isBoolean()"
+            },
+            "avatar": {
+              ".validate": "newData.isString() && newData.val().length <= 8"
             }
           }
         },
@@ -79,6 +82,11 @@
               }
             }
           }
+        },
+        "wins": {
+          "$playerId": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000"
+          }
         }
       }
     },
@@ -96,6 +104,67 @@
         },
         "roomCode": {
           ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9]{3,8}$/)"
+        },
+        "avatar": {
+          ".validate": "newData.isString() && newData.val().length <= 8"
+        }
+      }
+    },
+    "weekly": {
+      "$week": {
+        ".read": "auth != null && $week.matches(/^[0-9]{4}-W[0-9]{2}$/) && query.orderByChild === 'score' && query.limitToLast <= 10",
+        ".indexOn": "score",
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid && $week.matches(/^[0-9]{4}-W[0-9]{2}$/)",
+          ".validate": "newData.hasChildren(['name', 'score', 'rounds']) && (!data.exists() || newData.child('score').val() > data.child('score').val())",
+          "name": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
+          },
+          "avatar": {
+            ".validate": "newData.isString() && newData.val().length <= 8"
+          },
+          "$other": {
+            ".validate": false
+          },
+          "score": {
+            ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= 100000"
+          },
+          "rounds": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000 && newData.parent().child('score').val() <= (newData.val() + 1) * 140"
+          },
+          ".read": "auth != null && auth.uid === $uid"
+        }
+      }
+    },
+    "daily": {
+      "$date": {
+        ".read": "auth != null && $date.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && query.orderByChild === 'score' && query.limitToLast <= 10",
+        ".indexOn": "score",
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid && !data.exists() && $date.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
+          ".validate": "newData.hasChildren(['name', 'score', 'valid', 'total'])",
+          "name": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
+          },
+          "avatar": {
+            ".validate": "newData.isString() && newData.val().length <= 8"
+          },
+          "$other": {
+            ".validate": false
+          },
+          "score": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 200"
+          },
+          "valid": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= newData.parent().child('total').val()"
+          },
+          "total": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 10"
+          },
+          "grid": {
+            ".validate": "newData.isString() && newData.val().matches(/^[01]{1,10}$/)"
+          },
+          ".read": "auth != null && auth.uid === $uid"
         }
       }
     }
