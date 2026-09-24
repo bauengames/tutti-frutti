@@ -88,8 +88,8 @@ body {
 .bg-blob-1 { width: 420px; height: 420px; top: -140px; left: -120px; background: var(--primary); }
 .bg-blob-2 { width: 380px; height: 380px; bottom: -160px; right: -100px; background: var(--secondary); }
 .bg-blob-3 { width: 320px; height: 320px; top: 45%; left: 55%; background: var(--lima); opacity: .22; }
-html[data-light] .bg-blob { opacity: .16; }
-html[data-light] .bg-blob-3 { opacity: .12; }
+html[data-light] .bg-blob { opacity: .32; }
+html[data-light] .bg-blob-3 { opacity: .24; }
 
 :focus-visible { outline: 2px solid var(--pomelo); outline-offset: 2px; }
 ::selection { background: var(--pomelo); color: var(--tinta); }
@@ -3936,56 +3936,96 @@ function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight) {
   return cy;
 }
 
-function buildShareCanvas(big, subtitle) {
+// Mismo ícono (manzana + dos hojitas) que el logo del sitio, dibujado a mano
+// con Path2D en vez de un círculo liso, para que la tarjeta se vea "completa".
+function drawShareLogoIcon(ctx, cx, cy, size, colors) {
+  const scale = size / 100;
+  ctx.save();
+  ctx.translate(cx - 50 * scale, cy - 48 * scale);
+  ctx.scale(scale, scale);
+  ctx.fillStyle = colors.primary;
+  ctx.fill(new Path2D("M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z"));
+  ctx.fillStyle = colors.lima;
+  ctx.fill(new Path2D("M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z"));
+  ctx.fillStyle = colors.limaOscura;
+  ctx.fill(new Path2D("M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z"));
+  ctx.restore();
+}
+
+function buildShareCanvas(big, subtitle, badgeEmoji) {
   const canvas = document.createElement("canvas");
   canvas.width = 1080;
   canvas.height = 1080;
   const ctx = canvas.getContext("2d");
   const styles = getComputedStyle(document.documentElement);
   const bg = (styles.getPropertyValue("--bg") || "#14101F").trim() || "#14101F";
+  const surface = (styles.getPropertyValue("--surface") || "#221B33").trim() || "#221B33";
   const primary = (styles.getPropertyValue("--primary") || "#FF5E5B").trim() || "#FF5E5B";
+  const secondary = (styles.getPropertyValue("--secondary") || "#FFA62B").trim() || "#FFA62B";
   const text = (styles.getPropertyValue("--text") || "#FFF3E2").trim() || "#FFF3E2";
 
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  ctx.fillStyle = primary;
-  ctx.beginPath();
-  ctx.arc(canvas.width / 2, 260, 64, 0, Math.PI * 2);
-  ctx.fill();
+  // Manchas de color de fondo, la misma estética que el resto del sitio.
+  function blob(x, y, r, color) {
+    const grad = ctx.createRadialGradient(x, y, 0, x, y, r);
+    grad.addColorStop(0, color + "66");
+    grad.addColorStop(1, color + "00");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+  blob(120, 60, 480, primary);
+  blob(970, 980, 460, secondary);
+  blob(880, 160, 320, "#B6EF3C");
 
   ctx.textAlign = "center";
+  drawShareLogoIcon(ctx, canvas.width / 2, 170, 130, { primary, lima: "#B6EF3C", limaOscura: "#8FD32E" });
+
   ctx.fillStyle = text;
   ctx.font = "800 58px 'Bricolage Grotesque', sans-serif";
   ctx.fillText("tutti.frutti", canvas.width / 2, 400);
 
+  if (badgeEmoji) {
+    ctx.font = "88px sans-serif";
+    ctx.fillText(badgeEmoji, canvas.width / 2, 500);
+  }
+
   ctx.fillStyle = primary;
-  ctx.font = "800 120px 'Bricolage Grotesque', sans-serif";
-  ctx.fillText(big, canvas.width / 2, 620);
+  ctx.font = "800 130px 'Bricolage Grotesque', sans-serif";
+  ctx.fillText(big, canvas.width / 2, badgeEmoji ? 660 : 600);
 
   ctx.fillStyle = text;
-  ctx.font = "500 44px 'Instrument Sans', sans-serif";
-  wrapCanvasText(ctx, subtitle, canvas.width / 2, 730, 880, 56);
+  ctx.font = "500 42px 'Instrument Sans', sans-serif";
+  wrapCanvasText(ctx, subtitle, canvas.width / 2, badgeEmoji ? 750 : 690, 860, 54);
 
-  ctx.globalAlpha = 0.65;
-  ctx.font = "600 32px 'Instrument Sans', sans-serif";
-  ctx.fillText("tuttipuntofrutti.com", canvas.width / 2, canvas.height - 80);
-  ctx.globalAlpha = 1;
+  // Pastilla con el link, bien visible en vez de texto apagado.
+  const pillY = canvas.height - 130;
+  const pillText = "tuttipuntofrutti.com";
+  ctx.font = "700 38px 'Instrument Sans', sans-serif";
+  const pillWidth = ctx.measureText(pillText).width + 80;
+  ctx.fillStyle = surface;
+  ctx.beginPath();
+  ctx.roundRect(canvas.width / 2 - pillWidth / 2, pillY - 38, pillWidth, 76, 38);
+  ctx.fill();
+  ctx.fillStyle = primary;
+  ctx.fillText(pillText, canvas.width / 2, pillY + 14);
 
   return canvas;
 }
 
 function shareCanvasImage(canvas, shareText) {
+  const fullText = shareText + " https://tuttipuntofrutti.com";
   canvas.toBlob(blob => {
     if (!blob) return;
     let file = null;
     try { file = new File([blob], "tutti-frutti.png", { type: "image/png" }); } catch (e) { file = null; }
     if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({ files: [file], title: "tutti.frutti", text: shareText }).catch(() => {});
+      navigator.share({ files: [file], title: "tutti.frutti", text: fullText }).catch(() => {});
       return;
     }
     if (navigator.share) {
-      navigator.share({ title: "tutti.frutti", text: shareText + " " + location.origin }).catch(() => {});
+      navigator.share({ title: "tutti.frutti", text: fullText }).catch(() => {});
       return;
     }
     // Fallback de escritorio: descarga la imagen para compartirla a mano.
@@ -3997,13 +4037,17 @@ function shareCanvasImage(canvas, shareText) {
 }
 
 function shareStreakResult(score, rounds) {
-  const canvas = buildShareCanvas(score + " pts", t("share_streak_subtitle", { rounds }));
+  const canvas = buildShareCanvas(score + " pts", t("share_streak_subtitle", { rounds }), "🔥");
   shareCanvasImage(canvas, t("share_streak_text", { score, rounds }));
 }
 
 function shareFinalResult() {
   const info = state._finalShareInfo || { score: 0, won: false };
-  const canvas = buildShareCanvas(info.score + " pts", info.won ? t("share_final_won_subtitle") : t("share_final_subtitle"));
+  const canvas = buildShareCanvas(
+    info.score + " pts",
+    info.won ? t("share_final_won_subtitle") : t("share_final_subtitle"),
+    info.won ? "🏆" : "👏"
+  );
   shareCanvasImage(canvas, info.won ? t("share_final_won_text", { score: info.score }) : t("share_final_text", { score: info.score }));
 }
 

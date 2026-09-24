@@ -65,8 +65,8 @@ body {
 .bg-blob-1 { width: 420px; height: 420px; top: -140px; left: -120px; background: var(--primary); }
 .bg-blob-2 { width: 380px; height: 380px; bottom: -160px; right: -100px; background: var(--secondary); }
 .bg-blob-3 { width: 320px; height: 320px; top: 45%; left: 55%; background: var(--lima); opacity: .22; }
-html[data-light] .bg-blob { opacity: .16; }
-html[data-light] .bg-blob-3 { opacity: .12; }
+html[data-light] .bg-blob { opacity: .32; }
+html[data-light] .bg-blob-3 { opacity: .24; }
 
 h1, h2, h3 { font-family: var(--font-display); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; color: var(--text); }
 a { color: var(--primary); text-decoration: none; }
