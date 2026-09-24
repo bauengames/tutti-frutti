@@ -571,8 +571,12 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
 
 /* ---------- Confetti ---------- */
 .confetti-container { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 60; }
-.confetti-piece { position: absolute; top: -12px; border-radius: 2px; animation: confetti-fall linear forwards; opacity: .9; }
-@keyframes confetti-fall { to { transform: translateY(110vh) rotate(720deg); opacity: .5; } }
+.confetti-piece {
+  position: absolute; top: -32px; line-height: 1; animation: confetti-fall linear forwards;
+  opacity: .95; --confetti-rotate: 720deg;
+}
+.confetti-piece-rotten { opacity: .8; filter: grayscale(.55) saturate(.7); }
+@keyframes confetti-fall { to { transform: translateY(110vh) rotate(var(--confetti-rotate)); opacity: .4; } }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 520px) {
@@ -683,7 +687,7 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
     </p>
 
     <p class="online-note" id="randomNote" style="display:none;" data-i18n="random_note">
-      Te busca un rival real entre quienes estén buscando partida en este momento, sin código que compartir. Se juega con categorías y reglas fijas, ya que no hay forma de ponerse de acuerdo con un desconocido antes de arrancar. Si nadie aparece en unos segundos, podés seguir esperando o jugar contra un rival de prueba.
+      Te busca un rival real entre quienes estén buscando partida en este momento, sin código que compartir. Se juega con categorías y reglas fijas, ya que no hay forma de ponerse de acuerdo con un desconocido antes de arrancar. Si nadie aparece en unos segundos, podés seguir esperando o cancelar la búsqueda.
     </p>
 
     <p class="online-note" id="streakNote" style="display:none;" data-i18n="streak_note">
@@ -935,7 +939,6 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
     <div id="searchTimeoutOptions" style="display:none;">
       <p class="lead" style="font-size:14px;" data-i18n="searching_none_found">No encontramos a nadie todavía.</p>
       <button type="button" class="btn btn-primary btn-block" onclick="keepSearching()" data-i18n="keep_searching_btn">Seguir buscando</button>
-      <button type="button" class="btn btn-secondary btn-block" onclick="startSimulatedMatch()" data-i18n="play_test_opponent_btn">Jugar con un rival de prueba</button>
     </div>
     <button type="button" class="btn btn-ghost btn-block" onclick="goToLobby()" data-i18n="cancel_search_btn">Cancelar búsqueda</button>
   </div>
@@ -1078,7 +1081,7 @@ const I18N = {
     tab_random: "Al azar",
     online_note_main_html: 'Se sortea una letra, todos completan las categorías al mismo tiempo y cualquiera puede tocar <strong>¡Basta!</strong> para cortar la ronda. Después de cada ronda pueden revisar y objetar respuestas antes de que se calcule el puntaje.',
     join_note: "Pedile el código de sala a quien la creó y entrás directo a jugar con ella.",
-    random_note: "Te busca un rival real entre quienes estén buscando partida en este momento, sin código que compartir. Se juega con categorías y reglas fijas, ya que no hay forma de ponerse de acuerdo con un desconocido antes de arrancar. Si nadie aparece en unos segundos, podés seguir esperando o jugar contra un rival de prueba.",
+    random_note: "Te busca un rival real entre quienes estén buscando partida en este momento, sin código que compartir. Se juega con categorías y reglas fijas, ya que no hay forma de ponerse de acuerdo con un desconocido antes de arrancar. Si nadie aparece en unos segundos, podés seguir esperando o cancelar la búsqueda.",
     label_player_name: "Tu nombre",
     player_name_placeholder: "¿Cómo te llamás?",
     label_room_create: "Sala (compartí este código con tus amigos)",
@@ -1186,7 +1189,6 @@ const I18N = {
     searching_text: "Buscando un rival al azar...",
     searching_none_found: "No encontramos a nadie todavía.",
     keep_searching_btn: "Seguir buscando",
-    play_test_opponent_btn: "Jugar con un rival de prueba",
     cancel_search_btn: "Cancelar búsqueda",
     round_label: "Ronda {round} · Sala {room}",
     round_label_of: "Ronda {round} de {total} · Sala {room}",
@@ -1244,7 +1246,7 @@ const I18N = {
     tab_random: "Random",
     online_note_main_html: 'A letter is drawn, everyone fills in the categories at the same time, and anyone can tap <strong>Stop!</strong> to end the round. After each round you can review and challenge answers before the score is calculated.',
     join_note: "Ask whoever created the room for the code and you'll jump straight into the game.",
-    random_note: "We'll match you with a real opponent among the people looking for a game right now, with no code to share. It's played with fixed categories and rules, since there's no way to agree on them with a stranger before starting. If no one shows up in a few seconds, you can keep waiting or play against a test opponent.",
+    random_note: "We'll match you with a real opponent among the people looking for a game right now, with no code to share. It's played with fixed categories and rules, since there's no way to agree on them with a stranger before starting. If no one shows up in a few seconds, you can keep waiting or cancel the search.",
     label_player_name: "Your name",
     player_name_placeholder: "What's your name?",
     label_room_create: "Room (share this code with your friends)",
@@ -1352,7 +1354,6 @@ const I18N = {
     searching_text: "Looking for a random opponent...",
     searching_none_found: "We haven't found anyone yet.",
     keep_searching_btn: "Keep searching",
-    play_test_opponent_btn: "Play against a test opponent",
     cancel_search_btn: "Cancel search",
     round_label: "Round {round} · Room {room}",
     round_label_of: "Round {round} of {total} · Room {room}",
@@ -1410,7 +1411,7 @@ const I18N = {
     tab_random: "Aleatório",
     online_note_main_html: 'Sorteia-se uma letra, todos preenchem as categorias ao mesmo tempo e qualquer um pode apertar <strong>Basta!</strong> para encerrar a rodada. Depois de cada rodada é possível revisar e contestar respostas antes de calcular a pontuação.',
     join_note: "Peça o código da sala a quem a criou e você entra direto para jogar com ela.",
-    random_note: "Você é pareado com um adversário real entre quem estiver procurando partida nesse momento, sem código para compartilhar. Joga-se com categorias e regras fixas, já que não há como combinar com um desconhecido antes de começar. Se ninguém aparecer em alguns segundos, você pode continuar esperando ou jogar contra um adversário de teste.",
+    random_note: "Você é pareado com um adversário real entre quem estiver procurando partida nesse momento, sem código para compartilhar. Joga-se com categorias e regras fixas, já que não há como combinar com um desconhecido antes de começar. Se ninguém aparecer em alguns segundos, você pode continuar esperando ou cancelar a busca.",
     label_player_name: "Seu nome",
     player_name_placeholder: "Qual é o seu nome?",
     label_room_create: "Sala (compartilhe este código com seus amigos)",
@@ -1518,7 +1519,6 @@ const I18N = {
     searching_text: "Procurando um adversário aleatório...",
     searching_none_found: "Ainda não encontramos ninguém.",
     keep_searching_btn: "Continuar procurando",
-    play_test_opponent_btn: "Jogar contra um adversário de teste",
     cancel_search_btn: "Cancelar busca",
     round_label: "Rodada {round} · Sala {room}",
     round_label_of: "Rodada {round} de {total} · Sala {room}",
@@ -3403,24 +3403,6 @@ function beginGame() {
   }
 }
 
-function startSimulatedMatch() {
-  cleanupRandomSearch();
-  state.duration = RANDOM_MATCH_CONFIG.duration;
-  state.totalRounds = RANDOM_MATCH_CONFIG.totalRounds;
-  state.categories = [...RANDOM_MATCH_CONFIG.categories];
-  state.letterPool = [...RANDOM_MATCH_CONFIG.letterPool];
-  state.round = 1;
-  state.ranking = [];
-  state.usedLetters = getRecentLetters().filter(l => state.letterPool.includes(l));
-  state.online = false;
-  state.mockOpponentNames = pickOpponents(2);
-  renderOfflinePlayersStrip();
-  state.roomCode = uid().slice(0, 5);
-  recordGameStart();
-  showSearchingScreen();
-  setTimeout(startRound, 1400);
-}
-
 function beginPlaying() {
   document.getElementById("timerWrap").style.display = "block";
   renderCatGrid();
@@ -3859,43 +3841,32 @@ function playAnotherRound() {
   startRound();
 }
 
-function launchConfetti() {
+const WIN_CONFETTI_EMOJI = ["🍊", "🍋", "🍓", "🍇", "🍒", "🍍", "🍎", "🍌", "🍉"];
+const LOSE_CONFETTI_EMOJI = ["🍂", "🥀", "🪰", "🍄"];
+
+function launchFruitConfetti(kind) {
   const container = document.getElementById("confettiContainer");
   if (!container) return;
-  const styles = getComputedStyle(document.documentElement);
-  const colors = [
-    styles.getPropertyValue("--primary").trim() || "#FF5E5B",
-    styles.getPropertyValue("--secondary").trim() || "#FFA62B",
-    styles.getPropertyValue("--lima").trim() || "#B6EF3C",
-    styles.getPropertyValue("--cielo").trim() || "#35C8F2",
-  ];
-  const crema = styles.getPropertyValue("--crema").trim() || "#FFF3E2";
-  const count = 90;
+  const isWin = kind !== "lose";
+  const emojiSet = isWin ? WIN_CONFETTI_EMOJI : LOSE_CONFETTI_EMOJI;
+  const count = isWin ? 80 : 36;
   for (let i = 0; i < count; i++) {
     const piece = document.createElement("div");
-    piece.className = "confetti-piece";
-    const color = colors[Math.floor(Math.random() * colors.length)];
-    const size = 10 + Math.random() * 8;
+    piece.className = "confetti-piece" + (isWin ? "" : " confetti-piece-rotten");
+    piece.textContent = emojiSet[Math.floor(Math.random() * emojiSet.length)];
+    const size = isWin ? (20 + Math.random() * 12) : (18 + Math.random() * 10);
     piece.style.left = Math.random() * 100 + "vw";
-    piece.style.width = size + "px";
-    if (Math.random() < 0.75) {
-      // Gajito de fruta: redondo, con un tono más claro adentro (como un
-      // cachito de cítrico visto de frente).
-      piece.style.height = size + "px";
-      piece.style.borderRadius = "50%";
-      piece.style.background = `radial-gradient(circle at 35% 30%, ${crema} 0%, ${crema} 8%, ${color} 48%, ${color} 100%)`;
-    } else {
-      // El resto, tiritas finas para variar (como una hojita).
-      piece.style.height = (size * 1.6) + "px";
-      piece.style.borderRadius = "2px";
-      piece.style.background = color;
-    }
-    piece.style.animationDuration = (2.2 + Math.random() * 1.6) + "s";
-    piece.style.animationDelay = (Math.random() * 0.4) + "s";
-    piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+    piece.style.fontSize = size + "px";
+    piece.style.animationDuration = (isWin ? (2.2 + Math.random() * 1.6) : (3.2 + Math.random() * 2)) + "s";
+    piece.style.animationDelay = (Math.random() * (isWin ? 0.4 : 0.8)) + "s";
+    piece.style.setProperty("--confetti-rotate", `${(Math.random() < 0.5 ? -1 : 1) * (isWin ? 720 : 200)}deg`);
     container.appendChild(piece);
-    setTimeout(() => piece.remove(), 4500);
+    setTimeout(() => piece.remove(), 5500);
   }
+}
+
+function launchConfetti() {
+  launchFruitConfetti("win");
 }
 
 function showFinalScreen() {
@@ -3938,6 +3909,7 @@ function showFinalOutcomeFor(iWon) {
     launchConfetti();
   } else {
     badge.textContent = "👏";
+    launchFruitConfetti("lose");
     const note = document.getElementById("finalSummary");
     const consolations = t("loser_consolations");
     const consolation = consolations[Math.floor(Math.random() * consolations.length)];

@@ -82,7 +82,12 @@ exports.handler = async (event) => {
   // Chequeo débil de origen: no es una barrera de seguridad real (se puede
   // falsificar), pero filtra pedidos obviamente ajenos al juego.
   const origen = event.headers.origin || event.headers.referer || "";
-  if (origen && !origen.includes("tuttipuntofrutti.netlify.app") && !origen.includes("localhost")) {
+  const origenPermitido =
+    !origen ||
+    origen.includes("tuttipuntofrutti.com") ||
+    origen.includes("tuttipuntofrutti.netlify.app") ||
+    origen.includes("localhost");
+  if (!origenPermitido) {
     return jsonResponse(403, { error: "Origen no permitido" });
   }
 

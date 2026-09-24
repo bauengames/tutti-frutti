@@ -12,10 +12,36 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="site.css" />
 <script src="site-i18n.js"></script>
+<script>
+/* Aplica el mismo tema/fondo elegido en el juego antes de pintar la página, para que no haya salto de color. */
+(function () {
+  var PRESETS = {
+    "pomelo__crema": { theme: "pomelo", bg: "crema" },
+    "cielo__violeta": { theme: "cielo", bg: "violeta" },
+    "uva__violeta": { theme: "uva", bg: "violeta" },
+    "lima__petroleo": { theme: "lima", bg: "petroleo" },
+    "mandarina__lavanda": { theme: "mandarina", bg: "lavanda" },
+  };
+  var LIGHT_BACKGROUNDS = ["crema", "lavanda"];
+  var preset;
+  try { preset = PRESETS[localStorage.getItem("tuttifruti_preset")]; } catch (e) { preset = null; }
+  preset = preset || PRESETS.pomelo__crema;
+  document.documentElement.setAttribute("data-theme", preset.theme);
+  document.documentElement.setAttribute("data-bg", preset.bg);
+  if (LIGHT_BACKGROUNDS.indexOf(preset.bg) !== -1) document.documentElement.setAttribute("data-light", "");
+})();
+</script>
+<script src="site-theme.js"></script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9897296561814312"
      crossorigin="anonymous"></script>
 </head>
 <body data-i18n-title="contacto_title" data-i18n-description="contacto_description">
+
+<div class="bg-blobs" aria-hidden="true">
+  <span class="bg-blob bg-blob-1"></span>
+  <span class="bg-blob bg-blob-2"></span>
+  <span class="bg-blob bg-blob-3"></span>
+</div>
 
 <header class="site-header">
   <div class="wrap">
@@ -32,6 +58,13 @@
           <button type="button" class="site-lang-option" data-lang="es" onclick="setSiteLanguage('es')">Español</button>
           <button type="button" class="site-lang-option" data-lang="en" onclick="setSiteLanguage('en')">English</button>
           <button type="button" class="site-lang-option" data-lang="pt" onclick="setSiteLanguage('pt')">Português</button>
+        </div>
+      </div>
+      <div class="theme-picker" id="themePicker">
+        <button type="button" class="theme-icon-btn" onclick="toggleThemeMenu()" aria-label="Cambiar tema"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M203.57,51A107.9,107.9,0,0,0,20,128c0,44.72,27.6,82.25,72,97.94A36,36,0,0,0,140,192a12,12,0,0,1,12-12h46.21a35.79,35.79,0,0,0,35.1-28A108.6,108.6,0,0,0,236,127.09,107.23,107.23,0,0,0,203.57,51Zm6.34,95.67a11.91,11.91,0,0,1-11.7,9.3H152a36,36,0,0,0-36,36,12,12,0,0,1-16,11.3c-16.65-5.88-30.65-15.76-40.48-28.56A76,76,0,0,1,44,128a84,84,0,0,1,83.13-84H128a84.35,84.35,0,0,1,84,83.29A84.72,84.72,0,0,1,209.91,146.71ZM144,76a16,16,0,1,1-16-16A16,16,0,0,1,144,76Zm-44,24A16,16,0,1,1,84,84,16,16,0,0,1,100,100Zm0,56a16,16,0,1,1-16-16A16,16,0,0,1,100,156Zm88-56a16,16,0,1,1-16-16A16,16,0,0,1,188,100Z"/></svg></button>
+        <div class="theme-menu" id="themeMenu">
+          <p class="theme-menu-label">Temas</p>
+          <div class="preset-grid" id="presetGrid"></div>
         </div>
       </div>
       <a class="btn-play" href="jugar.html" data-i18n="play_now_btn">Jugar ahora</a>
