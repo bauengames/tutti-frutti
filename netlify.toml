@@ -5,3 +5,23 @@
   # secretos de Netlify la marca igual por el prefijo "AIza", así que se
   # excluye este archivo puntual de ese chequeo.
   SECRETS_SCAN_OMIT_PATHS = "jugar.html"
+
+# Netlify publica la carpeta entera: esto evita que las notas internas y el
+# código fuente de las funciones se puedan descargar desde el sitio.
+[[redirects]]
+  from = "/context.md"
+  to = "/404"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/database.rules.json"
+  to = "/404"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/netlify/*"
+  to = "/404"
+  status = 404
+  force = true

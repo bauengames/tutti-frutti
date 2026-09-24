@@ -1,0 +1,103 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "rooms": {
+      "$roomCode": {
+        ".read": "auth != null && $roomCode.matches(/^[A-Z0-9]{3,8}$/)",
+        ".write": "auth != null && $roomCode.matches(/^[A-Z0-9]{3,8}$/) && ((!data.exists() && newData.child('hostId').val() === auth.uid) || data.child('hostId').val() === auth.uid)",
+        "players": {
+          "$playerId": {
+            ".write": "auth != null && auth.uid === $playerId && data.parent().parent().child('hostId').exists()",
+            "name": {
+              ".validate": "newData.isString() && newData.val().length <= 30"
+            },
+            "score": {
+              ".validate": "newData.isNumber() && (root.child('rooms').child($roomCode).child('hostId').val() === auth.uid || newData.val() === 0 || newData.val() === data.val())"
+            },
+            "connected": {
+              ".validate": "newData.isBoolean()"
+            }
+          }
+        },
+        "answers": {
+          "$round": {
+            "$playerId": {
+              ".write": "auth != null && auth.uid === $playerId && data.parent().parent().parent().child('players').child(auth.uid).exists()",
+              "$category": {
+                ".validate": "newData.isString() && newData.val().length <= 60"
+              }
+            }
+          }
+        },
+        "status": {
+          ".write": "auth != null && data.parent().child('players').child(auth.uid).exists() && ((data.val() === 'playing' && newData.val() === 'collecting') || newData.val() === data.val())"
+        },
+        "bastaBy": {
+          ".write": "auth != null && data.parent().child('players').child(auth.uid).exists() && newData.val() === auth.uid"
+        },
+        "reviewReady": {
+          "$round": {
+            "$playerId": {
+              ".write": "auth != null && auth.uid === $playerId && data.parent().parent().parent().child('players').child(auth.uid).exists()",
+              ".validate": "newData.val() === true"
+            }
+          }
+        },
+        "objections": {
+          "$round": {
+            "$category": {
+              "$targetId": {
+                "$objectorId": {
+                  ".write": "auth != null && auth.uid === $objectorId && root.child('rooms').child($roomCode).child('players').child(auth.uid).exists()",
+                  ".validate": "newData.val() === true"
+                }
+              }
+            }
+          }
+        },
+        "reactions": {
+          "$round": {
+            "$category": {
+              "$targetId": {
+                "$emoji": {
+                  "$reactorId": {
+                    ".write": "auth != null && auth.uid === $reactorId && root.child('rooms').child($roomCode).child('players').child(auth.uid).exists()",
+                    ".validate": "newData.val() === true && $emoji.length <= 16"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "accepted": {
+          "$round": {
+            "$category": {
+              "$targetId": {
+                ".write": "auth != null && auth.uid === $targetId && root.child('rooms').child($roomCode).child('players').child(auth.uid).exists()",
+                ".validate": "newData.val() === true"
+              }
+            }
+          }
+        }
+      }
+    },
+    "queue": {
+      ".read": "auth != null && query.orderByChild === 'status' && query.equalTo === 'waiting' && query.limitToFirst <= 5",
+      ".indexOn": "status",
+      "$playerId": {
+        ".read": "auth != null",
+        ".write": "auth != null && $playerId.matches(/^[A-Za-z0-9]{3,40}$/) && (auth.uid === $playerId || (data.exists() && newData.exists()))",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length <= 30 && (auth.uid === $playerId || newData.val() === data.val())"
+        },
+        "status": {
+          ".validate": "newData.isString() && newData.val().length <= 12"
+        },
+        "roomCode": {
+          ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9]{3,8}$/)"
+        }
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@
 <meta name="description" content="Tutti frutti online gratis para jugar con amigos (conocido también como Stop o Basta en otros países). Armá la sala, se sortea la letra y gana el más rápido." />
 <meta name="theme-color" content="#14101F" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
+<link rel="canonical" href="https://tuttipuntofrutti.com/jugar.html" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <style>
@@ -950,6 +951,9 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
     getDatabase, ref, set, get, update, onValue, off, runTransaction,
     serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst
   } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+  import {
+    getAuth, signInAnonymously, setPersistence, browserSessionPersistence
+  } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBQaii5CHK99ipaNbaLBBZH1mvNLGGzMXc",
@@ -964,14 +968,32 @@ html[data-light] .stat-card .stat-value { color: var(--tinta); }
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
 
-  window.FB = { db, ref, set, get, update, onValue, off, runTransaction, serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst };
+  // Identidad anónima de Firebase: las reglas de la base la usan para que
+  // cada jugador solo pueda escribir sus propias respuestas. Persistencia por
+  // pestaña (sessionStorage), igual que el ID que se usaba antes: dos
+  // pestañas en la misma compu siguen siendo dos jugadores distintos.
+  let uid = null;
+  try {
+    const auth = getAuth(app);
+    await setPersistence(auth, browserSessionPersistence);
+    const cred = await signInAnonymously(auth);
+    uid = cred.user.uid;
+  } catch (e) {
+    console.error("No se pudo iniciar sesión anónima en Firebase", e);
+  }
+
+  window.FB = { db, uid, ref, set, get, update, onValue, off, runTransaction, serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst };
   window.dispatchEvent(new Event("firebase-ready"));
 </script>
 
 <script>
 function whenFirebaseReady(cb) {
-  if (window.FB) { cb(); return; }
-  window.addEventListener("firebase-ready", () => cb(), { once: true });
+  const run = () => {
+    if (window.FB.uid) state.playerId = window.FB.uid;
+    cb();
+  };
+  if (window.FB) { run(); return; }
+  window.addEventListener("firebase-ready", run, { once: true });
 }
 
 const CATEGORY_POOL = [
@@ -1163,6 +1185,7 @@ const I18N = {
     everyone_objected: "La objetaron todos los demás",
     doesnt_start_with: "No empieza con {letter}",
     answer_too_short: "Es solo la letra, no cuenta como palabra",
+    answer_repeated_cat: "Ya la usaste en otra categoría esta ronda",
     judge_valid: "Válida",
     judge_invalid: "No válida",
     judge_no_response: " (el juez no respondió, se aceptó por defecto)",
@@ -1328,6 +1351,7 @@ const I18N = {
     everyone_objected: "Everyone else challenged it",
     doesnt_start_with: "Doesn't start with {letter}",
     answer_too_short: "It's just the letter, it doesn't count as a word",
+    answer_repeated_cat: "You already used it in another category this round",
     judge_valid: "Valid",
     judge_invalid: "Not valid",
     judge_no_response: " (the judge didn't respond, it was accepted by default)",
@@ -1493,6 +1517,7 @@ const I18N = {
     everyone_objected: "Todos os outros contestaram",
     doesnt_start_with: "Não começa com {letter}",
     answer_too_short: "É só a letra, não conta como palavra",
+    answer_repeated_cat: "Você já usou em outra categoria nesta rodada",
     judge_valid: "Válida",
     judge_invalid: "Não válida",
     judge_no_response: " (o juiz não respondeu, foi aceita por padrão)",
@@ -3029,6 +3054,10 @@ async function computeAndApplyScores(data, round) {
   // al juez (eso solo pasa si de verdad hace falta).
   const classification = {};
   const disputas = [];
+  // Palabras que cada jugador ya usó esta ronda: la misma palabra en otra
+  // categoría solo cuenta la primera vez.
+  const usedByPlayer = {};
+  pids.forEach(pid => { usedByPlayer[pid] = new Set(); });
   categories.forEach(cat => {
     classification[cat] = {};
     pids.forEach(pid => {
@@ -3036,6 +3065,9 @@ async function computeAndApplyScores(data, round) {
       if (!raw) { classification[cat][pid] = { status: "empty" }; return; }
       if (!answerMatchesLetter(raw, letter)) { classification[cat][pid] = { status: "badLetter" }; return; }
       if (isTrivialAnswer(raw)) { classification[cat][pid] = { status: "tooShort" }; return; }
+      const norm = normalizeAnswer(raw);
+      if (usedByPlayer[pid].has(norm)) { classification[cat][pid] = { status: "repeatedCat" }; return; }
+      usedByPlayer[pid].add(norm);
 
       const objectorsForThis = (objectionsForRound[cat] && objectionsForRound[cat][pid]) || {};
       const objectorIds = Object.keys(objectorsForThis);
@@ -3105,6 +3137,8 @@ async function computeAndApplyScores(data, round) {
         judgeInfo[`${cat}|${pid}`] = { letraInvalida: true };
       } else if (c.status === "tooShort") {
         judgeInfo[`${cat}|${pid}`] = { demasiadoCorta: true };
+      } else if (c.status === "repeatedCat") {
+        judgeInfo[`${cat}|${pid}`] = { repetida: true };
       }
       normalized[cat][pid] = isValid ? normalizeAnswer(raw) : "";
     });
@@ -3225,6 +3259,8 @@ function renderOnlineResults(data) {
         extra = `<div style="font-size:11px; color:var(--text-support);">${t("doesnt_start_with", { letter: data.letter })}</div>`;
       } else if (info.demasiadoCorta) {
         extra = `<div style="font-size:11px; color:var(--text-support);">${t("answer_too_short")}</div>`;
+      } else if (info.repetida) {
+        extra = `<div style="font-size:11px; color:var(--text-support);">${t("answer_repeated_cat")}</div>`;
       } else if (typeof info.valida === "boolean") {
         const colorClass = info.valida ? "text-positive" : "text-negative";
         extra = `<div class="${colorClass}" style="font-size:11px;">${state.lang === "en" ? "Judge" : "Juez"}: ${info.valida ? t("judge_valid") : t("judge_invalid")}${info.motivo ? " — " + escapeHtml(info.motivo) : ""}${info.sinRespuesta ? t("judge_no_response") : ""}</div>`;
@@ -3709,11 +3745,15 @@ async function finishStreakRound() {
 
   // Paso 1: lo que se puede resolver sin el juez, gratis — vacía o con una
   // letra que no corresponde, igual que en las salas multijugador.
+  const usedWords = new Set();
   const results = state.categories.map(cat => {
     const val = (state.answers[cat] || "").trim();
     if (!val) return { cat, val, valid: false };
     if (!answerMatchesLetter(val, letter)) return { cat, val, valid: false };
     if (isTrivialAnswer(val)) return { cat, val, valid: false };
+    const norm = normalizeAnswer(val);
+    if (usedWords.has(norm)) return { cat, val, valid: false, repeated: true };
+    usedWords.add(norm);
     return { cat, val, valid: null }; // pendiente de que la revise el juez
   });
 
@@ -3762,10 +3802,12 @@ function renderStreakResult(results) {
     const pts = isWild ? basePts * 2 : basePts;
     const row = document.createElement("div");
     row.className = "answer-row";
+    row.style.flexWrap = "wrap";
     row.innerHTML = `
       <span class="answer-cat">${escapeHtml(catLabel(r.cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
       <span class="answer-val ${r.val ? "" : "empty"}">${r.val ? escapeHtml(r.val) : t("no_answer")}</span>
       <span class="points points-${basePts}" title="${t(basePts ? "score_label_20" : "score_label_0")}">+${pts}</span>
+      ${r.repeated ? `<div style="flex-basis:100%; font-size:11px; color:var(--text-support);">${t("answer_repeated_cat")}</div>` : ""}
     `;
     list.appendChild(row);
   });

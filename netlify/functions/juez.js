@@ -66,6 +66,25 @@ Responda APENAS com JSON, sem texto adicional nem blocos de código, neste forma
 Preencha "motivo" com uma frase breve EM PORTUGUÊS somente quando "valida" for false.`,
 };
 
+const HOSTS_PERMITIDOS = new Set([
+  "tuttipuntofrutti.com",
+  "www.tuttipuntofrutti.com",
+  "tuttipuntofrutti.netlify.app",
+  "localhost",
+  "127.0.0.1",
+]);
+
+function esOrigenPermitido(origen) {
+  let host;
+  try {
+    host = new URL(origen).hostname;
+  } catch (e) {
+    return false;
+  }
+  // Los deploy previews de Netlify tienen la forma "algo--tuttipuntofrutti.netlify.app".
+  return HOSTS_PERMITIDOS.has(host) || host.endsWith("--tuttipuntofrutti.netlify.app");
+}
+
 function jsonResponse(statusCode, body) {
   return {
     statusCode,
@@ -80,14 +99,10 @@ exports.handler = async (event) => {
   }
 
   // Chequeo débil de origen: no es una barrera de seguridad real (se puede
-  // falsificar), pero filtra pedidos obviamente ajenos al juego.
+  // falsificar desde fuera de un navegador), pero filtra pedidos obviamente
+  // ajenos al juego. Los navegadores siempre mandan Origin en un POST.
   const origen = event.headers.origin || event.headers.referer || "";
-  const origenPermitido =
-    !origen ||
-    origen.includes("tuttipuntofrutti.com") ||
-    origen.includes("tuttipuntofrutti.netlify.app") ||
-    origen.includes("localhost");
-  if (!origenPermitido) {
+  if (!esOrigenPermitido(origen)) {
     return jsonResponse(403, { error: "Origen no permitido" });
   }
 
@@ -160,7 +175,8 @@ exports.handler = async (event) => {
 
   if (!respuestaAnthropic.ok) {
     const detalle = await respuestaAnthropic.text().catch(() => "");
-    return jsonResponse(502, { error: "El juez no pudo resolver esta ronda", detalle: detalle.slice(0, 200) });
+    console.error("Error de Anthropic", respuestaAnthropic.status, detalle.slice(0, 500));
+    return jsonResponse(502, { error: "El juez no pudo resolver esta ronda" });
   }
 
   const data = await respuestaAnthropic.json().catch(() => null);
