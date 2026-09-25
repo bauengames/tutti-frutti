@@ -1215,28 +1215,52 @@ html[data-light] .twist-note { color: var(--tinta); }
   // cada jugador solo pueda escribir sus propias respuestas. Queda guardada en
   // el navegador, así el jugador sigue siendo el mismo en los rankings aunque
   // cierre la pestaña (dos pestañas del mismo navegador son el mismo jugador).
-  let uid = null;
-  try {
-    const auth = getAuth(app);
-    await setPersistence(auth, browserLocalPersistence);
-    const cred = await signInAnonymously(auth);
-    uid = cred.user.uid;
-  } catch (e) {
-    console.error("No se pudo iniciar sesión anónima en Firebase", e);
+  async function signIn() {
+    try {
+      const auth = getAuth(app);
+      await setPersistence(auth, browserLocalPersistence);
+      const cred = await signInAnonymously(auth);
+      return cred.user.uid;
+    } catch (e) {
+      console.error("No se pudo iniciar sesión anónima en Firebase", e);
+      return null;
+    }
   }
+  const uid = await signIn();
 
   window.FB = { db, uid, ref, set, get, update, onValue, off, runTransaction, serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst, limitToLast };
+  // Si el inicio de sesión falló al cargar (conexión que se cortó, por
+  // ejemplo), se vuelve a intentar antes de entrar a una sala.
+  window.FB.retrySignIn = async () => {
+    const newUid = await signIn();
+    if (newUid) window.FB.uid = newUid;
+    return newUid;
+  };
   window.dispatchEvent(new Event("firebase-ready"));
 </script>
 
 <script>
 function whenFirebaseReady(cb) {
-  const run = () => {
+  const run = async () => {
+    if (!window.FB.uid) await window.FB.retrySignIn();
     if (window.FB.uid) state.playerId = window.FB.uid;
-    cb();
+    try {
+      await cb();
+    } catch (e) {
+      handleOnlineError(e);
+    }
   };
   if (window.FB) { run(); return; }
   window.addEventListener("firebase-ready", run, { once: true });
+}
+
+// Antes, si Firebase rechazaba la conexión (por ejemplo, una pestaña abierta
+// desde antes de un cambio en las reglas), el jugador se quedaba quieto en el
+// lobby sin ningún aviso. Ahora se avisa qué hacer.
+function handleOnlineError(e) {
+  console.error("Error al conectar con la sala", e);
+  alert(t("alert_connection_problem"));
+  goToLobby();
 }
 
 const CATEGORY_POOL = [
@@ -1500,6 +1524,7 @@ const I18N = {
     share_final_won_text: "¡Gané una partida de tutti.frutti con {score} puntos! Jugá vos también:",
     avatar_label: "Tu fruta",
     install_app_btn: "Instalar la app",
+    alert_connection_problem: "No pudimos conectarte con la sala. Recargá la página (F5) y probá de nuevo. Si tenés un bloqueador de anuncios, probá desactivarlo para este sitio.",
     twists_label: "Vueltas de tuerca (opcional)",
     twist_hard_title: "Letras difíciles",
     twist_hard_desc: "Entran la K, Ñ, Q, W, X, Y y Z. Si sale una, esa ronda vale el doble.",
@@ -1742,6 +1767,7 @@ const I18N = {
     share_final_won_text: "I won a tutti.frutti match with {score} points! Play too:",
     avatar_label: "Your fruit",
     install_app_btn: "Install the app",
+    alert_connection_problem: "We couldn't connect you to the room. Reload the page (F5) and try again. If you use an ad blocker, try turning it off for this site.",
     twists_label: "Twists (optional)",
     twist_hard_title: "Hard letters",
     twist_hard_desc: "K, Ñ, Q, W, X, Y and Z join the pool. If one comes up, that round is worth double.",
@@ -1984,6 +2010,7 @@ const I18N = {
     share_final_won_text: "Ganhei uma partida de tutti.frutti com {score} pontos! Jogue também:",
     avatar_label: "Sua fruta",
     install_app_btn: "Instalar o app",
+    alert_connection_problem: "Não conseguimos te conectar à sala. Recarregue a página (F5) e tente de novo. Se você usa um bloqueador de anúncios, tente desativá-lo para este site.",
     twists_label: "Reviravoltas (opcional)",
     twist_hard_title: "Letras difíceis",
     twist_hard_desc: "Entram K, Ñ, Q, W, X, Y e Z. Se sair uma, essa rodada vale o dobro.",
@@ -2147,10 +2174,7 @@ function avatarOf(p) {
 function getMyAvatar() {
   try {
     const saved = localStorage.getItem(AVATAR_KEY);
-    if (AVATARS.includes(saved)) return saved;
-    const picked = AVATARS[Math.floor(Math.random() * AVATARS.length)];
-    localStorage.setItem(AVATAR_KEY, picked);
-    return picked;
+    return AVATARS.includes(saved) ? saved : "🍎";
   } catch (e) {
     return AVATARS[0];
   }
@@ -2160,6 +2184,7 @@ function setMyAvatar(avatar) {
   if (!AVATARS.includes(avatar)) return;
   try { localStorage.setItem(AVATAR_KEY, avatar); } catch (e) { /* storage unavailable */ }
   renderAvatarPicker();
+  applyLogoFruit(avatar);
 }
 
 function renderAvatarPicker() {
@@ -2547,7 +2572,7 @@ function mascotHtml(mood, lineKey, size = "") {
   const lines = lineKey ? t(lineKey) : null;
   const line = Array.isArray(lines) ? lines[Math.floor(Math.random() * lines.length)] : "";
   return `<div class="mascot-wrap">
-    <div class="mascot ${size} mood-${mood}">${mascotSvg(mood)}</div>
+    <div class="mascot ${size} mood-${mood}">${mascotSvg(mood, getMyAvatar())}</div>
     ${line ? `<div class="mascot-bubble">${escapeHtml(line)}</div>` : ""}
   </div>`;
 }
@@ -2896,8 +2921,16 @@ function joinRoomOnline() {
     state.categories = (data.config && data.config.categories) || state.categories;
     state.duration = (data.config && data.config.duration) || state.duration;
     state.totalRounds = (data.config && data.config.totalRounds) != null ? data.config.totalRounds : state.totalRounds;
-    await window.FB.update(window.FB.ref(window.FB.db, "rooms/" + state.roomCode + "/players/" + state.playerId), myPlayerLabel());
-    recordGameStart();
+    // Si ya estaba en la sala (salió sin querer y vuelve a entrar) se conserva
+    // su puntaje: solo se actualiza el nombre, la fruta y que está conectado.
+    const myRef = window.FB.ref(window.FB.db, "rooms/" + state.roomCode + "/players/" + state.playerId);
+    if (alreadyIn) {
+      const { name, avatar, connected } = myPlayerLabel();
+      await window.FB.update(myRef, { name, avatar, connected });
+    } else {
+      await window.FB.update(myRef, myPlayerLabel());
+      recordGameStart();
+    }
     setupDisconnectHandling();
     subscribeToRoom();
     showScreen("screen-waiting");
@@ -3062,7 +3095,7 @@ function joinMatchedRoom(roomCode) {
     recordGameStart();
     setupDisconnectHandling();
     subscribeToRoom();
-  });
+  }).catch(handleOnlineError);
 }
 
 function cleanupRandomSearch() {
@@ -5372,7 +5405,7 @@ async function shareFinalResult() {
   const canvas = await buildShareCanvas(
     info.score + " pts",
     info.won ? t("share_final_won_subtitle") : t("share_final_subtitle"),
-    mascotSvg(info.won ? "happy" : "sad")
+    mascotSvg(info.won ? "happy" : "sad", getMyAvatar())
   );
   shareCanvasImage(canvas, info.won ? t("share_final_won_text", { score: info.score }) : t("share_final_text", { score: info.score }));
 }
@@ -5412,6 +5445,8 @@ function goToLobby() {
   document.getElementById("nextRoundBtn").style.display = "";
   renderDailyBanner();
   if (state.online) {
+    // Deja el código cargado en "Unirme" por si salió sin querer y quiere volver.
+    if (state.roomCode) document.getElementById("joinCodeInput").value = state.roomCode;
     clearTimeout(state.voteTimeoutId);
     clearInterval(state.voteCountdownId);
     state.pendingRound = null;
@@ -5477,6 +5512,23 @@ document.getElementById("dailyBannerIcon").innerHTML = iconSvg("sun");
 document.querySelectorAll("[data-icon]").forEach(el => { el.innerHTML = iconSvg(el.dataset.icon); });
 state.twists = loadTwists();
 renderTwists();
+
+// Si la pestaña quedó abierta desde antes de un deploy (muy común en la compu),
+// se recarga sola al volver a ella, siempre que no estés en medio de una
+// partida. Así nadie juega con una versión vieja que ya no conecta.
+let loadedVersion = null;
+function fetchPageVersion() {
+  return fetch(location.pathname, { method: "HEAD", cache: "no-store" })
+    .then(res => res.headers.get("etag"))
+    .catch(() => null);
+}
+fetchPageVersion().then(v => { loadedVersion = v; });
+document.addEventListener("visibilitychange", async () => {
+  if (document.visibilityState !== "visible" || !loadedVersion) return;
+  if (state.online || state.streakMode || state.dailyMode) return;
+  const current = await fetchPageVersion();
+  if (current && current !== loadedVersion) location.reload();
+});
 renderAvatarPicker();
 renderDailyBanner();
 checkAchievements();

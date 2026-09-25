@@ -481,10 +481,7 @@ var AVATAR_KEY = "tuttifruti_avatar";
 function getHomeAvatar() {
   try {
     var saved = localStorage.getItem(AVATAR_KEY);
-    if (AVATARS.indexOf(saved) !== -1) return saved;
-    var picked = AVATARS[Math.floor(Math.random() * AVATARS.length)];
-    localStorage.setItem(AVATAR_KEY, picked);
-    return picked;
+    return AVATARS.indexOf(saved) !== -1 ? saved : "🍎";
   } catch (e) {
     return AVATARS[0];
   }
@@ -494,6 +491,7 @@ function setHomeAvatar(avatar) {
   if (AVATARS.indexOf(avatar) === -1) return;
   try { localStorage.setItem(AVATAR_KEY, avatar); } catch (e) { /* storage unavailable */ }
   renderHomeAvatarPicker();
+  applyLogoFruit(avatar);
 }
 
 function renderHomeAvatarPicker() {

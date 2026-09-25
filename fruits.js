@@ -237,9 +237,62 @@
     return ICONS[name] || "";
   };
 
-  window.mascotSvg = function (mood) {
-    var face = FACES[mood] || FACES.neutral;
-    return '<svg class="mascot-svg" viewBox="0 0 100 100" aria-hidden="true" focusable="false">' +
-      apple(C.pomelo, C.lima, C.limaOscura) + face + "</svg>";
+  // Dónde va la cara en cada fruta: centro (x, y) y tamaño respecto de la manzana.
+  var FACE_SPOTS = {
+    "🍎": [50, 64, 1], "🍏": [50, 64, 1], "🍊": [50, 60, 0.9], "🍋": [50, 60, 0.8],
+    "🍌": [47, 63, 0.56], "🍉": [50, 46, 0.62], "🍇": [53, 58, 0.72], "🍓": [50, 60, 0.8],
+    "🍒": [33, 71, 0.46], "🍑": [50, 62, 0.9], "🍍": [50, 67, 0.72], "🥝": [50, 54, 0.62], "🥥": [50, 54, 0.66],
   };
+
+  function inner(markup) {
+    return markup.replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, "");
+  }
+
+  window.mascotSvg = function (mood, fruit) {
+    var face = FACES[mood] || FACES.neutral;
+    var key = FRUITS[fruit] ? fruit : "🍎";
+    // Las semillas negras (sandía, kiwi) se confunden con los ojos: en la
+    // mascota se dibujan sin ellas.
+    var body = key === "🍎" ? apple(C.pomelo, C.lima, C.limaOscura)
+      : inner(FRUITS[key]).replace(/<ellipse[^>]*fill="#14101F"[^>]*\/>/g, "");
+    var spot = FACE_SPOTS[key];
+    var placed = '<g transform="translate(' + spot[0] + " " + spot[1] + ") scale(" + spot[2] + ') translate(-50 -64)">' + face + "</g>";
+    return '<svg class="mascot-svg" viewBox="0 0 100 100" aria-hidden="true" focusable="false">' + body + placed + "</svg>";
+  };
+
+  // ---------- Logo: la fruta elegida por el jugador reemplaza a la manzana ----------
+  var AVATAR_KEY = "tuttifruti_avatar";
+
+  function logoFruitSvg(emoji) {
+    if (emoji === "🍎" || !FRUITS[emoji]) {
+      // La manzana original del logo, que toma el color del tema.
+      return '<svg viewBox="10 4 80 88" aria-hidden="true" focusable="false">' +
+        '<path d="' + APPLE_BODY + '" fill="var(--primary, #FF5E5B)"/><path d="' + LEAF_R + '" fill="#B6EF3C"/><path d="' + LEAF_L + '" fill="#8FD32E"/></svg>';
+    }
+    return FRUITS[emoji].replace('viewBox="0 0 100 100"', 'viewBox="6 6 88 88"');
+  }
+
+  window.applyLogoFruit = function (emoji) {
+    var markup = logoFruitSvg(emoji);
+    document.querySelectorAll(".apple-dot, .punto").forEach(function (el) { el.innerHTML = markup; });
+    document.querySelectorAll("svg.simbolo").forEach(function (el) {
+      el.outerHTML = markup.replace("<svg ", '<svg class="simbolo" ');
+    });
+  };
+
+  function savedFruit() {
+    try {
+      var saved = localStorage.getItem(AVATAR_KEY);
+      return FRUITS[saved] ? saved : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function applySavedLogo() {
+    var fruit = savedFruit();
+    if (fruit && fruit !== "🍎") window.applyLogoFruit(fruit);
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", applySavedLogo);
+  else applySavedLogo();
 })();
