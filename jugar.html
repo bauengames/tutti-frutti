@@ -880,7 +880,7 @@ html[data-light] .twist-note { color: var(--tinta); }
     </p>
 
     <p class="online-note" id="streakNote" style="display:none;" data-i18n="streak_note">
-      Jugás solo, contra el reloj: completá todas las categorías antes de que se acabe el tiempo para pasar a la siguiente letra. Cada ronda superada suma puntos y te queda un poco menos de tiempo — la racha termina en cuanto te quede una categoría sin completar.
+      Jugás solo, contra un reloj de 2 minutos. En cada ronda completá lo que puedas y tocá ¡Basta!: cada palabra válida suma puntos y pasás a la letra siguiente, aunque alguna esté mal o vacía. Cuando se acaba el tiempo, termina la partida. ¡Juntá la mayor cantidad de puntos!
     </p>
 
     <div class="field">
@@ -1487,16 +1487,16 @@ const I18N = {
     alert_opponent_disconnected: "El rival se desconectó antes de empezar. Probá buscar de nuevo.",
     opponent_generic: "Rival",
     tab_streak: "Contrarreloj",
-    streak_note: "Jugás solo, contra el reloj: completá todas las categorías antes de que se acabe el tiempo para pasar a la siguiente letra. Cada ronda superada suma puntos y te queda un poco menos de tiempo — la racha termina en cuanto te quede una categoría sin completar.",
+    streak_note: "Jugás solo, contra un reloj de 2 minutos. En cada ronda completá lo que puedas y tocá ¡Basta!: cada palabra válida suma puntos y pasás a la letra siguiente, aunque alguna esté mal o vacía. Cuando se acaba el tiempo, termina la partida. ¡Juntá la mayor cantidad de puntos!",
     play_btn_streak: "Jugar contrarreloj",
-    streak_round_label: "Racha · Ronda {n}",
-    streak_result_title: "¡Se terminó la racha!",
-    streak_result_rounds: "Rondas superadas: {n}",
+    streak_round_label: "Contrarreloj · Ronda {n}",
+    streak_result_title: "¡Se acabó el tiempo!",
+    streak_result_rounds: "Rondas jugadas: {n}",
     streak_result_score: "Puntaje: {score}",
     streak_new_record: "¡Nuevo récord personal!",
     streak_current_record: "Tu récord: {score} pts ({rounds} rondas)",
-    streak_retry_btn: "Otra racha",
-    streak_top_scores_heading: "Tus mejores rachas",
+    streak_retry_btn: "Jugar de nuevo",
+    streak_top_scores_heading: "Tus mejores partidas",
     view_stats_btn: "Ver mis estadísticas",
     stats_heading: "Tus estadísticas",
     stats_lead: "Guardadas en este dispositivo — nadie más las ve.",
@@ -1504,16 +1504,17 @@ const I18N = {
     stats_rounds: "Rondas jugadas",
     stats_top_letter: "Letra más frecuente",
     stats_streak_best: "Mejor puntaje contrarreloj",
-    stats_streak_top_heading: "Mejores rachas",
-    stats_no_streaks: "Todavía no jugaste ninguna racha.",
+    stats_streak_top_heading: "Mejores partidas de contrarreloj",
+    stats_no_streaks: "Todavía no jugaste el contrarreloj.",
     wildcard_note: "Categoría doble esta ronda: {cat}",
     share_result_btn: "Compartir resultado",
-    share_streak_subtitle: "{rounds} rondas superadas en el Contrarreloj de tutti.frutti",
-    share_streak_text: "¡Hice {score} puntos y superé {rounds} rondas en el Contrarreloj de tutti.frutti! Jugá vos también:",
+    share_streak_subtitle: "{rounds} rondas jugadas en el Contrarreloj de tutti.frutti",
+    share_streak_text: "¡Hice {score} puntos en {rounds} rondas en el Contrarreloj de tutti.frutti! Jugá vos también:",
     share_final_subtitle: "puntos en una partida de tutti.frutti",
     share_final_won_subtitle: "¡Gané la partida de tutti.frutti!",
     share_final_text: "Hice {score} puntos en una partida de tutti.frutti. Jugá vos también:",
     share_final_won_text: "¡Gané una partida de tutti.frutti con {score} puntos! Jugá vos también:",
+    streak_round_toast: "{valid} de {total} válidas",
     avatar_label: "Tu fruta",
     install_app_btn: "Instalar la app",
     alert_connection_problem: "No pudimos conectarte con la sala. Recargá la página (F5) y probá de nuevo. Si tenés un bloqueador de anuncios, probá desactivarlo para este sitio.",
@@ -1541,7 +1542,7 @@ const I18N = {
     mascot_waiting_alone: ["¿Y los demás? Me duermo...", "Compartí el código así arrancamos.", "Zzz... avisame cuando lleguen."],
     mascot_waiting_ready: ["¡Ya estamos! Cuando quieran.", "¡Qué lindo equipo!", "Estoy listo, ¿ustedes?"],
     mascot_searching: ["Buscando a alguien con ganas de jugar...", "Ya aparece, ya aparece...", "¿Hay alguien por ahí?"],
-    mascot_streak_over: ["¡Se cortó la racha!", "El reloj no perdona.", "Casi, casi..."],
+    mascot_streak_over: ["¡Se acabó el tiempo!", "El reloj no perdona.", "¿Otra y lo superás?"],
     mascot_daily_perfect: ["¡Todas bien! Sos crack.", "Perfecto. Mañana más."],
     mascot_daily_ok: ["Nada mal para hoy.", "Mañana hay revancha."],
     daily_banner_title: "Desafío del día",
@@ -1586,7 +1587,7 @@ const I18N = {
     ach_days_7_t: "Fanático",
     ach_days_7_d: "Jugaste 7 días seguidos.",
     ach_streak_5_t: "Contra el reloj",
-    ach_streak_5_d: "Superaste 5 rondas en el contrarreloj.",
+    ach_streak_5_d: "Jugaste 5 rondas en una sola partida de contrarreloj.",
     ach_daily_1_t: "Madrugador",
     ach_daily_1_d: "Terminaste tu primer desafío del día.",
     ach_daily_7_t: "Coleccionista",
@@ -1722,16 +1723,16 @@ const I18N = {
     alert_opponent_disconnected: "The opponent disconnected before starting. Try searching again.",
     opponent_generic: "Opponent",
     tab_streak: "Time attack",
-    streak_note: "You play solo, against the clock: fill in every category before time runs out to move on to the next letter. Each round you clear adds points and gives you a little less time — the streak ends the moment you leave one category unfilled.",
+    streak_note: "You play solo against a 2-minute clock. Each round, fill in what you can and tap Stop!: every valid word scores points and you move on to the next letter, even if some are wrong or empty. When time runs out, the game ends. Score as many points as you can!",
     play_btn_streak: "Play time attack",
-    streak_round_label: "Streak · Round {n}",
-    streak_result_title: "Streak over!",
-    streak_result_rounds: "Rounds cleared: {n}",
+    streak_round_label: "Time attack · Round {n}",
+    streak_result_title: "Time's up!",
+    streak_result_rounds: "Rounds played: {n}",
     streak_result_score: "Score: {score}",
     streak_new_record: "New personal best!",
     streak_current_record: "Your best: {score} pts ({rounds} rounds)",
-    streak_retry_btn: "Try again",
-    streak_top_scores_heading: "Your best streaks",
+    streak_retry_btn: "Play again",
+    streak_top_scores_heading: "Your best games",
     view_stats_btn: "View my stats",
     stats_heading: "Your stats",
     stats_lead: "Saved on this device — no one else can see them.",
@@ -1739,16 +1740,17 @@ const I18N = {
     stats_rounds: "Rounds played",
     stats_top_letter: "Most frequent letter",
     stats_streak_best: "Best time-attack score",
-    stats_streak_top_heading: "Best streaks",
-    stats_no_streaks: "You haven't played a streak yet.",
+    stats_streak_top_heading: "Best time attack games",
+    stats_no_streaks: "You haven't played time attack yet.",
     wildcard_note: "Double-points category this round: {cat}",
     share_result_btn: "Share result",
-    share_streak_subtitle: "{rounds} rounds cleared in tutti.frutti's Time Attack",
-    share_streak_text: "I scored {score} points and cleared {rounds} rounds in tutti.frutti's Time Attack! Play too:",
+    share_streak_subtitle: "{rounds} rounds played in tutti.frutti's Time Attack",
+    share_streak_text: "I scored {score} points in {rounds} rounds in tutti.frutti's Time Attack! Play too:",
     share_final_subtitle: "points in a tutti.frutti match",
     share_final_won_subtitle: "I won a tutti.frutti match!",
     share_final_text: "I scored {score} points in a tutti.frutti match. Play too:",
     share_final_won_text: "I won a tutti.frutti match with {score} points! Play too:",
+    streak_round_toast: "{valid} of {total} valid",
     avatar_label: "Your fruit",
     install_app_btn: "Install the app",
     alert_connection_problem: "We couldn't connect you to the room. Reload the page (F5) and try again. If you use an ad blocker, try turning it off for this site.",
@@ -1776,7 +1778,7 @@ const I18N = {
     mascot_waiting_alone: ["Where is everyone? I'm falling asleep...", "Share the code so we can start.", "Zzz... wake me when they arrive."],
     mascot_waiting_ready: ["We're all here! Whenever you're ready.", "What a team!", "I'm ready, are you?"],
     mascot_searching: ["Looking for someone who wants to play...", "Almost there...", "Anybody out there?"],
-    mascot_streak_over: ["Streak's over!", "The clock shows no mercy.", "So close..."],
+    mascot_streak_over: ["Time's up!", "The clock shows no mercy.", "One more and you'll beat it?"],
     mascot_daily_perfect: ["All correct! You rock.", "Perfect. More tomorrow."],
     mascot_daily_ok: ["Not bad for today.", "Rematch tomorrow."],
     daily_banner_title: "Daily challenge",
@@ -1821,7 +1823,7 @@ const I18N = {
     ach_days_7_t: "Hooked",
     ach_days_7_d: "You played 7 days in a row.",
     ach_streak_5_t: "Against the clock",
-    ach_streak_5_d: "You cleared 5 rounds in time attack.",
+    ach_streak_5_d: "You played 5 rounds in a single time attack game.",
     ach_daily_1_t: "Early bird",
     ach_daily_1_d: "You finished your first daily challenge.",
     ach_daily_7_t: "Collector",
@@ -1957,16 +1959,16 @@ const I18N = {
     alert_opponent_disconnected: "O adversário se desconectou antes de começar. Tente procurar de novo.",
     opponent_generic: "Adversário",
     tab_streak: "Contrarrelógio",
-    streak_note: "Você joga sozinho, contra o relógio: preencha todas as categorias antes que o tempo acabe para passar para a próxima letra. Cada rodada superada soma pontos e sobra um pouco menos de tempo — a sequência termina assim que faltar uma categoria por preencher.",
+    streak_note: "Você joga sozinho contra um relógio de 2 minutos. Em cada rodada, preencha o que puder e toque em Stop!: cada palavra válida soma pontos e você passa para a próxima letra, mesmo que alguma esteja errada ou vazia. Quando o tempo acaba, a partida termina. Some o máximo de pontos!",
     play_btn_streak: "Jogar contrarrelógio",
-    streak_round_label: "Sequência · Rodada {n}",
-    streak_result_title: "A sequência acabou!",
-    streak_result_rounds: "Rodadas superadas: {n}",
+    streak_round_label: "Contrarrelógio · Rodada {n}",
+    streak_result_title: "O tempo acabou!",
+    streak_result_rounds: "Rodadas jogadas: {n}",
     streak_result_score: "Pontuação: {score}",
     streak_new_record: "Novo recorde pessoal!",
     streak_current_record: "Seu recorde: {score} pts ({rounds} rodadas)",
-    streak_retry_btn: "Outra sequência",
-    streak_top_scores_heading: "Suas melhores sequências",
+    streak_retry_btn: "Jogar de novo",
+    streak_top_scores_heading: "Suas melhores partidas",
     view_stats_btn: "Ver minhas estatísticas",
     stats_heading: "Suas estatísticas",
     stats_lead: "Salvas neste dispositivo — mais ninguém as vê.",
@@ -1974,16 +1976,17 @@ const I18N = {
     stats_rounds: "Rodadas jogadas",
     stats_top_letter: "Letra mais frequente",
     stats_streak_best: "Melhor pontuação no contrarrelógio",
-    stats_streak_top_heading: "Melhores sequências",
-    stats_no_streaks: "Você ainda não jogou nenhuma sequência.",
+    stats_streak_top_heading: "Melhores partidas de contrarrelógio",
+    stats_no_streaks: "Você ainda não jogou o contrarrelógio.",
     wildcard_note: "Categoria em dobro nesta rodada: {cat}",
     share_result_btn: "Compartilhar resultado",
-    share_streak_subtitle: "{rounds} rodadas superadas no Contrarrelógio do tutti.frutti",
-    share_streak_text: "Fiz {score} pontos e superei {rounds} rodadas no Contrarrelógio do tutti.frutti! Jogue também:",
+    share_streak_subtitle: "{rounds} rodadas jogadas no Contrarrelógio do tutti.frutti",
+    share_streak_text: "Fiz {score} pontos em {rounds} rodadas no Contrarrelógio do tutti.frutti! Jogue também:",
     share_final_subtitle: "pontos em uma partida de tutti.frutti",
     share_final_won_subtitle: "Ganhei uma partida de tutti.frutti!",
     share_final_text: "Fiz {score} pontos em uma partida de tutti.frutti. Jogue também:",
     share_final_won_text: "Ganhei uma partida de tutti.frutti com {score} pontos! Jogue também:",
+    streak_round_toast: "{valid} de {total} válidas",
     avatar_label: "Sua fruta",
     install_app_btn: "Instalar o app",
     alert_connection_problem: "Não conseguimos te conectar à sala. Recarregue a página (F5) e tente de novo. Se você usa um bloqueador de anúncios, tente desativá-lo para este site.",
@@ -2011,7 +2014,7 @@ const I18N = {
     mascot_waiting_alone: ["Cadê o pessoal? Vou dormir...", "Compartilhe o código pra gente começar.", "Zzz... me avisa quando chegarem."],
     mascot_waiting_ready: ["Estamos todos! Quando quiserem.", "Que time!", "Estou pronto, e vocês?"],
     mascot_searching: ["Procurando alguém com vontade de jogar...", "Já aparece, já aparece...", "Tem alguém aí?"],
-    mascot_streak_over: ["A sequência acabou!", "O relógio não perdoa.", "Quase, quase..."],
+    mascot_streak_over: ["O tempo acabou!", "O relógio não perdoa.", "Mais uma e você supera?"],
     mascot_daily_perfect: ["Todas certas! Você é fera.", "Perfeito. Amanhã tem mais."],
     mascot_daily_ok: ["Nada mal pra hoje.", "Amanhã tem revanche."],
     daily_banner_title: "Desafio do dia",
@@ -2056,7 +2059,7 @@ const I18N = {
     ach_days_7_t: "Viciado",
     ach_days_7_d: "Você jogou 7 dias seguidos.",
     ach_streak_5_t: "Contra o relógio",
-    ach_streak_5_d: "Você passou 5 rodadas no contra-relógio.",
+    ach_streak_5_d: "Você jogou 5 rodadas numa única partida de contrarrelógio.",
     ach_daily_1_t: "Madrugador",
     ach_daily_1_d: "Você terminou seu primeiro desafio do dia.",
     ach_daily_7_t: "Colecionador",
@@ -2192,7 +2195,7 @@ let state = {
   streakMode: false,
   streakRound: 1,
   streakScore: 0,
-  streakDuration: 45,
+  streakTimeLeft: 0,
   categoriesBeforeStreak: null,
   answers: {},
   secondsLeft: 0,
@@ -4233,9 +4236,8 @@ function pickWildcard(categories) {
 
 // ---------- Modo Contrarreloj (solo, contra el reloj, categorías al azar) ----------
 const STREAK_POINTS_PER_CATEGORY = 10;
-const STREAK_START_DURATION = 45;
-const STREAK_DURATION_STEP = 3;
-const STREAK_MIN_DURATION = 18;
+// Reloj total de la partida: se juegan rondas hasta que se acaba.
+const STREAK_TOTAL_SECONDS = 120;
 const STREAK_CATEGORY_COUNT = 6;
 const STREAK_HISTORY_KEY = "tuttifruti_streak_history";
 const STREAK_HISTORY_LIMIT = 20;
@@ -4280,10 +4282,11 @@ function startStreakMode() {
     state.categoriesBeforeStreak = state.categories;
   }
   state.streakMode = true;
+  state.streakFinishing = false;
   state.online = false;
   state.streakRound = 1;
   state.streakScore = 0;
-  state.streakDuration = STREAK_START_DURATION;
+  state.streakTimeLeft = STREAK_TOTAL_SECONDS;
   state.usedLetters = getRecentLetters().filter(l => state.letterPool.includes(l));
   recordGameStart();
   renderStreakPlayersStrip();
@@ -4306,8 +4309,10 @@ function startStreakRound() {
 
   state.letter = drawLetter();
   state.answers = {};
-  state.duration = state.streakDuration;
-  state.secondsLeft = state.duration;
+  // El aro del reloj muestra el tiempo que le queda a toda la partida; solo
+  // corre mientras se juega (no durante el sorteo ni mientras decide el juez).
+  state.duration = STREAK_TOTAL_SECONDS;
+  state.secondsLeft = state.streakTimeLeft;
   spinLetterReveal(state.letter, () => {
     renderLetterHistory();
     renderWildcardNote();
@@ -4329,6 +4334,7 @@ function beginPlayingStreak() {
 
 function tickStreak() {
   state.secondsLeft--;
+  state.streakTimeLeft = Math.max(0, state.secondsLeft);
   updateTimerDisplay();
   if (state.secondsLeft > 0 && state.secondsLeft <= 5) {
     playTic();
@@ -4347,26 +4353,46 @@ function onStreakReadyTap() {
 }
 
 async function finishStreakRound() {
+  if (state.streakFinishing) return;
+  state.streakFinishing = true;
   clearInterval(state.timerId);
-  clearInterval(state.spinId);
+  clearTimeout(state.spinId);
   const results = await judgeSoloAnswers(state.categories, state.answers, state.letter, state.streakRound, state.roomCode);
+  state.streakFinishing = false;
+  if (!state.streakMode) return; // salió al lobby mientras decidía el juez
 
-  const allValid = results.length > 0 && results.every(r => r.valid);
-  if (allValid) {
-    results.forEach(r => {
-      state.streakScore += r.cat === state.wildcardCategory ? STREAK_POINTS_PER_CATEGORY * 2 : STREAK_POINTS_PER_CATEGORY;
-    });
-    state.streakRound++;
-    state.streakDuration = Math.max(STREAK_MIN_DURATION, state.streakDuration - STREAK_DURATION_STEP);
-    startStreakRound();
-  } else {
+  // Cada palabra válida suma, aunque otras estén mal o vacías: nunca se
+  // pierde la partida por fallar, solo termina cuando se acaba el tiempo.
+  let roundPoints = 0;
+  results.forEach(r => {
+    if (r.valid) roundPoints += r.cat === state.wildcardCategory ? STREAK_POINTS_PER_CATEGORY * 2 : STREAK_POINTS_PER_CATEGORY;
+  });
+  state.streakScore += roundPoints;
+
+  if (state.streakTimeLeft <= 0) {
     renderStreakResult(results);
     showScreen("screen-results");
+    return;
   }
+  showStreakRoundToast(roundPoints, results.filter(r => r.valid).length, results.length);
+  state.streakRound++;
+  startStreakRound();
+}
+
+function showStreakRoundToast(points, valid, total) {
+  const stack = document.getElementById("toastStack");
+  if (!stack) return;
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.innerHTML = `<span class="toast-icon">${mascotSvg(valid === total ? "happy" : (valid ? "neutral" : "sad"), getMyAvatar())}</span>` +
+    `<span><strong>+${points} pts</strong><br>${escapeHtml(t("streak_round_toast", { valid, total }))}</span>`;
+  stack.appendChild(el);
+  setTimeout(() => el.classList.add("out"), 2200);
+  setTimeout(() => el.remove(), 2700);
 }
 
 function renderStreakResult(results) {
-  const roundsCleared = state.streakRound - 1;
+  const roundsCleared = state.streakRound;
   const prevBest = getStreakHistory()[0] || { score: 0, rounds: 0 };
   const isNewRecord = state.streakScore > prevBest.score;
   const history = saveStreakRun(state.streakScore, roundsCleared);
