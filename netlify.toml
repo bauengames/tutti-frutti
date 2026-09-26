@@ -31,3 +31,14 @@
   for = "/manifest.webmanifest"
   [headers.values]
     Content-Type = "application/manifest+json"
+
+# Protecciones básicas: el sitio no se puede meter dentro de otro (clickjacking),
+# el navegador no adivina tipos de archivo y no se filtran direcciones completas
+# al salir hacia otros sitios.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"

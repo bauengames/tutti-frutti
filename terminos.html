@@ -137,7 +137,13 @@
 
 <script>
   document.getElementById("year").textContent = new Date().getFullYear();
-  document.getElementById("fecha").textContent = new Date().toLocaleDateString("es-AR", { year: "numeric", month: "long", day: "numeric" });
+  function renderFecha() {
+    var locale = { en: "en-US", pt: "pt-BR" }[window.__siteLang] || "es-AR";
+    document.getElementById("fecha").textContent = new Date(2026, 8, 22).toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" });
+  }
+  renderFecha();
+  var setSiteLanguageBase = window.setSiteLanguage;
+  window.setSiteLanguage = function (lang) { setSiteLanguageBase(lang); renderFecha(); };
 </script>
 <script src="cookie-consent.js"></script>
 <script src="analytics.js"></script>

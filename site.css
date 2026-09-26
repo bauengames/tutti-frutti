@@ -44,7 +44,7 @@ html[data-theme="uva"]       { --primary: var(--uva);       --secondary: var(--p
 html[data-theme="lima"]      { --primary: var(--lima);      --secondary: var(--cielo); }
 html[data-theme="mandarina"] { --primary: var(--mandarina); --secondary: var(--pomelo); }
 
-html { background: var(--bg); }
+html { background: var(--bg); overflow-x: clip; }
 html, body {
   margin: 0;
   background: var(--bg);

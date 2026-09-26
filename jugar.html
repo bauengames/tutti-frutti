@@ -70,7 +70,7 @@ html[data-theme="uva"]       { --primary: var(--uva);       --secondary: var(--p
 html[data-theme="lima"]      { --primary: var(--lima);      --secondary: var(--cielo); }
 html[data-theme="mandarina"] { --primary: var(--mandarina); --secondary: var(--pomelo); }
 
-html { background: var(--bg); }
+html { background: var(--bg); overflow-x: clip; }
 body {
   margin: 0;
   min-height: 100vh;
@@ -885,7 +885,7 @@ html[data-light] .twist-note { color: var(--tinta); }
 
     <div class="field">
       <label class="label" for="playerName" data-i18n="label_player_name">Tu nombre</label>
-      <input type="text" id="playerName" placeholder="¿Cómo te llamás?" oninput="checkCanPlay()" autocomplete="nickname" data-i18n-placeholder="player_name_placeholder" />
+      <input type="text" id="playerName" maxlength="30" placeholder="¿Cómo te llamás?" oninput="checkCanPlay()" autocomplete="nickname" data-i18n-placeholder="player_name_placeholder" />
     </div>
 
     <div class="field">
@@ -922,7 +922,7 @@ html[data-light] .twist-note { color: var(--tinta); }
           <div class="cat-picker-grid" id="categoryPicker"></div>
           <div class="cat-chip-row" id="catChipRow"></div>
           <div class="add-cat">
-            <input type="text" id="newCatInput" placeholder="O escribí una categoría propia" onkeydown="if(event.key==='Enter') addCategory()" data-i18n-placeholder="new_cat_placeholder" />
+            <input type="text" id="newCatInput" maxlength="40" placeholder="O escribí una categoría propia" onkeydown="if(event.key==='Enter') addCategory()" data-i18n-placeholder="new_cat_placeholder" />
             <button type="button" onclick="addCategory()" data-i18n="add_btn">Agregar</button>
           </div>
         </div>
@@ -1145,7 +1145,7 @@ html[data-light] .twist-note { color: var(--tinta); }
 
       <div class="actions-row">
         <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
-        <button class="primary" id="nextRoundBtn" onclick="playAnotherRound()" data-i18n="play_another_round_btn">Jugar otra ronda</button>
+        <button class="primary" id="nextRoundBtn" data-i18n="play_another_round_btn">Jugar otra ronda</button>
       </div>
     </div>
   </div>
@@ -1475,7 +1475,6 @@ const I18N = {
     won_summary: "Ganó <strong>{name}</strong> con {score} puntos, después de {round} {roundWord}.",
     round_word_singular: "ronda",
     round_word_plural: "rondas",
-    no_scores_yet: "Todavía no hay puntajes.",
     searching_text: "Buscando un rival al azar...",
     searching_none_found: "No encontramos a nadie todavía.",
     keep_searching_btn: "Seguir buscando",
@@ -1486,14 +1485,7 @@ const I18N = {
     alert_room_not_found: "No encontramos ninguna sala con ese código. Revisá que esté bien escrito.",
     alert_room_full: "Esta sala ya está completa (máximo {max} jugadores).",
     alert_opponent_disconnected: "El rival se desconectó antes de empezar. Probá buscar de nuevo.",
-    opponent_1: "Rival 1",
-    opponent_2: "Rival 2",
     opponent_generic: "Rival",
-    loser_consolations: [
-      "¡Buena partida! La próxima la das vuelta.",
-      "Casi... ¡a por la revancha!",
-      "¡Bien jugado igual! Que gane el mejor la próxima.",
-    ],
     tab_streak: "Contrarreloj",
     streak_note: "Jugás solo, contra el reloj: completá todas las categorías antes de que se acabe el tiempo para pasar a la siguiente letra. Cada ronda superada suma puntos y te queda un poco menos de tiempo — la racha termina en cuanto te quede una categoría sin completar.",
     play_btn_streak: "Jugar contrarreloj",
@@ -1718,7 +1710,6 @@ const I18N = {
     won_summary: "<strong>{name}</strong> won with {score} points, after {round} {roundWord}.",
     round_word_singular: "round",
     round_word_plural: "rounds",
-    no_scores_yet: "No scores yet.",
     searching_text: "Looking for a random opponent...",
     searching_none_found: "We haven't found anyone yet.",
     keep_searching_btn: "Keep searching",
@@ -1729,14 +1720,7 @@ const I18N = {
     alert_room_not_found: "We couldn't find a room with that code. Check that it's typed correctly.",
     alert_room_full: "This room is already full (max {max} players).",
     alert_opponent_disconnected: "The opponent disconnected before starting. Try searching again.",
-    opponent_1: "Opponent 1",
-    opponent_2: "Opponent 2",
     opponent_generic: "Opponent",
-    loser_consolations: [
-      "Good game! You'll turn it around next time.",
-      "So close... time for a rematch!",
-      "Well played anyway! May the best one win next time.",
-    ],
     tab_streak: "Time attack",
     streak_note: "You play solo, against the clock: fill in every category before time runs out to move on to the next letter. Each round you clear adds points and gives you a little less time — the streak ends the moment you leave one category unfilled.",
     play_btn_streak: "Play time attack",
@@ -1961,7 +1945,6 @@ const I18N = {
     won_summary: "<strong>{name}</strong> venceu com {score} pontos, depois de {round} {roundWord}.",
     round_word_singular: "rodada",
     round_word_plural: "rodadas",
-    no_scores_yet: "Ainda não há pontuações.",
     searching_text: "Procurando um adversário aleatório...",
     searching_none_found: "Ainda não encontramos ninguém.",
     keep_searching_btn: "Continuar procurando",
@@ -1972,14 +1955,7 @@ const I18N = {
     alert_room_not_found: "Não encontramos nenhuma sala com esse código. Confira se está escrito corretamente.",
     alert_room_full: "Esta sala já está completa (máximo de {max} jogadores).",
     alert_opponent_disconnected: "O adversário se desconectou antes de começar. Tente procurar de novo.",
-    opponent_1: "Adversário 1",
-    opponent_2: "Adversário 2",
     opponent_generic: "Adversário",
-    loser_consolations: [
-      "Boa partida! Na próxima você vira o jogo.",
-      "Quase... vamos para a revanche!",
-      "Bem jogado mesmo assim! Que vença o melhor da próxima vez.",
-    ],
     tab_streak: "Contrarrelógio",
     streak_note: "Você joga sozinho, contra o relógio: preencha todas as categorias antes que o tempo acabe para passar para a próxima letra. Cada rodada superada soma pontos e sobra um pouco menos de tempo — a sequência termina assim que faltar uma categoria por preencher.",
     play_btn_streak: "Jogar contrarrelógio",
@@ -2130,7 +2106,6 @@ function setLanguage(lang) {
   if (activeId === "screen-review" && state.room) renderReviewAnswers(state.room);
   if (activeId === "screen-results") {
     if (state.online && state.room) renderOnlineResults(state.room);
-    else if (!state.online && state.roundScores) renderResults();
   }
 }
 
@@ -2184,7 +2159,7 @@ function setMyAvatar(avatar) {
   if (!AVATARS.includes(avatar)) return;
   try { localStorage.setItem(AVATAR_KEY, avatar); } catch (e) { /* storage unavailable */ }
   renderAvatarPicker();
-  applyLogoFruit(avatar);
+  if (window.applyLogoFruit) applyLogoFruit(avatar);
 }
 
 function renderAvatarPicker() {
@@ -2212,7 +2187,6 @@ let state = {
   wildcardCategory: null,
   letterPool: [...DEFAULT_LETTERS],
   usedLetters: [],
-  mockOpponentNames: [],
   muted: false,
   lang: "es",
   streakMode: false,
@@ -2223,7 +2197,6 @@ let state = {
   answers: {},
   secondsLeft: 0,
   round: 1,
-  ranking: [],
   timerId: null,
   spinId: null,
   audioCtx: null,
@@ -2733,7 +2706,7 @@ function removeCategory(cat) {
 
 function addCategory() {
   const input = document.getElementById("newCatInput");
-  const v = input.value.trim().replace(/[.#$\[\]\/]/g, "");
+  const v = input.value.trim().replace(/[.#$\[\]\/]/g, "").slice(0, 40);
   if (v && !state.categories.includes(v)) {
     state.categories.push(v);
     renderCatChips();
@@ -2779,39 +2752,6 @@ function checkCanPlay() {
     categoriesOk = true; // el modo elige categorías al azar en cada ronda
   }
   document.getElementById("playBtn").disabled = !(name && categoriesOk && roomOk && lettersOk);
-}
-
-function startRound() {
-  showScreen("screen-game");
-  document.getElementById("timerWrap").style.display = "none";
-  document.getElementById("catGrid").style.display = "none";
-  document.getElementById("bastaWrap").style.display = "none";
-  document.getElementById("roundLabel").textContent =
-    state.totalRounds
-    ? t("round_label_of", { round: state.round, total: state.totalRounds, room: state.roomCode })
-    : t("round_label", { round: state.round, room: state.roomCode });
-
-  const medal = document.getElementById("medal");
-  medal.classList.add("spinning");
-  let ticks = 0;
-  state.spinId = setInterval(() => {
-    medal.textContent = randomLetter();
-    ticks++;
-    if (ticks > 12) {
-      clearInterval(state.spinId);
-      medal.classList.remove("spinning");
-      state.letter = drawLetter();
-      medal.textContent = state.letter;
-      medal.classList.add("bounce");
-      setTimeout(() => medal.classList.remove("bounce"), 650);
-      state.answers = {};
-      state.secondsLeft = state.duration;
-      state.wildcardCategory = pickWildcard(state.categories);
-      renderLetterHistory();
-      renderWildcardNote();
-      beginPlaying();
-    }
-  }, 80);
 }
 
 
@@ -3402,19 +3342,6 @@ function playOnlineRoundIntro(data) {
   });
 }
 
-function renderOfflinePlayersStrip() {
-  const strip = document.querySelector(".players-strip");
-  strip.innerHTML = "";
-  const names = [state.playerName, state.mockOpponentNames[0] || t("opponent_1"), state.mockOpponentNames[1] || t("opponent_2")];
-  names.forEach((name, i) => {
-    const span = document.createElement("span");
-    span.className = "chip";
-    if (i > 0) span.style.opacity = "0.6";
-    span.innerHTML = `<span class="dot" style="background:${PLAYER_COLORS[i % PLAYER_COLORS.length]};"></span><span>${escapeHtml(name)}</span>`;
-    strip.appendChild(span);
-  });
-}
-
 function renderOnlinePlayersStrip(data) {
   const strip = document.querySelector(".players-strip");
   strip.innerHTML = "";
@@ -3438,6 +3365,7 @@ function beginPlayingOnline(roundStartAt) {
   const startMs = typeof roundStartAt === "number" ? roundStartAt : Date.now();
   updateTimerDisplay();
   let lastTicSecond = null;
+  clearInterval(state.timerId);
   state.timerId = setInterval(() => {
     const elapsed = (Date.now() - startMs) / 1000;
     state.secondsLeft = Math.max(0, Math.ceil(state.duration - elapsed));
@@ -3462,10 +3390,6 @@ function onBastaTap() {
     onStreakReadyTap();
   } else if (state.online) {
     triggerBasta();
-  } else {
-    playDing();
-    vibrate([30, 40, 30]);
-    finishRound();
   }
 }
 
@@ -4209,18 +4133,8 @@ function leaveRoom() {
   goToLobby();
 }
 
-const OPPONENT_NAME_POOL = ["Fede", "Cami", "Momo", "Vale", "Naza", "Luli", "Coty", "Fran", "Nico", "Sol", "Ari", "Bruno"];
-
-function pickOpponents(n) {
-  const candidates = OPPONENT_NAME_POOL.filter(
-    name => name.toLowerCase() !== state.playerName.toLowerCase()
-  );
-  const shuffled = [...candidates].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, n);
-}
-
 function beginGame() {
-  state.playerName = document.getElementById("playerName").value.trim();
+  state.playerName = document.getElementById("playerName").value.trim().slice(0, 30);
   try { localStorage.setItem("tuttifruti_playerName", state.playerName); } catch (e) { /* storage unavailable */ }
   state.playerId = state.playerId || getPlayerId();
   getAudioCtx();
@@ -4238,29 +4152,6 @@ function beginGame() {
     startStreakMode();
   } else {
     startRandomMatch();
-  }
-}
-
-function beginPlaying() {
-  document.getElementById("timerWrap").style.display = "block";
-  renderCatGrid();
-  document.getElementById("catGrid").style.display = "grid";
-  document.getElementById("bastaWrap").style.display = "flex";
-  focusFirstAnswer();
-  updateTimerDisplay();
-  state.timerId = setInterval(tick, 1000);
-}
-
-function tick() {
-  state.secondsLeft--;
-  updateTimerDisplay();
-  if (state.secondsLeft > 0 && state.secondsLeft <= 5) {
-    playTic();
-    vibrate(50);
-  }
-  if (state.secondsLeft <= 0) {
-    playTimeUp();
-    finishRound();
   }
 }
 
@@ -4301,7 +4192,7 @@ function renderCatGrid() {
     card.innerHTML = `
       <div class="card-pin"></div>
       <p class="card-label">${escapeHtml(catLabel(cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</p>
-      <input type="text" placeholder="${escapeHtml(state.letter)}..." data-cat="${escapeHtml(cat)}" oninput="onAnswerInput(this)" onkeydown="onAnswerKeydown(event, this)" />
+      <input type="text" maxlength="40" placeholder="${escapeHtml(state.letter)}..." data-cat="${escapeHtml(cat)}" oninput="onAnswerInput(this)" onkeydown="onAnswerKeydown(event, this)" />
     `;
     grid.appendChild(card);
   });
@@ -4338,88 +4229,6 @@ function onAnswerInput(el) {
 function pickWildcard(categories) {
   if (!categories || categories.length === 0) return null;
   return categories[Math.floor(Math.random() * categories.length)];
-}
-
-function computeRoundScores() {
-  // Simulates how bastaonline.net scores each category:
-  // 0 = dejaste vacío, 5 = alguien más escribió lo mismo,
-  // 10 = tu respuesta es única, 20 = fuiste el único que llenó esa categoría.
-  const scores = {};
-  state.categories.forEach(cat => {
-    const val = (state.answers[cat] || "").trim();
-    if (!val || !answerMatchesLetter(val, state.letter) || isTrivialAnswer(val)) {
-      scores[cat] = 0;
-      return;
-    }
-    const roll = Math.random();
-    if (roll < 0.2) scores[cat] = 20;
-    else if (roll < 0.55) scores[cat] = 5;
-    else scores[cat] = 10;
-    if (cat === state.wildcardCategory) scores[cat] *= 2;
-  });
-  return scores;
-}
-
-function finishRound() {
-  clearInterval(state.timerId);
-  clearInterval(state.spinId);
-  state.roundScores = computeRoundScores();
-  renderResults();
-  showScreen("screen-results");
-}
-
-function renderResults() {
-  document.getElementById("shareResultBtn").style.display = "none";
-  document.getElementById("resultsTitle").textContent = t("results_title", { round: state.round });
-  const scores = state.roundScores || {};
-  const total = state.categories.reduce((sum, c) => sum + (scores[c] || 0), 0);
-  document.getElementById("resultsSummary").innerHTML = `${t("letter_word")}: <strong>${state.letter}</strong> · ${t("points_won_word")}: <strong>${total}</strong>`;
-
-  const list = document.getElementById("answerList");
-  list.innerHTML = "";
-  state.categories.forEach(cat => {
-    const val = (state.answers[cat] || "").trim();
-    const pts = scores[cat] || 0;
-    const isWild = cat === state.wildcardCategory;
-    const basePts = isWild ? pts / 2 : pts;
-    const row = document.createElement("div");
-    row.className = "answer-row";
-    row.innerHTML = `
-      <span class="answer-cat">${escapeHtml(catLabel(cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
-      <span class="answer-val ${val ? "" : "empty"}">${val ? escapeHtml(val) : t("no_answer")}</span>
-      <span class="points points-${basePts}" title="${t('score_label_' + basePts)}">+${pts}</span>
-    `;
-    list.appendChild(row);
-  });
-
-  state._pendingTotal = total;
-  const isLastRound = state.totalRounds && state.round >= state.totalRounds;
-  const nextBtn = document.getElementById("nextRoundBtn");
-  nextBtn.textContent = isLastRound ? t("view_final_result_btn") : t("play_another_round_btn");
-  nextBtn.style.display = "block";
-  nextBtn.onclick = playAnotherRound;
-  renderRanking();
-}
-
-function renderRanking() {
-  const rankList = document.getElementById("rankingList");
-  rankList.innerHTML = "";
-  const sorted = [...state.ranking].sort((a, b) => b.score - a.score);
-  if (sorted.length === 0) {
-    rankList.innerHTML = `<p style="font-size:13px; color:var(--text-support);">${t("no_scores_yet")}</p>`;
-    return;
-  }
-  sorted.forEach((p, i) => {
-    const row = document.createElement("div");
-    row.className = `rank-row ${p.name === state.playerName ? "me" : ""}`;
-    const dotColor = PLAYER_COLORS[i % PLAYER_COLORS.length];
-    row.innerHTML = `
-      <span class="rank-pos">${i + 1}</span>
-      <span class="rank-name"><span class="player-dot" style="background:${dotColor};"></span>${escapeHtml(p.name)}</span>
-      <span class="rank-score">${p.score} pts</span>
-    `;
-    rankList.appendChild(row);
-  });
 }
 
 // ---------- Modo Contrarreloj (solo, contra el reloj, categorías al azar) ----------
@@ -4514,6 +4323,7 @@ function beginPlayingStreak() {
   document.getElementById("bastaWrap").style.display = "flex";
   focusFirstAnswer();
   updateTimerDisplay();
+  clearInterval(state.timerId);
   state.timerId = setInterval(tickStreak, 1000);
 }
 
@@ -4646,28 +4456,6 @@ function renderStreakResult(results) {
 
 function restartStreak() {
   startStreakMode();
-}
-
-function playAnotherRound() {
-  const total = state._pendingTotal || 0;
-  const hadAnyone = state.ranking.length > 0;
-  let mine = state.ranking.find(p => p.name === state.playerName);
-  if (mine) {
-    mine.score += total;
-  } else {
-    state.ranking.push({ name: state.playerName, score: total });
-  }
-  if (!hadAnyone) {
-    state.ranking.push({ name: state.mockOpponentNames[0] || t("opponent_1"), score: Math.round(total * 0.8) + 10 });
-    state.ranking.push({ name: state.mockOpponentNames[1] || t("opponent_2"), score: Math.round(total * 0.6) + 5 });
-  }
-
-  if (state.totalRounds && state.round >= state.totalRounds) {
-    showFinalScreen();
-    return;
-  }
-  state.round++;
-  startRound();
 }
 
 // ---------- Números que suben contando ----------
@@ -5030,6 +4818,7 @@ function startDaily() {
     document.getElementById("bastaWrap").style.display = "flex";
     focusFirstAnswer();
     updateTimerDisplay();
+    clearInterval(state.timerId);
     state.timerId = setInterval(tickDaily, 1000);
   });
 }
@@ -5225,39 +5014,6 @@ function launchConfetti() {
   launchFruitConfetti("win");
 }
 
-function showFinalScreen() {
-  const playAgainBtn = document.getElementById("finalPlayAgainBtn");
-  const waitingNote = document.getElementById("waitingFinalNote");
-  if (playAgainBtn) {
-    playAgainBtn.style.display = "block";
-    playAgainBtn.textContent = t("play_again_btn");
-    playAgainBtn.onclick = beginGame;
-  }
-  if (waitingNote) waitingNote.style.display = "none";
-  const sorted = [...state.ranking].sort((a, b) => b.score - a.score);
-  const winner = sorted[0];
-  document.getElementById("finalSummary").innerHTML = winner
-    ? t("won_summary", { name: escapeHtml(winner.name), score: winner.score, round: state.round, roundWord: state.round === 1 ? t("round_word_singular") : t("round_word_plural") })
-    : "";
-  const list = document.getElementById("finalRankingList");
-  list.innerHTML = "";
-  sorted.forEach((p, i) => {
-    const row = document.createElement("div");
-    row.className = `rank-row ${p.name === state.playerName ? "me" : ""}`;
-    const dotColor = PLAYER_COLORS[i % PLAYER_COLORS.length];
-    row.innerHTML = `
-      <span class="rank-pos">${i + 1}</span>
-      <span class="rank-name"><span class="player-dot" style="background:${dotColor};"></span>${escapeHtml(p.name)}${i === 0 ? inlineIcon("trophy") : ""}</span>
-      <span class="rank-score">${p.score} pts</span>
-    `;
-    list.appendChild(row);
-  });
-  const mine = sorted.find(p => p.name === state.playerName);
-  state._finalShareInfo = { score: mine ? mine.score : 0, won: !!(winner && winner.name === state.playerName) };
-  showScreen("screen-final");
-  showFinalOutcomeFor(winner && winner.name === state.playerName);
-}
-
 function showFinalOutcomeFor(iWon) {
   setMascot("finalResultBadge", iWon ? "happy" : "sad", iWon ? "mascot_win" : "mascot_lose");
   if (iWon) {
@@ -5411,6 +5167,11 @@ async function shareFinalResult() {
 }
 
 function goToLobby() {
+  // Frena cualquier reloj o sorteo en curso: si alguien sale a mitad de una
+  // ronda online, su reloj no puede seguir corriendo y pisar el de la próxima
+  // partida (contrarreloj, desafío del día u otra sala).
+  clearInterval(state.timerId);
+  clearTimeout(state.spinId);
   cleanupRandomSearch();
   if (state.streakMode) {
     clearInterval(state.timerId);

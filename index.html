@@ -84,7 +84,7 @@ html[data-theme="uva"]       { --primary: var(--uva);       --secondary: var(--p
 html[data-theme="lima"]      { --primary: var(--lima);      --secondary: var(--cielo); }
 html[data-theme="mandarina"] { --primary: var(--mandarina); --secondary: var(--pomelo); }
 
-html { background: var(--bg); }
+html { background: var(--bg); overflow-x: clip; }
 body {
   margin: 0; min-height: 100vh;
   position: relative;
@@ -395,7 +395,7 @@ footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
       <form onsubmit="return goPlay(event)">
         <div class="field">
           <label class="label" for="homePlayerName" data-i18n="label_player_name">Tu nombre</label>
-          <input type="text" id="homePlayerName" placeholder="¿Cómo te llamás?" autocomplete="nickname" data-i18n-placeholder="player_name_placeholder" />
+          <input type="text" id="homePlayerName" maxlength="30" placeholder="¿Cómo te llamás?" autocomplete="nickname" data-i18n-placeholder="player_name_placeholder" />
         </div>
         <div class="field">
           <span class="label" id="homeAvatarLabel" data-i18n="avatar_label">Tu fruta</span>
@@ -491,7 +491,7 @@ function setHomeAvatar(avatar) {
   if (AVATARS.indexOf(avatar) === -1) return;
   try { localStorage.setItem(AVATAR_KEY, avatar); } catch (e) { /* storage unavailable */ }
   renderHomeAvatarPicker();
-  applyLogoFruit(avatar);
+  if (window.applyLogoFruit) applyLogoFruit(avatar);
 }
 
 function renderHomeAvatarPicker() {
