@@ -6,6 +6,63 @@
   # excluye este archivo puntual de ese chequeo.
   SECRETS_SCAN_OMIT_PATHS = "jugar.html"
 
+# ---------------------------------------------------------------------------
+# SEO: un solo dominio y URLs sin .html
+# Netlify aplica la primera regla que coincide, así que estas van primero.
+# ---------------------------------------------------------------------------
+
+# Dominio canónico: todo lo que llegue por netlify.app o www va a tuttipuntofrutti.com.
+[[redirects]]
+  from = "https://tuttipuntofrutti.netlify.app/*"
+  to = "https://tuttipuntofrutti.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://www.tuttipuntofrutti.com/*"
+  to = "https://tuttipuntofrutti.com/:splat"
+  status = 301
+  force = true
+
+# URLs viejas con .html -> URL limpia. Van una por una (Netlify no admite
+# comodines del tipo /*.html) y los parámetros (?room=ABCDE) se conservan solos.
+# No hay loop: /reglas se sirve desde reglas.html sin volver a pasar por estas reglas.
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/reglas.html"
+  to = "/reglas"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/privacidad.html"
+  to = "/privacidad"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/terminos.html"
+  to = "/terminos"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/contacto.html"
+  to = "/contacto"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/jugar.html"
+  to = "/jugar"
+  status = 301
+  force = true
+
 # Netlify publica la carpeta entera: esto evita que las notas internas y el
 # código fuente de las funciones se puedan descargar desde el sitio.
 [[redirects]]
@@ -26,6 +83,13 @@
   status = 404
   force = true
 
+# El generador de páginas y sus textos no se publican.
+[[redirects]]
+  from = "/scripts/*"
+  to = "/404"
+  status = 404
+  force = true
+
 # El manifiesto de la app instalable tiene que llegar con su tipo propio.
 [[headers]]
   for = "/manifest.webmanifest"
@@ -42,3 +106,26 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# El juego y las salas (/jugar?room=...) no se indexan: no tienen contenido propio.
+# jugar.html además lleva su meta robots (noindex, follow; y nofollow si hay sala).
+[[headers]]
+  for = "/jugar"
+  [headers.values]
+    X-Robots-Tag = "noindex, follow"
+
+[[headers]]
+  for = "/jugar.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, follow"
+
+[[headers]]
+  for = "/404.html"
+  [headers.values]
+    X-Robots-Tag = "noindex"
+
+# Las planillas en PDF se descargan desde /tutti-frutti-para-imprimir, que es la página que se indexa.
+[[headers]]
+  for = "/descargas/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"

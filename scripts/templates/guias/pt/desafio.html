@@ -1,0 +1,63 @@
+<main>
+  <div class="wrap">
+    <p class="breadcrumb"><a href="/pt/">Início</a> › Desafio do dia</p>
+    <h1>Desafio do dia do Stop</h1>
+    <p class="lead">Uma letra, seis categorias e 60 segundos. Todo dia tem um desafio novo, igual para todas as pessoas que jogam, e uma única tentativa para fazer a melhor pontuação do ranking.</p>
+
+    <div class="cta-box">
+      <p>O desafio de hoje já está disponível. <span data-countdown hidden>O próximo sai em <strong data-countdown-time></strong>.</span></p>
+      <a class="btn-play btn-lg" href="/jugar?desafio">Jogar o desafio de hoje</a>
+    </div>
+
+    <section>
+      <h2>Como funciona</h2>
+      <ul>
+        <li><strong>A mesma letra para todos.</strong> A letra e as categorias do dia saem da data, então todo mundo que joga naquele dia recebe exatamente o mesmo desafio.</li>
+        <li><strong>Seis categorias e 60 segundos.</strong> Você tem um minuto para preencher as seis com palavras que comecem com a letra do dia.</li>
+        <li><strong>Uma categoria vale em dobro.</strong> Todo dia, uma das seis é a categoria em dobro: se acertar, ela vale duas vezes.</li>
+        <li><strong>Uma única tentativa.</strong> O desafio fica registrado assim que começa, então recarregar a página não permite jogar de novo.</li>
+        <li><strong>Um juiz com IA confere suas respostas.</strong> Como você joga sem adversários na mesma sala, o juiz com inteligência artificial decide se cada palavra vale para a letra e a categoria.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Como a pontuação é calculada</h2>
+      <p>Cada resposta válida vale 10 pontos, e a da categoria em dobro vale 20. Se você tiver pelo menos uma resposta válida, ganha também um ponto de bônus por cada segundo que sobrou quando apertou Basta!. Por isso vale terminar rápido, mas sem arriscar palavras duvidosas: uma resposta inválida não soma nada.</p>
+      <p>No final, você vê em quais categorias acertou e o ranking do dia, com a pontuação de todo mundo que já jogou. Também dá para compartilhar seu resultado com uma grade colorida que mostra seus acertos sem revelar as palavras.</p>
+    </section>
+
+    <section>
+      <h2>Que horas o desafio muda?</h2>
+      <p>O desafio muda todo dia à meia-noite no seu horário local, esteja onde estiver. A letra e as categorias dependem só da data, então todo mundo que joga no mesmo dia recebe o mesmo desafio e disputa o mesmo ranking.</p>
+    </section>
+
+    <section>
+      <h2>Dicas para fazer mais pontos</h2>
+      <ul>
+        <li>Veja primeiro qual é a categoria em dobro e preencha antes das outras.</li>
+        <li>Não perca tempo procurando a palavra perfeita: no desafio não importa se outra pessoa escreveu a mesma coisa, só que ela seja válida.</li>
+        <li>Se uma categoria não sair, pule e siga em frente. Os segundos que sobram também viram pontos.</li>
+        <li>Com letra difícil, pense em respostas de duas palavras (como "estrela-do-mar" ou "pão de queijo"), que muitas vezes destravam a categoria.</li>
+      </ul>
+      <p>Para ter ideia das categorias que podem aparecer, veja as <a href="/pt/categorias-de-stop">categorias de Stop</a>. E se preferir jogar com amigos, as <a href="/pt/regras">regras do Stop</a> explicam como funcionam as salas.</p>
+    </section>
+  </div>
+</main>
+<script>
+/* Contagem regressiva até o próximo desafio (meia-noite no horário local). */
+(function () {
+  var box = document.querySelector("[data-countdown]");
+  var out = document.querySelector("[data-countdown-time]");
+  if (!box || !out) return;
+  function tick() {
+    var now = new Date();
+    var next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+    var s = Math.floor((next - now) / 1000);
+    var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
+    out.textContent = h + " h " + (m < 10 ? "0" : "") + m + " min";
+  }
+  tick();
+  box.hidden = false;
+  setInterval(tick, 30000);
+})();
+</script>

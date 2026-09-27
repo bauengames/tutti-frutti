@@ -2,7 +2,7 @@
    Siempre pide primero la versión nueva a la red (así cada deploy se ve al
    instante) y solo usa lo guardado si no hay conexión. Nada de Firebase,
    anuncios ni otros sitios pasa por acá. */
-const CACHE = "tuttifrutti-v1";
+const CACHE = "tuttifrutti-v2";
 
 self.addEventListener("install", () => self.skipWaiting());
 
@@ -27,6 +27,6 @@ self.addEventListener("fetch", event => {
         }
         return res;
       })
-      .catch(() => caches.match(req).then(hit => hit || caches.match("/jugar.html")))
+      .catch(() => caches.match(req).then(hit => hit || caches.match("/jugar")))
   );
 });
