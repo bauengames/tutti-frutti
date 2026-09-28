@@ -183,15 +183,22 @@ section li { margin-bottom: 8px; }
 .score-table th, .score-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--borde); }
 .score-table th { font-family: var(--font-mono, monospace); font-size: 13px; text-transform: uppercase; color: var(--text-muted); }
 
+/* ---------- Footer ---------- */
 footer.site-footer {
   position: relative; z-index: 1;
   border-top: 1px solid var(--borde); padding: 32px 0; margin-top: 40px;
 }
-footer.site-footer .wrap {
-  display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: center; justify-content: space-between;
+footer.site-footer .wrap { display: flex; flex-direction: column; align-items: stretch; gap: 18px; }
+footer.site-footer .footer-main { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+footer.site-footer .footer-main a { color: var(--text); font-size: 15px; font-weight: 600; text-decoration: none; }
+footer.site-footer .footer-bottom {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px;
+  padding-top: 16px; border-top: 1px solid var(--borde);
 }
-footer.site-footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
-footer.site-footer a { color: var(--text); font-size: 14px; font-weight: 600; }
+footer.site-footer .footer-legal { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+footer.site-footer .footer-legal a { color: var(--text-muted); font-size: 13px; font-weight: 500; text-decoration: none; }
+footer.site-footer a:hover { color: var(--primary); text-decoration: none; }
+footer.site-footer a[aria-current="page"] { color: var(--primary); }
 footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
 
 /* ---------- Selector de idioma como links + aviso de idioma ---------- */
@@ -211,14 +218,6 @@ a.site-lang-option:hover { text-decoration: none; }
 }
 .lang-hint button:hover { background: var(--crema-08); }
 
-/* ---------- Footer: bloque "Más sobre tutti frutti" ---------- */
-footer.site-footer .footer-more { flex-basis: 100%; }
-footer.site-footer .footer-more-title {
-  display: block; margin: 0 0 10px; font-family: var(--font-mono); font-size: 12px;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted);
-}
-footer.site-footer .footer-more ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; }
-footer.site-footer .footer-more a { font-weight: 500; }
 
 /* ---------- Páginas de contenido (guías) ---------- */
 .cta-box {
@@ -246,8 +245,7 @@ footer.site-footer .footer-more a { font-weight: 500; }
 }
 @media (max-width: 520px) {
   header.site-header .wrap { flex-wrap: wrap; }
-  footer.site-footer .wrap { flex-direction: column; align-items: flex-start; }
-  /* Cuando los íconos pasan a su propia fila (alineados a la izquierda), el menú
+    /* Cuando los íconos pasan a su propia fila (alineados a la izquierda), el menú
      desplegable tiene que abrirse hacia la derecha del botón, no hacia la izquierda,
      o queda cortado fuera de la pantalla. */
   .lang-menu, .theme-menu { left: 0; right: auto; }

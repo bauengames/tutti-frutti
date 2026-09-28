@@ -161,14 +161,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/tutti-frutti-en-el-aula" />
   </url>
   <url>
-    <loc>https://tuttipuntofrutti.com/quienes-somos</loc>
-    <lastmod>2026-09-27</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/quienes-somos" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/about-us" />
-    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/quem-somos" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/quienes-somos" />
-  </url>
-  <url>
     <loc>https://tuttipuntofrutti.com/en/daily-challenge</loc>
     <lastmod>2026-09-27</lastmod>
     <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/desafio-del-dia" />
@@ -209,14 +201,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/tutti-frutti-en-el-aula" />
   </url>
   <url>
-    <loc>https://tuttipuntofrutti.com/en/about-us</loc>
-    <lastmod>2026-09-27</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/quienes-somos" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/about-us" />
-    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/quem-somos" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/quienes-somos" />
-  </url>
-  <url>
     <loc>https://tuttipuntofrutti.com/pt/desafio-do-dia</loc>
     <lastmod>2026-09-27</lastmod>
     <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/desafio-del-dia" />
@@ -255,13 +239,5 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/stop-game-in-the-classroom" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/stop-na-sala-de-aula" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/tutti-frutti-en-el-aula" />
-  </url>
-  <url>
-    <loc>https://tuttipuntofrutti.com/pt/quem-somos</loc>
-    <lastmod>2026-09-27</lastmod>
-    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/quienes-somos" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/about-us" />
-    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/quem-somos" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/quienes-somos" />
   </url>
 </urlset>
