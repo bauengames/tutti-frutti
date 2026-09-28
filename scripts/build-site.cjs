@@ -155,6 +155,9 @@ const GUIDES = [
   },
   {
     key: "quienes",
+    // Oculta (noindex, fuera del pie, del menú y del sitemap) hasta completar los datos del equipo.
+    // Cuando esté completa, borrar esta línea y volver a generar.
+    hidden: true,
     urls: { es: "/quienes-somos", en: "/en/about-us", pt: "/pt/quem-somos" },
     es: {
       nav: "Quiénes somos",
@@ -421,8 +424,8 @@ function siteFooter(page) {
   const legal = [
     footerLink(I18N_PAGES.privacidad[lang], t(lang, "nav_privacidad"), url),
     footerLink(I18N_PAGES.terminos[lang], t(lang, "nav_terminos"), url),
-    footerLink(GUIDE.quienes.urls[lang], GUIDE.quienes[lang].nav, url),
-  ];
+    GUIDE.quienes.hidden ? "" : footerLink(GUIDE.quienes.urls[lang], GUIDE.quienes[lang].nav, url),
+  ].filter(Boolean);
   return `<footer class="site-footer">
   <div class="wrap">
     <nav class="footer-main">
@@ -553,7 +556,7 @@ function buildHome(lang) {
   };
   const main = fixLinks(translate(readTpl("home.html"), lang), lang).replace("{{DESAFIO_URL}}", GUIDE.desafio.urls[lang]);
 
-  const sideGuides = `\n    <p class="side-menu-subtitle">${esc(t(lang, "nav_more_heading"))}</p>\n    ${GUIDES.filter((g) => g.urls[lang]).map((g) => `<a href="${g.urls[lang]}">${esc(g[lang].nav)}</a>`).join("\n    ")}`;
+  const sideGuides = `\n    <p class="side-menu-subtitle">${esc(t(lang, "nav_more_heading"))}</p>\n    ${GUIDES.filter((g) => g.urls[lang] && !g.hidden).map((g) => `<a href="${g.urls[lang]}">${esc(g[lang].nav)}</a>`).join("\n    ")}`;
 
   const html = `${head(page)}
 <body>
@@ -632,6 +635,7 @@ function buildGuide(g, lang) {
     description: meta.description,
     ogTitle: meta.ogTitle,
     alternates: LANGS.every((l) => g.urls[l]) ? g.urls : null,
+    noindex: g.hidden ? "noindex, follow" : undefined,
     jsonld: breadcrumbJsonLd([[t(lang, "nav_home"), I18N_PAGES.home[lang]], [meta.ogTitle, url]]),
   };
   let main = readTpl(`guias/${lang}/${g.key}.html`);
