@@ -780,6 +780,104 @@ html[data-light] .twist-note { color: var(--tinta); }
 .vote-option.mine { border-color: var(--primary); background: var(--crema-08); }
 .vote-option .vote-count { font: 700 14px var(--font-mono); color: var(--text-muted); white-space: nowrap; }
 
+/* ---------- Aventura (niveles para jugar solo) ---------- */
+.adventure-banner { border-color: var(--primary); background: var(--crema-08); }
+.adventure-banner .daily-icon { animation: none; }
+.adventure-banner .daily-arrow { color: var(--primary); }
+html[data-light] .adventure-banner .daily-arrow { color: var(--tinta); }
+
+.adv-star { width: 20px; height: 20px; display: block; flex-shrink: 0; }
+.adv-star path { fill: var(--mandarina); }
+.adv-star.off path { fill: var(--crema-08); stroke: var(--borde-fuerte); stroke-width: 1.5; }
+.hero-band .adv-star path { fill: var(--tinta); }
+.hero-band .adv-star.off path { fill: rgba(20,16,31,.14); stroke: none; }
+.adv-heart { width: 24px; height: 22px; display: block; flex-shrink: 0; }
+.adv-heart path { fill: var(--primary); }
+.adv-heart.empty path { fill: none; stroke: var(--borde-fuerte); stroke-width: 2.2; }
+.hero-band .adv-heart path { fill: var(--tinta); }
+.hero-band .adv-heart.empty path { fill: none; stroke: rgba(20,16,31,.4); }
+.adv-hearts { display: flex; gap: 3px; }
+
+.adv-status { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 16px; }
+.adv-status-item { display: flex; align-items: center; gap: 10px; }
+.adv-status-text { font: 700 13px/1.2 var(--font-mono); letter-spacing: .04em; }
+.adv-status-item .adv-star { width: 24px; height: 24px; }
+
+.adv-world { background: var(--surface); border-radius: var(--radius-card); padding: 18px 16px; margin-bottom: 12px; }
+.adv-world-head { display: flex; align-items: center; gap: 12px; }
+.adv-world-fruit { width: 48px; height: 48px; flex-shrink: 0; }
+.adv-world-fruit svg { width: 100%; height: 100%; display: block; }
+.adv-world-head h3 { font: 800 21px/1.1 var(--font-display); letter-spacing: -.02em; margin: 0; }
+.adv-world-head p { margin: 2px 0 0; font-size: 14px; color: var(--text-muted); }
+.adv-world-stars { margin-left: auto; display: flex; align-items: center; gap: 4px; font: 700 14px var(--font-mono); color: var(--text-muted); white-space: nowrap; }
+.adv-world-stars .adv-star { width: 16px; height: 16px; }
+.adv-world.locked { opacity: .6; }
+.adv-world.locked .adv-world-fruit { filter: grayscale(1); opacity: .6; }
+.adv-lock-note { display: flex; align-items: center; gap: 8px; margin: 12px 0 0; font-size: 14px; color: var(--text-muted); }
+.adv-lock-note svg { width: 16px; height: 16px; flex-shrink: 0; }
+.adv-path { position: relative; height: 480px; margin-top: 50px; }
+.adv-trail { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.adv-trail path { fill: none; stroke: var(--borde-fuerte); stroke-width: 4; stroke-dasharray: 2 10; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.adv-trail path.done { stroke: var(--primary); stroke-dasharray: none; opacity: .6; }
+.adv-node { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 6px; border: 0; background: none; padding: 0; cursor: pointer; color: var(--text); font-family: var(--font-body); }
+.adv-node:disabled { cursor: default; }
+.adv-disc { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font: 800 24px/1 var(--font-display); background: var(--primary); color: var(--tinta); box-shadow: 0 4px 0 rgba(0,0,0,.18); transition: transform .12s; }
+.adv-node:not(:disabled):active .adv-disc { transform: translateY(2px); }
+.adv-disc svg { width: 22px; height: 22px; }
+.adv-node.locked .adv-disc { background: var(--bg); color: var(--text-muted); border: 2px solid var(--borde-fuerte); box-shadow: none; }
+.adv-node.current .adv-disc { width: 72px; height: 72px; font-size: 28px; outline: 4px solid var(--primary); outline-offset: 4px; animation: adv-pulse 1.6s ease-in-out infinite; }
+@keyframes adv-pulse { 50% { outline-offset: 9px; outline-color: transparent; } }
+/* El jefe es un cuadrado girado: el margen compensa lo que ocupa al girar, así no tapa la etiqueta. */
+.adv-node.boss .adv-disc { width: 64px; height: 64px; border-radius: 18px; transform: rotate(45deg); margin: 14px 0 10px; }
+.adv-node.boss.current .adv-disc { width: 70px; height: 70px; margin: 17px 0 12px; }
+.adv-node.boss .adv-disc > * { transform: rotate(-45deg); display: flex; }
+.adv-node.boss .adv-disc svg { width: 30px; height: 30px; }
+.adv-mini-stars { display: flex; gap: 1px; }
+.adv-mini-stars .adv-star { width: 15px; height: 15px; }
+.adv-tag { font: 700 10px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); white-space: nowrap; }
+.adv-tag.now { background: var(--primary); color: var(--tinta); padding: 5px 9px; border-radius: var(--radius-pill); }
+.adv-here { position: absolute; transform: translate(-50%, -100%); width: 54px; z-index: 2; pointer-events: none; animation: adv-bob 1.6s ease-in-out infinite; }
+.adv-here svg { width: 100%; height: auto; display: block; }
+@keyframes adv-bob { 50% { transform: translate(-50%, calc(-100% - 5px)); } }
+
+.adv-kicker { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+.adv-kicker svg { width: 26px; height: 26px; }
+.adv-goal { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--surface); border: 2px solid var(--primary); border-radius: var(--radius-card); padding: 16px 18px; margin: 0 0 10px; }
+.adv-goal .label { margin: 0 0 4px; }
+.adv-goal strong { font: 800 30px/1 var(--font-display); letter-spacing: -.02em; }
+.adv-goal .adv-goal-icon { width: 46px; height: 46px; flex-shrink: 0; }
+.adv-goal .adv-goal-icon svg { width: 100%; height: 100%; display: block; }
+#screen-adventure-level .stats-grid { margin: 0 0 24px; }
+#screen-adventure-level .stat-card .stat-value { font-size: 22px; }
+.adv-tier { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--surface); border-radius: var(--radius-card); margin-bottom: 6px; font-size: 16px; }
+.adv-tier .adv-mini-stars { width: 50px; }
+.adv-rule { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; font-size: 15px; color: var(--crema-72); }
+.adv-rule .adv-heart { width: 18px; height: 17px; }
+.adv-rule .inline-icon { margin: 0; }
+
+.adv-big-stars { display: flex; align-items: flex-end; gap: 6px; margin: 0 0 14px; }
+.adv-big-stars .adv-star { width: 52px; height: 52px; animation: adv-pop .5s cubic-bezier(.34,1.56,.64,1) both; }
+.adv-big-stars .adv-star:nth-child(2) { width: 68px; height: 68px; animation-delay: .2s; }
+.adv-big-stars .adv-star:nth-child(3) { animation-delay: .4s; }
+@keyframes adv-pop { from { transform: scale(0) rotate(-40deg); } to { transform: none; } }
+.hero-band .adv-hearts { margin: 0 0 14px; }
+.adv-score { background: var(--surface); border-radius: var(--radius-card); padding: 14px 18px 18px; margin: 14px 0 0; }
+.adv-score-row { display: flex; justify-content: space-between; gap: 12px; font-size: 15px; padding: 5px 0; color: var(--crema-72); }
+.adv-score-row b { font: 700 15px var(--font-mono); color: var(--text); white-space: nowrap; }
+.adv-score-row.total { border-top: 1px solid var(--borde); margin-top: 6px; padding-top: 10px; color: var(--text); font-weight: 700; }
+.adv-score-row.total b { font-size: 18px; }
+.adv-bar { position: relative; height: 12px; border-radius: var(--radius-pill); background: var(--crema-08); margin: 30px 0 22px; }
+.adv-bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: var(--radius-pill); background: var(--primary); transition: width .8s ease; }
+.adv-bar .mark { position: absolute; top: -5px; width: 3px; height: 22px; margin-left: -1.5px; background: var(--text); border-radius: 2px; }
+.adv-bar .mark span { position: absolute; top: 25px; left: 50%; transform: translateX(-50%); font: 700 11px/1 var(--font-mono); color: var(--text-muted); white-space: nowrap; }
+.adv-bar .mark .adv-star { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); width: 15px; height: 15px; }
+.adv-nolives { text-align: center; margin: 18px 0 0; }
+.adv-countdown-box { display: inline-flex; flex-direction: column; align-items: center; padding: 14px 28px; border-radius: var(--radius-card); background: var(--surface); }
+.adv-countdown-box .label { margin: 0 0 6px; }
+.adv-countdown-box strong { font: 700 32px/1 var(--font-mono); color: var(--primary); }
+html[data-light] .adv-countdown-box strong { color: var(--tinta); }
+.adv-extra-btn { margin-top: 10px; }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 520px) {
   body { --page-pad-x: 14px; padding: 12px var(--page-pad-x) 48px; }
@@ -883,6 +981,14 @@ html[data-light] .twist-note { color: var(--tinta); }
       <span class="daily-text">
         <strong data-i18n="daily_banner_title">Desafío del día</strong>
         <span class="daily-sub" id="dailyBannerSub"></span>
+      </span>
+      <span class="daily-arrow" aria-hidden="true">→</span>
+    </button>
+    <button type="button" class="daily-banner adventure-banner" id="adventureBanner" onclick="openAdventure()">
+      <span class="daily-icon" aria-hidden="true" id="adventureBannerIcon"></span>
+      <span class="daily-text">
+        <strong><span data-i18n="adv_banner_title">Aventura</span></strong>
+        <span class="daily-sub" id="adventureBannerSub"></span>
       </span>
       <span class="daily-arrow" aria-hidden="true">→</span>
     </button>
@@ -1045,6 +1151,76 @@ html[data-light] .twist-note { color: var(--tinta); }
       <div class="actions-row">
         <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- AVENTURA: mapa de niveles -->
+<div class="screen" id="screen-adventure">
+  <div class="results">
+    <div class="results-card">
+      <div class="hero-band">
+        <h2><span data-i18n="adv_map_title">Aventura</span></h2>
+        <p data-i18n="adv_map_lead">30 niveles en 5 mundos. Llegá a la meta de puntos para pasar cada uno.</p>
+        <div class="adv-status">
+          <div class="adv-status-item"><div class="adv-hearts" id="advMapHearts"></div><span class="adv-status-text" data-adv-countdown></span></div>
+          <div class="adv-status-item"><span id="advMapStarIcon"></span><span class="adv-status-text" id="advMapStars"></span></div>
+        </div>
+      </div>
+      <div id="advWorlds"></div>
+      <div class="actions-row">
+        <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AVENTURA: ficha del nivel -->
+<div class="screen" id="screen-adventure-level">
+  <div class="results">
+    <div class="results-card">
+      <div class="hero-band">
+        <p class="adv-kicker" id="advLevelWorld"></p>
+        <h2 id="advLevelTitle">Nivel 1</h2>
+        <p id="advLevelDesc"></p>
+      </div>
+      <div class="adv-goal">
+        <div><p class="label" data-i18n="adv_goal_label">Meta para pasar</p><strong id="advLevelGoal"></strong></div>
+        <span class="adv-goal-icon" id="advLevelGoalIcon"></span>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><span class="stat-value" id="advFactCats"></span><span class="stat-label" data-i18n="adv_fact_cats">Categorías</span></div>
+        <div class="stat-card"><span class="stat-value" id="advFactTime"></span><span class="stat-label" data-i18n="adv_fact_time">Tiempo</span></div>
+        <div class="stat-card"><span class="stat-value" id="advFactLetters"></span><span class="stat-label" data-i18n="adv_fact_letters">Letras</span></div>
+        <div class="stat-card"><span class="stat-value" id="advFactBest"></span><span class="stat-label" data-i18n="adv_fact_best">Tu mejor</span></div>
+      </div>
+      <h2 class="section-title" data-i18n="adv_stars_heading">Estrellas</h2>
+      <div id="advLevelTiers"></div>
+      <p class="adv-rule" id="advLevelBoss" style="display:none;"></p>
+      <p class="adv-rule" id="advLevelLife"></p>
+      <div class="actions-row">
+        <button class="secondary" onclick="openAdventure()" data-i18n="adv_map_btn">Volver al mapa</button>
+        <button class="primary" onclick="startAdventureLevel()" data-i18n="adv_play_btn">Jugar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AVENTURA: resultado del nivel -->
+<div class="screen" id="screen-adventure-result">
+  <div class="results">
+    <div class="results-card">
+      <div class="hero-band">
+        <div id="advResultTop"></div>
+        <h2 id="advResultTitle"></h2>
+        <p id="advResultSub"></p>
+      </div>
+      <div class="round-mascot" id="advResultMascot"></div>
+      <div id="advResultList"></div>
+      <div id="advResultScore"></div>
+      <div id="advResultNoLives"></div>
+      <div class="actions-row" id="advResultActions"></div>
+      <div id="advResultExtra"></div>
     </div>
   </div>
 </div>
@@ -1434,6 +1610,72 @@ const I18N = {
     pack_argento: "Cultura argentina",
     pack_peru: "Cultura peruana",
     pack_mexico: "Cultura mexicana",
+    adv_banner_title: "Aventura",
+    adv_banner_sub: "Nivel {n} · {stars} estrellas",
+    adv_banner_sub_done: "¡Completaste los 30 niveles! · {stars} estrellas",
+    adv_map_title: "Aventura",
+    adv_map_lead: "30 niveles en 5 mundos. Llegá a la meta de puntos para pasar cada uno.",
+    adv_lives_full: "Vidas llenas",
+    adv_next_life: "+1 vida en {time}",
+    adv_world_name: "Mundo {name}",
+    adv_wname_manzana: "Manzana",
+    adv_wname_naranja: "Naranja",
+    adv_wname_uva: "Uva",
+    adv_wname_limon: "Limón",
+    adv_wname_anana: "Ananá",
+    adv_wdesc_manzana: "Para arrancar tranquilo",
+    adv_wdesc_naranja: "Menos tiempo",
+    adv_wdesc_uva: "Categorías difíciles",
+    adv_wdesc_limon: "Letras difíciles",
+    adv_wdesc_anana: "Todo junto",
+    adv_world_locked: "Se desbloquea al terminar el Mundo {name}",
+    adv_boss: "Jefe",
+    adv_your_turn: "¡Te toca!",
+    adv_level_title: "Nivel {n}",
+    adv_goal_label: "Meta para pasar",
+    adv_goal_value: "{pts} puntos",
+    adv_fact_cats: "Categorías",
+    adv_fact_time: "Tiempo",
+    adv_fact_letters: "Letras",
+    adv_fact_best: "Tu mejor",
+    adv_letters_easy: "Fáciles",
+    adv_letters_medium: "Medias",
+    adv_letters_hard: "Difíciles",
+    adv_letters_mixed: "Mezcladas",
+    adv_stars_heading: "Estrellas",
+    adv_tier_points: "Llegar a {pts} puntos",
+    adv_tier_perfect: "Todas válidas y {s} s de sobra",
+    adv_life_warning: "Si no llegás a la meta, perdés una vida.",
+    adv_replay_free: "Ya pasaste este nivel: repetirlo no gasta vidas.",
+    adv_boss_flash: "Nivel jefe: ronda relámpago de {s} segundos.",
+    adv_boss_long: "Nivel jefe: las palabras tienen que tener 5 letras o más.",
+    adv_boss_long_note: "Palabras de 5 letras o más",
+    adv_play_btn: "Jugar",
+    adv_map_btn: "Volver al mapa",
+    adv_round_label: "Aventura · Mundo {world} · Nivel {n}",
+    adv_result_perfect: "¡Perfecto!",
+    adv_result_pass: "¡Nivel superado!",
+    adv_result_fail: "No llegaste a la meta",
+    adv_result_nolives: "Te quedaste sin vidas",
+    adv_result_sub: "Mundo {world} · Nivel {n} · Letra {letter}",
+    adv_row_words: "Palabras válidas ({valid} de {total})",
+    adv_row_bonus: "Bonus por tiempo ({s} s)",
+    adv_row_total: "Total",
+    adv_missing: "Te faltaron {pts} puntos para la meta.",
+    adv_next_btn: "Siguiente nivel",
+    adv_retry_btn: "Reintentar",
+    adv_retry_stars_btn: "Reintentar por más estrellas (no gasta vidas)",
+    adv_lives_left: "Te quedan {n} vidas.",
+    adv_lives_left_one: "Te queda 1 vida.",
+    adv_next_life_label: "Próxima vida en",
+    adv_regen_note: "Se recarga una vida cada 30 minutos, hasta 5. Mientras tanto, los otros modos se juegan sin límite.",
+    adv_streak_btn: "Jugar contrarreloj",
+    adv_reason_long: "tiene menos de 5 letras",
+    adv_new_world: "¡Desbloqueaste el Mundo {name}!",
+    mascot_adv_win: ["¡Así se hace!", "¡Nivel pasado! Vamos por el próximo.", "¡Qué nivel!"],
+    mascot_adv_perfect: ["¡Tres estrellas! Sos crack.", "Perfecto, ni una mancha."],
+    mascot_adv_fail: ["Casi... ¡otra vez!", "Uy, por poquito.", "La próxima sale."],
+    mascot_adv_nolives: ["Me quedé sin energía... volvé en un rato.", "Zzz... las vidas se recargan solas."],
     pack_random: "Random",
     random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
     random_category_chip: "Random",
@@ -1672,6 +1914,72 @@ const I18N = {
     pack_argento: "Argentine culture",
     pack_peru: "Peruvian culture",
     pack_mexico: "Mexican culture",
+    adv_banner_title: "Adventure",
+    adv_banner_sub: "Level {n} · {stars} stars",
+    adv_banner_sub_done: "You beat all 30 levels! · {stars} stars",
+    adv_map_title: "Adventure",
+    adv_map_lead: "30 levels across 5 worlds. Reach the target score to clear each one.",
+    adv_lives_full: "Full lives",
+    adv_next_life: "+1 life in {time}",
+    adv_world_name: "{name} World",
+    adv_wname_manzana: "Apple",
+    adv_wname_naranja: "Orange",
+    adv_wname_uva: "Grape",
+    adv_wname_limon: "Lemon",
+    adv_wname_anana: "Pineapple",
+    adv_wdesc_manzana: "An easy start",
+    adv_wdesc_naranja: "Less time",
+    adv_wdesc_uva: "Hard categories",
+    adv_wdesc_limon: "Hard letters",
+    adv_wdesc_anana: "All of it at once",
+    adv_world_locked: "Unlocks when you finish the {name} World",
+    adv_boss: "Boss",
+    adv_your_turn: "You're up!",
+    adv_level_title: "Level {n}",
+    adv_goal_label: "Target to clear",
+    adv_goal_value: "{pts} points",
+    adv_fact_cats: "Categories",
+    adv_fact_time: "Time",
+    adv_fact_letters: "Letters",
+    adv_fact_best: "Your best",
+    adv_letters_easy: "Easy",
+    adv_letters_medium: "Medium",
+    adv_letters_hard: "Hard",
+    adv_letters_mixed: "Mixed",
+    adv_stars_heading: "Stars",
+    adv_tier_points: "Reach {pts} points",
+    adv_tier_perfect: "All valid with {s} s to spare",
+    adv_life_warning: "If you miss the target, you lose a life.",
+    adv_replay_free: "You already cleared this level: replaying it doesn't cost lives.",
+    adv_boss_flash: "Boss level: a lightning round of {s} seconds.",
+    adv_boss_long: "Boss level: words must have 5 letters or more.",
+    adv_boss_long_note: "Words of 5 letters or more",
+    adv_play_btn: "Play",
+    adv_map_btn: "Back to map",
+    adv_round_label: "Adventure · {world} World · Level {n}",
+    adv_result_perfect: "Perfect!",
+    adv_result_pass: "Level cleared!",
+    adv_result_fail: "You missed the target",
+    adv_result_nolives: "You're out of lives",
+    adv_result_sub: "{world} World · Level {n} · Letter {letter}",
+    adv_row_words: "Valid words ({valid} of {total})",
+    adv_row_bonus: "Time bonus ({s} s)",
+    adv_row_total: "Total",
+    adv_missing: "You were {pts} points short of the target.",
+    adv_next_btn: "Next level",
+    adv_retry_btn: "Try again",
+    adv_retry_stars_btn: "Try again for more stars (no lives used)",
+    adv_lives_left: "You have {n} lives left.",
+    adv_lives_left_one: "You have 1 life left.",
+    adv_next_life_label: "Next life in",
+    adv_regen_note: "You get a life back every 30 minutes, up to 5. Meanwhile, the other modes have no limits.",
+    adv_streak_btn: "Play time attack",
+    adv_reason_long: "has fewer than 5 letters",
+    adv_new_world: "You unlocked the {name} World!",
+    mascot_adv_win: ["Way to go!", "Level cleared! On to the next one.", "What a level!"],
+    mascot_adv_perfect: ["Three stars! You rock.", "Perfect, not a single miss."],
+    mascot_adv_fail: ["So close... try again!", "Oops, almost.", "You'll get it next time."],
+    mascot_adv_nolives: ["I'm out of energy... come back in a bit.", "Zzz... lives refill on their own."],
     pack_random: "Random",
     random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
     random_category_chip: "Random",
@@ -1910,6 +2218,72 @@ const I18N = {
     pack_argento: "Cultura argentina",
     pack_peru: "Cultura peruana",
     pack_mexico: "Cultura mexicana",
+    adv_banner_title: "Aventura",
+    adv_banner_sub: "Nível {n} · {stars} estrelas",
+    adv_banner_sub_done: "Você completou os 30 níveis! · {stars} estrelas",
+    adv_map_title: "Aventura",
+    adv_map_lead: "30 níveis em 5 mundos. Chegue à meta de pontos para passar cada um.",
+    adv_lives_full: "Vidas cheias",
+    adv_next_life: "+1 vida em {time}",
+    adv_world_name: "Mundo {name}",
+    adv_wname_manzana: "Maçã",
+    adv_wname_naranja: "Laranja",
+    adv_wname_uva: "Uva",
+    adv_wname_limon: "Limão",
+    adv_wname_anana: "Abacaxi",
+    adv_wdesc_manzana: "Para começar com calma",
+    adv_wdesc_naranja: "Menos tempo",
+    adv_wdesc_uva: "Categorias difíceis",
+    adv_wdesc_limon: "Letras difíceis",
+    adv_wdesc_anana: "Tudo junto",
+    adv_world_locked: "Desbloqueia ao terminar o Mundo {name}",
+    adv_boss: "Chefe",
+    adv_your_turn: "Sua vez!",
+    adv_level_title: "Nível {n}",
+    adv_goal_label: "Meta para passar",
+    adv_goal_value: "{pts} pontos",
+    adv_fact_cats: "Categorias",
+    adv_fact_time: "Tempo",
+    adv_fact_letters: "Letras",
+    adv_fact_best: "Seu melhor",
+    adv_letters_easy: "Fáceis",
+    adv_letters_medium: "Médias",
+    adv_letters_hard: "Difíceis",
+    adv_letters_mixed: "Misturadas",
+    adv_stars_heading: "Estrelas",
+    adv_tier_points: "Chegar a {pts} pontos",
+    adv_tier_perfect: "Todas válidas e {s} s de sobra",
+    adv_life_warning: "Se não chegar à meta, você perde uma vida.",
+    adv_replay_free: "Você já passou este nível: repetir não gasta vidas.",
+    adv_boss_flash: "Nível chefe: rodada relâmpago de {s} segundos.",
+    adv_boss_long: "Nível chefe: as palavras precisam ter 5 letras ou mais.",
+    adv_boss_long_note: "Palavras de 5 letras ou mais",
+    adv_play_btn: "Jogar",
+    adv_map_btn: "Voltar ao mapa",
+    adv_round_label: "Aventura · Mundo {world} · Nível {n}",
+    adv_result_perfect: "Perfeito!",
+    adv_result_pass: "Nível concluído!",
+    adv_result_fail: "Você não chegou à meta",
+    adv_result_nolives: "Você ficou sem vidas",
+    adv_result_sub: "Mundo {world} · Nível {n} · Letra {letter}",
+    adv_row_words: "Palavras válidas ({valid} de {total})",
+    adv_row_bonus: "Bônus de tempo ({s} s)",
+    adv_row_total: "Total",
+    adv_missing: "Faltaram {pts} pontos para a meta.",
+    adv_next_btn: "Próximo nível",
+    adv_retry_btn: "Tentar de novo",
+    adv_retry_stars_btn: "Tentar de novo por mais estrelas (não gasta vidas)",
+    adv_lives_left: "Restam {n} vidas.",
+    adv_lives_left_one: "Resta 1 vida.",
+    adv_next_life_label: "Próxima vida em",
+    adv_regen_note: "Uma vida recarrega a cada 30 minutos, até 5. Enquanto isso, os outros modos não têm limite.",
+    adv_streak_btn: "Jogar contra o relógio",
+    adv_reason_long: "tem menos de 5 letras",
+    adv_new_world: "Você desbloqueou o Mundo {name}!",
+    mascot_adv_win: ["Isso aí!", "Nível concluído! Vamos para o próximo.", "Que nível!"],
+    mascot_adv_perfect: ["Três estrelas! Você arrasa.", "Perfeito, nenhum erro."],
+    mascot_adv_fail: ["Quase... de novo!", "Ops, foi por pouco.", "Na próxima sai."],
+    mascot_adv_nolives: ["Fiquei sem energia... volte daqui a pouco.", "Zzz... as vidas recarregam sozinhas."],
     pack_random: "Random",
     random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
     random_category_chip: "Random",
@@ -3478,7 +3852,11 @@ function serverNow() {
 }
 
 function onBastaTap() {
-  if (state.dailyMode) {
+  if (state.adventureMode) {
+    playDing();
+    vibrate([30, 40, 30]);
+    finishAdventureRound();
+  } else if (state.dailyMode) {
     playDing();
     vibrate([30, 40, 30]);
     finishDailyRound();
@@ -4997,6 +5375,495 @@ async function finishDailyRound() {
   if (valid === results.length) launchConfetti();
 }
 
+// ---------- Aventura: niveles para jugar solo (/jugar?aventura abre el mapa) ----------
+// 5 mundos de 6 niveles. Cada nivel tiene categorías fijas (salen del número de nivel) y una
+// letra al azar en cada intento, así reintentar no es repetir lo mismo. Para pasar hay que
+// llegar a la meta de puntos con palabras válidas. El progreso y las vidas se guardan en
+// este dispositivo.
+const ADV_KEY = "tuttifruti_adventure";
+const ADV_MAX_LIVES = 5;
+const ADV_REGEN_MS = 30 * 60 * 1000;
+const ADV_POINTS = 10;
+const ADV_PERFECT_SECONDS = 10;
+const ADV_LETTERS = {
+  easy: ["A", "B", "C", "L", "M", "P", "R", "S", "T"],
+  medium: ["D", "E", "F", "G", "I", "N", "O", "V"],
+  hard: ["H", "J", "Q", "U", "Y", "Z"],
+};
+const ADV_CATS = {
+  easy: ["Nombre", "Animal", "Color", "Fruta", "Comida", "País", "Objeto", "Ciudad", "Parte del cuerpo"],
+  medium: ["Apellido", "Verdura", "Deporte", "Profesión", "Bebida", "Marca", "Película"],
+  hard: ["Instrumento musical", "Personaje ficticio", "Programa de TV", "Cantante o banda", "Personaje histórico", "Equipo de fútbol"],
+};
+// cats y time: uno por nivel del mundo (el 6.º es el jefe). goal: parte de las categorías que hay que acertar.
+const ADV_WORLDS = [
+  { fruit: "🍎", key: "manzana", cats: [4, 4, 5, 5, 5, 5], time: [90, 90, 80, 80, 75, 40], letters: ["easy"], pools: ["easy"], goal: 0.5, boss: "flash" },
+  { fruit: "🍊", key: "naranja", cats: [5, 5, 5, 6, 6, 5], time: [60, 60, 55, 55, 50, 25], letters: ["easy"], pools: ["easy", "medium"], goal: 0.6, boss: "flash" },
+  { fruit: "🍇", key: "uva", cats: [5, 6, 6, 6, 6, 6], time: [75, 75, 70, 70, 65, 75], letters: ["easy", "medium"], pools: ["medium", "hard"], goal: 0.6, boss: "long" },
+  { fruit: "🍋", key: "limon", cats: [5, 5, 6, 6, 6, 6], time: [75, 75, 70, 70, 65, 70], letters: ["hard"], pools: ["easy", "medium"], goal: 0.5, boss: "long" },
+  { fruit: "🍍", key: "anana", cats: [6, 7, 7, 8, 8, 8], time: [65, 65, 60, 60, 55, 40], letters: ["medium", "hard"], pools: ["easy", "medium", "hard"], goal: 0.7, boss: "flash" },
+];
+const ADV_TOTAL = ADV_WORLDS.length * 6;
+// Posición de cada nivel en el camino del mundo (x e y en %).
+const ADV_PATH = [[22, 9], [62, 23], [78, 41], [44, 55], [18, 70], [56, 86]];
+
+const ADV_HEART_SVG = '<svg class="adv-heart%c" viewBox="0 0 24 22" aria-hidden="true"><path d="M12 21 C5 15.5 1.5 11.8 1.5 7.4 C1.5 4 4.1 1.5 7.2 1.5 C9.2 1.5 10.9 2.6 12 4.3 C13.1 2.6 14.8 1.5 16.8 1.5 C19.9 1.5 22.5 4 22.5 7.4 C22.5 11.8 19 15.5 12 21 Z"/></svg>';
+const ADV_STAR_SVG = '<svg class="adv-star%c" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17.1l-6.1 3.5 1.5-6.8L2.2 9.2l6.9-.7z"/></svg>';
+const ADV_LOCK_SVG = '<svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z"/></svg>';
+function advHeart(full) { return ADV_HEART_SVG.replace("%c", full ? "" : " empty"); }
+function advStar(on) { return ADV_STAR_SVG.replace("%c", on ? "" : " off"); }
+function advStars(n) { let h = ""; for (let i = 0; i < 3; i++) h += advStar(i < n); return h; }
+function advHearts(n) { let h = ""; for (let i = 0; i < ADV_MAX_LIVES; i++) h += advHeart(i < n); return h; }
+
+function advWorldName(W) { return t("adv_wname_" + W.key); }
+function advWorldDesc(W) { return t("adv_wdesc_" + W.key); }
+
+function advLevel(n) {
+  const w = Math.floor((n - 1) / 6);
+  const i = (n - 1) % 6;
+  const W = ADV_WORLDS[w];
+  const rnd = seededRandom(hashString("aventura-" + n));
+  const pool = W.pools.flatMap(k => ADV_CATS[k]);
+  for (let k = pool.length - 1; k > 0; k--) {
+    const j = Math.floor(rnd() * (k + 1));
+    [pool[k], pool[j]] = [pool[j], pool[k]];
+  }
+  const categories = pool.slice(0, W.cats[i]);
+  const wildcard = categories[Math.floor(rnd() * categories.length)];
+  const needed = Math.max(2, Math.round(categories.length * W.goal));
+  const target = needed * ADV_POINTS;
+  const maxWords = (categories.length + 1) * ADV_POINTS;
+  const target2 = Math.min(maxWords - ADV_POINTS, target + 2 * ADV_POINTS);
+  const letterKinds = W.letters;
+  const lettersLabel = letterKinds.length > 1 ? "adv_letters_mixed" : "adv_letters_" + letterKinds[0];
+  return {
+    n, world: w, index: i, W, categories, wildcard, target, target2, time: W.time[i],
+    letters: letterKinds.flatMap(k => ADV_LETTERS[k]), lettersLabel, boss: i === 5 ? W.boss : null,
+  };
+}
+
+function advRegen(d) {
+  const now = Date.now();
+  if (d.lives >= ADV_MAX_LIVES) { d.lives = ADV_MAX_LIVES; d.livesAt = now; return d; }
+  const gained = Math.floor((now - d.livesAt) / ADV_REGEN_MS);
+  if (gained > 0) {
+    d.lives = Math.min(ADV_MAX_LIVES, d.lives + gained);
+    d.livesAt = d.lives >= ADV_MAX_LIVES ? now : d.livesAt + gained * ADV_REGEN_MS;
+  }
+  return d;
+}
+
+function advLoad() {
+  let d = null;
+  try { d = JSON.parse(localStorage.getItem(ADV_KEY) || "null"); } catch (e) { d = null; }
+  if (!d || d.v !== 1 || typeof d.lives !== "number") d = { v: 1, stars: {}, best: {}, lives: ADV_MAX_LIVES, livesAt: Date.now(), pending: null };
+  return advRegen(d);
+}
+
+function advSave(d) {
+  try { localStorage.setItem(ADV_KEY, JSON.stringify(d)); } catch (e) { /* storage unavailable */ }
+}
+
+function advUnlocked(d, n) { return n === 1 || (d.stars[n - 1] || 0) > 0; }
+function advCurrent(d) {
+  for (let n = 1; n <= ADV_TOTAL; n++) if (!(d.stars[n] > 0)) return advUnlocked(d, n) ? n : null;
+  return null;
+}
+function advTotalStars(d) { return Object.values(d.stars).reduce((a, b) => a + (b || 0), 0); }
+
+function advTimeToNextLife(d) {
+  const ms = Math.max(0, d.livesAt + ADV_REGEN_MS - Date.now());
+  const m = Math.floor(ms / 60000), sec = Math.floor((ms % 60000) / 1000);
+  return m + ":" + String(sec).padStart(2, "0");
+}
+
+function advCountdownText(d) {
+  if (d.lives >= ADV_MAX_LIVES) return t("adv_lives_full");
+  return t("adv_next_life", { time: advTimeToNextLife(d) });
+}
+
+function renderAdventureBanner() {
+  const banner = document.getElementById("adventureBanner");
+  if (!banner) return;
+  document.getElementById("adventureBannerIcon").innerHTML = iconSvg("star");
+  const d = advLoad();
+  const current = advCurrent(d);
+  document.getElementById("adventureBannerSub").textContent = current
+    ? t("adv_banner_sub", { n: current, stars: advTotalStars(d) })
+    : t("adv_banner_sub_done", { stars: advTotalStars(d) });
+}
+
+// Mientras se está en las pantallas de la Aventura, la cuenta regresiva de las vidas se actualiza sola.
+function advStartTicker() {
+  clearInterval(state.advTickId);
+  state.advTickId = setInterval(() => {
+    const d = advLoad();
+    document.querySelectorAll("[data-adv-countdown]").forEach(el => { el.textContent = advCountdownText(d); });
+    document.querySelectorAll("[data-adv-countdown-time]").forEach(el => {
+      el.textContent = advTimeToNextLife(d);
+    });
+    if (state.advLivesShown != null && d.lives !== state.advLivesShown && document.getElementById("screen-adventure").classList.contains("active")) {
+      renderAdventureMap();
+    }
+  }, 1000);
+}
+
+function openAdventure() {
+  if (state.adventureMode) leaveAdventureGame();
+  renderAdventureMap();
+  showScreen("screen-adventure");
+  advStartTicker();
+  window.scrollTo(0, 0);
+}
+
+function renderAdventureMap() {
+  const d = advLoad();
+  state.advLivesShown = d.lives;
+  document.getElementById("advMapHearts").innerHTML = advHearts(d.lives);
+  document.querySelector("#screen-adventure [data-adv-countdown]").textContent = advCountdownText(d);
+  document.getElementById("advMapStarIcon").innerHTML = advStar(true);
+  document.getElementById("advMapStars").textContent = advTotalStars(d) + " / " + ADV_TOTAL * 3;
+  const current = advCurrent(d);
+  const avatar = getMyAvatar();
+  document.getElementById("advWorlds").innerHTML = ADV_WORLDS.map((W, w) => {
+    const first = w * 6 + 1;
+    let got = 0;
+    for (let n = first; n < first + 6; n++) got += d.stars[n] || 0;
+    const head = `<div class="adv-world-head"><span class="adv-world-fruit">${fruitSvg(W.fruit)}</span>
+      <div><h3>${escapeHtml(t("adv_world_name", { name: advWorldName(W) }))}</h3><p>${escapeHtml(advWorldDesc(W))}</p></div>
+      <span class="adv-world-stars">${advStar(true)}${got}/18</span></div>`;
+    if (!advUnlocked(d, first)) {
+      return `<div class="adv-world locked">${head}<p class="adv-lock-note">${ADV_LOCK_SVG}${escapeHtml(t("adv_world_locked", { name: advWorldName(ADV_WORLDS[w - 1]) }))}</p></div>`;
+    }
+    let trail = "", done = "", nodes = "";
+    ADV_PATH.forEach(([x, y], i) => {
+      const n = first + i;
+      const cmd = (i ? " L" : "M") + x * 4 + " " + y * 4.8;
+      trail += cmd;
+      if (advUnlocked(d, n)) done += cmd;
+      const unlocked = advUnlocked(d, n);
+      const st = d.stars[n] || 0;
+      const boss = i === 5;
+      let cls = "adv-node" + (boss ? " boss" : "");
+      let inner = boss ? `<span>${iconSvg("crown")}</span>` : `<span>${n}</span>`;
+      let below = "";
+      if (!unlocked) { cls += " locked"; if (!boss) inner = ADV_LOCK_SVG; }
+      else if (n === current) { cls += " current"; below = `<span class="adv-tag now">${escapeHtml(t("adv_your_turn"))}</span>`; }
+      else if (st > 0) below = `<span class="adv-mini-stars">${advStars(st)}</span>`;
+      if (boss && !(n === current)) below = (st > 0 ? `<span class="adv-mini-stars">${advStars(st)}</span>` : "") + `<span class="adv-tag">${escapeHtml(t("adv_boss"))}</span>`;
+      nodes += `<button type="button" class="${cls}" style="left:${x}%;top:${y}%" ${unlocked ? `onclick="openAdventureLevel(${n})"` : "disabled"} aria-label="${escapeHtml(t("adv_level_title", { n }))}"><span class="adv-disc">${inner}</span>${below}</button>`;
+      if (n === current) nodes += `<span class="adv-here" style="left:${x}%;top:calc(${y}% - ${boss ? 58 : 46}px)">${mascotSvg("happy", avatar)}</span>`;
+    });
+    return `<div class="adv-world">${head}<div class="adv-path">
+      <svg class="adv-trail" viewBox="0 0 400 480" preserveAspectRatio="none" aria-hidden="true"><path d="${trail}"/><path class="done" d="${done}"/></svg>${nodes}</div></div>`;
+  }).join("");
+}
+
+function openAdventureLevel(n) {
+  const d = advLoad();
+  if (!advUnlocked(d, n)) return;
+  const L = advLevel(n);
+  state.advLevelN = n;
+  const passed = (d.stars[n] || 0) > 0;
+  document.getElementById("advLevelWorld").innerHTML = fruitSvg(L.W.fruit) + escapeHtml(t("adv_world_name", { name: advWorldName(L.W) }));
+  document.getElementById("advLevelTitle").textContent = t("adv_level_title", { n });
+  document.getElementById("advLevelDesc").textContent = advWorldDesc(L.W);
+  document.getElementById("advLevelGoal").textContent = t("adv_goal_value", { pts: L.target });
+  document.getElementById("advLevelGoalIcon").innerHTML = iconSvg("trophy");
+  document.getElementById("advFactCats").textContent = L.categories.length;
+  document.getElementById("advFactTime").textContent = L.time + " s";
+  document.getElementById("advFactLetters").textContent = t(L.lettersLabel);
+  document.getElementById("advFactBest").textContent = d.best[n] ? d.best[n] + " pts" : "—";
+  document.getElementById("advLevelTiers").innerHTML = [
+    [1, t("adv_tier_points", { pts: L.target })],
+    [2, t("adv_tier_points", { pts: L.target2 })],
+    [3, t("adv_tier_perfect", { s: ADV_PERFECT_SECONDS })],
+  ].map(([k, text]) => `<div class="adv-tier"><span class="adv-mini-stars">${advStars(k)}</span><span>${escapeHtml(text)}</span></div>`).join("");
+  const bossEl = document.getElementById("advLevelBoss");
+  if (L.boss) {
+    bossEl.style.display = "flex";
+    bossEl.innerHTML = inlineIcon(L.boss === "flash" ? "bolt" : "crown") + escapeHtml(L.boss === "flash" ? t("adv_boss_flash", { s: L.time }) : t("adv_boss_long"));
+  } else {
+    bossEl.style.display = "none";
+  }
+  document.getElementById("advLevelLife").innerHTML = passed
+    ? advStar(true).replace('class="adv-star"', 'class="adv-star" style="width:18px;height:18px"') + escapeHtml(t("adv_replay_free"))
+    : advHeart(true) + escapeHtml(t("adv_life_warning"));
+  showScreen("screen-adventure-level");
+  window.scrollTo(0, 0);
+}
+
+function startAdventureLevel(n = state.advLevelN) {
+  const d = advLoad();
+  if (!advUnlocked(d, n)) return;
+  const L = advLevel(n);
+  const passed = (d.stars[n] || 0) > 0;
+  if (!passed && d.lives <= 0) {
+    renderAdventureNoLives(L, d);
+    return;
+  }
+  if (!passed) {
+    // La vida se descuenta al empezar y se devuelve si pasás el nivel: así recargar la
+    // página a mitad de nivel no sirve para esquivar la pérdida.
+    if (d.lives >= ADV_MAX_LIVES) d.livesAt = Date.now();
+    d.lives -= 1;
+    d.pending = n;
+    advSave(d);
+  }
+  const options = L.letters.filter(l => l !== state.advLastLetter);
+  const letter = options[Math.floor(Math.random() * options.length)];
+  clearInterval(state.advTickId);
+  cleanupRandomSearch();
+  if (!state.adventureMode && !state.categoriesBeforeAdventure) state.categoriesBeforeAdventure = state.categories;
+  state.adventureMode = true;
+  state.advFinishing = false;
+  state.dailyMode = false;
+  state.streakMode = false;
+  state.online = false;
+  state.advLevelN = n;
+  state.advLevel = L;
+  state.categories = [...L.categories];
+  state.wildcardCategory = L.wildcard;
+  state.letter = letter;
+  state.usedLetters = [];
+  state.answers = {};
+  state.duration = L.time;
+  state.secondsLeft = L.time;
+  state.playerName = document.getElementById("playerName").value.trim() || state.playerName || "";
+  getAudioCtx();
+  recordGameStart();
+  recordRoundPlayed(letter);
+  renderStreakPlayersStrip();
+
+  showScreen("screen-game");
+  document.getElementById("timerWrap").style.display = "none";
+  document.getElementById("catGrid").style.display = "none";
+  document.getElementById("bastaWrap").style.display = "none";
+  document.getElementById("roundLabel").textContent = t("adv_round_label", { world: advWorldName(L.W), n });
+  spinLetterReveal(letter, () => {
+    if (!state.adventureMode) return;
+    renderLetterHistory();
+    renderWildcardNote();
+    renderTwistNote(false, L.boss === "flash" ? L.time : 0);
+    if (L.boss === "long") {
+      const note = document.getElementById("twistNote");
+      note.innerHTML = inlineIcon("crown") + escapeHtml(t("adv_boss_long_note"));
+      note.style.display = "flex";
+    }
+    document.getElementById("timerWrap").style.display = "block";
+    renderCatGrid();
+    document.getElementById("catGrid").style.display = "grid";
+    document.getElementById("bastaWrap").style.display = "flex";
+    focusFirstAnswer();
+    updateTimerDisplay();
+    clearInterval(state.timerId);
+    state.timerId = setInterval(tickAdventure, 1000);
+  });
+}
+
+function tickAdventure() {
+  state.secondsLeft--;
+  updateTimerDisplay();
+  if (state.secondsLeft > 0 && state.secondsLeft <= 5) {
+    playTic();
+    vibrate(50);
+  }
+  if (state.secondsLeft <= 0) {
+    playTimeUp();
+    finishAdventureRound();
+  }
+}
+
+async function finishAdventureRound() {
+  if (state.advFinishing || !state.adventureMode) return;
+  state.advFinishing = true;
+  clearInterval(state.timerId);
+  clearTimeout(state.spinId);
+  const L = state.advLevel;
+  const letter = state.letter;
+  const secondsLeft = Math.max(0, state.secondsLeft);
+  const results = await judgeSoloAnswers(state.categories, state.answers, letter, 1, "AVENTURA");
+  if (!state.adventureMode) return;
+  if (L.boss === "long") {
+    results.forEach(r => {
+      if (r.valid && normalizeAnswer(r.val).replace(/[^a-zñ]/g, "").length < 5) { r.valid = false; r.reason = "adv_long"; }
+    });
+  }
+  let words = 0, valid = 0;
+  results.forEach(r => {
+    if (!r.valid) return;
+    valid++;
+    words += ADV_POINTS * (r.cat === L.wildcard ? 2 : 1);
+  });
+  const allValid = valid === results.length;
+  const bonus = allValid ? secondsLeft : 0;
+  const score = words + bonus;
+  const passed = words >= L.target;
+  let stars = 0;
+  if (passed) {
+    stars = 1;
+    if (words >= L.target2) stars = 2;
+    if (allValid && secondsLeft >= ADV_PERFECT_SECONDS) stars = 3;
+  }
+  const d = advLoad();
+  const lostLife = !passed && d.pending === L.n;
+  const newWorld = passed && !(d.stars[L.n] > 0) && L.index === 5 && L.world + 1 < ADV_WORLDS.length;
+  if (passed) {
+    if (d.pending === L.n) d.lives = Math.min(ADV_MAX_LIVES, d.lives + 1);
+    d.stars[L.n] = Math.max(d.stars[L.n] || 0, stars);
+    d.best[L.n] = Math.max(d.best[L.n] || 0, score);
+  }
+  d.pending = null;
+  advSave(d);
+  state.advLastLetter = letter;
+  state.advFinishing = false;
+  renderAdventureResult({ L, results, letter, words, bonus, score, passed, stars, valid, secondsLeft, lives: d.lives, lostLife });
+  if (newWorld) advToast(fruitSvg(ADV_WORLDS[L.world + 1].fruit), t("adv_new_world", { name: advWorldName(ADV_WORLDS[L.world + 1]) }));
+}
+
+function advToast(iconHtml, text) {
+  const stack = document.getElementById("toastStack");
+  if (!stack) return;
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.innerHTML = `<span class="toast-icon">${iconHtml}</span><span><strong>${escapeHtml(text)}</strong></span>`;
+  stack.appendChild(el);
+  setTimeout(() => el.classList.add("out"), 3200);
+  setTimeout(() => el.remove(), 3700);
+}
+
+// Vuelve de la partida al estado normal del juego (sin salir de las pantallas de la Aventura).
+function leaveAdventureGame() {
+  clearInterval(state.timerId);
+  clearTimeout(state.spinId);
+  state.adventureMode = false;
+  if (state.categoriesBeforeAdventure) {
+    state.categories = state.categoriesBeforeAdventure;
+    state.categoriesBeforeAdventure = null;
+    renderCatChips();
+  }
+}
+
+function advActions(buttons) {
+  // buttons: [[clase, texto, acción]], el último es el principal.
+  document.getElementById("advResultActions").innerHTML = buttons.map(([cls, text, action]) =>
+    `<button class="${cls}" onclick="${action}">${escapeHtml(text)}</button>`).join("");
+}
+
+function renderAdventureResult(r) {
+  const { L } = r;
+  leaveAdventureGame();
+  const noLives = !r.passed && r.lives <= 0 && r.lostLife;
+  const top = document.getElementById("advResultTop");
+  top.innerHTML = r.passed
+    ? `<div class="adv-big-stars">${advStars(r.stars)}</div>`
+    : `<div class="adv-hearts">${advHearts(r.lives)}</div>`;
+  document.getElementById("advResultTitle").textContent = r.passed
+    ? t(r.stars === 3 ? "adv_result_perfect" : "adv_result_pass")
+    : t(noLives ? "adv_result_nolives" : "adv_result_fail");
+  document.getElementById("advResultSub").textContent = t("adv_result_sub", { world: advWorldName(L.W), n: L.n, letter: r.letter });
+  setMascot("advResultMascot", r.passed ? "happy" : (noLives ? "sleepy" : "sad"),
+    r.passed ? (r.stars === 3 ? "mascot_adv_perfect" : "mascot_adv_win") : (noLives ? "mascot_adv_nolives" : "mascot_adv_fail"), "small");
+
+  const list = document.getElementById("advResultList");
+  list.innerHTML = "";
+  r.results.forEach((res, i) => {
+    const isWild = res.cat === L.wildcard;
+    const pts = res.valid ? ADV_POINTS * (isWild ? 2 : 1) : 0;
+    const reason = res.reason === "adv_long" && res.val ? t("adv_reason_long") : soloReasonText(res, r.letter);
+    const row = document.createElement("div");
+    row.className = "answer-row";
+    row.style.flexWrap = "wrap";
+    row.innerHTML = `
+      <span class="answer-cat">${escapeHtml(catLabel(res.cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
+      <span class="answer-val ${res.val ? "" : "empty"}">${res.val ? escapeHtml(res.val) : t("no_answer")}</span>
+      <span class="points points-${res.valid ? 10 : 0}">+${pts}</span>
+      ${reason ? `<div style="flex-basis:100%; font-size:11px; color:var(--text-support);">${reason}</div>` : ""}`;
+    revealRow(row, i);
+    list.appendChild(row);
+  });
+
+  const maxBar = Math.max(L.target2 + 2 * ADV_POINTS, r.score);
+  const pct = v => Math.min(100, (v / maxBar) * 100).toFixed(1);
+  document.getElementById("advResultScore").innerHTML = `<div class="adv-score">
+    <div class="adv-score-row"><span>${escapeHtml(t("adv_row_words", { valid: r.valid, total: r.results.length }))}</span><b>+${r.words}</b></div>
+    ${r.bonus ? `<div class="adv-score-row"><span>${escapeHtml(t("adv_row_bonus", { s: r.bonus }))}</span><b>+${r.bonus}</b></div>` : ""}
+    <div class="adv-score-row total"><span>${escapeHtml(t("adv_row_total"))}</span><b>${r.score} pts</b></div>
+    <div class="adv-bar"><i style="width:0%"></i>
+      <span class="mark" style="left:${pct(L.target)}%">${advStar(true)}<span>${L.target}</span></span>
+      <span class="mark" style="left:${pct(L.target2)}%">${advStar(true)}<span>${L.target2}</span></span>
+    </div>
+    ${r.passed ? "" : `<p class="hint" style="margin:0;">${escapeHtml(t("adv_missing", { pts: L.target - r.words }))}</p>`}
+  </div>`;
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const bar = document.querySelector("#advResultScore .adv-bar i");
+    if (bar) bar.style.width = pct(r.words) + "%";
+  }));
+
+  document.getElementById("advResultNoLives").innerHTML = noLives ? advNoLivesHtml() : "";
+  document.getElementById("advResultExtra").innerHTML = "";
+  if (r.passed) {
+    const next = L.n < ADV_TOTAL ? L.n + 1 : null;
+    advActions([
+      ["secondary", t("adv_map_btn"), "openAdventure()"],
+      next ? ["primary", t("adv_next_btn"), `openAdventureLevel(${next})`] : ["primary", t("adv_map_btn"), "openAdventure()"],
+    ]);
+    if (r.stars < 3) {
+      document.getElementById("advResultExtra").innerHTML = `<button class="btn btn-secondary btn-block adv-extra-btn" onclick="startAdventureLevel(${L.n})">${escapeHtml(t("adv_retry_stars_btn"))}</button>`;
+    }
+    launchConfetti();
+  } else if (noLives) {
+    advActions([["secondary", t("adv_map_btn"), "openAdventure()"], ["primary", t("adv_streak_btn"), "advGoToStreak()"]]);
+    launchFruitConfetti("lose");
+  } else {
+    advActions([["secondary", t("adv_map_btn"), "openAdventure()"], ["primary", t("adv_retry_btn"), `startAdventureLevel(${L.n})`]]);
+    if (r.lostLife) {
+      document.getElementById("advResultExtra").innerHTML = `<p class="hint" style="text-align:center;">${escapeHtml(r.lives === 1 ? t("adv_lives_left_one") : t("adv_lives_left", { n: r.lives }))}</p>`;
+    }
+    launchFruitConfetti("lose");
+  }
+  showScreen("screen-adventure-result");
+  advStartTicker();
+  window.scrollTo(0, 0);
+}
+
+function advNoLivesHtml() {
+  return `<div class="adv-nolives">
+    <div class="adv-countdown-box"><p class="label">${escapeHtml(t("adv_next_life_label"))}</p><strong data-adv-countdown-time>${advTimeToNextLife(advLoad())}</strong></div>
+    <p class="hint">${escapeHtml(t("adv_regen_note"))}</p>
+  </div>`;
+}
+
+// Al tocar Jugar sin vidas (en un nivel que todavía no pasaste).
+function renderAdventureNoLives(L, d) {
+  document.getElementById("advResultTop").innerHTML = `<div class="adv-hearts">${advHearts(d.lives)}</div>`;
+  document.getElementById("advResultTitle").textContent = t("adv_result_nolives");
+  document.getElementById("advResultSub").textContent = t("adv_world_name", { name: advWorldName(L.W) }) + " · " + t("adv_level_title", { n: L.n });
+  setMascot("advResultMascot", "sleepy", "mascot_adv_nolives", "small");
+  document.getElementById("advResultList").innerHTML = "";
+  document.getElementById("advResultScore").innerHTML = "";
+  document.getElementById("advResultNoLives").innerHTML = advNoLivesHtml();
+  document.getElementById("advResultExtra").innerHTML = "";
+  advActions([["secondary", t("adv_map_btn"), "openAdventure()"], ["primary", t("adv_streak_btn"), "advGoToStreak()"]]);
+  showScreen("screen-adventure-result");
+  advStartTicker();
+  window.scrollTo(0, 0);
+}
+
+function advGoToStreak() {
+  goToLobby();
+  setMode("streak");
+  window.scrollTo(0, 0);
+}
+
+// /jugar?aventura abre directo el mapa de la Aventura.
+function applyAdventureLinkFromUrl() {
+  const params = new URLSearchParams(location.search);
+  if (!params.has("aventura")) return false;
+  history.replaceState(null, "", location.pathname);
+  return true;
+}
+
 function soloReasonText(r, letter) {
   if (r.valid || !r.val) return "";
   if (r.reason === "letter") return t("doesnt_start_with", { letter });
@@ -5305,6 +6172,8 @@ function goToLobby() {
       renderCatChips();
     }
   }
+  clearInterval(state.advTickId);
+  if (state.adventureMode) leaveAdventureGame();
   if (state.dailyMode) {
     clearInterval(state.timerId);
     clearTimeout(state.spinId);
@@ -5327,6 +6196,7 @@ function goToLobby() {
   document.getElementById("waitingMascot").dataset.mood = "";
   document.getElementById("nextRoundBtn").style.display = "";
   renderDailyBanner();
+  renderAdventureBanner();
   if (state.online) {
     // Deja el código cargado en "Unirme" por si salió sin querer y quiere volver.
     if (state.roomCode) document.getElementById("joinCodeInput").value = state.roomCode;
@@ -5410,12 +6280,15 @@ function fetchPageVersion() {
 fetchPageVersion().then(v => { loadedVersion = v; });
 document.addEventListener("visibilitychange", async () => {
   if (document.visibilityState !== "visible" || !loadedVersion) return;
-  if (state.online || state.streakMode || state.dailyMode) return;
+  if (state.online || state.streakMode || state.dailyMode || state.adventureMode) return;
   const current = await fetchPageVersion();
   if (current && current !== loadedVersion) location.reload();
 });
 renderAvatarPicker();
 renderDailyBanner();
+const openAdventureFromLink = applyAdventureLinkFromUrl();
+renderAdventureBanner();
+if (openAdventureFromLink) openAdventure();
 checkAchievements();
 </script>
 <div class="confetti-container" id="confettiContainer"></div>
