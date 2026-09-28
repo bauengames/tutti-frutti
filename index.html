@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Tutti frutti online gratis con amigos | tutti.frutti</title>
-<meta name="description" content="Jugá al tutti frutti online gratis, también llamado Stop o Basta. Armá una sala con amigos o jugá con un rival al azar. Un juez con IA resuelve las dudas." />
+<title>Tutti frutti (Stop) online gratis con amigos | tutti.frutti</title>
+<meta name="description" content="Juega al tutti frutti online gratis, también llamado Stop o Basta. Arma una sala con amigos o juega con un rival al azar. Un juez con IA resuelve dudas." />
 <meta name="theme-color" content="#14101F" />
 <meta name="google-site-verification" content="11IeCqdOInhFBmkUuvxaYK9JlKZoHk9tQVQZTIyQ_-w" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -21,8 +21,8 @@
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=2" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="tutti.frutti" />
-<meta property="og:title" content="Tutti frutti online gratis con amigos" />
-<meta property="og:description" content="Jugá al tutti frutti online gratis, también llamado Stop o Basta. Armá una sala con amigos o jugá con un rival al azar. Un juez con IA resuelve las dudas." />
+<meta property="og:title" content="Tutti frutti (Stop) online gratis con amigos" />
+<meta property="og:description" content="Juega al tutti frutti online gratis, también llamado Stop o Basta. Arma una sala con amigos o juega con un rival al azar. Un juez con IA resuelve dudas." />
 <meta property="og:url" content="https://tuttipuntofrutti.com/" />
 <meta property="og:locale" content="es_AR" />
 <meta property="og:locale:alternate" content="en_US" />
@@ -33,8 +33,8 @@
 <meta property="og:image:height" content="630" />
 <meta property="og:image:alt" content="tutti.frutti: tutti frutti online con amigos" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Tutti frutti online gratis con amigos" />
-<meta name="twitter:description" content="Jugá al tutti frutti online gratis, también llamado Stop o Basta. Armá una sala con amigos o jugá con un rival al azar. Un juez con IA resuelve las dudas." />
+<meta name="twitter:title" content="Tutti frutti (Stop) online gratis con amigos" />
+<meta name="twitter:description" content="Juega al tutti frutti online gratis, también llamado Stop o Basta. Arma una sala con amigos o juega con un rival al azar. Un juez con IA resuelve dudas." />
 <meta name="twitter:image" content="https://tuttipuntofrutti.com/og/og-es.png" />
 <meta name="twitter:image:alt" content="tutti.frutti: tutti frutti online con amigos" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -218,6 +218,14 @@ a { color: var(--primary); }
 .side-menu { overflow-y: auto; }
 .side-menu-subtitle { margin: 18px 10px 6px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); }
 
+.side-menu-play {
+  display: block; margin: 0 0 14px; padding: 14px 16px; border-radius: var(--radius);
+  background: var(--primary); color: var(--tinta); font: 700 16px/1.2 var(--font-body);
+  text-align: center; text-decoration: none;
+}
+.side-menu-play:hover { text-decoration: none; filter: brightness(1.06); }
+.side-menu nav a[aria-current="page"] { background: var(--crema-08); color: var(--primary); }
+
 /* ---------- Hero ---------- */
 .hero { text-align: center; padding: 12px 0 40px; }
 .hero .wordmark { font-size: clamp(64px, 17vw, 112px); display: block; margin-bottom: 14px; }
@@ -309,6 +317,9 @@ section.info { margin-bottom: 24px; }
 section.info h2 { font-size: 26px; margin-bottom: 14px; }
 section.info p { color: var(--crema-72); margin: 0 0 12px; }
 section.info a { font-weight: 600; }
+section.info .names-list { list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 8px; }
+section.info .names-list li { color: var(--crema-72); padding: 10px 14px; border-radius: 12px; background: rgba(var(--fg-rgb), .05); }
+section.info .names-list strong { color: var(--text); }
 
 
 /* El body de la home tiene 16px de margen lateral: el footer lo compensa para que la línea vaya de borde a borde. */
@@ -401,6 +412,7 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
 </script>
 <script src="/site-i18n.js" defer></script>
 <script src="/site-theme.js" defer></script>
+<script src="/site-menu.js" defer></script>
 <script src="/fruits.js" defer></script>
 <script src="/home.js" defer></script>
 <meta name="google-adsense-account" content="ca-pub-9897296561814312" />
@@ -473,7 +485,7 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
 </div>
 
 <header class="top-bar">
-  <button type="button" class="menu-btn" onclick="openSideMenu()" aria-label="Abrir menú">
+  <button type="button" class="menu-btn" onclick="openSideMenu()" aria-label="Abrir menú" aria-controls="sideMenu">
     <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>
   </button>
   <div class="header-actions">
@@ -503,8 +515,9 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
     <span class="side-menu-brand">tutti.frutti</span>
     <button type="button" class="side-menu-close" onclick="closeSideMenu()" aria-label="Cerrar menú">&times;</button>
   </div>
+  <a class="side-menu-play" href="/jugar">Jugar ahora</a>
   <nav>
-    <a href="/">Inicio</a>
+    <a href="/" aria-current="page">Inicio</a>
     <a href="/reglas">Reglas del juego</a>
     <a href="/privacidad">Privacidad</a>
     <a href="/terminos">Términos de uso</a>
@@ -515,20 +528,22 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
     <a href="/tutti-frutti-para-imprimir">Planillas para imprimir</a>
     <a href="/tutti-frutti-por-videollamada">Jugar por videollamada</a>
     <a href="/tutti-frutti-en-el-aula">Tutti frutti en el aula</a>
+    <a href="/stop-online">Stop online</a>
+    <a href="/basta-online">Basta online</a>
   </nav>
 </div>
 
 <main class="wrap">
   <section class="hero">
     <span class="wordmark">tutti<span class="punto"><svg viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti</span>
-    <h1 class="home-h1">Tutti frutti online gratis con amigos</h1>
+    <h1 class="home-h1">Tutti frutti (Stop) online gratis con amigos</h1>
 
     <div class="quickplay">
-      <p class="quickplay-kicker">Jugá ahora</p>
+      <p class="quickplay-kicker">Juega ahora</p>
       <form onsubmit="return goPlay(event)">
         <div class="field">
           <label class="label" for="homePlayerName">Tu nombre</label>
-          <input type="text" id="homePlayerName" maxlength="30" autocomplete="nickname" / placeholder="¿Cómo te llamás?">
+          <input type="text" id="homePlayerName" maxlength="30" autocomplete="nickname" / placeholder="¿Cómo te llamas?">
         </div>
         <div class="field">
           <span class="label" id="homeAvatarLabel">Tu fruta</span>
@@ -539,7 +554,7 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
       <button type="button" class="btn btn-secondary btn-block install-btn" id="installAppBtn" style="display:none;" onclick="installApp()"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/></svg><span data-install-label>Instalar la app</span></button>
     </div>
 
-    <p>Tutti frutti online, también conocido como Stop o Basta, con amigos o con un rival al azar. Armá una sala, invitá a quien quieras y jueguen en tiempo real: se sortea una letra, completan categorías a contrarreloj y un juez con inteligencia artificial resuelve las palabras en disputa.</p>
+    <p>Tutti frutti online, también conocido como Stop o Basta, con amigos o con un rival al azar. Arma una sala, invita a quien quieras y jueguen en tiempo real: se sortea una letra, completan categorías a contrarreloj y un juez con inteligencia artificial resuelve las palabras en disputa.</p>
   </section>
 
   <a class="daily-card" href="/desafio-del-dia">
@@ -551,11 +566,11 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
   <div class="grid-3">
     <div class="card">
       <h2>Salas privadas</h2>
-      <p>Creá una sala, compartí el código o el link con tus amigos y jueguen todos juntos en tiempo real.</p>
+      <p>Crea una sala, comparte el código o el link con tus amigos y jueguen todos juntos en tiempo real.</p>
     </div>
     <div class="card">
       <h2>Rival al azar</h2>
-      <p>Si no tenés con quién jugar, buscamos un rival disponible en ese momento para armar la partida.</p>
+      <p>Si no tienes con quién jugar, buscamos un rival disponible en ese momento para armar la partida.</p>
     </div>
     <div class="card">
       <h2>Juez con IA</h2>
@@ -573,12 +588,12 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
       </div>
       <div class="step-card">
         <div class="step-num">2</div>
-        <h3>Completá las categorías</h3>
-        <p>Escribí una palabra que empiece con esa letra en cada categoría, antes de que se acabe el tiempo.</p>
+        <h3>Completa las categorías</h3>
+        <p>Escribe una palabra que empiece con esa letra en cada categoría, antes de que se acabe el tiempo.</p>
       </div>
       <div class="step-card">
         <div class="step-num">3</div>
-        <h3>Tocá ¡Basta!</h3>
+        <h3>Toca ¡Basta!</h3>
         <p>En cuanto termines, cualquiera puede tocar ¡Basta! y la ronda se corta para todos.</p>
       </div>
       <div class="step-card">
@@ -587,7 +602,20 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
         <p>Si una respuesta se objeta y no hay acuerdo, un juez con IA decide si vale, sin discusiones eternas.</p>
       </div>
     </div>
-    <p>Para conocer el detalle completo de puntajes, objeciones y el funcionamiento del juez con IA, mirá la página de <a href="/reglas">reglas del juego</a>.</p>
+    <p>Para conocer el detalle completo de puntajes, objeciones y el funcionamiento del juez con IA, mira la página de <a href="/reglas">reglas del juego</a>.</p>
+  </section>
+
+  <section class="info names">
+    <h2>Un juego, muchos nombres</h2>
+    <p>El tutti frutti se juega en toda Latinoamérica y España, pero cada país le dice distinto. Es el mismo juego, con las mismas reglas:</p>
+    <ul class="names-list">
+      <li><strong>Argentina y Uruguay:</strong> tutti frutti</li>
+      <li><strong>Perú, Colombia, Venezuela y España:</strong> <a href="/stop-online">Stop</a></li>
+      <li><strong>México:</strong> <a href="/basta-online">Basta</a></li>
+      <li><strong>Chile:</strong> Bachillerato</li>
+      <li><strong>Brasil:</strong> <a href="/pt/">Stop o Adedonha</a></li>
+    </ul>
+    <p>Además del paquete Clásico, al crear una sala puedes cargar categorías de <a href="/jugar?pack=argento">Argentina</a>, <a href="/jugar?pack=peru">Perú</a> o <a href="/jugar?pack=mexico">México</a>.</p>
   </section>
 
 </main>

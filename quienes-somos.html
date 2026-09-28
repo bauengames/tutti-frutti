@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Quiénes somos | tutti.frutti</title>
-<meta name="description" content="Conocé a quienes hacen tutti.frutti, el juego de tutti frutti online gratis con salas privadas, rival al azar y un juez con inteligencia artificial." />
+<meta name="description" content="Conoce a quienes hacen tutti.frutti, el juego de tutti frutti online gratis con salas privadas, rival al azar y un juez con inteligencia artificial." />
 <meta name="robots" content="noindex, follow" />
 <meta name="theme-color" content="#14101F" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
@@ -18,7 +18,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="tutti.frutti" />
 <meta property="og:title" content="Quiénes somos" />
-<meta property="og:description" content="Conocé a quienes hacen tutti.frutti, el juego de tutti frutti online gratis con salas privadas, rival al azar y un juez con inteligencia artificial." />
+<meta property="og:description" content="Conoce a quienes hacen tutti.frutti, el juego de tutti frutti online gratis con salas privadas, rival al azar y un juez con inteligencia artificial." />
 <meta property="og:url" content="https://tuttipuntofrutti.com/quienes-somos" />
 <meta property="og:locale" content="es_AR" />
 <meta property="og:locale:alternate" content="en_US" />
@@ -30,7 +30,7 @@
 <meta property="og:image:alt" content="tutti.frutti: tutti frutti online con amigos" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Quiénes somos" />
-<meta name="twitter:description" content="Conocé a quienes hacen tutti.frutti, el juego de tutti frutti online gratis con salas privadas, rival al azar y un juez con inteligencia artificial." />
+<meta name="twitter:description" content="Conoce a quienes hacen tutti.frutti, el juego de tutti frutti online gratis con salas privadas, rival al azar y un juez con inteligencia artificial." />
 <meta name="twitter:image" content="https://tuttipuntofrutti.com/og/og-es.png" />
 <meta name="twitter:image:alt" content="tutti.frutti: tutti frutti online con amigos" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -57,6 +57,7 @@
 </script>
 <script src="/site-i18n.js" defer></script>
 <script src="/site-theme.js" defer></script>
+<script src="/site-menu.js" defer></script>
 <script src="/fruits.js" defer></script>
 <meta name="google-adsense-account" content="ca-pub-9897296561814312" />
 <script src="/analytics.js" defer></script>
@@ -93,6 +94,9 @@
 
 <header class="site-header">
   <div class="wrap">
+    <button type="button" class="menu-btn" onclick="openSideMenu()" aria-label="Abrir menú" aria-controls="sideMenu">
+    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>
+  </button>
     <a class="brand" href="/">
       <svg class="simbolo" viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg>
       tutti<span class="punto"><svg viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti
@@ -119,6 +123,30 @@
     </div>
   </div>
 </header>
+
+<div class="side-menu-overlay" id="sideMenuOverlay" onclick="closeSideMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="side-menu-top">
+    <span class="side-menu-brand">tutti.frutti</span>
+    <button type="button" class="side-menu-close" onclick="closeSideMenu()" aria-label="Cerrar menú">&times;</button>
+  </div>
+  <a class="side-menu-play" href="/jugar">Jugar ahora</a>
+  <nav>
+    <a href="/">Inicio</a>
+    <a href="/reglas">Reglas del juego</a>
+    <a href="/privacidad">Privacidad</a>
+    <a href="/terminos">Términos de uso</a>
+    <a href="/contacto">Contacto</a>
+    <p class="side-menu-subtitle">Más sobre tutti frutti</p>
+    <a href="/desafio-del-dia">Desafío del día</a>
+    <a href="/categorias-tutti-frutti">Categorías para tutti frutti</a>
+    <a href="/tutti-frutti-para-imprimir">Planillas para imprimir</a>
+    <a href="/tutti-frutti-por-videollamada">Jugar por videollamada</a>
+    <a href="/tutti-frutti-en-el-aula">Tutti frutti en el aula</a>
+    <a href="/stop-online">Stop online</a>
+    <a href="/basta-online">Basta online</a>
+  </nav>
+</div>
 
 <main>
   <div class="wrap">
@@ -149,12 +177,12 @@
 
     <section>
       <h2>Contacto</h2>
-      <p>Si encontraste un error, tenés una idea para una categoría o querés proponer algo, escribinos desde la página de <a href="/contacto">contacto</a>. Leemos todos los mensajes.</p>
-      <p>Si es tu primera partida, podés empezar por las <a href="/reglas">reglas del tutti frutti</a> o por las <a href="/categorias-tutti-frutti">ideas de categorías</a>.</p>
+      <p>Si encontraste un error, tienes una idea para una categoría o quieres proponer algo, escríbenos desde la página de <a href="/contacto">contacto</a>. Leemos todos los mensajes.</p>
+      <p>Si es tu primera partida, puedes empezar por las <a href="/reglas">reglas del tutti frutti</a> o por las <a href="/categorias-tutti-frutti">ideas de categorías</a>.</p>
     </section>
 
     <div class="cta-box">
-      <p>¿Querés conocer el juego? Armá una sala y probalo con tus amigos.</p>
+      <p>¿Quieres conocer el juego? Arma una sala y pruébalo con tus amigos.</p>
       <a class="btn-play btn-lg" href="/jugar">Jugar ahora</a>
     </div>
   </div>

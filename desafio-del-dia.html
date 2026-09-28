@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Desafío del día: tutti frutti diario | tutti.frutti</title>
-<meta name="description" content="Todos los días, la misma letra y las mismas categorías para todos: 60 segundos y un solo intento. Jugá el desafío del día y compará tu puntaje." />
+<meta name="description" content="Todos los días, la misma letra y las mismas categorías para todos: 60 segundos y un solo intento. Juega el desafío del día y compará tu puntaje." />
 <meta name="theme-color" content="#14101F" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
 <link rel="canonical" href="https://tuttipuntofrutti.com/desafio-del-dia" />
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="tutti.frutti" />
 <meta property="og:title" content="Desafío del día de tutti frutti" />
-<meta property="og:description" content="Todos los días, la misma letra y las mismas categorías para todos: 60 segundos y un solo intento. Jugá el desafío del día y compará tu puntaje." />
+<meta property="og:description" content="Todos los días, la misma letra y las mismas categorías para todos: 60 segundos y un solo intento. Juega el desafío del día y compará tu puntaje." />
 <meta property="og:url" content="https://tuttipuntofrutti.com/desafio-del-dia" />
 <meta property="og:locale" content="es_AR" />
 <meta property="og:locale:alternate" content="en_US" />
@@ -29,7 +29,7 @@
 <meta property="og:image:alt" content="tutti.frutti: tutti frutti online con amigos" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Desafío del día de tutti frutti" />
-<meta name="twitter:description" content="Todos los días, la misma letra y las mismas categorías para todos: 60 segundos y un solo intento. Jugá el desafío del día y compará tu puntaje." />
+<meta name="twitter:description" content="Todos los días, la misma letra y las mismas categorías para todos: 60 segundos y un solo intento. Juega el desafío del día y compará tu puntaje." />
 <meta name="twitter:image" content="https://tuttipuntofrutti.com/og/og-es.png" />
 <meta name="twitter:image:alt" content="tutti.frutti: tutti frutti online con amigos" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -56,6 +56,7 @@
 </script>
 <script src="/site-i18n.js" defer></script>
 <script src="/site-theme.js" defer></script>
+<script src="/site-menu.js" defer></script>
 <script src="/fruits.js" defer></script>
 <meta name="google-adsense-account" content="ca-pub-9897296561814312" />
 <script src="/analytics.js" defer></script>
@@ -92,6 +93,9 @@
 
 <header class="site-header">
   <div class="wrap">
+    <button type="button" class="menu-btn" onclick="openSideMenu()" aria-label="Abrir menú" aria-controls="sideMenu">
+    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>
+  </button>
     <a class="brand" href="/">
       <svg class="simbolo" viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg>
       tutti<span class="punto"><svg viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti
@@ -119,6 +123,30 @@
   </div>
 </header>
 
+<div class="side-menu-overlay" id="sideMenuOverlay" onclick="closeSideMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="side-menu-top">
+    <span class="side-menu-brand">tutti.frutti</span>
+    <button type="button" class="side-menu-close" onclick="closeSideMenu()" aria-label="Cerrar menú">&times;</button>
+  </div>
+  <a class="side-menu-play" href="/jugar">Jugar ahora</a>
+  <nav>
+    <a href="/">Inicio</a>
+    <a href="/reglas">Reglas del juego</a>
+    <a href="/privacidad">Privacidad</a>
+    <a href="/terminos">Términos de uso</a>
+    <a href="/contacto">Contacto</a>
+    <p class="side-menu-subtitle">Más sobre tutti frutti</p>
+    <a href="/desafio-del-dia" aria-current="page">Desafío del día</a>
+    <a href="/categorias-tutti-frutti">Categorías para tutti frutti</a>
+    <a href="/tutti-frutti-para-imprimir">Planillas para imprimir</a>
+    <a href="/tutti-frutti-por-videollamada">Jugar por videollamada</a>
+    <a href="/tutti-frutti-en-el-aula">Tutti frutti en el aula</a>
+    <a href="/stop-online">Stop online</a>
+    <a href="/basta-online">Basta online</a>
+  </nav>
+</div>
+
 <main>
   <div class="wrap">
     <p class="breadcrumb"><a href="/">Inicio</a> › Desafío del día</p>
@@ -134,17 +162,17 @@
       <h2>Cómo funciona</h2>
       <ul>
         <li><strong>La misma letra para todos.</strong> La letra y las categorías del día salen de la fecha, así que cualquier persona que juegue ese día recibe exactamente el mismo desafío.</li>
-        <li><strong>Seis categorías y 60 segundos.</strong> Tenés un minuto para completar las seis con palabras que empiecen con la letra del día.</li>
-        <li><strong>Una categoría vale doble.</strong> Cada día, una de las seis está marcada como categoría doble: si la completás bien, suma el doble.</li>
+        <li><strong>Seis categorías y 60 segundos.</strong> Tienes un minuto para completar las seis con palabras que empiecen con la letra del día.</li>
+        <li><strong>Una categoría vale doble.</strong> Cada día, una de las seis está marcada como categoría doble: si la completas bien, suma el doble.</li>
         <li><strong>Un solo intento.</strong> El desafío queda registrado apenas arranca, así que recargar la página no sirve para volver a jugarlo.</li>
-        <li><strong>Un juez con IA revisa tus respuestas.</strong> Como jugás sin rivales en la misma sala, el juez con inteligencia artificial decide si cada palabra es válida para la letra y la categoría.</li>
+        <li><strong>Un juez con IA revisa tus respuestas.</strong> Como juegas sin rivales en la misma sala, el juez con inteligencia artificial decide si cada palabra es válida para la letra y la categoría.</li>
       </ul>
     </section>
 
     <section>
       <h2>Cómo se calcula el puntaje</h2>
-      <p>Cada respuesta válida suma 10 puntos, y la de la categoría doble suma 20. Si tenés al menos una respuesta válida, además te llevás un punto extra por cada segundo que te sobró cuando tocaste ¡Basta!. Por eso conviene terminar rápido, pero sin arriesgar palabras dudosas: una respuesta inválida no suma nada.</p>
-      <p>Al terminar ves en qué categorías acertaste y el ranking del día, con el puntaje de todas las personas que ya jugaron. También podés compartir tu resultado con una grilla de colores que muestra tus aciertos sin revelar las palabras.</p>
+      <p>Cada respuesta válida suma 10 puntos, y la de la categoría doble suma 20. Si tienes al menos una respuesta válida, además te llevas un punto extra por cada segundo que te sobró cuando tocaste ¡Basta!. Por eso conviene terminar rápido, pero sin arriesgar palabras dudosas: una respuesta inválida no suma nada.</p>
+      <p>Al terminar ves en qué categorías acertaste y el ranking del día, con el puntaje de todas las personas que ya jugaron. También puedes compartir tu resultado con una grilla de colores que muestra tus aciertos sin revelar las palabras.</p>
     </section>
 
     <section>
@@ -155,12 +183,12 @@
     <section>
       <h2>Tips para hacer más puntos</h2>
       <ul>
-        <li>Mirá primero cuál es la categoría doble y completala antes que las demás.</li>
+        <li>Mira primero cuál es la categoría doble y complétala antes que las demás.</li>
         <li>No pierdas tiempo buscando la palabra perfecta: en el desafío no importa si otra persona escribió lo mismo, solo que sea válida.</li>
-        <li>Si una categoría no te sale, dejala y seguí. Los segundos que te sobran también son puntos.</li>
-        <li>Si la letra es difícil, pensá en palabras de dos términos (como "estrella de mar" o "pastel de papa"), que muchas veces destraban la categoría.</li>
+        <li>Si una categoría no te sale, déjala y sigue. Los segundos que te sobran también son puntos.</li>
+        <li>Si la letra es difícil, piensa en palabras de dos términos (como "estrella de mar" o "pastel de papa"), que muchas veces destraban la categoría.</li>
       </ul>
-      <p>Para ideas de qué categorías te pueden tocar, mirá las <a href="/categorias-tutti-frutti">categorías para tutti frutti</a>. Y si preferís jugar con amigos, en las <a href="/reglas">reglas del tutti frutti</a> está cómo funcionan las salas.</p>
+      <p>Para ideas de qué categorías te pueden tocar, mira las <a href="/categorias-tutti-frutti">categorías para tutti frutti</a>. Y si prefieres jugar con amigos, en las <a href="/reglas">reglas del tutti frutti</a> está cómo funcionan las salas.</p>
     </section>
   </div>
 </main>

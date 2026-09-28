@@ -56,6 +56,7 @@
 </script>
 <script src="/site-i18n.js" defer></script>
 <script src="/site-theme.js" defer></script>
+<script src="/site-menu.js" defer></script>
 <script src="/fruits.js" defer></script>
 <meta name="google-adsense-account" content="ca-pub-9897296561814312" />
 <script src="/analytics.js" defer></script>
@@ -92,6 +93,9 @@
 
 <header class="site-header">
   <div class="wrap">
+    <button type="button" class="menu-btn" onclick="openSideMenu()" aria-label="Abrir menu" aria-controls="sideMenu">
+    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>
+  </button>
     <a class="brand" href="/pt/">
       <svg class="simbolo" viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg>
       tutti<span class="punto"><svg viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti
@@ -118,6 +122,28 @@
     </div>
   </div>
 </header>
+
+<div class="side-menu-overlay" id="sideMenuOverlay" onclick="closeSideMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="side-menu-top">
+    <span class="side-menu-brand">tutti.frutti</span>
+    <button type="button" class="side-menu-close" onclick="closeSideMenu()" aria-label="Fechar menu">&times;</button>
+  </div>
+  <a class="side-menu-play" href="/jugar">Jogar agora</a>
+  <nav>
+    <a href="/pt/">Início</a>
+    <a href="/pt/regras">Regras do jogo</a>
+    <a href="/pt/privacidade">Privacidade</a>
+    <a href="/pt/termos">Termos de uso</a>
+    <a href="/pt/contato">Contato</a>
+    <p class="side-menu-subtitle">Mais sobre o jogo</p>
+    <a href="/pt/desafio-do-dia">Desafio do dia</a>
+    <a href="/pt/categorias-de-stop">Categorias de Stop</a>
+    <a href="/pt/stop-para-imprimir">Folhas para imprimir</a>
+    <a href="/pt/stop-por-videochamada" aria-current="page">Jogar por videochamada</a>
+    <a href="/pt/stop-na-sala-de-aula">Stop na sala de aula</a>
+  </nav>
+</div>
 
 <main>
   <div class="wrap">

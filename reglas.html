@@ -56,6 +56,7 @@
 </script>
 <script src="/site-i18n.js" defer></script>
 <script src="/site-theme.js" defer></script>
+<script src="/site-menu.js" defer></script>
 <script src="/fruits.js" defer></script>
 <meta name="google-adsense-account" content="ca-pub-9897296561814312" />
 <script src="/analytics.js" defer></script>
@@ -72,7 +73,7 @@
       "name": "¿Necesito crear una cuenta?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. Solo elegís un nombre para esa partida; no hace falta registro ni contraseña."
+        "text": "No. Solo eliges un nombre para esa partida; no hace falta registro ni contraseña."
       }
     },
     {
@@ -88,7 +89,7 @@
       "name": "¿Qué pasa si me quedo sin internet a mitad de partida?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "La sala sigue activa para el resto de los jugadores; podés volver a entrar con el mismo código mientras la partida siga en curso."
+        "text": "La sala sigue activa para el resto de los jugadores; puedes volver a entrar con el mismo código mientras la partida siga en curso."
       }
     },
     {
@@ -96,7 +97,7 @@
       "name": "¿Se puede jugar de a dos?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Sí. Una sala privada funciona desde dos hasta seis jugadores: creás la sala, le pasás el código o el link a la otra persona y empiezan. Si no tenés con quién jugar, la sala al azar te empareja con alguien que esté buscando partida."
+        "text": "Sí. Una sala privada funciona desde dos hasta seis jugadores: creas la sala, le pasas el código o el link a la otra persona y empiezan. Si no tienes con quién jugar, la sala al azar te empareja con alguien que esté buscando partida."
       }
     },
     {
@@ -121,6 +122,9 @@
 
 <header class="site-header">
   <div class="wrap">
+    <button type="button" class="menu-btn" onclick="openSideMenu()" aria-label="Abrir menú" aria-controls="sideMenu">
+    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>
+  </button>
     <a class="brand" href="/">
       <svg class="simbolo" viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg>
       tutti<span class="punto"><svg viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti
@@ -148,17 +152,41 @@
   </div>
 </header>
 
+<div class="side-menu-overlay" id="sideMenuOverlay" onclick="closeSideMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="side-menu-top">
+    <span class="side-menu-brand">tutti.frutti</span>
+    <button type="button" class="side-menu-close" onclick="closeSideMenu()" aria-label="Cerrar menú">&times;</button>
+  </div>
+  <a class="side-menu-play" href="/jugar">Jugar ahora</a>
+  <nav>
+    <a href="/">Inicio</a>
+    <a href="/reglas" aria-current="page">Reglas del juego</a>
+    <a href="/privacidad">Privacidad</a>
+    <a href="/terminos">Términos de uso</a>
+    <a href="/contacto">Contacto</a>
+    <p class="side-menu-subtitle">Más sobre tutti frutti</p>
+    <a href="/desafio-del-dia">Desafío del día</a>
+    <a href="/categorias-tutti-frutti">Categorías para tutti frutti</a>
+    <a href="/tutti-frutti-para-imprimir">Planillas para imprimir</a>
+    <a href="/tutti-frutti-por-videollamada">Jugar por videollamada</a>
+    <a href="/tutti-frutti-en-el-aula">Tutti frutti en el aula</a>
+    <a href="/stop-online">Stop online</a>
+    <a href="/basta-online">Basta online</a>
+  </nav>
+</div>
+
 <main>
   <div class="wrap">
     <h1>Reglas del tutti frutti</h1>
-    <p class="lead">Todo lo que necesitás saber para jugar una partida, desde armar la sala hasta entender cómo se resuelven las disputas.</p>
+    <p class="lead">Todo lo que necesitas saber para jugar una partida, desde armar la sala hasta entender cómo se resuelven las disputas.</p>
 
     <section>
       <h2>Armar una partida</h2>
       <ul>
-        <li><strong>Crear sala:</strong> elegís categorías, tiempo por ronda, cantidad de rondas y qué letras entran en juego. Se genera un código de 5 caracteres que podés compartir por código o por link — quien abra el link entra directo a la sala.</li>
-        <li><strong>Unirme a sala:</strong> pedís el código a quien creó la sala y jugás con la configuración que eligió esa persona.</li>
-        <li><strong>Sala al azar:</strong> te empareja con quien esté buscando partida en ese momento, con categorías y reglas fijas. Si nadie aparece en unos segundos, podés seguir esperando o cancelar la búsqueda.</li>
+        <li><strong>Crear sala:</strong> eliges categorías, tiempo por ronda, cantidad de rondas y qué letras entran en juego. Se genera un código de 5 caracteres que puedes compartir por código o por link — quien abra el link entra directo a la sala.</li>
+        <li><strong>Unirme a sala:</strong> pides el código a quien creó la sala y juegas con la configuración que eligió esa persona.</li>
+        <li><strong>Sala al azar:</strong> te empareja con quien esté buscando partida en ese momento, con categorías y reglas fijas. Si nadie aparece en unos segundos, puedes seguir esperando o cancelar la búsqueda.</li>
       </ul>
     </section>
 
@@ -197,13 +225,13 @@
     <section>
       <h2>Preguntas frecuentes</h2>
       <h3>¿Necesito crear una cuenta?</h3>
-      <p>No. Solo elegís un nombre para esa partida; no hace falta registro ni contraseña.</p>
+      <p>No. Solo eliges un nombre para esa partida; no hace falta registro ni contraseña.</p>
       <h3>¿Puedo jugar solo desde el celular?</h3>
       <p>Sí, el juego funciona igual en celular y en computadora, adaptándose a la pantalla.</p>
       <h3>¿Qué pasa si me quedo sin internet a mitad de partida?</h3>
-      <p>La sala sigue activa para el resto de los jugadores; podés volver a entrar con el mismo código mientras la partida siga en curso.</p>
+      <p>La sala sigue activa para el resto de los jugadores; puedes volver a entrar con el mismo código mientras la partida siga en curso.</p>
       <h3>¿Se puede jugar de a dos?</h3>
-      <p>Sí. Una sala privada funciona desde dos hasta seis jugadores: creás la sala, le pasás el código o el link a la otra persona y empiezan. Si no tenés con quién jugar, la sala al azar te empareja con alguien que esté buscando partida.</p>
+      <p>Sí. Una sala privada funciona desde dos hasta seis jugadores: creas la sala, le pasas el código o el link a la otra persona y empiezan. Si no tienes con quién jugar, la sala al azar te empareja con alguien que esté buscando partida.</p>
       <h3>¿Se escribe tutti frutti o tutifruti?</h3>
       <p>Las dos formas se usan. Tutti frutti viene del italiano y significa &quot;todas las frutas&quot;; tutifruti o tuti fruti son las formas adaptadas al español. En otros países el mismo juego se llama Stop, Basta o Bachillerato.</p>
     </section>

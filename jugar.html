@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>tutti.frutti · Tutti frutti online con amigos</title>
-<meta name="description" content="Tutti frutti online gratis para jugar con amigos (conocido también como Stop o Basta en otros países). Armá la sala, se sortea la letra y gana el más rápido." />
+<meta name="description" content="Tutti frutti online gratis para jugar con amigos (conocido también como Stop o Basta en otros países). Arma la sala, se sortea la letra y gana el más rápido." />
 <meta name="theme-color" content="#14101F" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
 <link rel="canonical" href="https://tuttipuntofrutti.com/jugar" />
@@ -16,7 +16,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="tutti.frutti" />
 <meta property="og:title" content="Te invitaron a una partida de tutti frutti" />
-<meta property="og:description" content="Entrá a la sala, elegí tu nombre y jugá al tutti frutti online con tus amigos. Gratis y sin registrarte." />
+<meta property="og:description" content="Entra a la sala, elige tu nombre y juega al tutti frutti online con tus amigos. Gratis y sin registrarte." />
 <meta property="og:url" content="https://tuttipuntofrutti.com/jugar" />
 <meta property="og:locale" content="es_AR" />
 <meta property="og:image" content="https://tuttipuntofrutti.com/og/og-sala.png" />
@@ -26,7 +26,7 @@
 <meta property="og:image:alt" content="tutti.frutti: te invitaron a una partida de tutti frutti" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Te invitaron a una partida de tutti frutti" />
-<meta name="twitter:description" content="Entrá a la sala, elegí tu nombre y jugá al tutti frutti online con tus amigos. Gratis y sin registrarte." />
+<meta name="twitter:description" content="Entra a la sala, elige tu nombre y juega al tutti frutti online con tus amigos. Gratis y sin registrarte." />
 <meta name="twitter:image" content="https://tuttipuntofrutti.com/og/og-sala.png" />
 <link rel="manifest" href="/manifest.webmanifest" />
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=2" />
@@ -942,6 +942,8 @@ html[data-light] .twist-note { color: var(--tinta); }
         <div class="pack-row">
           <button type="button" class="pack-btn" onclick="loadPack('clasico')" data-i18n="pack_clasico">Clásico</button>
           <button type="button" class="pack-btn" onclick="loadPack('argento')" data-i18n="pack_argento">Cultura argentina</button>
+          <button type="button" class="pack-btn" onclick="loadPack('peru')" data-i18n="pack_peru">Cultura peruana</button>
+          <button type="button" class="pack-btn" onclick="loadPack('mexico')" data-i18n="pack_mexico">Cultura mexicana</button>
           <button type="button" class="pack-btn" onclick="loadPack('random')" data-i18n="pack_random">Random</button>
         </div>
         <p class="online-note" id="randomCategoriesNote" style="display:none;" data-i18n="random_categories_note">Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!</p>
@@ -1255,7 +1257,11 @@ html[data-light] .twist-note { color: var(--tinta); }
   }
   const uid = await signIn();
 
-  window.FB = { db, uid, ref, set, get, update, onValue, off, runTransaction, serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst, limitToLast };
+  window.FB = { db, uid, ref, set, get, update, onValue, off, runTransaction, serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst, limitToLast, serverOffset: 0 };
+  // Diferencia entre el reloj de este dispositivo y el del servidor: así los
+  // relojes de las rondas se cuentan igual para todos, aunque algún celular
+  // tenga la hora adelantada o atrasada.
+  onValue(ref(db, ".info/serverTimeOffset"), snap => { window.FB.serverOffset = snap.val() || 0; });
   // Si el inicio de sesión falló al cargar (conexión que se cortó, por
   // ejemplo), se vuelve a intentar antes de entrar a una sala.
   window.FB.retrySignIn = async () => {
@@ -1300,6 +1306,10 @@ const CATEGORY_POOL = [
 const CATEGORY_PACKS = {
   clasico: ["Nombre", "Apellido", "País", "Ciudad", "Animal", "Comida", "Color", "Objeto"],
   argento: ["Equipo de fútbol", "Comida argentina", "Palabra en lunfardo", "Geografía local", "Personaje histórico", "Cantante o banda"],
+  // Los paquetes de otros países no entran en CATEGORY_POOL: así no aparecen en
+  // el pack Random, el contrarreloj ni el desafío del día.
+  peru: ["Comida peruana", "Departamento del Perú", "Postre peruano", "Palabra de la jerga peruana", "Club de fútbol peruano", "Personaje histórico peruano"],
+  mexico: ["Comida mexicana", "Estado de la República Mexicana", "Mexicanismo", "Equipo de fútbol mexicano", "Cantante mexicano", "Personaje histórico mexicano"],
 };
 const RANDOM_PACK_CATEGORY_COUNT = 8;
 
@@ -1341,6 +1351,18 @@ const CATEGORY_LABELS = {
   "Palabra en lunfardo": { es: "Palabra en lunfardo", en: "Lunfardo (Argentine slang) word", pt: "Palavra em lunfardo (gíria argentina)" },
   "Geografía local": { es: "Geografía local", en: "Local geography", pt: "Geografia local" },
   "Personaje histórico": { es: "Personaje histórico", en: "Historical figure", pt: "Personagem histórico" },
+  "Comida peruana": { es: "Comida peruana", en: "Peruvian food", pt: "Comida peruana" },
+  "Departamento del Perú": { es: "Departamento del Perú", en: "Region of Peru", pt: "Departamento do Peru" },
+  "Postre peruano": { es: "Postre peruano", en: "Peruvian dessert", pt: "Sobremesa peruana" },
+  "Palabra de la jerga peruana": { es: "Palabra de la jerga peruana", en: "Peruvian slang word", pt: "Gíria peruana" },
+  "Club de fútbol peruano": { es: "Club de fútbol peruano", en: "Peruvian soccer club", pt: "Time de futebol peruano" },
+  "Personaje histórico peruano": { es: "Personaje histórico peruano", en: "Peruvian historical figure", pt: "Personagem histórico peruano" },
+  "Comida mexicana": { es: "Comida mexicana", en: "Mexican food", pt: "Comida mexicana" },
+  "Estado de la República Mexicana": { es: "Estado de la República Mexicana", en: "Mexican state", pt: "Estado do México" },
+  "Mexicanismo": { es: "Mexicanismo", en: "Mexican slang word", pt: "Gíria mexicana" },
+  "Equipo de fútbol mexicano": { es: "Equipo de fútbol mexicano", en: "Mexican soccer team", pt: "Time de futebol mexicano" },
+  "Cantante mexicano": { es: "Cantante mexicano", en: "Mexican singer", pt: "Cantor mexicano" },
+  "Personaje histórico mexicano": { es: "Personaje histórico mexicano", en: "Mexican historical figure", pt: "Personagem histórico mexicano" },
 };
 
 // Nombres de jugador, categorías propias y respuestas escritas por cualquier
@@ -1410,6 +1432,8 @@ const I18N = {
     categories_label: "Categorías (tocá las que quieras agregar)",
     pack_clasico: "Clásico",
     pack_argento: "Cultura argentina",
+    pack_peru: "Cultura peruana",
+    pack_mexico: "Cultura mexicana",
     pack_random: "Random",
     random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
     random_category_chip: "Random",
@@ -1646,6 +1670,8 @@ const I18N = {
     categories_label: "Categories (tap the ones you want to add)",
     pack_clasico: "Classic",
     pack_argento: "Argentine culture",
+    pack_peru: "Peruvian culture",
+    pack_mexico: "Mexican culture",
     pack_random: "Random",
     random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
     random_category_chip: "Random",
@@ -1882,6 +1908,8 @@ const I18N = {
     categories_label: "Categorias (toque nas que quiser adicionar)",
     pack_clasico: "Clássico",
     pack_argento: "Cultura argentina",
+    pack_peru: "Cultura peruana",
+    pack_mexico: "Cultura mexicana",
     pack_random: "Random",
     random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
     random_category_chip: "Random",
@@ -2659,6 +2687,16 @@ function applyRoomLinkFromUrl() {
   history.replaceState(null, "", location.pathname);
 }
 
+// /jugar?pack=peru (desde las páginas de categorías): abre Crear sala con ese paquete cargado.
+function applyPackLinkFromUrl() {
+  const params = new URLSearchParams(location.search);
+  const pack = params.get("pack");
+  if (!pack || !Object.prototype.hasOwnProperty.call(CATEGORY_PACKS, pack) || params.has("room")) return;
+  history.replaceState(null, "", location.pathname);
+  state.mode = "create";
+  loadPack(pack);
+}
+
 // /jugar?desafio (desde la página /desafio-del-dia): abre el desafío del día.
 // Si todavía no hay nombre, lleva el foco al campo de nombre en vez de mostrar un alerta.
 function applyDailyLinkFromUrl() {
@@ -3341,8 +3379,8 @@ function showVoting(data) {
   renderVoting(data);
   clearInterval(state.voteCountdownId);
   state.voteCountdownId = setInterval(() => {
-    const start = state.room && typeof state.room.voteStartAt === "number" ? state.room.voteStartAt : Date.now();
-    const left = Math.max(0, VOTE_SECONDS * 1000 - (Date.now() - start));
+    const start = state.room && typeof state.room.voteStartAt === "number" ? state.room.voteStartAt : serverNow();
+    const left = Math.max(0, VOTE_SECONDS * 1000 - (serverNow() - start));
     const fill = document.getElementById("voteProgressFill");
     fill.style.width = (left / (VOTE_SECONDS * 10)) + "%";
     fill.classList.toggle("urgent", left < 3000);
@@ -3410,12 +3448,12 @@ function beginPlayingOnline(roundStartAt) {
   document.getElementById("catGrid").style.display = "grid";
   document.getElementById("bastaWrap").style.display = "flex";
   focusFirstAnswer();
-  const startMs = typeof roundStartAt === "number" ? roundStartAt : Date.now();
-  updateTimerDisplay();
+  // El reloj arranca después de la ruleta de la letra, así esa animación no
+  // le come segundos a la ronda.
+  const startMs = (typeof roundStartAt === "number" ? roundStartAt : serverNow()) + ROUND_INTRO_MS;
   let lastTicSecond = null;
-  clearInterval(state.timerId);
-  state.timerId = setInterval(() => {
-    const elapsed = (Date.now() - startMs) / 1000;
+  const tickOnline = () => {
+    const elapsed = Math.max(0, (serverNow() - startMs) / 1000);
     state.secondsLeft = Math.max(0, Math.ceil(state.duration - elapsed));
     updateTimerDisplay();
     if (state.secondsLeft > 0 && state.secondsLeft <= 5 && state.secondsLeft !== lastTicSecond) {
@@ -3426,7 +3464,17 @@ function beginPlayingOnline(roundStartAt) {
     if (state.secondsLeft <= 0) {
       triggerBasta();
     }
-  }, 250);
+  };
+  clearInterval(state.timerId);
+  tickOnline();
+  state.timerId = setInterval(tickOnline, 250);
+}
+
+// Duración aproximada de la ruleta de la letra (ver spinLetterReveal).
+const ROUND_INTRO_MS = 2000;
+
+function serverNow() {
+  return Date.now() + ((window.FB && window.FB.serverOffset) || 0);
 }
 
 function onBastaTap() {
@@ -3543,7 +3591,7 @@ function startReviewPhase(data) {
   readyBtn.textContent = t("review_ready_btn");
   renderReviewAnswers(data);
 
-  const startMs = typeof data.reviewStartAt === "number" ? data.reviewStartAt : Date.now();
+  const startMs = typeof data.reviewStartAt === "number" ? data.reviewStartAt : serverNow();
   clearInterval(state.reviewCountdownId);
   lastReviewTickSecond = null;
   updateReviewCountdown(startMs);
@@ -3599,7 +3647,7 @@ function checkAllReviewReady(data) {
 
 let lastReviewTickSecond = null;
 function updateReviewCountdown(startMs) {
-  const elapsed = (Date.now() - startMs) / 1000;
+  const elapsed = (serverNow() - startMs) / 1000;
   const left = Math.max(0, Math.ceil(REVIEW_SECONDS - elapsed));
   const el = document.getElementById("reviewCountdown");
   if (el) el.textContent = left > 0 ? t("calculating_score_in", { left }) : t("calculating_score");
@@ -5341,6 +5389,7 @@ try {
   setPreset("pomelo__crema");
 }
 applyRoomLinkFromUrl();
+applyPackLinkFromUrl();
 setMode(state.mode);
 checkCanPlay();
 document.getElementById("dailyBannerIcon").innerHTML = iconSvg("sun");

@@ -45,18 +45,3 @@ function goPlay(event) {
   location.href = "/jugar";
   return false;
 }
-
-/* ---------- Menú lateral (mobile) ---------- */
-function openSideMenu() {
-  document.getElementById("sideMenu").classList.add("open");
-  document.getElementById("sideMenuOverlay").classList.add("open");
-  document.body.style.overflow = "hidden";
-}
-function closeSideMenu() {
-  document.getElementById("sideMenu").classList.remove("open");
-  document.getElementById("sideMenuOverlay").classList.remove("open");
-  document.body.style.overflow = "";
-}
-document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape") closeSideMenu();
-});

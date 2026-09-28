@@ -175,6 +175,14 @@ a { color: var(--primary); }
 .side-menu { overflow-y: auto; }
 .side-menu-subtitle { margin: 18px 10px 6px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); }
 
+.side-menu-play {
+  display: block; margin: 0 0 14px; padding: 14px 16px; border-radius: var(--radius);
+  background: var(--primary); color: var(--tinta); font: 700 16px/1.2 var(--font-body);
+  text-align: center; text-decoration: none;
+}
+.side-menu-play:hover { text-decoration: none; filter: brightness(1.06); }
+.side-menu nav a[aria-current="page"] { background: var(--crema-08); color: var(--primary); }
+
 /* ---------- Hero ---------- */
 .hero { text-align: center; padding: 12px 0 40px; }
 .hero .wordmark { font-size: clamp(64px, 17vw, 112px); display: block; margin-bottom: 14px; }
@@ -266,6 +274,9 @@ section.info { margin-bottom: 24px; }
 section.info h2 { font-size: 26px; margin-bottom: 14px; }
 section.info p { color: var(--crema-72); margin: 0 0 12px; }
 section.info a { font-weight: 600; }
+section.info .names-list { list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 8px; }
+section.info .names-list li { color: var(--crema-72); padding: 10px 14px; border-radius: 12px; background: rgba(var(--fg-rgb), .05); }
+section.info .names-list strong { color: var(--text); }
 
 
 /* El body de la home tiene 16px de margen lateral: el footer lo compensa para que la línea vaya de borde a borde. */

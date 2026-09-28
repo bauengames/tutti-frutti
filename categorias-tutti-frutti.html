@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Categorías para tutti frutti: 90 ideas | tutti.frutti</title>
-<meta name="description" content="Más de 90 categorías para tutti frutti: clásicas, fáciles para chicos, difíciles, para adultos y temáticas de cine, música, fútbol, Argentina y Perú." />
+<title>Categorías de Stop y tutti frutti: 100 ideas | tutti.frutti</title>
+<meta name="description" content="Más de 100 categorías para Stop o tutti frutti: clásicas, fáciles para niños, difíciles, para adultos y temáticas de Argentina, Perú y México." />
 <meta name="theme-color" content="#14101F" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
 <link rel="canonical" href="https://tuttipuntofrutti.com/categorias-tutti-frutti" />
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="tutti.frutti" />
 <meta property="og:title" content="Categorías para tutti frutti: ideas fáciles, difíciles y temáticas" />
-<meta property="og:description" content="Más de 90 categorías para tutti frutti: clásicas, fáciles para chicos, difíciles, para adultos y temáticas de cine, música, fútbol, Argentina y Perú." />
+<meta property="og:description" content="Más de 100 categorías para Stop o tutti frutti: clásicas, fáciles para niños, difíciles, para adultos y temáticas de Argentina, Perú y México." />
 <meta property="og:url" content="https://tuttipuntofrutti.com/categorias-tutti-frutti" />
 <meta property="og:locale" content="es_AR" />
 <meta property="og:locale:alternate" content="en_US" />
@@ -29,7 +29,7 @@
 <meta property="og:image:alt" content="tutti.frutti: tutti frutti online con amigos" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Categorías para tutti frutti: ideas fáciles, difíciles y temáticas" />
-<meta name="twitter:description" content="Más de 90 categorías para tutti frutti: clásicas, fáciles para chicos, difíciles, para adultos y temáticas de cine, música, fútbol, Argentina y Perú." />
+<meta name="twitter:description" content="Más de 100 categorías para Stop o tutti frutti: clásicas, fáciles para niños, difíciles, para adultos y temáticas de Argentina, Perú y México." />
 <meta name="twitter:image" content="https://tuttipuntofrutti.com/og/og-es.png" />
 <meta name="twitter:image:alt" content="tutti.frutti: tutti frutti online con amigos" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -56,6 +56,7 @@
 </script>
 <script src="/site-i18n.js" defer></script>
 <script src="/site-theme.js" defer></script>
+<script src="/site-menu.js" defer></script>
 <script src="/fruits.js" defer></script>
 <meta name="google-adsense-account" content="ca-pub-9897296561814312" />
 <script src="/analytics.js" defer></script>
@@ -92,6 +93,9 @@
 
 <header class="site-header">
   <div class="wrap">
+    <button type="button" class="menu-btn" onclick="openSideMenu()" aria-label="Abrir menú" aria-controls="sideMenu">
+    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>
+  </button>
     <a class="brand" href="/">
       <svg class="simbolo" viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg>
       tutti<span class="punto"><svg viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti
@@ -119,16 +123,40 @@
   </div>
 </header>
 
+<div class="side-menu-overlay" id="sideMenuOverlay" onclick="closeSideMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="side-menu-top">
+    <span class="side-menu-brand">tutti.frutti</span>
+    <button type="button" class="side-menu-close" onclick="closeSideMenu()" aria-label="Cerrar menú">&times;</button>
+  </div>
+  <a class="side-menu-play" href="/jugar">Jugar ahora</a>
+  <nav>
+    <a href="/">Inicio</a>
+    <a href="/reglas">Reglas del juego</a>
+    <a href="/privacidad">Privacidad</a>
+    <a href="/terminos">Términos de uso</a>
+    <a href="/contacto">Contacto</a>
+    <p class="side-menu-subtitle">Más sobre tutti frutti</p>
+    <a href="/desafio-del-dia">Desafío del día</a>
+    <a href="/categorias-tutti-frutti" aria-current="page">Categorías para tutti frutti</a>
+    <a href="/tutti-frutti-para-imprimir">Planillas para imprimir</a>
+    <a href="/tutti-frutti-por-videollamada">Jugar por videollamada</a>
+    <a href="/tutti-frutti-en-el-aula">Tutti frutti en el aula</a>
+    <a href="/stop-online">Stop online</a>
+    <a href="/basta-online">Basta online</a>
+  </nav>
+</div>
+
 <main>
   <div class="wrap">
     <p class="breadcrumb"><a href="/">Inicio</a> › Categorías para tutti frutti</p>
     <h1>Categorías para tutti frutti: ideas fáciles, difíciles y temáticas</h1>
-    <p class="lead">Las categorías hacen la partida. Con las mismas de siempre el juego se vuelve previsible; con categorías nuevas, cada ronda es distinta. Acá tenés más de 90 ideas ordenadas por dificultad y por tema, listas para usar en una planilla de papel o en una sala online.</p>
+    <p class="lead">Las categorías hacen la partida. Con las mismas de siempre el juego se vuelve previsible; con categorías nuevas, cada ronda es distinta. Aquí tienes más de 100 ideas ordenadas por dificultad y por tema, listas para usar en una planilla de papel o en una sala online.</p>
 
     <section>
       <h2>Cómo elegir categorías para una partida</h2>
-      <p>Una buena partida de tutti frutti combina categorías que todos pueden completar con otras que obligan a pensar. Una regla que funciona: entre seis y ocho categorías por ronda, de las cuales la mitad sean fáciles y el resto de dificultad media o alta. Si juegan chicos o personas que recién aprenden, conviene que todas sean fáciles; si el grupo ya es experto, sumá dos o tres difíciles para que no gane siempre la misma persona.</p>
-      <p>También ayuda pensar en quiénes juegan. Un grupo de amigos futboleros va a disfrutar la categoría Jugador de fútbol; una familia con abuelos y nietos, mejor algo como Cosa que hay en la cocina. Y si alguien del grupo vive en otro país, evitá las categorías demasiado locales o aceptá respuestas de su región.</p>
+      <p>Una buena partida de tutti frutti combina categorías que todos pueden completar con otras que obligan a pensar. Una regla que funciona: entre seis y ocho categorías por ronda, de las cuales la mitad sean fáciles y el resto de dificultad media o alta. Si juegan niños o personas que recién aprenden, conviene que todas sean fáciles; si el grupo ya es experto, suma dos o tres difíciles para que no gane siempre la misma persona.</p>
+      <p>También ayuda pensar en quiénes juegan. Un grupo de amigos futboleros va a disfrutar la categoría Jugador de fútbol; una familia con abuelos y nietos, mejor algo como Cosa que hay en la cocina. Y si alguien del grupo vive en otro país, evita las categorías demasiado locales o acepta respuestas de su región.</p>
     </section>
 
     <section>
@@ -151,8 +179,8 @@
     </section>
 
     <section>
-      <h2>Categorías fáciles para chicos</h2>
-      <p>Pensadas para chicos de primaria o para quienes recién empiezan a jugar. Son temas que conocen bien y que tienen muchas respuestas posibles.</p>
+      <h2>Categorías fáciles para niños</h2>
+      <p>Pensadas para niños de primaria o para quienes recién empiezan a jugar. Son temas que conocen bien y que tienen muchas respuestas posibles.</p>
       <ul class="cat-list">
         <li>Juguete</li>
         <li>Golosina</li>
@@ -269,6 +297,7 @@
         <li>Animal autóctono</li>
         <li>Músico argentino</li>
       </ul>
+      <p><a href="/jugar?pack=argento">Jugar con el paquete Cultura argentina →</a></p>
 
       <h3>Perú</h3>
       <ul class="cat-list">
@@ -281,22 +310,36 @@
         <li>Club de fútbol peruano</li>
         <li>Personaje histórico peruano</li>
       </ul>
+      <p><a href="/jugar?pack=peru">Jugar con el paquete Cultura peruana →</a></p>
+
+      <h3>México</h3>
+      <ul class="cat-list">
+        <li>Comida mexicana</li>
+        <li>Estado de la República Mexicana</li>
+        <li>Mexicanismo</li>
+        <li>Antojito o garnacha</li>
+        <li>Equipo de fútbol mexicano</li>
+        <li>Cantante mexicano</li>
+        <li>Personaje histórico mexicano</li>
+        <li>Lugar turístico de México</li>
+      </ul>
+      <p><a href="/jugar?pack=mexico">Jugar con el paquete Cultura mexicana →</a></p>
     </section>
 
     <section>
       <h2>Cómo usar estas categorías en tutti.frutti</h2>
-      <p>Cuando creás una sala privada podés elegir las categorías una por una, cargar un paquete rápido (Clásico, Cultura argentina o Random, que sortea categorías nuevas en cada ronda) o escribir categorías propias con el nombre que quieras. Así podés copiar cualquiera de las ideas de esta página y armar una partida temática en pocos segundos.</p>
+      <p>Cuando creas una sala privada puedes elegir las categorías una por una, cargar un paquete rápido (Clásico, Cultura argentina, Cultura peruana, Cultura mexicana o Random, que sortea categorías nuevas en cada ronda) o escribir categorías propias con el nombre que quieras. Así puedes copiar cualquiera de las ideas de esta página y armar una partida temática en pocos segundos.</p>
       <p>La sala al azar, en cambio, usa siempre las ocho categorías clásicas, porque dos personas que no se conocen no tienen cómo ponerse de acuerdo antes de empezar.</p>
-      <p>Si una respuesta genera dudas, el juego tiene un sistema de objeciones y un juez con inteligencia artificial que decide si la palabra pertenece a la categoría. Podés ver el detalle en las <a href="/reglas">reglas del tutti frutti</a>.</p>
+      <p>Si una respuesta genera dudas, el juego tiene un sistema de objeciones y un juez con inteligencia artificial que decide si la palabra pertenece a la categoría. Puedes ver el detalle en las <a href="/reglas">reglas del tutti frutti</a>.</p>
     </section>
 
     <div class="cta-box">
-      <p>Elegí tus categorías favoritas, creá una sala y compartí el link con tu grupo.</p>
+      <p>Elige tus categorías favoritas, crea una sala y comparte el link con tu grupo.</p>
       <a class="btn-play btn-lg" href="/jugar">Jugar ahora</a>
     </div>
 
     <section>
-      <h2>Seguí leyendo</h2>
+      <h2>Sigue leyendo</h2>
       <ul>
         <li><a href="/tutti-frutti-para-imprimir">Planillas de tutti frutti para imprimir</a>, con una versión en blanco para escribir tus propias categorías.</li>
         <li><a href="/tutti-frutti-en-el-aula">Tutti frutti en el aula</a>: categorías por materia para usar con alumnos.</li>

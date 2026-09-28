@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Planilla de tutti frutti para imprimir (PDF) | tutti.frutti</title>
-<meta name="description" content="Descargá gratis tres planillas de tutti frutti en PDF tamaño A4: la clásica, una para chicos y una en blanco para armar tus propias categorías." />
+<meta name="description" content="Descarga gratis tres planillas de tutti frutti en PDF tamaño A4: la clásica, una para niños y una en blanco para armar tus propias categorías." />
 <meta name="theme-color" content="#14101F" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
 <link rel="canonical" href="https://tuttipuntofrutti.com/tutti-frutti-para-imprimir" />
@@ -17,7 +17,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="tutti.frutti" />
 <meta property="og:title" content="Planilla de tutti frutti para imprimir" />
-<meta property="og:description" content="Descargá gratis tres planillas de tutti frutti en PDF tamaño A4: la clásica, una para chicos y una en blanco para armar tus propias categorías." />
+<meta property="og:description" content="Descarga gratis tres planillas de tutti frutti en PDF tamaño A4: la clásica, una para niños y una en blanco para armar tus propias categorías." />
 <meta property="og:url" content="https://tuttipuntofrutti.com/tutti-frutti-para-imprimir" />
 <meta property="og:locale" content="es_AR" />
 <meta property="og:locale:alternate" content="en_US" />
@@ -29,7 +29,7 @@
 <meta property="og:image:alt" content="tutti.frutti: tutti frutti online con amigos" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Planilla de tutti frutti para imprimir" />
-<meta name="twitter:description" content="Descargá gratis tres planillas de tutti frutti en PDF tamaño A4: la clásica, una para chicos y una en blanco para armar tus propias categorías." />
+<meta name="twitter:description" content="Descarga gratis tres planillas de tutti frutti en PDF tamaño A4: la clásica, una para niños y una en blanco para armar tus propias categorías." />
 <meta name="twitter:image" content="https://tuttipuntofrutti.com/og/og-es.png" />
 <meta name="twitter:image:alt" content="tutti.frutti: tutti frutti online con amigos" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -56,6 +56,7 @@
 </script>
 <script src="/site-i18n.js" defer></script>
 <script src="/site-theme.js" defer></script>
+<script src="/site-menu.js" defer></script>
 <script src="/fruits.js" defer></script>
 <meta name="google-adsense-account" content="ca-pub-9897296561814312" />
 <script src="/analytics.js" defer></script>
@@ -92,6 +93,9 @@
 
 <header class="site-header">
   <div class="wrap">
+    <button type="button" class="menu-btn" onclick="openSideMenu()" aria-label="Abrir menú" aria-controls="sideMenu">
+    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>
+  </button>
     <a class="brand" href="/">
       <svg class="simbolo" viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg>
       tutti<span class="punto"><svg viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti
@@ -119,17 +123,41 @@
   </div>
 </header>
 
+<div class="side-menu-overlay" id="sideMenuOverlay" onclick="closeSideMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="side-menu-top">
+    <span class="side-menu-brand">tutti.frutti</span>
+    <button type="button" class="side-menu-close" onclick="closeSideMenu()" aria-label="Cerrar menú">&times;</button>
+  </div>
+  <a class="side-menu-play" href="/jugar">Jugar ahora</a>
+  <nav>
+    <a href="/">Inicio</a>
+    <a href="/reglas">Reglas del juego</a>
+    <a href="/privacidad">Privacidad</a>
+    <a href="/terminos">Términos de uso</a>
+    <a href="/contacto">Contacto</a>
+    <p class="side-menu-subtitle">Más sobre tutti frutti</p>
+    <a href="/desafio-del-dia">Desafío del día</a>
+    <a href="/categorias-tutti-frutti">Categorías para tutti frutti</a>
+    <a href="/tutti-frutti-para-imprimir" aria-current="page">Planillas para imprimir</a>
+    <a href="/tutti-frutti-por-videollamada">Jugar por videollamada</a>
+    <a href="/tutti-frutti-en-el-aula">Tutti frutti en el aula</a>
+    <a href="/stop-online">Stop online</a>
+    <a href="/basta-online">Basta online</a>
+  </nav>
+</div>
+
 <main>
   <div class="wrap">
     <p class="breadcrumb"><a href="/">Inicio</a> › Planillas para imprimir</p>
     <h1>Planilla de tutti frutti para imprimir</h1>
-    <p class="lead">Si preferís jugar con lápiz y papel, acá tenés tres planillas listas para descargar e imprimir. Son gratis, están en tamaño A4 horizontal y tienen lugar para varias rondas.</p>
+    <p class="lead">Si prefieres jugar con lápiz y papel, acá tienes tres planillas listas para descargar e imprimir. Son gratis, están en tamaño A4 horizontal y tienen lugar para varias rondas.</p>
 
     <section>
-      <h2>Descargá las planillas</h2>
+      <h2>Descarga las planillas</h2>
       <ul class="download-list">
         <li><a href="/descargas/planilla-tutti-frutti-clasica.pdf" download>Planilla clásica <span>PDF · A4 · 8 categorías</span></a></li>
-        <li><a href="/descargas/planilla-tutti-frutti-chicos.pdf" download>Planilla para chicos <span>PDF · A4 · 6 categorías con casilleros grandes</span></a></li>
+        <li><a href="/descargas/planilla-tutti-frutti-chicos.pdf" download>Planilla para niños <span>PDF · A4 · 6 categorías con casilleros grandes</span></a></li>
         <li><a href="/descargas/planilla-tutti-frutti-en-blanco.pdf" download>Planilla en blanco para personalizar <span>PDF · A4 · 8 categorías a elección</span></a></li>
       </ul>
     </section>
@@ -138,21 +166,21 @@
       <h2>Qué trae cada planilla</h2>
       <h3>Planilla clásica</h3>
       <p>Las ocho categorías de siempre: Nombre, Apellido, País, Ciudad, Animal, Comida, Color y Objeto. Tiene una columna para anotar la letra de cada ronda y otra para el puntaje, con doce filas para jugar una partida larga.</p>
-      <h3>Planilla para chicos</h3>
-      <p>Seis categorías fáciles (Nombre, Animal, Fruta, Color, Juguete y Cosa de la casa) y casilleros más grandes, pensados para letra de chicos que recién aprenden a escribir. Tiene menos filas para que la partida no se haga eterna.</p>
+      <h3>Planilla para niños</h3>
+      <p>Seis categorías fáciles (Nombre, Animal, Fruta, Color, Juguete y Cosa de la casa) y casilleros más grandes, pensados para letra de niños que recién aprenden a escribir. Tiene menos filas para que la partida no se haga eterna.</p>
       <h3>Planilla en blanco</h3>
-      <p>Los encabezados de las categorías vienen vacíos para que escribas los que quieras. Es ideal para partidas temáticas (cine, fútbol, música) o para usar en clase con categorías de una materia. Si necesitás ideas, tenés <a href="/categorias-tutti-frutti">más de 90 categorías para tutti frutti</a> agrupadas por tema y dificultad.</p>
+      <p>Los encabezados de las categorías vienen vacíos para que escribas los que quieras. Es ideal para partidas temáticas (cine, fútbol, música) o para usar en clase con categorías de una materia. Si necesitas ideas, tienes <a href="/categorias-tutti-frutti">más de 90 categorías para tutti frutti</a> agrupadas por tema y dificultad.</p>
     </section>
 
     <section>
       <h2>Cómo usar la planilla</h2>
       <ol>
-        <li>Imprimí una planilla por jugador. Si van a jugar muchas veces, podés plastificarla y usar un fibrón al agua.</li>
-        <li>Alguien recita el abecedario en silencio y otra persona dice "basta" en cualquier momento. La letra en la que se frenó es la de la ronda. Anotala en la primera columna.</li>
+        <li>Imprime una planilla por jugador. Si van a jugar muchas veces, puedes plastificarla y usar un fibrón al agua.</li>
+        <li>Alguien recita el abecedario en silencio y otra persona dice "basta" en cualquier momento. La letra en la que se frenó es la de la ronda. Anótala en la primera columna.</li>
         <li>Todos completan cada categoría con una palabra que empiece con esa letra. El primero que termina dice "¡Basta!" y los demás dejan de escribir.</li>
         <li>Se leen las respuestas en voz alta y se anotan los puntos en la última columna.</li>
       </ol>
-      <p>Para el puntaje, la regla más usada es la misma del juego online: 10 puntos por una respuesta que nadie más puso, 5 si alguien escribió la misma palabra, 20 si fuiste la única persona que completó esa categoría y 0 si quedó vacía o la palabra no vale. Tenés todos los detalles en las <a href="/reglas">reglas del tutti frutti</a>.</p>
+      <p>Para el puntaje, la regla más usada es la misma del juego online: 10 puntos por una respuesta que nadie más puso, 5 si alguien escribió la misma palabra, 20 si fuiste la única persona que completó esa categoría y 0 si quedó vacía o la palabra no vale. Tienes todos los detalles en las <a href="/reglas">reglas del tutti frutti</a>.</p>
     </section>
 
     <section>
@@ -161,7 +189,7 @@
     </section>
 
     <div class="cta-box">
-      <p>¿Sin impresora a mano? Jugá la misma partida online, gratis y sin registrarte.</p>
+      <p>¿Sin impresora a mano? Juega la misma partida online, gratis y sin registrarte.</p>
       <a class="btn-play btn-lg" href="/jugar">Jugar ahora</a>
     </div>
   </div>

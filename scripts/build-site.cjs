@@ -20,7 +20,7 @@ const TPL = path.join(__dirname, "templates");
 const STRINGS = require("./strings.cjs");
 
 const SITE = "https://tuttipuntofrutti.com";
-const TODAY = "2026-09-27";
+const TODAY = "2026-09-28";
 const YEAR = "2026";
 const THEME_COLOR = "#14101F";
 const LANGS = ["es", "en", "pt"];
@@ -49,7 +49,7 @@ const GUIDES = [
     es: {
       nav: "Desafío del día",
       title: "Desafío del día: tutti frutti diario | tutti.frutti",
-      description: "Todos los días, la misma letra y las mismas categorías para todos: 60 segundos y un solo intento. Jugá el desafío del día y compará tu puntaje.",
+      description: "Todos los días, la misma letra y las mismas categorías para todos: 60 segundos y un solo intento. Juega el desafío del día y compará tu puntaje.",
       ogTitle: "Desafío del día de tutti frutti",
     },
     en: {
@@ -70,8 +70,8 @@ const GUIDES = [
     urls: { es: "/categorias-tutti-frutti", en: "/en/stop-game-categories", pt: "/pt/categorias-de-stop" },
     es: {
       nav: "Categorías para tutti frutti",
-      title: "Categorías para tutti frutti: 90 ideas | tutti.frutti",
-      description: "Más de 90 categorías para tutti frutti: clásicas, fáciles para chicos, difíciles, para adultos y temáticas de cine, música, fútbol, Argentina y Perú.",
+      title: "Categorías de Stop y tutti frutti: 100 ideas | tutti.frutti",
+      description: "Más de 100 categorías para Stop o tutti frutti: clásicas, fáciles para niños, difíciles, para adultos y temáticas de Argentina, Perú y México.",
       ogTitle: "Categorías para tutti frutti: ideas fáciles, difíciles y temáticas",
     },
     en: {
@@ -93,7 +93,7 @@ const GUIDES = [
     es: {
       nav: "Planillas para imprimir",
       title: "Planilla de tutti frutti para imprimir (PDF) | tutti.frutti",
-      description: "Descargá gratis tres planillas de tutti frutti en PDF tamaño A4: la clásica, una para chicos y una en blanco para armar tus propias categorías.",
+      description: "Descarga gratis tres planillas de tutti frutti en PDF tamaño A4: la clásica, una para niños y una en blanco para armar tus propias categorías.",
       ogTitle: "Planilla de tutti frutti para imprimir",
     },
     en: {
@@ -115,7 +115,7 @@ const GUIDES = [
     es: {
       nav: "Jugar por videollamada",
       title: "Cómo jugar al tutti frutti por videollamada | tutti.frutti",
-      description: "Paso a paso para jugar al tutti frutti a distancia: armá una sala privada, compartí el link por WhatsApp y juguen por Zoom, Meet o Discord.",
+      description: "Paso a paso para jugar al tutti frutti a distancia: arma una sala privada, comparte el link por WhatsApp y juguen por Zoom, Meet o Discord.",
       ogTitle: "Cómo jugar al tutti frutti por videollamada",
     },
     en: {
@@ -153,6 +153,27 @@ const GUIDES = [
       ogTitle: "Stop na sala de aula: como usar com os alunos",
     },
   },
+  // Páginas para quienes buscan el juego con el nombre que tiene en su país. Solo en español.
+  {
+    key: "stop",
+    urls: { es: "/stop-online" },
+    es: {
+      nav: "Stop online",
+      title: "Stop online gratis para jugar con amigos | tutti.frutti",
+      description: "Juega Stop online gratis desde el celular o la computadora: crea una sala, comparte el link por WhatsApp y el juego sortea la letra y suma los puntos.",
+      ogTitle: "Stop online gratis: juega con amigos desde el celular",
+    },
+  },
+  {
+    key: "basta",
+    urls: { es: "/basta-online" },
+    es: {
+      nav: "Basta online",
+      title: "Basta online gratis para jugar con amigos | tutti.frutti",
+      description: "Juega Basta online gratis, sin descargar nada: arma una sala, invita a tus amigos y usa categorías clásicas o de México. Un juez con IA resuelve dudas.",
+      ogTitle: "Basta online gratis: el juego de palabras para jugar con amigos",
+    },
+  },
   {
     key: "quienes",
     // Oculta (noindex, fuera del pie, del menú y del sitemap) hasta completar los datos del equipo.
@@ -162,7 +183,7 @@ const GUIDES = [
     es: {
       nav: "Quiénes somos",
       title: "Quiénes somos | tutti.frutti",
-      description: "Conocé a quienes hacen tutti.frutti, el juego de tutti frutti online gratis con salas privadas, rival al azar y un juez con inteligencia artificial.",
+      description: "Conoce a quienes hacen tutti.frutti, el juego de tutti frutti online gratis con salas privadas, rival al azar y un juez con inteligencia artificial.",
       ogTitle: "Quiénes somos",
     },
     en: {
@@ -341,6 +362,7 @@ function head(page) {
     THEME_BOOT,
     '<script src="/site-i18n.js" defer></script>',
     '<script src="/site-theme.js" defer></script>',
+    '<script src="/site-menu.js" defer></script>',
     '<script src="/fruits.js" defer></script>',
   );
   if (page.scripts) for (const s of page.scripts) lines.push(`<script src="${s}" defer></script>`);
@@ -384,10 +406,37 @@ function themeMenu(lang) {
       </div>`;
 }
 
+function menuButton(lang) {
+  return `<button type="button" class="menu-btn" onclick="openSideMenu()" aria-label="${esc(t(lang, "open_menu_aria"))}" aria-controls="sideMenu">
+    ${MENU_ICON}
+  </button>`;
+}
+
+// Menú lateral: en celular es la forma de moverse entre páginas, igual en todas.
+function sideMenu(lang, currentUrl) {
+  const link = (url, text) => `<a href="${url}"${url === currentUrl ? ' aria-current="page"' : ""}>${esc(text)}</a>`;
+  const main = ["home", "reglas", "privacidad", "terminos", "contacto"].map((k) => link(I18N_PAGES[k][lang], t(lang, "nav_" + k)));
+  const guides = GUIDES.filter((g) => g.urls[lang] && !g.hidden).map((g) => link(g.urls[lang], g[lang].nav));
+  return `<div class="side-menu-overlay" id="sideMenuOverlay" onclick="closeSideMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="side-menu-top">
+    <span class="side-menu-brand">tutti.frutti</span>
+    <button type="button" class="side-menu-close" onclick="closeSideMenu()" aria-label="${esc(t(lang, "close_menu_aria"))}">&times;</button>
+  </div>
+  <a class="side-menu-play" href="/jugar">${esc(t(lang, "play_now_btn"))}</a>
+  <nav>
+    ${main.join("\n    ")}
+    <p class="side-menu-subtitle">${esc(t(lang, "nav_more_heading"))}</p>
+    ${guides.join("\n    ")}
+  </nav>
+</div>`;
+}
+
 function siteHeader(page) {
   const { lang } = page;
   return `<header class="site-header">
   <div class="wrap">
+    ${menuButton(lang)}
     <a class="brand" href="${I18N_PAGES.home[lang]}">
       <svg class="simbolo" viewBox="10 4 80 88" aria-hidden="true">${APPLE_PATHS}</svg>
       tutti<span class="punto"><svg viewBox="10 4 80 88" aria-hidden="true">${APPLE_PATHS}</svg></span>frutti
@@ -454,6 +503,8 @@ function contentPage(page, mainHtml) {
 ${BG_BLOBS}
 
 ${siteHeader(page)}
+
+${sideMenu(page.lang, page.url)}
 
 ${mainHtml.trim()}
 
@@ -554,9 +605,10 @@ function buildHome(lang) {
       '<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />',
     ].filter(Boolean).join("\n"),
   };
-  const main = fixLinks(translate(readTpl("home.html"), lang), lang).replace("{{DESAFIO_URL}}", GUIDE.desafio.urls[lang]);
+  const main = fixLinks(translate(readTpl("home.html"), lang), lang)
+    .replace("{{DESAFIO_URL}}", GUIDE.desafio.urls[lang])
+    .replace("{{NOMBRES}}", lang === "es" ? readTpl("home-nombres.html").trim() : "");
 
-  const sideGuides = `\n    <p class="side-menu-subtitle">${esc(t(lang, "nav_more_heading"))}</p>\n    ${GUIDES.filter((g) => g.urls[lang] && !g.hidden).map((g) => `<a href="${g.urls[lang]}">${esc(g[lang].nav)}</a>`).join("\n    ")}`;
 
   const html = `${head(page)}
 <body>
@@ -564,25 +616,14 @@ function buildHome(lang) {
 ${BG_BLOBS}
 
 <header class="top-bar">
-  <button type="button" class="menu-btn" onclick="openSideMenu()" aria-label="${esc(t(lang, "open_menu_aria"))}">
-    ${MENU_ICON}
-  </button>
+  ${menuButton(lang)}
   <div class="header-actions">
 ${langMenu(page)}
 ${themeMenu(lang)}
   </div>
 </header>
 
-<div class="side-menu-overlay" id="sideMenuOverlay" onclick="closeSideMenu()"></div>
-<div class="side-menu" id="sideMenu">
-  <div class="side-menu-top">
-    <span class="side-menu-brand">tutti.frutti</span>
-    <button type="button" class="side-menu-close" onclick="closeSideMenu()" aria-label="${esc(t(lang, "close_menu_aria"))}">&times;</button>
-  </div>
-  <nav>
-    ${["home", "reglas", "privacidad", "terminos", "contacto"].map((k) => `<a href="${I18N_PAGES[k][lang]}">${esc(t(lang, "nav_" + k))}</a>`).join("\n    ")}${sideGuides}
-  </nav>
-</div>
+${sideMenu(lang, url)}
 
 ${main.trim()}
 

@@ -73,6 +73,8 @@ a { color: var(--primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 .wrap { width: 100%; max-width: 720px; margin: 0 auto; padding: 0 20px; }
+/* Links largos (direcciones web) cortan línea en vez de desbordar la pantalla del celular. */
+main a { overflow-wrap: anywhere; }
 
 header.site-header {
   position: relative; z-index: 1;
@@ -240,10 +242,67 @@ a.site-lang-option:hover { text-decoration: none; }
   background: rgba(255, 166, 43, .16); border: 2px dashed var(--mandarina); border-radius: var(--radius);
   padding: 2px 8px; color: var(--text); font-weight: 600;
 }
-@media (max-width: 520px) {
-  header.site-header .wrap { flex-wrap: wrap; }
-    /* Cuando los íconos pasan a su propia fila (alineados a la izquierda), el menú
-     desplegable tiene que abrirse hacia la derecha del botón, no hacia la izquierda,
-     o queda cortado fuera de la pantalla. */
-  .lang-menu, .theme-menu { left: 0; right: auto; }
+/* ---------- Menú lateral ---------- */
+.menu-btn {
+  display: none; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 48px; height: 48px; border-radius: var(--radius);
+  border: 2px solid var(--borde); background: transparent; color: var(--text);
+  cursor: pointer; transition: border-color .15s, color .15s;
+}
+.menu-btn svg { width: 22px; height: 22px; }
+.menu-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ---------- Menú lateral (mobile) ---------- */
+.side-menu-overlay {
+  display: none; position: fixed; inset: 0; z-index: 90;
+  background: rgba(0,0,0,.45);
+}
+.side-menu-overlay.open { display: block; }
+.side-menu {
+  position: fixed; top: 0; left: 0; bottom: 0; z-index: 91;
+  width: 78vw; max-width: 300px; background: var(--surface);
+  box-shadow: 4px 0 24px rgba(0,0,0,.25);
+  transform: translateX(-100%); transition: transform .2s ease;
+  display: flex; flex-direction: column; padding: 20px;
+}
+.side-menu.open { transform: translateX(0); }
+.side-menu-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.side-menu-brand { font-family: var(--font-display); font-weight: 800; font-size: 19px; color: var(--text); text-transform: lowercase; }
+.side-menu-close {
+  width: 36px; height: 36px; border-radius: 10px; border: 2px solid var(--borde);
+  background: transparent; color: var(--text); font-size: 18px; line-height: 1;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.side-menu nav { display: flex; flex-direction: column; gap: 4px; }
+.side-menu nav a {
+  color: var(--text); font-weight: 600; font-size: 16px; text-decoration: none;
+  padding: 12px 10px; border-radius: 10px;
+}
+.side-menu nav a:hover { background: var(--crema-08); text-decoration: none; }
+.side-menu { overflow-y: auto; }
+.side-menu-subtitle { margin: 18px 10px 6px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); }
+
+.side-menu-play {
+  display: block; margin: 0 0 14px; padding: 14px 16px; border-radius: var(--radius);
+  background: var(--primary); color: var(--tinta); font: 700 16px/1.2 var(--font-body);
+  text-align: center; text-decoration: none;
+}
+.side-menu-play:hover { text-decoration: none; filter: brightness(1.06); }
+.side-menu nav a[aria-current="page"] { background: var(--crema-08); color: var(--primary); }
+
+/* En celular: hamburguesa a la izquierda, logo y a la derecha idioma y tema, igual que en la home.
+   "Jugar ahora" pasa al menú lateral. */
+@media (max-width: 640px) {
+  .wrap { padding: 0 16px; }
+  header.site-header { padding: 16px 0; }
+  header.site-header .wrap { gap: 10px; }
+  .menu-btn { display: flex; }
+  .brand { margin-right: auto; font-size: 22px; }
+  .brand .simbolo { display: none; }
+  header.site-header .btn-play { display: none; }
+}
+/* Celulares muy angostos: el logo se achica un poco para que entren los tres botones. */
+@media (max-width: 360px) {
+  header.site-header .wrap { gap: 8px; }
+  .brand { font-size: 19px; }
 }

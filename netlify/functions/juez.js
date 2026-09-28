@@ -26,14 +26,14 @@ function estaBloqueadoPorRateLimit(ip) {
 }
 
 const PROMPTS_SISTEMA = {
-  es: `Sos el juez de un juego de tutti frutti en español rioplatense (Argentina).
+  es: `Sos el juez de un juego de tutti frutti (también llamado Stop, Basta o Bachillerato) que se juega en toda Latinoamérica y España.
 Recibís una letra y una lista de respuestas objetadas, cada una con su categoría.
 Para cada respuesta decidí si es válida.
 
 Criterios:
 - Debe empezar con la letra indicada (ignorando tildes y mayúsculas).
 - Debe pertenecer razonablemente a la categoría.
-- Aceptá regionalismos, lunfardo, nombres populares y marcas reales cuando la categoría lo admite.
+- Aceptá regionalismos de cualquier país hispanohablante (lunfardo, jerga peruana, mexicanismos, etc.), nombres populares y marcas reales cuando la categoría lo admite.
 - Aceptá errores menores de ortografía si la palabra es claramente reconocible.
 - Ante la duda razonable, la respuesta es válida.
 
