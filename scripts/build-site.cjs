@@ -398,31 +398,42 @@ ${themeMenu(lang)}
 </header>`;
 }
 
-function mainNavLinks(lang, currentUrl) {
-  return ["home", "reglas", "privacidad", "terminos", "contacto"]
-    .filter((k) => I18N_PAGES[k][lang] !== currentUrl)
-    .map((k) => `<a href="${I18N_PAGES[k][lang]}">${esc(t(lang, "nav_" + (k === "home" ? "home" : k)))}</a>`);
-}
+// Footer: una fila con lo principal y, abajo, los links legales en chico con el copyright.
+// Videollamada y Aula no van acá: se enlazan desde las otras guías y están en el sitemap.
+const FOOTER_SHORT = {
+  categorias: { es: "Categorías", en: "Categories", pt: "Categorias" },
+  imprimir: { es: "Planillas para imprimir", en: "Printable sheets", pt: "Folhas para imprimir" },
+};
 
-function guideLinks(lang, currentUrl) {
-  return GUIDES.filter((g) => g.urls[lang]).map((g) => `<li><a href="${g.urls[lang]}"${g.urls[lang] === currentUrl ? ' aria-current="page"' : ""}>${esc(g[lang].nav)}</a></li>`).join("\n        ");
+function footerLink(url, text, currentUrl) {
+  return `<a href="${url}"${url === currentUrl ? ' aria-current="page"' : ""}>${esc(text)}</a>`;
 }
 
 function siteFooter(page) {
-  const { lang } = page;
-  const more = `
-    <div class="footer-more">
-      <span class="footer-more-title">${esc(t(lang, "nav_more_heading"))}</span>
-      <ul>
-        ${guideLinks(lang, page.url)}
-      </ul>
-    </div>`;
+  const { lang, url } = page;
+  const main = [
+    footerLink(I18N_PAGES.reglas[lang], t(lang, "nav_reglas"), url),
+    footerLink(GUIDE.desafio.urls[lang], GUIDE.desafio[lang].nav, url),
+    footerLink(GUIDE.categorias.urls[lang], FOOTER_SHORT.categorias[lang], url),
+    footerLink(GUIDE.imprimir.urls[lang], FOOTER_SHORT.imprimir[lang], url),
+    footerLink(I18N_PAGES.contacto[lang], t(lang, "nav_contacto"), url),
+  ];
+  const legal = [
+    footerLink(I18N_PAGES.privacidad[lang], t(lang, "nav_privacidad"), url),
+    footerLink(I18N_PAGES.terminos[lang], t(lang, "nav_terminos"), url),
+    footerLink(GUIDE.quienes.urls[lang], GUIDE.quienes[lang].nav, url),
+  ];
   return `<footer class="site-footer">
-  <div class="wrap">${more}
-    <nav>
-      ${mainNavLinks(lang, page.url).join("\n      ")}
+  <div class="wrap">
+    <nav class="footer-main">
+      ${main.join("\n      ")}
     </nav>
-    <span class="copy">© ${YEAR} tutti.frutti</span>
+    <div class="footer-bottom">
+      <nav class="footer-legal">
+        ${legal.join("\n        ")}
+      </nav>
+      <span class="copy">© ${YEAR} tutti.frutti</span>
+    </div>
   </div>
 </footer>`;
 }
