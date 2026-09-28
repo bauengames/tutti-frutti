@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Daily Stop challenge: one letter a day | tutti.frutti</title>
+<meta name="description" content="Every day, the same letter and categories for everyone: 60 seconds and one try. Play the daily Stop game challenge and compare your score." />
+<meta name="theme-color" content="#14101F" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
+<link rel="canonical" href="https://tuttipuntofrutti.com/en/daily-challenge" />
+<link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/desafio-del-dia" />
+<link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/daily-challenge" />
+<link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/desafio-do-dia" />
+<link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/desafio-del-dia" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=2" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="tutti.frutti" />
+<meta property="og:title" content="The daily Stop game challenge" />
+<meta property="og:description" content="Every day, the same letter and categories for everyone: 60 seconds and one try. Play the daily Stop game challenge and compare your score." />
+<meta property="og:url" content="https://tuttipuntofrutti.com/en/daily-challenge" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:locale:alternate" content="es_AR" />
+<meta property="og:locale:alternate" content="pt_BR" />
+<meta property="og:image" content="https://tuttipuntofrutti.com/og/og-en.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="tutti.frutti: play Stop online with friends" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The daily Stop game challenge" />
+<meta name="twitter:description" content="Every day, the same letter and categories for everyone: 60 seconds and one try. Play the daily Stop game challenge and compare your score." />
+<meta name="twitter:image" content="https://tuttipuntofrutti.com/og/og-en.png" />
+<meta name="twitter:image:alt" content="tutti.frutti: play Stop online with friends" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=Martian+Mono:wght@400;700&display=swap" />
+<link rel="stylesheet" href="/site.css" />
+<script>
+(function () {
+  var PRESETS = {
+    "pomelo__crema": { theme: "pomelo", bg: "crema" },
+    "cielo__violeta": { theme: "cielo", bg: "violeta" },
+    "uva__violeta": { theme: "uva", bg: "violeta" },
+    "lima__petroleo": { theme: "lima", bg: "petroleo" },
+    "mandarina__lavanda": { theme: "mandarina", bg: "lavanda" },
+  };
+  var LIGHT_BACKGROUNDS = ["crema", "lavanda"];
+  var preset;
+  try { preset = PRESETS[localStorage.getItem("tuttifruti_preset")]; } catch (e) { preset = null; }
+  preset = preset || PRESETS.pomelo__crema;
+  document.documentElement.setAttribute("data-theme", preset.theme);
+  document.documentElement.setAttribute("data-bg", preset.bg);
+  if (LIGHT_BACKGROUNDS.indexOf(preset.bg) !== -1) document.documentElement.setAttribute("data-light", "");
+})();
+</script>
+<script src="/site-i18n.js" defer></script>
+<script src="/site-theme.js" defer></script>
+<script src="/fruits.js" defer></script>
+<meta name="google-adsense-account" content="ca-pub-9897296561814312" />
+<script src="/analytics.js" defer></script>
+<script src="/cookie-consent.js" defer></script>
+<script src="/ads-loader.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://tuttipuntofrutti.com/en/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "The daily Stop game challenge",
+      "item": "https://tuttipuntofrutti.com/en/daily-challenge"
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="bg-blobs" aria-hidden="true">
+  <span class="bg-blob bg-blob-1"></span>
+  <span class="bg-blob bg-blob-2"></span>
+  <span class="bg-blob bg-blob-3"></span>
+</div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/en/">
+      <svg class="simbolo" viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg>
+      tutti<span class="punto"><svg viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti
+    </a>
+    <div class="header-actions">
+      <div class="lang-picker" id="langPicker">
+        <button type="button" class="lang-icon-btn" onclick="toggleSiteLangMenu()" aria-label="Change language" aria-haspopup="true">
+          <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm88,104a87.61,87.61,0,0,1-3.33,24H174.16a157.44,157.44,0,0,0,0-48h38.51A87.61,87.61,0,0,1,216,128ZM102,168H154a115.11,115.11,0,0,1-26,45A115.27,115.27,0,0,1,102,168Zm-3.9-16a140.84,140.84,0,0,1,0-48h59.8a140.84,140.84,0,0,1,0,48ZM40,128a87.61,87.61,0,0,1,3.33-24H81.84a157.44,157.44,0,0,0,0,48H43.33A87.61,87.61,0,0,1,40,128ZM154,88H102a115.11,115.11,0,0,1,26-45A115.27,115.27,0,0,1,154,88Zm52.36,0H170.7a135.28,135.28,0,0,0-22.3-45.6A88.29,88.29,0,0,1,206.37,88ZM107.6,42.4A135.28,135.28,0,0,0,85.3,88H49.63A88.29,88.29,0,0,1,107.6,42.4ZM49.63,168H85.3a135.28,135.28,0,0,0,22.3,45.6A88.29,88.29,0,0,1,49.63,168Zm98.77,45.6a135.28,135.28,0,0,0,22.3-45.6h35.67A88.29,88.29,0,0,1,148.4,213.6Z"/></svg>
+        </button>
+        <div class="lang-menu" id="langMenu">
+          <a class="site-lang-option" href="/desafio-del-dia" hreflang="es" lang="es" onclick="rememberSiteLanguage('es')">Español</a>
+          <a class="site-lang-option selected" href="/en/daily-challenge" hreflang="en" lang="en" aria-current="true" onclick="rememberSiteLanguage('en')">English</a>
+          <a class="site-lang-option" href="/pt/desafio-do-dia" hreflang="pt" lang="pt" onclick="rememberSiteLanguage('pt')">Português</a>
+        </div>
+      </div>
+      <div class="theme-picker" id="themePicker">
+        <button type="button" class="theme-icon-btn" onclick="toggleThemeMenu()" aria-label="Change theme"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M203.57,51A107.9,107.9,0,0,0,20,128c0,44.72,27.6,82.25,72,97.94A36,36,0,0,0,140,192a12,12,0,0,1,12-12h46.21a35.79,35.79,0,0,0,35.1-28A108.6,108.6,0,0,0,236,127.09,107.23,107.23,0,0,0,203.57,51Zm6.34,95.67a11.91,11.91,0,0,1-11.7,9.3H152a36,36,0,0,0-36,36,12,12,0,0,1-16,11.3c-16.65-5.88-30.65-15.76-40.48-28.56A76,76,0,0,1,44,128a84,84,0,0,1,83.13-84H128a84.35,84.35,0,0,1,84,83.29A84.72,84.72,0,0,1,209.91,146.71ZM144,76a16,16,0,1,1-16-16A16,16,0,0,1,144,76Zm-44,24A16,16,0,1,1,84,84,16,16,0,0,1,100,100Zm0,56a16,16,0,1,1-16-16A16,16,0,0,1,100,156Zm88-56a16,16,0,1,1-16-16A16,16,0,0,1,188,100Z"/></svg></button>
+        <div class="theme-menu" id="themeMenu">
+          <p class="theme-menu-label">Themes</p>
+          <div class="preset-grid" id="presetGrid"></div>
+        </div>
+      </div>
+      <a class="btn-play" href="/jugar">Play now</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <p class="breadcrumb"><a href="/en/">Home</a> › Daily challenge</p>
+    <h1>The daily Stop game challenge</h1>
+    <p class="lead">One letter, six categories and 60 seconds. There's a new challenge every day, the same for everyone who plays, and you get a single try to post the best score on the leaderboard.</p>
+
+    <div class="cta-box">
+      <p>Today's challenge is ready. <span data-countdown hidden>The next one comes out in <strong data-countdown-time></strong>.</span></p>
+      <a class="btn-play btn-lg" href="/jugar?desafio">Play today's challenge</a>
+    </div>
+
+    <section>
+      <h2>How it works</h2>
+      <ul>
+        <li><strong>The same letter for everyone.</strong> The day's letter and categories come from the date, so everyone who plays that day gets exactly the same challenge.</li>
+        <li><strong>Six categories, 60 seconds.</strong> You have one minute to fill in all six with words starting with the letter of the day.</li>
+        <li><strong>One category is worth double.</strong> Every day, one of the six is marked as the double-points category: get it right and it counts twice.</li>
+        <li><strong>One try only.</strong> Your attempt is recorded as soon as it starts, so reloading the page won't let you play again.</li>
+        <li><strong>An AI judge checks your answers.</strong> Since you're not playing against others in a room, the AI judge decides whether each word is valid for the letter and the category.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>How the score works</h2>
+      <p>Each valid answer is worth 10 points, and the double-points category is worth 20. If you have at least one valid answer, you also get one bonus point for every second left on the clock when you tap Stop!. So it pays to finish fast, but without risking doubtful words: an invalid answer scores nothing.</p>
+      <p>When you finish, you'll see which categories you got right and the daily leaderboard with everyone who has already played. You can also share your result as a colored grid that shows your hits without giving away your words.</p>
+    </section>
+
+    <section>
+      <h2>When does the challenge change?</h2>
+      <p>The challenge changes every day at midnight in your local time, wherever you are. The letter and categories depend only on the date, so everyone who plays on the same day gets the same challenge and competes on the same leaderboard.</p>
+    </section>
+
+    <section>
+      <h2>Tips to score more</h2>
+      <ul>
+        <li>Check which category is worth double and fill it in first.</li>
+        <li>Don't waste time looking for the perfect word: in the daily challenge it doesn't matter if someone else wrote the same thing, only that it's valid.</li>
+        <li>If a category isn't coming, skip it and move on. The seconds you save are points too.</li>
+        <li>With a hard letter, think of two-word answers (like "sea lion" or "sweet potato"), which often unlock a category.</li>
+      </ul>
+      <p>For ideas on which categories might come up, check out the <a href="/en/stop-game-categories">Stop game categories</a>. And if you'd rather play with friends, the <a href="/en/rules">Stop game rules</a> explain how rooms work.</p>
+    </section>
+  </div>
+</main>
+<script>
+/* Countdown to the next challenge (local midnight). */
+(function () {
+  var box = document.querySelector("[data-countdown]");
+  var out = document.querySelector("[data-countdown-time]");
+  if (!box || !out) return;
+  function tick() {
+    var now = new Date();
+    var next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+    var s = Math.floor((next - now) / 1000);
+    var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
+    out.textContent = h + " h " + (m < 10 ? "0" : "") + m + " min";
+  }
+  tick();
+  box.hidden = false;
+  setInterval(tick, 30000);
+})();
+</script>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-more">
+      <span class="footer-more-title">More about the game</span>
+      <ul>
+        <li><a href="/en/daily-challenge" aria-current="page">Daily challenge</a></li>
+        <li><a href="/en/stop-game-categories">Stop game categories</a></li>
+        <li><a href="/en/printable-stop-game-sheets">Printable sheets</a></li>
+        <li><a href="/en/play-stop-on-video-call">Play on a video call</a></li>
+        <li><a href="/en/stop-game-in-the-classroom">Stop in the classroom</a></li>
+        <li><a href="/en/about-us">About us</a></li>
+      </ul>
+    </div>
+    <nav>
+      <a href="/en/">Home</a>
+      <a href="/en/rules">Game rules</a>
+      <a href="/en/privacy">Privacy</a>
+      <a href="/en/terms">Terms of use</a>
+      <a href="/en/contact">Contact</a>
+    </nav>
+    <span class="copy">© 2026 tutti.frutti</span>
+  </div>
+</footer>
+</body>
+</html>

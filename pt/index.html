@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Stop online grátis com amigos (Adedonha) | tutti.frutti</title>
+<meta name="description" content="Jogue Stop online grátis, o famoso Adedonha. Crie uma sala com amigos ou jogue com alguém aleatório. Um juiz com IA resolve as palavras em disputa." />
+<meta name="theme-color" content="#14101F" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="tutti.frutti" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
+<link rel="canonical" href="https://tuttipuntofrutti.com/pt/" />
+<link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/" />
+<link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/" />
+<link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/" />
+<link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/" />
+<link rel="manifest" href="/manifest.webmanifest" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=2" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="tutti.frutti" />
+<meta property="og:title" content="Jogue Stop (Adedonha) online com amigos" />
+<meta property="og:description" content="Jogue Stop online grátis, o famoso Adedonha. Crie uma sala com amigos ou jogue com alguém aleatório. Um juiz com IA resolve as palavras em disputa." />
+<meta property="og:url" content="https://tuttipuntofrutti.com/pt/" />
+<meta property="og:locale" content="pt_BR" />
+<meta property="og:locale:alternate" content="es_AR" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta property="og:image" content="https://tuttipuntofrutti.com/og/og-pt.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="tutti.frutti: jogue Stop (Adedonha) online com amigos" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Jogue Stop (Adedonha) online com amigos" />
+<meta name="twitter:description" content="Jogue Stop online grátis, o famoso Adedonha. Crie uma sala com amigos ou jogue com alguém aleatório. Um juiz com IA resolve as palavras em disputa." />
+<meta name="twitter:image" content="https://tuttipuntofrutti.com/og/og-pt.png" />
+<meta name="twitter:image:alt" content="tutti.frutti: jogue Stop (Adedonha) online com amigos" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600;700&family=Martian+Mono:wght@400;700&display=swap" />
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --pomelo: #FF5E5B;
+  --lima: #B6EF3C;
+  --mandarina: #FFA62B;
+  --uva: #9C6BFF;
+  --cielo: #35C8F2;
+  --tinta: #14101F;
+
+  --fg-rgb: 255, 243, 226;
+  --crema: #FFF3E2;
+  --bg: #14101F;
+  --surface: #221B33;
+
+  --text: var(--crema);
+  --text-muted: rgba(var(--fg-rgb), .55);
+  --crema-72: rgba(var(--fg-rgb), .72);
+  --crema-08: rgba(var(--fg-rgb), .08);
+  --borde: rgba(var(--fg-rgb), .14);
+  --borde-fuerte: rgba(var(--fg-rgb), .30);
+
+  --primary: var(--pomelo);
+  --secondary: var(--mandarina);
+
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Instrument Sans', system-ui, sans-serif;
+  --font-mono: 'Martian Mono', ui-monospace, monospace;
+  --radius: 12px;
+  --radius-card: 14px;
+}
+
+html[data-bg="violeta"]  { --bg: #2A1F47; --surface: #3A2C60; }
+html[data-bg="petroleo"] { --bg: #103036; --surface: #1B434A; }
+html[data-bg="crema"]    { --bg: #FFF3E2; --surface: #FFFFFF; --crema: #14101F; --fg-rgb: 20, 16, 31; }
+html[data-bg="lavanda"]  { --bg: #ECE4FF; --surface: #FFFFFF; --crema: #14101F; --fg-rgb: 20, 16, 31; }
+
+html[data-theme="pomelo"]    { --primary: var(--pomelo);    --secondary: var(--mandarina); }
+html[data-theme="cielo"]     { --primary: var(--cielo);     --secondary: var(--uva); }
+html[data-theme="uva"]       { --primary: var(--uva);       --secondary: var(--pomelo); }
+html[data-theme="lima"]      { --primary: var(--lima);      --secondary: var(--cielo); }
+html[data-theme="mandarina"] { --primary: var(--mandarina); --secondary: var(--pomelo); }
+
+html { background: var(--bg); overflow-x: clip; }
+body {
+  margin: 0; min-height: 100vh;
+  position: relative;
+  z-index: 0;
+  background: var(--bg); color: var(--text);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.6;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 16px 16px 64px;
+  -webkit-font-smoothing: antialiased;
+}
+.bg-blobs { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.bg-blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .35; transition: background-color .3s ease; }
+.bg-blob-1 { width: 420px; height: 420px; top: -140px; left: -120px; background: var(--primary); }
+.bg-blob-2 { width: 380px; height: 380px; bottom: -160px; right: -100px; background: var(--secondary); }
+.bg-blob-3 { width: 320px; height: 320px; top: 45%; left: 55%; background: var(--lima); opacity: .22; }
+html[data-light] .bg-blob { opacity: .32; }
+html[data-light] .bg-blob-3 { opacity: .24; }
+:focus-visible { outline: 2px solid var(--pomelo); outline-offset: 2px; }
+h1, h2 { font-family: var(--font-display); font-weight: 800; letter-spacing: -.02em; margin: 0; color: var(--text); }
+strong { font-weight: 700; }
+a { color: var(--primary); }
+
+.wrap { width: 100%; max-width: 760px; }
+
+/* ---------- Wordmark ---------- */
+.wordmark {
+  font-family: var(--font-display); font-weight: 800; letter-spacing: -.045em;
+  line-height: .95; white-space: nowrap; color: var(--text); text-transform: lowercase;
+}
+.wordmark .punto { display: inline-block; width: .34em; height: .38em; margin: 0 .03em; vertical-align: baseline; }
+.wordmark .punto svg { display: block; width: 100%; height: 100%; }
+
+/* ---------- Barra superior ---------- */
+.top-bar {
+  width: 100%; max-width: 760px;
+  display: flex; align-items: center; justify-content: flex-end;
+  gap: 12px; margin: 0 auto 8px; min-height: 48px;
+}
+.menu-btn { display: none; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--font-body); font-size: 17px; font-weight: 700; line-height: 1.2;
+  padding: 16px 30px; border-radius: var(--radius); border: 2px solid transparent;
+  cursor: pointer; text-decoration: none; transition: filter .15s, transform .08s;
+}
+.btn-primary { background: var(--primary); color: var(--tinta); }
+.btn-primary:hover { filter: brightness(1.08); text-decoration: none; }
+.btn-primary:active { filter: brightness(.92); transform: translateY(2px); }
+.btn-secondary { background: transparent; border-color: var(--borde-fuerte); color: var(--text); }
+.btn-secondary:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
+
+.header-actions { display: flex; align-items: center; gap: 8px; }
+.lang-picker { position: relative; }
+.lang-icon-btn {
+  width: 48px; height: 48px; border-radius: var(--radius);
+  border: 2px solid var(--borde); background: transparent; color: var(--text);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.lang-icon-btn svg { width: 22px; height: 22px; }
+.lang-icon-btn:hover { border-color: var(--primary); color: var(--primary); }
+.lang-menu {
+  display: none; position: absolute; top: 56px; right: 0; z-index: 50;
+  min-width: 170px; padding: 6px;
+  background: var(--surface); border: 1px solid var(--borde-fuerte); border-radius: var(--radius-card);
+}
+.lang-menu.open { display: block; }
+.site-lang-option {
+  display: block; width: 100%; text-align: left;
+  border: 0; background: transparent; color: var(--text); cursor: pointer;
+  padding: 10px 12px; border-radius: 8px; font: 500 15px/1.2 var(--font-body);
+}
+.site-lang-option:hover { background: var(--crema-08); }
+.site-lang-option.selected { font-weight: 700; background: var(--crema-08); }
+
+.theme-picker { position: relative; }
+.theme-icon-btn {
+  width: 48px; height: 48px; border-radius: var(--radius);
+  border: 2px solid var(--borde); background: transparent; color: var(--text);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  transition: border-color .15s, color .15s;
+}
+.theme-icon-btn svg { width: 22px; height: 22px; }
+.theme-icon-btn:hover { border-color: var(--primary); color: var(--primary); }
+.theme-menu {
+  display: none; position: absolute; top: 56px; right: 0; z-index: 50;
+  min-width: 190px; padding: 8px;
+  background: var(--surface); border: 1px solid var(--borde-fuerte); border-radius: var(--radius-card);
+}
+.theme-menu.open { display: block; }
+.theme-menu-label { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--text-muted); padding: 8px 10px 4px; }
+.preset-grid { display: flex; flex-direction: column; gap: 2px; }
+.theme-option {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  padding: 12px; border: 0; border-radius: 10px; background: transparent;
+  color: var(--text); font: 500 15px/1.2 var(--font-body); text-align: left; cursor: pointer;
+}
+.theme-option:hover { background: var(--crema-08); }
+.theme-option.selected { font-weight: 700; background: var(--crema-08); }
+.theme-swatch { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; position: relative; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+.theme-swatch::after { content: ''; position: absolute; right: 0; bottom: 0; width: 50%; height: 50%; background: var(--sw2); }
+
+/* ---------- Menú lateral (mobile) ---------- */
+.side-menu-overlay {
+  display: none; position: fixed; inset: 0; z-index: 90;
+  background: rgba(0,0,0,.45);
+}
+.side-menu-overlay.open { display: block; }
+.side-menu {
+  position: fixed; top: 0; left: 0; bottom: 0; z-index: 91;
+  width: 78vw; max-width: 300px; background: var(--surface);
+  box-shadow: 4px 0 24px rgba(0,0,0,.25);
+  transform: translateX(-100%); transition: transform .2s ease;
+  display: flex; flex-direction: column; padding: 20px;
+}
+.side-menu.open { transform: translateX(0); }
+.side-menu-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.side-menu-brand { font-family: var(--font-display); font-weight: 800; font-size: 19px; color: var(--text); text-transform: lowercase; }
+.side-menu-close {
+  width: 36px; height: 36px; border-radius: 10px; border: 2px solid var(--borde);
+  background: transparent; color: var(--text); font-size: 18px; line-height: 1;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.side-menu nav { display: flex; flex-direction: column; gap: 4px; }
+.side-menu nav a {
+  color: var(--text); font-weight: 600; font-size: 16px; text-decoration: none;
+  padding: 12px 10px; border-radius: 10px;
+}
+.side-menu nav a:hover { background: var(--crema-08); text-decoration: none; }
+.side-menu { overflow-y: auto; }
+.side-menu-subtitle { margin: 18px 10px 6px; font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); }
+
+/* ---------- Hero ---------- */
+.hero { text-align: center; padding: 12px 0 40px; }
+.hero .wordmark { font-size: clamp(64px, 17vw, 112px); display: block; margin-bottom: 14px; }
+.home-h1 { font-size: clamp(22px, 5.2vw, 32px); line-height: 1.2; max-width: 22ch; margin: 0 auto 28px; }
+.hero p { font-size: 19px; color: var(--crema-72); max-width: 56ch; margin: 28px auto 8px; }
+
+/* ---------- Jugá ahora (campo + botón, mismo formato que jugar.html) ---------- */
+.label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.3;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 10px;
+}
+.field { margin-bottom: 0; }
+.field input[type="text"] {
+  width: 100%; padding: 18px 22px; border-radius: var(--radius);
+  background: var(--surface); border: 2px solid var(--borde);
+  color: var(--text); font: 500 17px/1.3 var(--font-body);
+  caret-color: var(--pomelo); outline: none;
+  transition: border-color .15s;
+}
+.field input::placeholder { color: rgba(var(--fg-rgb), .45); }
+.field input[type="text"]:focus { border-color: var(--primary); }
+.btn-block { width: 100%; }
+.install-btn { margin-top: 12px; padding: 12px 20px; font-size: 15px; }
+.quickplay {
+  max-width: 400px; margin: 0 auto; text-align: left;
+  background: var(--surface); border: 1px solid var(--borde); border-radius: var(--radius-card);
+  padding: 28px;
+}
+.quickplay-kicker {
+  font-family: var(--font-display); font-weight: 800; font-size: 13px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--primary);
+  margin: 0 0 16px; text-align: center;
+}
+.quickplay form { display: flex; flex-direction: column; gap: 18px; }
+.avatar-picker { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.avatar-option {
+  width: 100%; aspect-ratio: 1; padding: 0; border-radius: 12px; cursor: pointer;
+  border: 2px solid var(--borde); background: var(--surface); font-size: 24px; line-height: 1;
+  transition: border-color .15s, transform .1s;
+}
+.avatar-option:hover { border-color: var(--primary); }
+.avatar-option.selected { border-color: var(--primary); background: var(--crema-08); transform: scale(1.08); }
+.avatar-option { display: flex; align-items: center; justify-content: center; }
+.avatar-option svg { width: 72%; height: 72%; display: block; }
+
+/* ---------- Tarjeta del desafío del día ---------- */
+.daily-card {
+  display: flex; align-items: center; gap: 14px; margin: 0 0 16px; padding: 18px 20px;
+  background: var(--surface); border: 2px solid var(--mandarina); border-radius: var(--radius-card);
+  color: var(--text); text-decoration: none;
+}
+.daily-card:hover { text-decoration: none; border-color: var(--primary); }
+.daily-card .daily-sun { font-size: 28px; line-height: 1; flex-shrink: 0; }
+.daily-card strong { display: block; font-family: var(--font-display); font-weight: 800; font-size: 18px; }
+.daily-card span.daily-desc { display: block; font-size: 14px; color: var(--crema-72); }
+.daily-card .daily-go { margin-left: auto; font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--primary); }
+
+/* ---------- Tarjetas ---------- */
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 8px 0 44px; }
+.card {
+  background: var(--surface); border: 1px solid var(--borde); border-radius: var(--radius-card);
+  padding: 24px;
+}
+.card h2 { font-size: 19px; margin: 0 0 8px; }
+.card p { margin: 0; color: var(--crema-72); font-size: 15px; }
+
+/* ---------- Cómo se juega (pasos, solo desktop) ---------- */
+.steps-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin: 20px 0 16px; }
+.step-card {
+  background: var(--surface); border: 1px solid var(--borde); border-radius: var(--radius-card);
+  padding: 20px;
+}
+.step-num {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--primary); color: var(--tinta);
+  font-family: var(--font-display); font-weight: 800; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 12px;
+}
+.step-card h3 { font-family: var(--font-display); font-weight: 800; font-size: 16px; margin: 0 0 6px; color: var(--text); }
+.step-card p { font-size: 14px; color: var(--crema-72); margin: 0; line-height: 1.45; }
+section.info { margin-bottom: 24px; }
+section.info h2 { font-size: 26px; margin-bottom: 14px; }
+section.info p { color: var(--crema-72); margin: 0 0 12px; }
+section.info a { font-weight: 600; }
+
+
+/* ---------- Footer ---------- */
+footer.site-footer { width: 100%; border-top: 1px solid var(--borde); padding: 28px 0; margin-top: 24px; }
+footer.site-footer .wrap {
+  display: flex; flex-wrap: wrap; gap: 14px 26px; align-items: center; justify-content: space-between;
+}
+footer.site-footer nav { display: flex; flex-wrap: wrap; gap: 18px; }
+footer.site-footer a { color: var(--text); font-size: 14px; font-weight: 600; text-decoration: none; }
+footer.site-footer a:hover { color: var(--primary); }
+footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
+
+/* ---------- Selector de idioma como links + aviso de idioma ---------- */
+a.site-lang-option { color: var(--text); text-decoration: none; }
+a.site-lang-option:hover { text-decoration: none; }
+.lang-hint {
+  position: relative; z-index: 60; width: 100%;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 10px;
+  padding: 10px 44px 10px 16px; font-size: 14px; line-height: 1.4;
+  background: var(--surface); border-bottom: 1px solid var(--borde); color: var(--text);
+}
+.lang-hint a { font-weight: 700; color: var(--primary); }
+/* En la home el body tiene padding: el aviso lo compensa para ocupar todo el ancho. */
+body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; }
+.lang-hint button {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  width: 32px; height: 32px; border: 0; border-radius: 8px; background: transparent;
+  color: var(--text); font-size: 20px; line-height: 1; cursor: pointer;
+}
+.lang-hint button:hover { background: var(--crema-08); }
+
+/* ---------- Footer: bloque "Más sobre tutti frutti" ---------- */
+footer.site-footer .footer-more { flex-basis: 100%; }
+footer.site-footer .footer-more-title {
+  display: block; margin: 0 0 10px; font-family: var(--font-mono); font-size: 12px;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted);
+}
+footer.site-footer .footer-more ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 20px; }
+footer.site-footer .footer-more a { font-weight: 500; }
+
+@media (max-width: 640px) {
+  .top-bar { justify-content: space-between; }
+  .menu-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px; border-radius: var(--radius);
+    border: 2px solid var(--borde); background: transparent; color: var(--text);
+    cursor: pointer; transition: border-color .15s, color .15s;
+  }
+  .menu-btn svg { width: 22px; height: 22px; }
+  .menu-btn:hover { border-color: var(--primary); color: var(--primary); }
+  /* En celular el juego va primero, pero el texto sigue visible debajo en versión compacta:
+     Google indexa la versión móvil y quien entra entiende de qué se trata antes de jugar. */
+  .hero { padding-bottom: 20px; }
+  .quickplay-kicker { display: none; }
+  .hero > p { font-size: 16px; margin: 22px auto 0; }
+  .grid-3 { grid-template-columns: 1fr; gap: 10px; margin: 0 0 32px; }
+  .card { padding: 16px 18px; }
+  .card h2 { font-size: 17px; margin-bottom: 4px; }
+  .card p { font-size: 14px; }
+  section.info h2 { font-size: 22px; }
+  .steps-grid { grid-template-columns: 1fr; gap: 8px; margin: 14px 0 12px; }
+  .step-card { padding: 12px 14px; display: grid; grid-template-columns: 26px 1fr; column-gap: 12px; }
+  .step-num { width: 26px; height: 26px; font-size: 13px; margin: 0; grid-row: span 2; }
+  .step-card h3 { font-size: 15px; }
+  .step-card p { font-size: 13px; }
+  section.info p { font-size: 15px; }
+}
+
+@media (max-width: 520px) {
+  .btn { padding: 15px 24px; font-size: 16px; }
+  footer.site-footer .wrap { flex-direction: column; align-items: flex-start; }
+}
+
+/* Mismo salto de tamaño del logo que usa jugar.html en pantallas grandes. */
+@media (min-width: 900px) {
+  .hero .wordmark { font-size: clamp(72px, 8vw, 128px); }
+}
+</style>
+<script>
+(function () {
+  var PRESETS = {
+    "pomelo__crema": { theme: "pomelo", bg: "crema" },
+    "cielo__violeta": { theme: "cielo", bg: "violeta" },
+    "uva__violeta": { theme: "uva", bg: "violeta" },
+    "lima__petroleo": { theme: "lima", bg: "petroleo" },
+    "mandarina__lavanda": { theme: "mandarina", bg: "lavanda" },
+  };
+  var LIGHT_BACKGROUNDS = ["crema", "lavanda"];
+  var preset;
+  try { preset = PRESETS[localStorage.getItem("tuttifruti_preset")]; } catch (e) { preset = null; }
+  preset = preset || PRESETS.pomelo__crema;
+  document.documentElement.setAttribute("data-theme", preset.theme);
+  document.documentElement.setAttribute("data-bg", preset.bg);
+  if (LIGHT_BACKGROUNDS.indexOf(preset.bg) !== -1) document.documentElement.setAttribute("data-light", "");
+})();
+</script>
+<script src="/site-i18n.js" defer></script>
+<script src="/site-theme.js" defer></script>
+<script src="/fruits.js" defer></script>
+<script src="/home.js" defer></script>
+<meta name="google-adsense-account" content="ca-pub-9897296561814312" />
+<script src="/analytics.js" defer></script>
+<script src="/cookie-consent.js" defer></script>
+<script src="/ads-loader.js" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tuttipuntofrutti.com/pt/#website",
+      "name": "tutti.frutti",
+      "alternateName": "tuttipuntofrutti",
+      "url": "https://tuttipuntofrutti.com/pt/",
+      "inLanguage": "pt",
+      "publisher": {
+        "@id": "https://tuttipuntofrutti.com/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tuttipuntofrutti.com/#organization",
+      "name": "tutti.frutti",
+      "url": "https://tuttipuntofrutti.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://tuttipuntofrutti.com/icons/icon-512.png",
+        "width": 512,
+        "height": 512
+      },
+      "email": "bauengames@gmail.com"
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://tuttipuntofrutti.com/pt/#webapp",
+      "name": "tutti.frutti",
+      "url": "https://tuttipuntofrutti.com/pt/",
+      "description": "Jogo de Stop (Adedonha) online e grátis, com salas privadas, adversário aleatório e um juiz com IA.",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript",
+      "inLanguage": [
+        "es",
+        "en",
+        "pt"
+      ],
+      "isAccessibleForFree": true,
+      "image": "https://tuttipuntofrutti.com/og/og-pt.png",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@id": "https://tuttipuntofrutti.com/#organization"
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<div class="bg-blobs" aria-hidden="true">
+  <span class="bg-blob bg-blob-1"></span>
+  <span class="bg-blob bg-blob-2"></span>
+  <span class="bg-blob bg-blob-3"></span>
+</div>
+
+<header class="top-bar">
+  <button type="button" class="menu-btn" onclick="openSideMenu()" aria-label="Abrir menu">
+    <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,128a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,128ZM40,72H216a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16ZM216,184H40a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Z"/></svg>
+  </button>
+  <div class="header-actions">
+      <div class="lang-picker" id="langPicker">
+        <button type="button" class="lang-icon-btn" onclick="toggleSiteLangMenu()" aria-label="Mudar idioma" aria-haspopup="true">
+          <svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm88,104a87.61,87.61,0,0,1-3.33,24H174.16a157.44,157.44,0,0,0,0-48h38.51A87.61,87.61,0,0,1,216,128ZM102,168H154a115.11,115.11,0,0,1-26,45A115.27,115.27,0,0,1,102,168Zm-3.9-16a140.84,140.84,0,0,1,0-48h59.8a140.84,140.84,0,0,1,0,48ZM40,128a87.61,87.61,0,0,1,3.33-24H81.84a157.44,157.44,0,0,0,0,48H43.33A87.61,87.61,0,0,1,40,128ZM154,88H102a115.11,115.11,0,0,1,26-45A115.27,115.27,0,0,1,154,88Zm52.36,0H170.7a135.28,135.28,0,0,0-22.3-45.6A88.29,88.29,0,0,1,206.37,88ZM107.6,42.4A135.28,135.28,0,0,0,85.3,88H49.63A88.29,88.29,0,0,1,107.6,42.4ZM49.63,168H85.3a135.28,135.28,0,0,0,22.3,45.6A88.29,88.29,0,0,1,49.63,168Zm98.77,45.6a135.28,135.28,0,0,0,22.3-45.6h35.67A88.29,88.29,0,0,1,148.4,213.6Z"/></svg>
+        </button>
+        <div class="lang-menu" id="langMenu">
+          <a class="site-lang-option" href="/" hreflang="es" lang="es" onclick="rememberSiteLanguage('es')">Español</a>
+          <a class="site-lang-option" href="/en/" hreflang="en" lang="en" onclick="rememberSiteLanguage('en')">English</a>
+          <a class="site-lang-option selected" href="/pt/" hreflang="pt" lang="pt" aria-current="true" onclick="rememberSiteLanguage('pt')">Português</a>
+        </div>
+      </div>
+      <div class="theme-picker" id="themePicker">
+        <button type="button" class="theme-icon-btn" onclick="toggleThemeMenu()" aria-label="Mudar tema"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M203.57,51A107.9,107.9,0,0,0,20,128c0,44.72,27.6,82.25,72,97.94A36,36,0,0,0,140,192a12,12,0,0,1,12-12h46.21a35.79,35.79,0,0,0,35.1-28A108.6,108.6,0,0,0,236,127.09,107.23,107.23,0,0,0,203.57,51Zm6.34,95.67a11.91,11.91,0,0,1-11.7,9.3H152a36,36,0,0,0-36,36,12,12,0,0,1-16,11.3c-16.65-5.88-30.65-15.76-40.48-28.56A76,76,0,0,1,44,128a84,84,0,0,1,83.13-84H128a84.35,84.35,0,0,1,84,83.29A84.72,84.72,0,0,1,209.91,146.71ZM144,76a16,16,0,1,1-16-16A16,16,0,0,1,144,76Zm-44,24A16,16,0,1,1,84,84,16,16,0,0,1,100,100Zm0,56a16,16,0,1,1-16-16A16,16,0,0,1,100,156Zm88-56a16,16,0,1,1-16-16A16,16,0,0,1,188,100Z"/></svg></button>
+        <div class="theme-menu" id="themeMenu">
+          <p class="theme-menu-label">Temas</p>
+          <div class="preset-grid" id="presetGrid"></div>
+        </div>
+      </div>
+  </div>
+</header>
+
+<div class="side-menu-overlay" id="sideMenuOverlay" onclick="closeSideMenu()"></div>
+<div class="side-menu" id="sideMenu">
+  <div class="side-menu-top">
+    <span class="side-menu-brand">tutti.frutti</span>
+    <button type="button" class="side-menu-close" onclick="closeSideMenu()" aria-label="Fechar menu">&times;</button>
+  </div>
+  <nav>
+    <a href="/pt/">Início</a>
+    <a href="/pt/regras">Regras do jogo</a>
+    <a href="/pt/privacidade">Privacidade</a>
+    <a href="/pt/termos">Termos de uso</a>
+    <a href="/pt/contato">Contato</a>
+    <p class="side-menu-subtitle">Mais sobre o jogo</p>
+    <a href="/pt/desafio-do-dia">Desafio do dia</a>
+    <a href="/pt/categorias-de-stop">Categorias de Stop</a>
+    <a href="/pt/stop-para-imprimir">Folhas para imprimir</a>
+    <a href="/pt/stop-por-videochamada">Jogar por videochamada</a>
+    <a href="/pt/stop-na-sala-de-aula">Stop na sala de aula</a>
+    <a href="/pt/quem-somos">Quem somos</a>
+  </nav>
+</div>
+
+<main class="wrap">
+  <section class="hero">
+    <span class="wordmark">tutti<span class="punto"><svg viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti</span>
+    <h1 class="home-h1">Jogue Stop (Adedonha) online com amigos</h1>
+
+    <div class="quickplay">
+      <p class="quickplay-kicker">Jogue agora</p>
+      <form onsubmit="return goPlay(event)">
+        <div class="field">
+          <label class="label" for="homePlayerName">Seu nome</label>
+          <input type="text" id="homePlayerName" maxlength="30" autocomplete="nickname" / placeholder="Qual é o seu nome?">
+        </div>
+        <div class="field">
+          <span class="label" id="homeAvatarLabel">Sua fruta</span>
+          <div class="avatar-picker" id="homeAvatarPicker" role="radiogroup" aria-labelledby="homeAvatarLabel"></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Jogar agora</button>
+      </form>
+      <button type="button" class="btn btn-secondary btn-block install-btn" id="installAppBtn" style="display:none;" onclick="installApp()"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/></svg><span data-install-label>Instalar o app</span></button>
+    </div>
+
+    <p>Jogue Stop online, o famoso Adedonha (ou Adedanha), com amigos ou com um adversário aleatório. Monte uma sala, convide quem quiser e joguem em tempo real: uma letra é sorteada, todos preenchem as categorias contra o relógio e um juiz com inteligência artificial resolve as palavras em disputa.</p>
+  </section>
+
+  <a class="daily-card" href="/pt/desafio-do-dia">
+    <span class="daily-sun" aria-hidden="true">☀️</span>
+    <span><strong>Desafio do dia</strong><span class="daily-desc">A mesma letra para todos, 60 segundos e uma única tentativa.</span></span>
+    <span class="daily-go" aria-hidden="true">→</span>
+  </a>
+
+  <div class="grid-3">
+    <div class="card">
+      <h2>Salas privadas</h2>
+      <p>Crie uma sala, compartilhe o código ou o link com seus amigos e joguem todos juntos em tempo real.</p>
+    </div>
+    <div class="card">
+      <h2>Adversário aleatório</h2>
+      <p>Se você não tem com quem jogar, procuramos um adversário disponível nesse momento para montar a partida.</p>
+    </div>
+    <div class="card">
+      <h2>Juiz com IA</h2>
+      <p>Quando uma resposta é contestada e não há acordo, um juiz automático decide se ela vale ou não, sem discussões intermináveis.</p>
+    </div>
+  </div>
+
+  <section class="info">
+    <h2>Como se joga?</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Sorteia-se uma letra</h3>
+        <p>Ao começar a rodada, sorteia-se uma letra entre as habilitadas para a sala.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Preencha as categorias</h3>
+        <p>Escreva uma palavra que comece com essa letra em cada categoria, antes que o tempo acabe.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Aperte Basta!</h3>
+        <p>Assim que terminar, qualquer um pode apertar Basta! e a rodada é encerrada para todos.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h3>O juiz resolve as dúvidas</h3>
+        <p>Se uma resposta é contestada e não há acordo, um juiz com IA decide — sem discussões intermináveis.</p>
+      </div>
+    </div>
+    <p>Para conhecer todos os detalhes sobre pontuação, contestações e o funcionamento do juiz com IA, veja a página de <a href="/pt/regras">regras do jogo</a>.</p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-more">
+      <span class="footer-more-title">Mais sobre o jogo</span>
+      <ul>
+        <li><a href="/pt/desafio-do-dia">Desafio do dia</a></li>
+        <li><a href="/pt/categorias-de-stop">Categorias de Stop</a></li>
+        <li><a href="/pt/stop-para-imprimir">Folhas para imprimir</a></li>
+        <li><a href="/pt/stop-por-videochamada">Jogar por videochamada</a></li>
+        <li><a href="/pt/stop-na-sala-de-aula">Stop na sala de aula</a></li>
+        <li><a href="/pt/quem-somos">Quem somos</a></li>
+      </ul>
+    </div>
+    <nav>
+      <a href="/pt/regras">Regras do jogo</a>
+      <a href="/pt/privacidade">Privacidade</a>
+      <a href="/pt/termos">Termos de uso</a>
+      <a href="/pt/contato">Contato</a>
+    </nav>
+    <span class="copy">© 2026 tutti.frutti</span>
+  </div>
+</footer>
+
+<script src="/pwa.js" defer></script>
+</body>
+</html>

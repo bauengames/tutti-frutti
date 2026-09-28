@@ -1,9 +1,267 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://tuttipuntofrutti.com/</loc></url>
-  <url><loc>https://tuttipuntofrutti.com/jugar.html</loc></url>
-  <url><loc>https://tuttipuntofrutti.com/reglas.html</loc></url>
-  <url><loc>https://tuttipuntofrutti.com/privacidad.html</loc></url>
-  <url><loc>https://tuttipuntofrutti.com/terminos.html</loc></url>
-  <url><loc>https://tuttipuntofrutti.com/contacto.html</loc></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://tuttipuntofrutti.com/</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/reglas</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/reglas" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/rules" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/regras" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/reglas" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/privacidad</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/privacidad" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/privacy" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/privacidade" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/privacidad" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/terminos</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/terminos" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/terms" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/termos" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/terminos" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/contacto</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/contacto" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/contact" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/contato" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/contacto" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/en/</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/en/rules</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/reglas" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/rules" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/regras" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/reglas" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/en/privacy</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/privacidad" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/privacy" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/privacidade" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/privacidad" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/en/terms</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/terminos" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/terms" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/termos" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/terminos" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/en/contact</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/contacto" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/contact" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/contato" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/contacto" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/pt/</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/pt/regras</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/reglas" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/rules" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/regras" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/reglas" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/pt/privacidade</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/privacidad" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/privacy" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/privacidade" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/privacidad" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/pt/termos</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/terminos" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/terms" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/termos" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/terminos" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/pt/contato</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/contacto" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/contact" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/contato" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/contacto" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/desafio-del-dia</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/desafio-del-dia" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/daily-challenge" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/desafio-do-dia" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/desafio-del-dia" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/categorias-tutti-frutti</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/categorias-tutti-frutti" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/stop-game-categories" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/categorias-de-stop" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/categorias-tutti-frutti" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/tutti-frutti-para-imprimir</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/tutti-frutti-para-imprimir" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/printable-stop-game-sheets" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/stop-para-imprimir" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/tutti-frutti-para-imprimir" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/tutti-frutti-por-videollamada</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/tutti-frutti-por-videollamada" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/play-stop-on-video-call" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/stop-por-videochamada" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/tutti-frutti-por-videollamada" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/tutti-frutti-en-el-aula</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/tutti-frutti-en-el-aula" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/stop-game-in-the-classroom" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/stop-na-sala-de-aula" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/tutti-frutti-en-el-aula" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/quienes-somos</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/quienes-somos" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/about-us" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/quem-somos" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/quienes-somos" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/en/daily-challenge</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/desafio-del-dia" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/daily-challenge" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/desafio-do-dia" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/desafio-del-dia" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/en/stop-game-categories</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/categorias-tutti-frutti" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/stop-game-categories" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/categorias-de-stop" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/categorias-tutti-frutti" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/en/printable-stop-game-sheets</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/tutti-frutti-para-imprimir" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/printable-stop-game-sheets" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/stop-para-imprimir" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/tutti-frutti-para-imprimir" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/en/play-stop-on-video-call</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/tutti-frutti-por-videollamada" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/play-stop-on-video-call" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/stop-por-videochamada" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/tutti-frutti-por-videollamada" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/en/stop-game-in-the-classroom</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/tutti-frutti-en-el-aula" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/stop-game-in-the-classroom" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/stop-na-sala-de-aula" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/tutti-frutti-en-el-aula" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/en/about-us</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/quienes-somos" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/about-us" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/quem-somos" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/quienes-somos" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/pt/desafio-do-dia</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/desafio-del-dia" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/daily-challenge" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/desafio-do-dia" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/desafio-del-dia" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/pt/categorias-de-stop</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/categorias-tutti-frutti" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/stop-game-categories" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/categorias-de-stop" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/categorias-tutti-frutti" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/pt/stop-para-imprimir</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/tutti-frutti-para-imprimir" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/printable-stop-game-sheets" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/stop-para-imprimir" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/tutti-frutti-para-imprimir" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/pt/stop-por-videochamada</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/tutti-frutti-por-videollamada" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/play-stop-on-video-call" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/stop-por-videochamada" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/tutti-frutti-por-videollamada" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/pt/stop-na-sala-de-aula</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/tutti-frutti-en-el-aula" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/stop-game-in-the-classroom" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/stop-na-sala-de-aula" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/tutti-frutti-en-el-aula" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/pt/quem-somos</loc>
+    <lastmod>2026-09-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/quienes-somos" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/about-us" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/quem-somos" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/quienes-somos" />
+  </url>
 </urlset>

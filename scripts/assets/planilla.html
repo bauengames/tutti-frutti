@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- Plantilla de las planillas para imprimir (descargas/*.pdf). La renderiza scripts/build-assets.sh.
+     Parámetros: ?v=clasica | chicos | blanco  y  &lang=es | en | pt -->
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Planilla de tutti frutti</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Instrument+Sans:wght@500;700&family=Martian+Mono:wght@400;700&display=swap" />
+<style>
+  @page { size: A4 landscape; margin: 10mm 11mm; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; color: #14101F; font-family: 'Instrument Sans', sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .sheet { height: 189mm; display: flex; flex-direction: column; }
+  header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 5mm; }
+  .wordmark { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 30pt; letter-spacing: -.045em; line-height: 1; }
+  .wordmark .punto { display: inline-block; width: .34em; height: .38em; margin: 0 .03em; }
+  .wordmark .punto svg { width: 100%; height: 100%; display: block; }
+  .title { font-family: 'Martian Mono', monospace; font-size: 9pt; letter-spacing: .12em; text-transform: uppercase; color: #FF5E5B; font-weight: 700; margin-top: 2mm; }
+  .fields { display: flex; gap: 6mm; font-size: 10pt; }
+  .fields span { display: inline-block; min-width: 45mm; border-bottom: 1.2pt solid #14101F; padding-bottom: 1mm; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; flex: 1; }
+  th { background: #14101F; color: #FFF3E2; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 11pt; padding: 2.5mm 1.5mm; text-align: center; border: 1pt solid #14101F; }
+  th.blank { background: #FFF3E2; color: #14101F; border-bottom: 1.5pt solid #14101F; height: 12mm; }
+  th.letra, th.puntos { background: #FF5E5B; color: #14101F; }
+  td { border: 1pt solid #C9BFB2; }
+  td.letra, td.puntos { background: #FFF3E2; }
+  col.narrow { width: 15mm; }
+  footer { display: flex; justify-content: space-between; align-items: center; margin-top: 4mm; font-size: 8.5pt; color: #4A4458; }
+  footer b { color: #14101F; }
+  .kids th { font-size: 14pt; }
+</style>
+</head>
+<body>
+<div class="sheet" id="sheet">
+  <header>
+    <div>
+      <div class="wordmark">tutti<span class="punto"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="#FF5E5B"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti</div>
+      <div class="title" id="title"></div>
+    </div>
+    <div class="fields"><div><i id="playerLabel" style="font-style:normal"></i> <span></span></div><div><i id="dateLabel" style="font-style:normal"></i> <span style="min-width:30mm"></span></div></div>
+  </header>
+  <table id="grid"></table>
+  <footer>
+    <div id="score"></div>
+    <div id="play"></div>
+  </footer>
+</div>
+<script>
+  var T = {
+    es: {
+      clasica: { title: "Planilla clásica", cats: ["Nombre", "Apellido", "País", "Ciudad", "Animal", "Comida", "Color", "Objeto"] },
+      chicos: { title: "Planilla para chicos", cats: ["Nombre", "Animal", "Fruta", "Color", "Juguete", "Cosa de la casa"] },
+      blanco: { title: "Planilla en blanco · escribí tus categorías" },
+      letter: "Letra", points: "Puntos", player: "Jugador:", date: "Fecha:",
+      score: "Puntaje: <b>10</b> respuesta única · <b>5</b> repetida · <b>20</b> única persona que completó la categoría · <b>0</b> vacía o inválida",
+      play: "Jugá online gratis en <b>tuttipuntofrutti.com</b>",
+    },
+    en: {
+      clasica: { title: "Classic Stop game sheet", cats: ["Name", "Last name", "Country", "City", "Animal", "Food", "Color", "Object"] },
+      chicos: { title: "Stop game sheet for kids", cats: ["Name", "Animal", "Fruit", "Color", "Toy", "Thing at home"] },
+      blanco: { title: "Blank sheet · write your own categories" },
+      letter: "Letter", points: "Points", player: "Player:", date: "Date:",
+      score: "Scoring: <b>10</b> unique answer · <b>5</b> repeated · <b>20</b> only person who filled in the category · <b>0</b> empty or invalid",
+      play: "Play online for free at <b>tuttipuntofrutti.com</b>",
+    },
+    pt: {
+      clasica: { title: "Folha de Stop clássica", cats: ["Nome", "CEP", "Animal", "Comida", "Cor", "FVL", "Objeto", "Marca"] },
+      chicos: { title: "Folha de Stop para crianças", cats: ["Nome", "Animal", "Fruta", "Cor", "Brinquedo", "Coisa de casa"] },
+      blanco: { title: "Folha em branco · escreva suas categorias" },
+      letter: "Letra", points: "Pontos", player: "Jogador:", date: "Data:",
+      score: "Pontuação: <b>10</b> resposta única · <b>5</b> repetida · <b>20</b> única pessoa que preencheu a categoria · <b>0</b> vazia ou inválida",
+      play: "Jogue online grátis em <b>tuttipuntofrutti.com</b>",
+    },
+  };
+  var q = new URLSearchParams(location.search);
+  var lang = T[q.get("lang")] ? q.get("lang") : "es";
+  var L = T[lang];
+  var key = { clasica: 1, chicos: 1, blanco: 1 }[q.get("v")] ? q.get("v") : "clasica";
+  var v = {
+    title: L[key].title,
+    cats: key === "blanco" ? ["", "", "", "", "", "", "", ""] : L[key].cats,
+    rows: key === "chicos" ? 7 : 12,
+    kids: key === "chicos",
+  };
+  document.documentElement.lang = lang;
+  document.getElementById("title").textContent = v.title;
+  document.getElementById("playerLabel").textContent = L.player;
+  document.getElementById("dateLabel").textContent = L.date;
+  document.getElementById("score").innerHTML = L.score;
+  document.getElementById("play").innerHTML = L.play;
+  var grid = document.getElementById("grid");
+  if (v.kids) grid.className = "kids";
+  var cols = '<colgroup><col class="narrow">' + v.cats.map(function () { return "<col>"; }).join("") + '<col class="narrow" style="width:18mm"></colgroup>';
+  var head = '<thead><tr><th class="letra">' + L.letter + '</th>' + v.cats.map(function (c) { return '<th class="' + (c ? "" : "blank") + '">' + c + "</th>"; }).join("") + '<th class="puntos">' + L.points + '</th></tr></thead>';
+  var body = "<tbody>";
+  for (var i = 0; i < v.rows; i++) body += '<tr><td class="letra"></td>' + v.cats.map(function () { return "<td></td>"; }).join("") + '<td class="puntos"></td></tr>';
+  grid.innerHTML = cols + head + body + "</tbody>";
+</script>
+</body>
+</html>

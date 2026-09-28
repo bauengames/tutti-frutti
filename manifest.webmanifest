@@ -3,7 +3,7 @@
   "short_name": "tutti.frutti",
   "description": "Tutti frutti online con amigos, rival al azar, contrarreloj y desafío del día.",
   "lang": "es",
-  "start_url": "/jugar.html?source=app",
+  "start_url": "/jugar?source=app",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",

@@ -1,0 +1,73 @@
+<main class="wrap">
+  <section class="hero">
+    <span class="wordmark">tutti<span class="punto"><svg viewBox="10 4 80 88" aria-hidden="true"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span>frutti</span>
+    <h1 class="home-h1" data-i18n="home_h1">Tutti frutti online gratis con amigos</h1>
+
+    <div class="quickplay">
+      <p class="quickplay-kicker" data-i18n="home_quickplay_kicker">Jugá ahora</p>
+      <form onsubmit="return goPlay(event)">
+        <div class="field">
+          <label class="label" for="homePlayerName" data-i18n="label_player_name">Tu nombre</label>
+          <input type="text" id="homePlayerName" maxlength="30" placeholder="¿Cómo te llamás?" autocomplete="nickname" data-i18n-placeholder="player_name_placeholder" />
+        </div>
+        <div class="field">
+          <span class="label" id="homeAvatarLabel" data-i18n="avatar_label">Tu fruta</span>
+          <div class="avatar-picker" id="homeAvatarPicker" role="radiogroup" aria-labelledby="homeAvatarLabel"></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" data-i18n="play_now_btn">Jugar ahora</button>
+      </form>
+      <button type="button" class="btn btn-secondary btn-block install-btn" id="installAppBtn" style="display:none;" onclick="installApp()"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/></svg><span data-install-label data-i18n="install_app_btn">Instalar la app</span></button>
+    </div>
+
+    <p data-i18n="home_hero_lead">Tutti frutti online, con amigos o con un rival al azar. Armá una sala, invitá a quien quieras y jueguen en tiempo real: se sortea una letra, completan categorías a contrarreloj y un juez con inteligencia artificial resuelve las palabras en disputa.</p>
+  </section>
+
+  <a class="daily-card" href="{{DESAFIO_URL}}">
+    <span class="daily-sun" aria-hidden="true">☀️</span>
+    <span><strong data-i18n="home_daily_title">Desafío del día</strong><span class="daily-desc" data-i18n="home_daily_desc">La misma letra para todos, 60 segundos y un solo intento.</span></span>
+    <span class="daily-go" aria-hidden="true">→</span>
+  </a>
+
+  <div class="grid-3">
+    <div class="card">
+      <h2 data-i18n="home_card1_title">Salas privadas</h2>
+      <p data-i18n="home_card1_body">Creá una sala, compartí el código o el link con tus amigos y jueguen todos juntos en tiempo real.</p>
+    </div>
+    <div class="card">
+      <h2 data-i18n="home_card2_title">Rival al azar</h2>
+      <p data-i18n="home_card2_body">Si no tenés con quién jugar, buscamos un rival disponible en ese momento para armar la partida.</p>
+    </div>
+    <div class="card">
+      <h2 data-i18n="home_card3_title">Juez con IA</h2>
+      <p data-i18n="home_card3_body">Cuando una respuesta se objeta y no hay acuerdo, un juez automático decide si vale o no, sin discusiones eternas.</p>
+    </div>
+  </div>
+
+  <section class="info">
+    <h2 data-i18n="home_how_heading">¿Cómo se juega?</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3 data-i18n="home_step1_title">Se sortea una letra</h3>
+        <p data-i18n="home_step1_desc">Al arrancar la ronda se elige una letra al azar entre las habilitadas para la sala.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3 data-i18n="home_step2_title">Completá las categorías</h3>
+        <p data-i18n="home_step2_desc">Escribí una palabra que empiece con esa letra en cada categoría, antes de que se acabe el tiempo.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3 data-i18n="home_step3_title">Tocá ¡Basta!</h3>
+        <p data-i18n="home_step3_desc">En cuanto termines, cualquiera puede tocar ¡Basta! y la ronda se corta para todos.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h3 data-i18n="home_step4_title">El juez resuelve las dudas</h3>
+        <p data-i18n="home_step4_desc">Si una respuesta se objeta y no hay acuerdo, un juez con IA decide si vale, sin discusiones eternas.</p>
+      </div>
+    </div>
+    <p data-i18n-html="home_how_p2_html">Para conocer el detalle completo de puntajes, objeciones y el funcionamiento del juez con IA, mirá la página de <a href="reglas.html">reglas del juego</a>.</p>
+  </section>
+
+</main>

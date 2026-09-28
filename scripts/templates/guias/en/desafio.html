@@ -1,0 +1,63 @@
+<main>
+  <div class="wrap">
+    <p class="breadcrumb"><a href="/en/">Home</a> › Daily challenge</p>
+    <h1>The daily Stop game challenge</h1>
+    <p class="lead">One letter, six categories and 60 seconds. There's a new challenge every day, the same for everyone who plays, and you get a single try to post the best score on the leaderboard.</p>
+
+    <div class="cta-box">
+      <p>Today's challenge is ready. <span data-countdown hidden>The next one comes out in <strong data-countdown-time></strong>.</span></p>
+      <a class="btn-play btn-lg" href="/jugar?desafio">Play today's challenge</a>
+    </div>
+
+    <section>
+      <h2>How it works</h2>
+      <ul>
+        <li><strong>The same letter for everyone.</strong> The day's letter and categories come from the date, so everyone who plays that day gets exactly the same challenge.</li>
+        <li><strong>Six categories, 60 seconds.</strong> You have one minute to fill in all six with words starting with the letter of the day.</li>
+        <li><strong>One category is worth double.</strong> Every day, one of the six is marked as the double-points category: get it right and it counts twice.</li>
+        <li><strong>One try only.</strong> Your attempt is recorded as soon as it starts, so reloading the page won't let you play again.</li>
+        <li><strong>An AI judge checks your answers.</strong> Since you're not playing against others in a room, the AI judge decides whether each word is valid for the letter and the category.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>How the score works</h2>
+      <p>Each valid answer is worth 10 points, and the double-points category is worth 20. If you have at least one valid answer, you also get one bonus point for every second left on the clock when you tap Stop!. So it pays to finish fast, but without risking doubtful words: an invalid answer scores nothing.</p>
+      <p>When you finish, you'll see which categories you got right and the daily leaderboard with everyone who has already played. You can also share your result as a colored grid that shows your hits without giving away your words.</p>
+    </section>
+
+    <section>
+      <h2>When does the challenge change?</h2>
+      <p>The challenge changes every day at midnight in your local time, wherever you are. The letter and categories depend only on the date, so everyone who plays on the same day gets the same challenge and competes on the same leaderboard.</p>
+    </section>
+
+    <section>
+      <h2>Tips to score more</h2>
+      <ul>
+        <li>Check which category is worth double and fill it in first.</li>
+        <li>Don't waste time looking for the perfect word: in the daily challenge it doesn't matter if someone else wrote the same thing, only that it's valid.</li>
+        <li>If a category isn't coming, skip it and move on. The seconds you save are points too.</li>
+        <li>With a hard letter, think of two-word answers (like "sea lion" or "sweet potato"), which often unlock a category.</li>
+      </ul>
+      <p>For ideas on which categories might come up, check out the <a href="/en/stop-game-categories">Stop game categories</a>. And if you'd rather play with friends, the <a href="/en/rules">Stop game rules</a> explain how rooms work.</p>
+    </section>
+  </div>
+</main>
+<script>
+/* Countdown to the next challenge (local midnight). */
+(function () {
+  var box = document.querySelector("[data-countdown]");
+  var out = document.querySelector("[data-countdown-time]");
+  if (!box || !out) return;
+  function tick() {
+    var now = new Date();
+    var next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+    var s = Math.floor((next - now) / 1000);
+    var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60);
+    out.textContent = h + " h " + (m < 10 ? "0" : "") + m + " min";
+  }
+  tick();
+  box.hidden = false;
+  setInterval(tick, 30000);
+})();
+</script>

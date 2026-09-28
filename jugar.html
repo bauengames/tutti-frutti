@@ -7,7 +7,27 @@
 <meta name="description" content="Tutti frutti online gratis para jugar con amigos (conocido también como Stop o Basta en otros países). Armá la sala, se sortea la letra y gana el más rápido." />
 <meta name="theme-color" content="#14101F" />
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 2 88 92'%3E%3Cpath d='M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z' fill='%23FF5E5B'/%3E%3Cpath d='M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z' fill='%23B6EF3C'/%3E%3Cpath d='M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z' fill='%238FD32E'/%3E%3C/svg%3E" />
-<link rel="canonical" href="https://tuttipuntofrutti.com/jugar.html" />
+<link rel="canonical" href="https://tuttipuntofrutti.com/jugar" />
+<!-- La pantalla del juego no tiene contenido propio para buscadores: noindex, follow.
+     Si la URL trae código de sala (?room=...), además nofollow. -->
+<meta name="robots" content="noindex, follow" />
+<script>if (/[?&]room=/.test(location.search)) document.querySelector('meta[name="robots"]').setAttribute("content", "noindex, nofollow");</script>
+<!-- Preview al compartir el link de una sala (WhatsApp, Telegram, redes). -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="tutti.frutti" />
+<meta property="og:title" content="Te invitaron a una partida de tutti frutti" />
+<meta property="og:description" content="Entrá a la sala, elegí tu nombre y jugá al tutti frutti online con tus amigos. Gratis y sin registrarte." />
+<meta property="og:url" content="https://tuttipuntofrutti.com/jugar" />
+<meta property="og:locale" content="es_AR" />
+<meta property="og:image" content="https://tuttipuntofrutti.com/og/og-sala.png" />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="tutti.frutti: te invitaron a una partida de tutti frutti" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Te invitaron a una partida de tutti frutti" />
+<meta name="twitter:description" content="Entrá a la sala, elegí tu nombre y jugá al tutti frutti online con tus amigos. Gratis y sin registrarte." />
+<meta name="twitter:image" content="https://tuttipuntofrutti.com/og/og-sala.png" />
 <link rel="manifest" href="/manifest.webmanifest" />
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=2" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -72,6 +92,10 @@ html[data-theme="mandarina"] { --primary: var(--mandarina); --secondary: var(--p
 
 html { background: var(--bg); overflow-x: clip; }
 body {
+  /* Margen lateral de la página: lo usan también los fondos de las barras fijas de abajo,
+     para no pasarse del borde (si se pasan, en iPhone la página se puede arrastrar de costado). */
+  --page-pad-x: 16px;
+  overflow-x: clip;
   margin: 0;
   min-height: 100vh;
   position: relative;
@@ -84,7 +108,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px 16px 64px;
+  padding: 16px var(--page-pad-x) 64px;
   -webkit-font-smoothing: antialiased;
   transition: background-color .3s ease, color .3s ease;
 }
@@ -340,7 +364,7 @@ html[data-light] .cat-pick-chip-random { color: var(--tinta); }
 }
 .lobby-footer, .review-actions { position: sticky; bottom: 16px; padding-top: 4px; z-index: 5; isolation: isolate; }
 .lobby-footer::before, .review-actions::before {
-  content: ''; position: absolute; inset: -24px -16px -16px; z-index: -1;
+  content: ''; position: absolute; inset: -24px calc(-1 * var(--page-pad-x)) -16px; z-index: -1;
   background: linear-gradient(to bottom, transparent, var(--bg) 40%);
 }
 
@@ -758,7 +782,7 @@ html[data-light] .twist-note { color: var(--tinta); }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 520px) {
-  body { padding: 12px 14px 48px; }
+  body { --page-pad-x: 14px; padding: 12px var(--page-pad-x) 48px; }
   .top-bar { margin-bottom: 18px; }
   .btn { padding: 18px 24px; }
   .medal { font-size: 80px; }
@@ -785,7 +809,7 @@ html[data-light] .twist-note { color: var(--tinta); }
 
 /* ---------- Escritorio: que no se sienta una versión de celular estirada ---------- */
 @media (min-width: 900px) {
-  body { font-size: 18px; padding: 32px 32px 72px; }
+  body { --page-pad-x: 32px; font-size: 18px; padding: 32px var(--page-pad-x) 72px; }
   .top-bar, .lobby, .results, .board, .grid, .basta-wrap { max-width: 880px; }
   .lobby-hero .wordmark { font-size: clamp(72px, 8vw, 128px); }
   .lobby-hero .lead { font-size: 20px; }
@@ -805,8 +829,11 @@ html[data-light] .twist-note { color: var(--tinta); }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 </style>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9897296561814312"
-     crossorigin="anonymous"></script>
+<!-- Analytics fija el consentimiento por defecto, el banner aplica la elección (fuera de Europa) y AdSense carga más tarde. -->
+<meta name="google-adsense-account" content="ca-pub-9897296561814312" />
+<script src="/analytics.js" defer></script>
+<script src="/cookie-consent.js" defer></script>
+<script src="/ads-loader.js" defer></script>
 </head>
 <body>
 
@@ -845,7 +872,7 @@ html[data-light] .twist-note { color: var(--tinta); }
 <div class="screen active" id="screen-lobby">
   <div class="wrap lobby">
     <div class="lobby-hero">
-      <a href="index.html" class="wordmark-link" aria-label="Ir a la página de inicio" data-i18n-aria="brand_home_aria">
+      <a href="/" class="wordmark-link" aria-label="Ir a la página de inicio" data-i18n-aria="brand_home_aria">
         <h1 class="wordmark">tutti<span class="apple-dot" aria-hidden="true"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span><span class="sr-only">.</span>frutti</h1>
       </a>
       <p class="lead" data-i18n="lobby_lead">Tutti frutti online. Elegí categorías, invitá a tus amigos y que empiece la ronda.</p>
@@ -2080,6 +2107,9 @@ function t(key, vars) {
 }
 
 function applyStaticTranslations() {
+  // El logo lleva a la home del mismo idioma (/, /en/ o /pt/).
+  const homeLink = document.querySelector(".wordmark-link");
+  if (homeLink) homeLink.setAttribute("href", { en: "/en/", pt: "/pt/" }[state.lang] || "/");
   document.documentElement.lang = state.lang;
   document.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
   document.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
@@ -2627,6 +2657,21 @@ function applyRoomLinkFromUrl() {
   input.value = roomFromLink.toUpperCase();
   checkCanPlay();
   history.replaceState(null, "", location.pathname);
+}
+
+// /jugar?desafio (desde la página /desafio-del-dia): abre el desafío del día.
+// Si todavía no hay nombre, lleva el foco al campo de nombre en vez de mostrar un alerta.
+function applyDailyLinkFromUrl() {
+  const params = new URLSearchParams(location.search);
+  if (!params.has("desafio")) return;
+  history.replaceState(null, "", location.pathname);
+  const nameInput = document.getElementById("playerName");
+  if (nameInput && nameInput.value.trim()) {
+    openDaily();
+  } else if (nameInput) {
+    document.getElementById("dailyBanner")?.scrollIntoView({ block: "center" });
+    nameInput.focus();
+  }
 }
 
 function renderCategoryPicker() {
@@ -4544,10 +4589,13 @@ function renderWordOfRound(data, round, categories) {
 // ---------- Días, rachas de días y logros (guardados en este dispositivo) ----------
 const PROGRESS_KEY = "tuttifruti_progress";
 
-// Los días cambian a medianoche de Argentina (UTC-3), igual para todos,
-// así el desafío del día es el mismo en cualquier lugar.
+// Los días cambian a las 00 h de la hora local de cada jugador (como Wordle):
+// la letra y las categorías dependen solo de la fecha, así que el 5 de octubre
+// es el mismo desafío en todos los países, cada uno a partir de su medianoche.
 function dayKey(offsetDays = 0) {
-  return new Date(Date.now() - 3 * 3600 * 1000 + offsetDays * 86400 * 1000).toISOString().slice(0, 10);
+  const d = new Date();
+  d.setDate(d.getDate() + offsetDays);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 }
 
 function weekKey() {
@@ -5299,6 +5347,7 @@ document.getElementById("dailyBannerIcon").innerHTML = iconSvg("sun");
 document.querySelectorAll("[data-icon]").forEach(el => { el.innerHTML = iconSvg(el.dataset.icon); });
 state.twists = loadTwists();
 renderTwists();
+applyDailyLinkFromUrl();
 
 // Si la pestaña quedó abierta desde antes de un deploy (muy común en la compu),
 // se recarga sola al volver a ella, siempre que no estés en medio de una
@@ -5323,8 +5372,6 @@ checkAchievements();
 <div class="confetti-container" id="confettiContainer"></div>
 <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
-<script src="cookie-consent.js"></script>
-<script src="analytics.js"></script>
 <script src="pwa.js"></script>
 </body>
 </html>
