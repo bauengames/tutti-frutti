@@ -8,6 +8,11 @@ try {
 
 /* ---------- Fruta del jugador (misma lista y misma clave que jugar.html) ---------- */
 var AVATARS = ["🍎", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓", "🍒", "🍑", "🍍", "🥝", "🥥"];
+// Frutas compradas en la tienda del juego (misma clave que jugar.html).
+try {
+  var ownedFruits = (JSON.parse(localStorage.getItem("tuttifruti_wallet") || "null") || {}).owned || [];
+  ["🍏", "🍐", "🥭", "🫐"].forEach(function (f) { if (ownedFruits.indexOf(f) !== -1) AVATARS.push(f); });
+} catch (e) { /* storage unavailable */ }
 var AVATAR_KEY = "tuttifruti_avatar";
 
 function getHomeAvatar() {

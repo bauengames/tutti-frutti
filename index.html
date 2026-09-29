@@ -288,6 +288,9 @@ a { color: var(--primary); }
 .daily-card strong { display: block; font-family: var(--font-display); font-weight: 800; font-size: 18px; }
 .daily-card span.daily-desc { display: block; font-size: 14px; color: var(--crema-72); }
 .daily-card .daily-go { margin-left: auto; font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--primary); }
+.mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
+.mode-cards .daily-card { margin: 0; }
+@media (max-width: 640px) { .mode-cards { grid-template-columns: 1fr; gap: 10px; margin-bottom: 24px; } }
 
 /* ---------- Tarjetas ---------- */
 .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin: 8px 0 44px; }
@@ -562,6 +565,18 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
     <span><strong>Desafío del día</strong><span class="daily-desc">La misma letra para todos, 60 segundos y un solo intento.</span></span>
     <span class="daily-go" aria-hidden="true">→</span>
   </a>
+  <div class="mode-cards">
+    <a class="daily-card" href="/jugar?aventura">
+      <span class="daily-sun" aria-hidden="true">⭐</span>
+      <span><strong>Aventura</strong><span class="daily-desc">30 niveles para jugar solo, con estrellas y vidas.</span></span>
+      <span class="daily-go" aria-hidden="true">→</span>
+    </a>
+    <a class="daily-card" href="/jugar">
+      <span class="daily-sun" aria-hidden="true">🏆</span>
+      <span><strong>Duelo con amigos</strong><span class="daily-desc">Juega una ronda y desafía a quien quieras con un link.</span></span>
+      <span class="daily-go" aria-hidden="true">→</span>
+    </a>
+  </div>
 
   <div class="grid-3">
     <div class="card">

@@ -3,6 +3,15 @@
    este archivo, correr: node scripts/build-site.cjs */
 module.exports = {
   "es": {
+    "home_adv_title": "Aventura",
+    "home_adv_desc": "30 niveles para jugar solo, con estrellas y vidas.",
+    "home_duel_title": "Duelo con amigos",
+    "home_duel_desc": "Juega una ronda y desafía a quien quieras con un link.",
+    "reglas_modes_heading": "Otros modos de juego",
+    "reglas_modes_li1_html": "<strong>Aventura:</strong> 30 niveles para jugar solo, repartidos en 5 mundos de frutas. Cada nivel tiene una meta de puntos y hasta tres estrellas; si no llegas a la meta pierdes una vida, que se recarga con el tiempo.",
+    "reglas_modes_li2_html": "<strong>Duelo con amigos:</strong> juegas una ronda y compartes el link. Cada amigo juega la misma letra con las mismas categorías cuando quiera, y todos ven quién sacó más puntos.",
+    "reglas_modes_li3_html": "<strong>Contrarreloj:</strong> juegas solo contra un reloj de 2 minutos y sumas todos los puntos que puedas, ronda tras ronda.",
+    "reglas_modes_li4_html": "<strong>Desafío del día:</strong> la misma letra y las mismas categorías para todos, con un solo intento por día.",
     "home_daily_title": "Desafío del día",
     "home_daily_desc": "La misma letra para todos, 60 segundos y un solo intento.",
     "nav_home": "Inicio",
@@ -147,6 +156,15 @@ module.exports = {
     "notfound_home": "Ir al inicio"
   },
   "en": {
+    "home_adv_title": "Adventure",
+    "home_adv_desc": "30 solo levels with stars and lives.",
+    "home_duel_title": "Duel with friends",
+    "home_duel_desc": "Play a round and challenge anyone with a link.",
+    "reglas_modes_heading": "Other game modes",
+    "reglas_modes_li1_html": "<strong>Adventure:</strong> 30 solo levels across 5 fruit worlds. Each level has a target score and up to three stars; if you miss the target you lose a life, which refills over time.",
+    "reglas_modes_li2_html": "<strong>Duel with friends:</strong> play a round and share the link. Each friend plays the same letter and categories whenever they want, and everyone sees who scored the most.",
+    "reglas_modes_li3_html": "<strong>Time attack:</strong> play solo against a 2-minute clock and score as many points as you can, round after round.",
+    "reglas_modes_li4_html": "<strong>Daily challenge:</strong> the same letter and categories for everyone, with one try per day.",
     "home_daily_title": "Daily challenge",
     "home_daily_desc": "Same letter for everyone, 60 seconds and one try.",
     "nav_home": "Home",
@@ -291,6 +309,15 @@ module.exports = {
     "notfound_home": "Go to home"
   },
   "pt": {
+    "home_adv_title": "Aventura",
+    "home_adv_desc": "30 níveis para jogar sozinho, com estrelas e vidas.",
+    "home_duel_title": "Duelo com amigos",
+    "home_duel_desc": "Jogue uma rodada e desafie quem quiser com um link.",
+    "reglas_modes_heading": "Outros modos de jogo",
+    "reglas_modes_li1_html": "<strong>Aventura:</strong> 30 níveis para jogar sozinho, em 5 mundos de frutas. Cada nível tem uma meta de pontos e até três estrelas; se não chegar à meta você perde uma vida, que recarrega com o tempo.",
+    "reglas_modes_li2_html": "<strong>Duelo com amigos:</strong> você joga uma rodada e compartilha o link. Cada amigo joga a mesma letra com as mesmas categorias quando quiser, e todos veem quem fez mais pontos.",
+    "reglas_modes_li3_html": "<strong>Contra o relógio:</strong> você joga sozinho contra um relógio de 2 minutos e soma todos os pontos que puder, rodada após rodada.",
+    "reglas_modes_li4_html": "<strong>Desafio do dia:</strong> a mesma letra e as mesmas categorias para todos, com uma única tentativa por dia.",
     "home_daily_title": "Desafio do dia",
     "home_daily_desc": "A mesma letra para todos, 60 segundos e uma única tentativa.",
     "nav_home": "Início",

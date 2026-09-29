@@ -878,6 +878,43 @@ html[data-light] .adventure-banner .daily-arrow { color: var(--tinta); }
 html[data-light] .adv-countdown-box strong { color: var(--tinta); }
 .adv-extra-btn { margin-top: 10px; }
 
+/* ---------- Semillas y tienda ---------- */
+.seed-icon { display: inline-flex; width: 1.1em; height: 1.1em; vertical-align: -.18em; }
+.seed-icon svg { width: 100%; height: 100%; display: block; }
+.lobby-links { display: flex; gap: 8px; margin-top: 8px; }
+.lobby-links .btn { flex: 1; padding-left: 12px; padding-right: 12px; }
+.shop-balance { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; padding: 8px 14px; border-radius: var(--radius-pill); background: var(--tinta); color: var(--crema); font: 700 16px var(--font-mono); }
+html[data-light] .shop-balance { color: #FFF3E2; }
+.shop-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 0 0 24px; }
+.shop-item { background: var(--surface); border-radius: var(--radius-card); padding: 16px 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+.shop-item .shop-art { width: 64px; height: 64px; }
+.shop-item .shop-art svg { width: 100%; height: 100%; display: block; }
+.shop-item strong { font: 800 17px/1.15 var(--font-display); }
+.shop-item small { font-size: 13px; color: var(--text-muted); }
+.shop-item button { width: 100%; margin-top: auto; border: 0; border-radius: var(--radius); padding: 12px 10px; font: 700 15px var(--font-body); cursor: pointer; background: var(--primary); color: var(--tinta); display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.shop-item button.owned { background: transparent; color: var(--text); border: 2px solid var(--borde-fuerte); }
+.shop-item button.in-use { background: var(--crema-08); color: var(--text-muted); cursor: default; }
+.shop-item button:disabled:not(.in-use) { opacity: .5; cursor: not-allowed; }
+.shop-item.wide { grid-column: span 2; flex-direction: row; text-align: left; }
+.shop-item.wide .shop-text { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.shop-item.wide button { width: auto; margin: 0; padding: 12px 16px; flex-shrink: 0; }
+.shop-item.wide .shop-art { width: 44px; height: 44px; flex-shrink: 0; }
+
+/* ---------- Duelo ---------- */
+.duel-banner { border-color: var(--secondary); background: var(--crema-08); }
+.duel-banner .daily-icon { animation: none; }
+.duel-banner .daily-arrow { color: var(--secondary); }
+html[data-light] .duel-banner .daily-arrow { color: var(--tinta); }
+.duel-intro-avatar { width: 84px; height: 84px; margin: 0 0 10px; }
+.duel-intro-avatar svg { width: 100%; height: 100%; display: block; }
+.duel-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; }
+.duel-compare-row { display: contents; }
+.duel-compare .duel-cat { grid-column: span 2; font: 400 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin-top: 10px; }
+.duel-cell { background: var(--surface); border-radius: var(--radius-card); padding: 10px 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; }
+.duel-cell .answer-val { font-size: 16px; text-align: left; }
+.duel-cell .points { min-width: 44px; padding: 4px 8px; font-size: 13px; }
+.duel-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 0 0 2px; font: 700 13px var(--font-body); color: var(--crema-72); }
+
 /* ---------- Responsive ---------- */
 @media (max-width: 520px) {
   body { --page-pad-x: 14px; padding: 12px var(--page-pad-x) 48px; }
@@ -989,6 +1026,14 @@ html[data-light] .adv-countdown-box strong { color: var(--tinta); }
       <span class="daily-text">
         <strong><span data-i18n="adv_banner_title">Aventura</span></strong>
         <span class="daily-sub" id="adventureBannerSub"></span>
+      </span>
+      <span class="daily-arrow" aria-hidden="true">→</span>
+    </button>
+    <button type="button" class="daily-banner duel-banner" id="duelBanner" onclick="openDuelCreate()">
+      <span class="daily-icon" aria-hidden="true" id="duelBannerIcon"></span>
+      <span class="daily-text">
+        <strong data-i18n="duel_banner_title">Duelo con amigos</strong>
+        <span class="daily-sub" data-i18n="duel_banner_sub">Jugá una ronda y desafiá a quien quieras con un link</span>
       </span>
       <span class="daily-arrow" aria-hidden="true">→</span>
     </button>
@@ -1120,7 +1165,10 @@ html[data-light] .adv-countdown-box strong { color: var(--tinta); }
 
     <div class="lobby-footer">
       <button class="btn btn-primary btn-block" id="playBtn" disabled onclick="beginGame()">Empezar a jugar</button>
-      <button type="button" class="btn btn-ghost btn-block" onclick="showStatsScreen()" style="margin-top:8px;" data-i18n="view_stats_btn">Ver mis estadísticas</button>
+      <div class="lobby-links">
+        <button type="button" class="btn btn-ghost" onclick="showStatsScreen()" data-i18n="view_stats_btn">Ver mis estadísticas</button>
+        <button type="button" class="btn btn-ghost" onclick="openShop()" id="shopBtn"><span data-i18n="shop_heading">Tienda</span></button>
+      </div>
     </div>
     <button type="button" class="btn btn-ghost btn-block install-btn" id="installAppBtn" style="display:none;" onclick="installApp()"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/></svg><span data-install-label data-i18n="install_app_btn">Instalar la app</span></button>
   </div>
@@ -1221,6 +1269,77 @@ html[data-light] .adv-countdown-box strong { color: var(--tinta); }
       <div id="advResultNoLives"></div>
       <div class="actions-row" id="advResultActions"></div>
       <div id="advResultExtra"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TIENDA -->
+<div class="screen" id="screen-shop">
+  <div class="results">
+    <div class="results-card">
+      <div class="hero-band">
+        <h2 data-i18n="shop_heading">Tienda</h2>
+        <p data-i18n="shop_lead">Juntá semillas jugando y cambialas por frutas nuevas o vidas para la Aventura.</p>
+        <span class="shop-balance" id="shopBalance"></span>
+      </div>
+      <h2 class="section-title" data-i18n="shop_fruits_heading">Frutas para tu avatar</h2>
+      <div class="shop-grid" id="shopFruits"></div>
+      <h2 class="section-title" data-i18n="shop_adv_heading">Aventura</h2>
+      <div class="shop-grid" id="shopAdventure"></div>
+      <h2 class="section-title" data-i18n="shop_how_heading">Cómo ganar semillas</h2>
+      <p class="lead" data-i18n="shop_how_text">1 semilla por cada 10 puntos en el desafío del día, el contrarreloj, los duelos y las salas online. En la Aventura, 10 semillas por cada estrella nueva.</p>
+      <div class="actions-row">
+        <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DUELO: invitación -->
+<div class="screen" id="screen-duel-intro">
+  <div class="results">
+    <div class="results-card">
+      <div class="hero-band">
+        <div class="duel-intro-avatar" id="duelIntroAvatar"></div>
+        <h2 id="duelIntroTitle"></h2>
+        <p id="duelIntroLead"></p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><span class="stat-value" id="duelIntroCats"></span><span class="stat-label" data-i18n="adv_fact_cats">Categorías</span></div>
+        <div class="stat-card"><span class="stat-value" id="duelIntroTime"></span><span class="stat-label" data-i18n="adv_fact_time">Tiempo</span></div>
+      </div>
+      <p class="hint" data-i18n="duel_letter_hidden">La letra se revela cuando empieces.</p>
+      <div class="field" style="margin-top:18px;">
+        <label class="label" for="duelName" data-i18n="label_player_name">Tu nombre</label>
+        <input type="text" id="duelName" maxlength="30" autocomplete="nickname" />
+      </div>
+      <div class="actions-row">
+        <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
+        <button class="primary" onclick="acceptDuel()" data-i18n="duel_accept_btn">Aceptar el desafío</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DUELO: resultado -->
+<div class="screen" id="screen-duel-result">
+  <div class="results">
+    <div class="results-card">
+      <div class="hero-band">
+        <h2 id="duelResultTitle"></h2>
+        <p id="duelResultLead"></p>
+      </div>
+      <div class="round-mascot" id="duelResultMascot"></div>
+      <div id="duelResultAnswers"></div>
+      <div class="ranking">
+        <h2 class="section-title" data-i18n="duel_board_heading">Quiénes jugaron este duelo</h2>
+        <div id="duelBoard"></div>
+      </div>
+      <button type="button" class="btn btn-primary btn-block" id="duelShareBtn" style="margin-top:18px;" onclick="shareDuel()" data-i18n="duel_share_btn">Enviar el desafío</button>
+      <div class="actions-row">
+        <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
+        <button class="primary" id="duelNewBtn" onclick="openDuelCreate()" data-i18n="duel_new_btn">Crear mi propio duelo</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1672,6 +1791,51 @@ const I18N = {
     adv_streak_btn: "Jugar contrarreloj",
     adv_reason_long: "tiene menos de 5 letras",
     adv_new_world: "¡Desbloqueaste el Mundo {name}!",
+    adv_buy_life_btn: "Comprar una vida ({price} semillas)",
+    adv_share_btn: "Compartir",
+    share_adv_subtitle: "{stars} de 3 estrellas en el Mundo {world}",
+    share_adv_text: "¡Pasé el nivel {n} de la Aventura de tutti.frutti con {stars} ⭐! ¿Llegás más lejos?",
+    seeds_earned_toast: "+{n} semillas",
+    shop_heading: "Tienda",
+    shop_lead: "Juntá semillas jugando y cambialas por frutas nuevas o vidas para la Aventura.",
+    shop_balance: "{n} semillas",
+    shop_fruits_heading: "Frutas para tu avatar",
+    shop_adv_heading: "Aventura",
+    shop_how_heading: "Cómo ganar semillas",
+    shop_how_text: "1 semilla por cada 10 puntos en el desafío del día, el contrarreloj, los duelos y las salas online. En la Aventura, 10 semillas por cada estrella nueva.",
+    shop_use: "Usar",
+    shop_in_use: "En uso",
+    shop_life_title: "Una vida extra",
+    shop_life_desc: "Para seguir en la Aventura sin esperar. Ahora tenés {n}.",
+    shop_lives_full: "Tenés las vidas llenas.",
+    fruit_green_apple: "Manzana verde",
+    fruit_pear: "Pera",
+    fruit_mango: "Mango",
+    fruit_blueberry: "Arándanos",
+    duel_banner_title: "Duelo con amigos",
+    duel_banner_sub: "Jugá una ronda y desafiá a quien quieras con un link",
+    duel_need_name: "Escribí tu nombre para jugar un duelo.",
+    duel_round_label: "Duelo · Ronda única",
+    duel_intro_title: "¡{name} te desafió!",
+    duel_intro_lead: "Misma letra y mismas categorías. Sacó {score} puntos: ¿lo superás?",
+    duel_letter_hidden: "La letra se revela cuando empieces.",
+    duel_accept_btn: "Aceptar el desafío",
+    duel_created_title: "¡Duelo listo!",
+    duel_yours_title: "Tu duelo",
+    duel_created_lead: "Sacaste {score} puntos. Mandale el link a tus amigos: juegan la misma ronda cuando quieran.",
+    duel_waiting_rivals: "Todavía nadie lo jugó.",
+    duel_win: "¡Le ganaste a {name}!",
+    duel_lose: "{name} te ganó",
+    duel_tie: "¡Empate con {name}!",
+    duel_vs_lead: "Vos: {me} pts · {name}: {them} pts",
+    duel_board_heading: "Quiénes jugaron este duelo",
+    duel_you: "Vos",
+    duel_share_btn: "Enviar el desafío",
+    duel_share_more_btn: "Desafiar a más amigos",
+    duel_new_btn: "Crear mi propio duelo",
+    duel_share_text: "Saqué {score} puntos en un duelo de tutti.frutti. ¿Me ganás? Misma letra, mismas categorías:",
+    duel_share_subtitle: "¿Me ganás? Misma letra, mismas categorías",
+    duel_not_found: "Este duelo no existe o el link está incompleto.",
     mascot_adv_win: ["¡Así se hace!", "¡Nivel pasado! Vamos por el próximo.", "¡Qué nivel!"],
     mascot_adv_perfect: ["¡Tres estrellas! Sos crack.", "Perfecto, ni una mancha."],
     mascot_adv_fail: ["Casi... ¡otra vez!", "Uy, por poquito.", "La próxima sale."],
@@ -1976,6 +2140,51 @@ const I18N = {
     adv_streak_btn: "Play time attack",
     adv_reason_long: "has fewer than 5 letters",
     adv_new_world: "You unlocked the {name} World!",
+    adv_buy_life_btn: "Buy a life ({price} seeds)",
+    adv_share_btn: "Share",
+    share_adv_subtitle: "{stars} of 3 stars in the {world} World",
+    share_adv_text: "I cleared level {n} of the tutti.frutti Adventure with {stars} ⭐! Can you go further?",
+    seeds_earned_toast: "+{n} seeds",
+    shop_heading: "Shop",
+    shop_lead: "Collect seeds as you play and trade them for new fruits or Adventure lives.",
+    shop_balance: "{n} seeds",
+    shop_fruits_heading: "Fruits for your avatar",
+    shop_adv_heading: "Adventure",
+    shop_how_heading: "How to earn seeds",
+    shop_how_text: "1 seed for every 10 points in the daily challenge, time attack, duels and online rooms. In the Adventure, 10 seeds for every new star.",
+    shop_use: "Use",
+    shop_in_use: "In use",
+    shop_life_title: "An extra life",
+    shop_life_desc: "Keep playing the Adventure without waiting. You have {n} now.",
+    shop_lives_full: "Your lives are full.",
+    fruit_green_apple: "Green apple",
+    fruit_pear: "Pear",
+    fruit_mango: "Mango",
+    fruit_blueberry: "Blueberries",
+    duel_banner_title: "Duel with friends",
+    duel_banner_sub: "Play a round and challenge anyone with a link",
+    duel_need_name: "Type your name to play a duel.",
+    duel_round_label: "Duel · Single round",
+    duel_intro_title: "{name} challenged you!",
+    duel_intro_lead: "Same letter, same categories. They scored {score} points: can you beat it?",
+    duel_letter_hidden: "The letter is revealed when you start.",
+    duel_accept_btn: "Accept the challenge",
+    duel_created_title: "Duel ready!",
+    duel_yours_title: "Your duel",
+    duel_created_lead: "You scored {score} points. Send the link to your friends: they play the same round whenever they want.",
+    duel_waiting_rivals: "Nobody has played it yet.",
+    duel_win: "You beat {name}!",
+    duel_lose: "{name} beat you",
+    duel_tie: "It's a tie with {name}!",
+    duel_vs_lead: "You: {me} pts · {name}: {them} pts",
+    duel_board_heading: "Who played this duel",
+    duel_you: "You",
+    duel_share_btn: "Send the challenge",
+    duel_share_more_btn: "Challenge more friends",
+    duel_new_btn: "Create my own duel",
+    duel_share_text: "I scored {score} points in a tutti.frutti duel. Can you beat me? Same letter, same categories:",
+    duel_share_subtitle: "Can you beat me? Same letter, same categories",
+    duel_not_found: "This duel doesn't exist or the link is incomplete.",
     mascot_adv_win: ["Way to go!", "Level cleared! On to the next one.", "What a level!"],
     mascot_adv_perfect: ["Three stars! You rock.", "Perfect, not a single miss."],
     mascot_adv_fail: ["So close... try again!", "Oops, almost.", "You'll get it next time."],
@@ -2280,6 +2489,51 @@ const I18N = {
     adv_streak_btn: "Jogar contra o relógio",
     adv_reason_long: "tem menos de 5 letras",
     adv_new_world: "Você desbloqueou o Mundo {name}!",
+    adv_buy_life_btn: "Comprar uma vida ({price} sementes)",
+    adv_share_btn: "Compartilhar",
+    share_adv_subtitle: "{stars} de 3 estrelas no Mundo {world}",
+    share_adv_text: "Passei o nível {n} da Aventura do tutti.frutti com {stars} ⭐! Você vai mais longe?",
+    seeds_earned_toast: "+{n} sementes",
+    shop_heading: "Loja",
+    shop_lead: "Junte sementes jogando e troque por frutas novas ou vidas para a Aventura.",
+    shop_balance: "{n} sementes",
+    shop_fruits_heading: "Frutas para o seu avatar",
+    shop_adv_heading: "Aventura",
+    shop_how_heading: "Como ganhar sementes",
+    shop_how_text: "1 semente a cada 10 pontos no desafio do dia, no contra o relógio, nos duelos e nas salas online. Na Aventura, 10 sementes por estrela nova.",
+    shop_use: "Usar",
+    shop_in_use: "Em uso",
+    shop_life_title: "Uma vida extra",
+    shop_life_desc: "Para continuar na Aventura sem esperar. Agora você tem {n}.",
+    shop_lives_full: "Suas vidas estão cheias.",
+    fruit_green_apple: "Maçã verde",
+    fruit_pear: "Pera",
+    fruit_mango: "Manga",
+    fruit_blueberry: "Mirtilos",
+    duel_banner_title: "Duelo com amigos",
+    duel_banner_sub: "Jogue uma rodada e desafie quem quiser com um link",
+    duel_need_name: "Escreva seu nome para jogar um duelo.",
+    duel_round_label: "Duelo · Rodada única",
+    duel_intro_title: "{name} te desafiou!",
+    duel_intro_lead: "Mesma letra e mesmas categorias. Fez {score} pontos: você supera?",
+    duel_letter_hidden: "A letra aparece quando você começar.",
+    duel_accept_btn: "Aceitar o desafio",
+    duel_created_title: "Duelo pronto!",
+    duel_yours_title: "Seu duelo",
+    duel_created_lead: "Você fez {score} pontos. Mande o link para seus amigos: eles jogam a mesma rodada quando quiserem.",
+    duel_waiting_rivals: "Ninguém jogou ainda.",
+    duel_win: "Você ganhou de {name}!",
+    duel_lose: "{name} ganhou de você",
+    duel_tie: "Empate com {name}!",
+    duel_vs_lead: "Você: {me} pts · {name}: {them} pts",
+    duel_board_heading: "Quem jogou este duelo",
+    duel_you: "Você",
+    duel_share_btn: "Enviar o desafio",
+    duel_share_more_btn: "Desafiar mais amigos",
+    duel_new_btn: "Criar meu próprio duelo",
+    duel_share_text: "Fiz {score} pontos num duelo do tutti.frutti. Você me ganha? Mesma letra, mesmas categorias:",
+    duel_share_subtitle: "Você me ganha? Mesma letra, mesmas categorias",
+    duel_not_found: "Este duelo não existe ou o link está incompleto.",
     mascot_adv_win: ["Isso aí!", "Nível concluído! Vamos para o próximo.", "Que nível!"],
     mascot_adv_perfect: ["Três estrelas! Você arrasa.", "Perfeito, nenhum erro."],
     mascot_adv_fail: ["Quase... de novo!", "Ops, foi por pouco.", "Na próxima sai."],
@@ -2574,7 +2828,14 @@ function playerColor(pid, players) {
 
 // El avatar viaja por Firebase como texto libre: solo se muestra si es una de
 // estas frutas, así nadie puede meter HTML haciéndolo pasar por avatar.
-const AVATARS = ["🍎", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓", "🍒", "🍑", "🍍", "🥝", "🥥"];
+const BASE_AVATARS = ["🍎", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓", "🍒", "🍑", "🍍", "🥝", "🥥"];
+// Todas las frutas que se pueden mostrar (incluye las de la tienda, que otros jugadores pueden tener).
+const AVATARS = [...BASE_AVATARS, "🍏", "🍐", "🥭", "🫐"];
+function myAvailableAvatars() {
+  let owned = [];
+  try { owned = (JSON.parse(localStorage.getItem("tuttifruti_wallet") || "null") || {}).owned || []; } catch (e) { owned = []; }
+  return [...BASE_AVATARS, ...AVATARS.filter(a => !BASE_AVATARS.includes(a) && owned.includes(a))];
+}
 const AVATAR_KEY = "tuttifruti_avatar";
 
 function avatarOf(p) {
@@ -2584,14 +2845,14 @@ function avatarOf(p) {
 function getMyAvatar() {
   try {
     const saved = localStorage.getItem(AVATAR_KEY);
-    return AVATARS.includes(saved) ? saved : "🍎";
+    return myAvailableAvatars().includes(saved) ? saved : "🍎";
   } catch (e) {
     return AVATARS[0];
   }
 }
 
 function setMyAvatar(avatar) {
-  if (!AVATARS.includes(avatar)) return;
+  if (!myAvailableAvatars().includes(avatar)) return;
   try { localStorage.setItem(AVATAR_KEY, avatar); } catch (e) { /* storage unavailable */ }
   renderAvatarPicker();
   if (window.applyLogoFruit) applyLogoFruit(avatar);
@@ -2601,7 +2862,7 @@ function renderAvatarPicker() {
   const picker = document.getElementById("avatarPicker");
   if (!picker) return;
   const mine = getMyAvatar();
-  picker.innerHTML = AVATARS.map(a =>
+  picker.innerHTML = myAvailableAvatars().map(a =>
     `<button type="button" class="avatar-option${a === mine ? " selected" : ""}" role="radio" aria-checked="${a === mine}" aria-label="${a}" onclick="setMyAvatar('${a}')">${fruitSvg(a)}</button>`
   ).join("");
 }
@@ -3852,7 +4113,11 @@ function serverNow() {
 }
 
 function onBastaTap() {
-  if (state.adventureMode) {
+  if (state.duelMode) {
+    playDing();
+    vibrate([30, 40, 30]);
+    finishDuelRound();
+  } else if (state.adventureMode) {
     playDing();
     vibrate([30, 40, 30]);
     finishAdventureRound();
@@ -4508,6 +4773,12 @@ function hostNextRoundOrFinal(data, isLastRound) {
 
 function renderOnlineFinal(data) {
   const players = data.players || {};
+  // Semillas por la partida online (una sola vez por partida).
+  const seedKey = state.roomCode + ":" + data.round;
+  if (players[state.playerId] && state.lastSeedGame !== seedKey) {
+    state.lastSeedGame = seedKey;
+    addSeeds(seedsForScore(players[state.playerId].score));
+  }
   const sorted = Object.keys(players).map(pid => ({ pid, name: players[pid].name, score: players[pid].score || 0 }))
     .sort((a, b) => b.score - a.score);
   const winner = sorted[0];
@@ -4612,6 +4883,7 @@ function beginGame() {
   try { localStorage.setItem("tuttifruti_playerName", state.playerName); } catch (e) { /* storage unavailable */ }
   state.playerId = state.playerId || getPlayerId();
   getAudioCtx();
+  track("mode_start", { mode: state.mode });
 
   if (state.mode === "create") {
     state.duration = Number(document.getElementById("durationSelect").value);
@@ -4867,6 +5139,8 @@ function renderStreakResult(results) {
   const prevBest = getStreakHistory()[0] || { score: 0, rounds: 0 };
   const isNewRecord = state.streakScore > prevBest.score;
   const history = saveStreakRun(state.streakScore, roundsCleared);
+  addSeeds(seedsForScore(state.streakScore));
+  track("streak_end", { score: state.streakScore, rounds: roundsCleared });
 
   document.getElementById("resultsTitle").textContent = t("streak_result_title");
   document.getElementById("resultsSummary").innerHTML =
@@ -5285,6 +5559,7 @@ function startDaily() {
   const ch = getDailyChallenge();
   if (!state.dailyMode) state.categoriesBeforeDaily = state.categories;
   state.dailyMode = true;
+  track("mode_start", { mode: "daily" });
   state.dailyFinishing = false;
   state.streakMode = false;
   state.online = false;
@@ -5360,6 +5635,7 @@ async function finishDailyRound() {
   };
   saveDaily(record);
   bumpProgress(p => { p.dailyCount += 1; }, "daily:" + ch.key);
+  addSeeds(seedsForScore(score));
   whenFirebaseReady(() => {
     if (!window.FB.uid) {
       showGlobalBoard("daily_board_heading", `daily/${ch.key}`, "daily_board_empty");
@@ -5634,6 +5910,7 @@ function startAdventureLevel(n = state.advLevelN) {
   recordGameStart();
   recordRoundPlayed(letter);
   renderStreakPlayersStrip();
+  track("adventure_level_start", { level: n });
 
   showScreen("screen-game");
   document.getElementById("timerWrap").style.display = "none";
@@ -5707,6 +5984,7 @@ async function finishAdventureRound() {
   }
   const d = advLoad();
   const lostLife = !passed && d.pending === L.n;
+  const newStars = passed ? Math.max(0, stars - (d.stars[L.n] || 0)) : 0;
   const newWorld = passed && !(d.stars[L.n] > 0) && L.index === 5 && L.world + 1 < ADV_WORLDS.length;
   if (passed) {
     if (d.pending === L.n) d.lives = Math.min(ADV_MAX_LIVES, d.lives + 1);
@@ -5718,6 +5996,8 @@ async function finishAdventureRound() {
   state.advLastLetter = letter;
   state.advFinishing = false;
   renderAdventureResult({ L, results, letter, words, bonus, score, passed, stars, valid, secondsLeft, lives: d.lives, lostLife });
+  track("adventure_level_end", { level: L.n, passed, stars });
+  if (newStars) addSeeds(newStars * SEEDS_PER_STAR);
   if (newWorld) advToast(fruitSvg(ADV_WORLDS[L.world + 1].fruit), t("adv_new_world", { name: advWorldName(ADV_WORLDS[L.world + 1]) }));
 }
 
@@ -5808,12 +6088,14 @@ function renderAdventureResult(r) {
       ["secondary", t("adv_map_btn"), "openAdventure()"],
       next ? ["primary", t("adv_next_btn"), `openAdventureLevel(${next})`] : ["primary", t("adv_map_btn"), "openAdventure()"],
     ]);
-    if (r.stars < 3) {
-      document.getElementById("advResultExtra").innerHTML = `<button class="btn btn-secondary btn-block adv-extra-btn" onclick="startAdventureLevel(${L.n})">${escapeHtml(t("adv_retry_stars_btn"))}</button>`;
-    }
+    state.advShareInfo = { n: L.n, world: advWorldName(L.W), stars: r.stars };
+    document.getElementById("advResultExtra").innerHTML =
+      (r.stars < 3 ? `<button class="btn btn-secondary btn-block adv-extra-btn" onclick="startAdventureLevel(${L.n})">${escapeHtml(t("adv_retry_stars_btn"))}</button>` : "") +
+      `<button class="btn btn-ghost btn-block adv-extra-btn" onclick="shareAdventureResult()">${escapeHtml(t("adv_share_btn"))}</button>`;
     launchConfetti();
   } else if (noLives) {
     advActions([["secondary", t("adv_map_btn"), "openAdventure()"], ["primary", t("adv_streak_btn"), "advGoToStreak()"]]);
+    document.getElementById("advResultExtra").innerHTML = advBuyLifeButtonHtml();
     launchFruitConfetti("lose");
   } else {
     advActions([["secondary", t("adv_map_btn"), "openAdventure()"], ["primary", t("adv_retry_btn"), `startAdventureLevel(${L.n})`]]);
@@ -5843,8 +6125,9 @@ function renderAdventureNoLives(L, d) {
   document.getElementById("advResultList").innerHTML = "";
   document.getElementById("advResultScore").innerHTML = "";
   document.getElementById("advResultNoLives").innerHTML = advNoLivesHtml();
-  document.getElementById("advResultExtra").innerHTML = "";
+  document.getElementById("advResultExtra").innerHTML = advBuyLifeButtonHtml();
   advActions([["secondary", t("adv_map_btn"), "openAdventure()"], ["primary", t("adv_streak_btn"), "advGoToStreak()"]]);
+  track("adventure_no_lives", { level: L.n });
   showScreen("screen-adventure-result");
   advStartTicker();
   window.scrollTo(0, 0);
@@ -5862,6 +6145,380 @@ function applyAdventureLinkFromUrl() {
   if (!params.has("aventura")) return false;
   history.replaceState(null, "", location.pathname);
   return true;
+}
+
+// ---------- Estadísticas de uso (Google Analytics) ----------
+// Eventos anónimos para saber qué modos se juegan y dónde se traba la gente en la Aventura.
+function track(name, params) {
+  try { if (window.gtag) window.gtag("event", name, params || {}); } catch (e) { /* sin estadísticas, el juego sigue */ }
+}
+
+// ---------- Semillas y tienda (guardadas en este dispositivo) ----------
+const WALLET_KEY = "tuttifruti_wallet";
+const SEEDS_PER_STAR = 10;
+const SHOP_LIFE_PRICE = 40;
+const SHOP_FRUITS = [
+  { emoji: "🍏", price: 60, name: "fruit_green_apple" },
+  { emoji: "🍐", price: 100, name: "fruit_pear" },
+  { emoji: "🥭", price: 150, name: "fruit_mango" },
+  { emoji: "🫐", price: 200, name: "fruit_blueberry" },
+];
+const SEED_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22 C6.5 22 4 17.5 4 13.5 C4 8 8.5 3.5 12 2 C15.5 3.5 20 8 20 13.5 C20 17.5 17.5 22 12 22 Z" fill="#8B5A2B"/><path d="M12 2 C13.8 6 13.8 11 12 16" stroke="#6B4320" stroke-width="1.6" fill="none" stroke-linecap="round"/><ellipse cx="8.6" cy="11" rx="1.6" ry="3" transform="rotate(20 8.6 11)" fill="#fff" opacity=".3"/></svg>';
+function seedIcon() { return `<span class="seed-icon">${SEED_SVG}</span>`; }
+
+function getWallet() {
+  let w = null;
+  try { w = JSON.parse(localStorage.getItem(WALLET_KEY) || "null"); } catch (e) { w = null; }
+  if (!w || typeof w.seeds !== "number") w = { seeds: 0, owned: [] };
+  if (!Array.isArray(w.owned)) w.owned = [];
+  return w;
+}
+function saveWallet(w) {
+  try { localStorage.setItem(WALLET_KEY, JSON.stringify(w)); } catch (e) { /* storage unavailable */ }
+  renderShopButton();
+}
+
+function addSeeds(n) {
+  n = Math.floor(n);
+  if (!(n > 0)) return;
+  const w = getWallet();
+  w.seeds += n;
+  saveWallet(w);
+  const stack = document.getElementById("toastStack");
+  if (!stack) return;
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.innerHTML = `<span class="toast-icon">${SEED_SVG}</span><span><strong>${escapeHtml(t("seeds_earned_toast", { n }))}</strong></span>`;
+  stack.appendChild(el);
+  setTimeout(() => el.classList.add("out"), 2600);
+  setTimeout(() => el.remove(), 3100);
+}
+function seedsForScore(score) { return Math.floor((score || 0) / 10); }
+
+function renderShopButton() {
+  const btn = document.getElementById("shopBtn");
+  if (btn) btn.innerHTML = `${escapeHtml(t("shop_heading"))} · ${seedIcon()} ${getWallet().seeds}`;
+}
+
+function openShop() {
+  renderShop();
+  showScreen("screen-shop");
+  window.scrollTo(0, 0);
+}
+
+function renderShop() {
+  const w = getWallet();
+  const mine = getMyAvatar();
+  document.getElementById("shopBalance").innerHTML = `${seedIcon()} ${escapeHtml(t("shop_balance", { n: w.seeds }))}`;
+  document.getElementById("shopFruits").innerHTML = SHOP_FRUITS.map(f => {
+    const owned = w.owned.includes(f.emoji);
+    let btn;
+    if (owned && mine === f.emoji) btn = `<button class="in-use" disabled>${escapeHtml(t("shop_in_use"))}</button>`;
+    else if (owned) btn = `<button class="owned" onclick="setMyAvatar('${f.emoji}'); renderShop();">${escapeHtml(t("shop_use"))}</button>`;
+    else btn = `<button ${w.seeds < f.price ? "disabled" : ""} onclick="buyFruit('${f.emoji}')">${seedIcon()} ${f.price}</button>`;
+    return `<div class="shop-item"><span class="shop-art">${fruitSvg(f.emoji)}</span><strong>${escapeHtml(t(f.name))}</strong>${btn}</div>`;
+  }).join("");
+  const d = advLoad();
+  const full = d.lives >= ADV_MAX_LIVES;
+  document.getElementById("shopAdventure").innerHTML = `<div class="shop-item wide">
+    <span class="shop-art">${advHeart(true)}</span>
+    <span class="shop-text"><strong>${escapeHtml(t("shop_life_title"))}</strong><small>${escapeHtml(full ? t("shop_lives_full") : t("shop_life_desc", { n: d.lives }))}</small></span>
+    <button ${full || w.seeds < SHOP_LIFE_PRICE ? "disabled" : ""} onclick="buyLife()">${seedIcon()} ${SHOP_LIFE_PRICE}</button>
+  </div>`;
+}
+
+function buyFruit(emoji) {
+  const f = SHOP_FRUITS.find(x => x.emoji === emoji);
+  const w = getWallet();
+  if (!f || w.owned.includes(emoji) || w.seeds < f.price) return;
+  w.seeds -= f.price;
+  w.owned.push(emoji);
+  saveWallet(w);
+  setMyAvatar(emoji);
+  track("shop_buy", { item: f.name });
+  launchConfetti();
+  renderShop();
+}
+
+function buyLife() {
+  const w = getWallet();
+  const d = advLoad();
+  if (w.seeds < SHOP_LIFE_PRICE || d.lives >= ADV_MAX_LIVES) return false;
+  w.seeds -= SHOP_LIFE_PRICE;
+  saveWallet(w);
+  d.lives += 1;
+  if (d.lives >= ADV_MAX_LIVES) d.livesAt = Date.now();
+  advSave(d);
+  track("shop_buy", { item: "life" });
+  if (document.getElementById("screen-shop").classList.contains("active")) renderShop();
+  return true;
+}
+
+function advBuyLifeButtonHtml() {
+  const w = getWallet();
+  if (w.seeds < SHOP_LIFE_PRICE) return "";
+  return `<button class="btn btn-secondary btn-block adv-extra-btn" onclick="if (buyLife()) startAdventureLevel()">${seedIcon()} ${escapeHtml(t("adv_buy_life_btn", { price: SHOP_LIFE_PRICE }))}</button>`;
+}
+
+// ---------- Compartir un nivel de la Aventura ----------
+async function shareAdventureResult() {
+  const info = state.advShareInfo;
+  if (!info) return;
+  track("share", { type: "adventure" });
+  const canvas = await buildShareCanvas(t("adv_level_title", { n: info.n }), t("share_adv_subtitle", { stars: info.stars, world: info.world }), iconSvg("star"));
+  shareCanvasImage(canvas, t("share_adv_text", { n: info.n, stars: info.stars }), "https://tuttipuntofrutti.com/jugar?aventura");
+}
+
+// ---------- Duelo con amigos por link ----------
+// Quien crea el duelo juega una ronda (letra y categorías al azar) y comparte el link.
+// Cada amigo que lo abre juega exactamente la misma ronda cuando quiera, y todos ven
+// quién sacó más puntos. Se guarda en Firebase en duels/{id}.
+const DUEL_DURATION = 60;
+const DUEL_CATEGORY_COUNT = 6;
+
+function newDuelId() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789";
+  const bytes = new Uint8Array(10);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, b => chars[b % chars.length]).join("");
+}
+
+function duelUrl(id) { return "https://tuttipuntofrutti.com/jugar?duelo=" + id; }
+
+function openDuelCreate() {
+  const name = document.getElementById("playerName").value.trim();
+  if (!name) {
+    goToLobby();
+    alert(t("duel_need_name"));
+    document.getElementById("playerName").focus();
+    return;
+  }
+  const pool = CATEGORY_POOL.filter(c => !CATEGORY_PACKS.argento.includes(c)).sort(() => Math.random() - 0.5);
+  const categories = pool.slice(0, DUEL_CATEGORY_COUNT);
+  const duel = {
+    id: newDuelId(),
+    letter: DEFAULT_LETTERS[Math.floor(Math.random() * DEFAULT_LETTERS.length)],
+    categories,
+    wildcard: categories[Math.floor(Math.random() * categories.length)],
+    duration: DUEL_DURATION,
+  };
+  startDuelRound(duel, "creator", name);
+}
+
+function startDuelRound(duel, role, name) {
+  state.playerName = name.slice(0, 30);
+  try { localStorage.setItem("tuttifruti_playerName", state.playerName); } catch (e) { /* storage unavailable */ }
+  document.getElementById("playerName").value = state.playerName;
+  cleanupRandomSearch();
+  if (!state.duelMode && !state.categoriesBeforeDuel) state.categoriesBeforeDuel = state.categories;
+  state.duelMode = true;
+  state.duelFinishing = false;
+  state.duelRole = role;
+  state.duel = duel;
+  state.dailyMode = false;
+  state.streakMode = false;
+  state.adventureMode = false;
+  state.online = false;
+  state.categories = [...duel.categories];
+  state.wildcardCategory = duel.wildcard;
+  state.letter = duel.letter;
+  state.usedLetters = [];
+  state.answers = {};
+  state.duration = duel.duration;
+  state.secondsLeft = duel.duration;
+  getAudioCtx();
+  recordGameStart();
+  recordRoundPlayed(duel.letter);
+  renderStreakPlayersStrip();
+  track("duel_start", { role });
+
+  showScreen("screen-game");
+  document.getElementById("timerWrap").style.display = "none";
+  document.getElementById("catGrid").style.display = "none";
+  document.getElementById("bastaWrap").style.display = "none";
+  document.getElementById("roundLabel").textContent = t("duel_round_label");
+  spinLetterReveal(duel.letter, () => {
+    if (!state.duelMode) return;
+    renderLetterHistory();
+    renderWildcardNote();
+    renderTwistNote(false, 0);
+    document.getElementById("timerWrap").style.display = "block";
+    renderCatGrid();
+    document.getElementById("catGrid").style.display = "grid";
+    document.getElementById("bastaWrap").style.display = "flex";
+    focusFirstAnswer();
+    updateTimerDisplay();
+    clearInterval(state.timerId);
+    state.timerId = setInterval(tickDuel, 1000);
+  });
+}
+
+function tickDuel() {
+  state.secondsLeft--;
+  updateTimerDisplay();
+  if (state.secondsLeft > 0 && state.secondsLeft <= 5) {
+    playTic();
+    vibrate(50);
+  }
+  if (state.secondsLeft <= 0) {
+    playTimeUp();
+    finishDuelRound();
+  }
+}
+
+function leaveDuelGame() {
+  clearInterval(state.timerId);
+  clearTimeout(state.spinId);
+  state.duelMode = false;
+  if (state.categoriesBeforeDuel) {
+    state.categories = state.categoriesBeforeDuel;
+    state.categoriesBeforeDuel = null;
+    renderCatChips();
+  }
+}
+
+async function finishDuelRound() {
+  if (state.duelFinishing || !state.duelMode) return;
+  state.duelFinishing = true;
+  clearInterval(state.timerId);
+  clearTimeout(state.spinId);
+  const duel = state.duel;
+  const role = state.duelRole;
+  const secondsLeft = Math.max(0, state.secondsLeft);
+  const results = await judgeSoloAnswers(state.categories, state.answers, duel.letter, 1, "DUELO");
+  if (!state.duelMode) return;
+  let score = 0, valid = 0;
+  results.forEach(r => {
+    if (!r.valid) return;
+    valid++;
+    score += DAILY_POINTS_PER_CATEGORY * (r.cat === duel.wildcard ? 2 : 1);
+  });
+  if (valid > 0) score += secondsLeft;
+  leaveDuelGame();
+  const me = {
+    name: state.playerName.slice(0, 30), avatar: getMyAvatar(), score, valid, total: results.length,
+    results: results.map(r => ({ v: (r.val || "").slice(0, 40), ok: !!r.valid })),
+  };
+  showScreen("screen-judging");
+  whenFirebaseReady(async () => {
+    const uid = window.FB.uid;
+    if (!uid) throw new Error("sin identidad");
+    const ref = window.FB.ref(window.FB.db, "duels/" + duel.id);
+    if (role === "creator") {
+      await window.FB.set(ref, {
+        letter: duel.letter, categories: duel.categories, wildcard: duel.wildcard, duration: duel.duration,
+        createdAt: window.FB.serverTimestamp(), creator: { uid, ...me },
+      });
+    } else {
+      await window.FB.set(window.FB.ref(window.FB.db, `duels/${duel.id}/rivals/${uid}`), me);
+    }
+    const snap = await window.FB.get(ref);
+    showDuelResult(duel.id, snap.val(), true);
+    addSeeds(seedsForScore(score));
+  });
+}
+
+// /jugar?duelo=ID: abre la invitación (o el resultado, si ya lo jugaste).
+function applyDuelLinkFromUrl() {
+  const params = new URLSearchParams(location.search);
+  const id = params.get("duelo");
+  if (!id) return;
+  history.replaceState(null, "", location.pathname);
+  if (!/^[A-Za-z0-9]{10}$/.test(id)) { alert(t("duel_not_found")); return; }
+  openDuelLink(id);
+}
+
+function openDuelLink(id) {
+  whenFirebaseReady(async () => {
+    const snap = await window.FB.get(window.FB.ref(window.FB.db, "duels/" + id));
+    if (!snap.exists()) { alert(t("duel_not_found")); return; }
+    const data = snap.val();
+    const uid = window.FB.uid;
+    if ((data.creator && data.creator.uid === uid) || (data.rivals && data.rivals[uid])) {
+      showDuelResult(id, data, false);
+      return;
+    }
+    state.pendingDuel = { id, letter: data.letter, categories: data.categories, wildcard: data.wildcard, duration: data.duration };
+    const c = data.creator || {};
+    document.getElementById("duelIntroAvatar").innerHTML = mascotSvg("happy", AVATARS.includes(c.avatar) ? c.avatar : "🍏");
+    document.getElementById("duelIntroTitle").textContent = t("duel_intro_title", { name: c.name || "?" });
+    document.getElementById("duelIntroLead").textContent = t("duel_intro_lead", { score: c.score || 0 });
+    document.getElementById("duelIntroCats").textContent = (data.categories || []).length;
+    document.getElementById("duelIntroTime").textContent = (data.duration || DUEL_DURATION) + " s";
+    document.getElementById("duelName").value = document.getElementById("playerName").value.trim();
+    showScreen("screen-duel-intro");
+    window.scrollTo(0, 0);
+  });
+}
+
+function acceptDuel() {
+  const input = document.getElementById("duelName");
+  const name = input.value.trim();
+  if (!name) { input.focus(); return; }
+  if (!state.pendingDuel) return;
+  startDuelRound(state.pendingDuel, "rival", name);
+}
+
+function showDuelResult(id, data, fresh) {
+  const uid = window.FB.uid;
+  const creator = data.creator || {};
+  const rivals = Object.entries(data.rivals || {}).map(([k, v]) => ({ uid: k, ...v }));
+  const everyone = [{ ...creator }, ...rivals].sort((a, b) => (b.score || 0) - (a.score || 0));
+  const isCreator = creator.uid === uid;
+  const mineEntry = isCreator ? creator : rivals.find(r => r.uid === uid);
+  state.duelShare = { id, score: mineEntry ? mineEntry.score : 0 };
+  const title = document.getElementById("duelResultTitle");
+  const lead = document.getElementById("duelResultLead");
+  let mood = "happy";
+  if (isCreator) {
+    title.textContent = t(fresh ? "duel_created_title" : "duel_yours_title");
+    lead.textContent = rivals.length ? t("duel_created_lead", { score: creator.score || 0 }) : t("duel_created_lead", { score: creator.score || 0 }) + " " + t("duel_waiting_rivals");
+  } else {
+    const mine = mineEntry.score || 0, theirs = creator.score || 0;
+    const key = mine > theirs ? "duel_win" : (mine < theirs ? "duel_lose" : "duel_tie");
+    mood = mine > theirs ? "happy" : (mine < theirs ? "sad" : "neutral");
+    title.textContent = t(key, { name: creator.name || "?" });
+    lead.textContent = t("duel_vs_lead", { me: mine, name: creator.name || "?", them: theirs });
+    if (fresh) (mine >= theirs ? launchConfetti() : launchFruitConfetti("lose"));
+  }
+  document.getElementById("duelResultMascot").innerHTML = "";
+  setMascot("duelResultMascot", mood, null, "small");
+
+  // Respuestas: las tuyas y, si sos rival, al lado las de quien creó el duelo.
+  const cats = data.categories || [];
+  const mineRes = (mineEntry && mineEntry.results) || [];
+  const theirRes = creator.results || [];
+  const pts = (res, cat) => (res && res.ok ? DAILY_POINTS_PER_CATEGORY * (cat === data.wildcard ? 2 : 1) : 0);
+  const cell = (res, cat) => `<div class="duel-cell"><span class="answer-val ${res && res.v ? "" : "empty"}">${res && res.v ? escapeHtml(res.v) : t("no_answer")}</span><span class="points points-${res && res.ok ? 10 : 0}">+${pts(res, cat)}</span></div>`;
+  const answers = document.getElementById("duelResultAnswers");
+  if (isCreator) {
+    answers.innerHTML = cats.map((cat, i) => `<div class="answer-row"><span class="answer-cat">${escapeHtml(catLabel(cat))}${cat === data.wildcard ? '<span class="wildcard-badge">×2</span>' : ""}</span>
+      <span class="answer-val ${mineRes[i] && mineRes[i].v ? "" : "empty"}">${mineRes[i] && mineRes[i].v ? escapeHtml(mineRes[i].v) : t("no_answer")}</span><span class="points points-${mineRes[i] && mineRes[i].ok ? 10 : 0}">+${pts(mineRes[i], cat)}</span></div>`).join("");
+  } else {
+    answers.innerHTML = `<p class="label">${escapeHtml(t("letter_word"))}: <strong>${escapeHtml(data.letter)}</strong></p>
+      <div class="duel-cols"><span>${escapeHtml(t("duel_you"))}</span><span>${escapeHtml(creator.name || "?")}</span></div>
+      <div class="duel-compare">${cats.map((cat, i) => `<div class="duel-compare-row"><span class="duel-cat">${escapeHtml(catLabel(cat))}${cat === data.wildcard ? " ×2" : ""}</span>${cell(mineRes[i], cat)}${cell(theirRes[i], cat)}</div>`).join("")}</div>`;
+  }
+
+  document.getElementById("duelBoard").innerHTML = everyone.map((p, i) => `
+    <div class="rank-row ${p.uid === uid ? "me" : ""}">
+      <span class="rank-pos">${i + 1}</span>
+      <span class="player-avatar">${fruitSvg(AVATARS.includes(p.avatar) ? p.avatar : "🍏")}</span>
+      <span class="rank-name">${escapeHtml(p.name || "?")}</span>
+      <span class="rank-score">${p.score || 0} pts</span>
+    </div>`).join("");
+  document.getElementById("duelShareBtn").textContent = t(isCreator ? "duel_share_btn" : "duel_share_more_btn");
+  document.getElementById("duelNewBtn").style.display = isCreator ? "none" : "";
+  showScreen("screen-duel-result");
+  window.scrollTo(0, 0);
+}
+
+async function shareDuel() {
+  const info = state.duelShare;
+  if (!info) return;
+  track("share", { type: "duel" });
+  const canvas = await buildShareCanvas(info.score + " pts", t("duel_share_subtitle"), iconSvg("trophy"));
+  shareCanvasImage(canvas, t("duel_share_text", { score: info.score }), duelUrl(info.id));
 }
 
 function soloReasonText(r, letter) {
@@ -6118,8 +6775,8 @@ async function buildShareCanvas(big, subtitle, badgeSvg) {
   return canvas;
 }
 
-function shareCanvasImage(canvas, shareText) {
-  const fullText = shareText + " https://tuttipuntofrutti.com";
+function shareCanvasImage(canvas, shareText, url = "https://tuttipuntofrutti.com") {
+  const fullText = shareText + " " + url;
   canvas.toBlob(blob => {
     if (!blob) return;
     let file = null;
@@ -6174,6 +6831,8 @@ function goToLobby() {
   }
   clearInterval(state.advTickId);
   if (state.adventureMode) leaveAdventureGame();
+  if (state.duelMode) leaveDuelGame();
+  renderShopButton();
   if (state.dailyMode) {
     clearInterval(state.timerId);
     clearTimeout(state.spinId);
@@ -6280,7 +6939,7 @@ function fetchPageVersion() {
 fetchPageVersion().then(v => { loadedVersion = v; });
 document.addEventListener("visibilitychange", async () => {
   if (document.visibilityState !== "visible" || !loadedVersion) return;
-  if (state.online || state.streakMode || state.dailyMode || state.adventureMode) return;
+  if (state.online || state.streakMode || state.dailyMode || state.adventureMode || state.duelMode) return;
   const current = await fetchPageVersion();
   if (current && current !== loadedVersion) location.reload();
 });
@@ -6289,6 +6948,9 @@ renderDailyBanner();
 const openAdventureFromLink = applyAdventureLinkFromUrl();
 renderAdventureBanner();
 if (openAdventureFromLink) openAdventure();
+document.getElementById("duelBannerIcon").innerHTML = iconSvg("trophy");
+renderShopButton();
+applyDuelLinkFromUrl();
 checkAchievements();
 </script>
 <div class="confetti-container" id="confettiContainer"></div>

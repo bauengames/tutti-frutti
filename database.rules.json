@@ -175,6 +175,109 @@
           ".read": "auth != null && auth.uid === $uid"
         }
       }
+    },
+    "duels": {
+      "$duelId": {
+        ".read": "auth != null && $duelId.matches(/^[A-Za-z0-9]{10}$/)",
+        ".write": "auth != null && $duelId.matches(/^[A-Za-z0-9]{10}$/) && !data.exists() && newData.child('creator').child('uid').val() === auth.uid",
+        ".validate": "newData.hasChildren(['letter', 'categories', 'wildcard', 'duration', 'createdAt', 'creator'])",
+        "letter": {
+          ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 2"
+        },
+        "categories": {
+          "$i": {
+            ".validate": "$i.matches(/^[0-9]$/) && newData.isString() && newData.val().length <= 40"
+          }
+        },
+        "wildcard": {
+          ".validate": "newData.isString() && newData.val().length <= 40"
+        },
+        "duration": {
+          ".validate": "newData.isNumber() && newData.val() >= 10 && newData.val() <= 120"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber() && (data.exists() ? newData.val() === data.val() : newData.val() === now)"
+        },
+        "creator": {
+          "uid": {
+            ".validate": "newData.val() === auth.uid"
+          },
+          ".validate": "newData.hasChildren(['name', 'avatar', 'score', 'valid', 'total', 'results'])",
+          "name": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
+          },
+          "avatar": {
+            ".validate": "newData.isString() && newData.val().length <= 8"
+          },
+          "score": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 200"
+          },
+          "valid": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= newData.parent().child('total').val()"
+          },
+          "total": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 10"
+          },
+          "results": {
+            "$i": {
+              ".validate": "$i.matches(/^[0-9]$/) && newData.hasChildren(['v', 'ok'])",
+              "v": {
+                ".validate": "newData.isString() && newData.val().length <= 40"
+              },
+              "ok": {
+                ".validate": "newData.isBoolean()"
+              },
+              "$other": {
+                ".validate": false
+              }
+            }
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "rivals": {
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid && !data.exists() && data.parent().parent().exists()",
+            ".validate": "newData.hasChildren(['name', 'avatar', 'score', 'valid', 'total', 'results'])",
+            "name": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
+            },
+            "avatar": {
+              ".validate": "newData.isString() && newData.val().length <= 8"
+            },
+            "score": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 200"
+            },
+            "valid": {
+              ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= newData.parent().child('total').val()"
+            },
+            "total": {
+              ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 10"
+            },
+            "results": {
+              "$i": {
+                ".validate": "$i.matches(/^[0-9]$/) && newData.hasChildren(['v', 'ok'])",
+                "v": {
+                  ".validate": "newData.isString() && newData.val().length <= 40"
+                },
+                "ok": {
+                  ".validate": "newData.isBoolean()"
+                },
+                "$other": {
+                  ".validate": false
+                }
+              }
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
     }
   }
 }

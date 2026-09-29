@@ -7,6 +7,7 @@
     mandarina: "#FFA62B", mandarinaOscura: "#E8891A", uva: "#9C6BFF", uvaOscura: "#7B4FE0",
     amarillo: "#FFD23F", amarilloOscuro: "#EDB800", durazno: "#FF9B7A", duraznoOscuro: "#F07A5A",
     marron: "#8B5A2B", tinta: "#14101F", crema: "#FFF3E2", rosa: "#FF8583", cielo: "#35C8F2",
+    pera: "#CDE55A", peraOscura: "#A9C93A", arandano: "#5B6CF0", arandanoOscuro: "#3F4FC9",
   };
   var APPLE_BODY = "M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z";
   var LEAF_R = "M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z";
@@ -99,6 +100,27 @@
       '<circle cx="50" cy="52" r="22" fill="#FFFBF4"/>' +
       '<g fill="#6B4320"><circle cx="30" cy="22" r="2"/><circle cx="74" cy="26" r="2"/><circle cx="84" cy="62" r="2"/><circle cx="18" cy="68" r="2"/></g>' +
       '<ellipse cx="40" cy="42" rx="6" ry="3" transform="rotate(-30 40 42)" fill="#fff" opacity=".6"/>'
+    ),
+    // Frutas de la tienda (se compran con semillas).
+    "🍐": svg(
+      '<path d="M52 30 L50 16" stroke="' + C.marron + '" stroke-width="4" stroke-linecap="round"/>' +
+      '<path d="M52 26 C57 16 68 12 78 14 C74 23 65 27 52 26 Z" fill="' + C.limaOscura + '"/>' +
+      '<path d="M50 28 C41 28 38 38 38 46 C38 54 24 60 24 73 C24 85 36 92 50 92 C64 92 76 85 76 73 C76 60 62 54 62 46 C62 38 59 28 50 28 Z" fill="' + C.pera + '"/>' +
+      '<path d="M30 78 C38 88 62 90 72 78 C62 85 40 85 30 78 Z" fill="' + C.peraOscura + '"/>' + SHINE
+    ),
+    "🥭": svg(
+      '<path d="M28 38 C38 20 70 18 82 38 C92 58 80 86 56 89 C32 92 16 68 28 38 Z" fill="' + C.mandarina + '"/>' +
+      '<path d="M28 38 C38 20 70 18 82 38 C72 30 50 30 40 44 C34 52 30 62 24 64 C20 54 22 46 28 38 Z" fill="' + C.pomelo + '" opacity=".75"/>' +
+      '<path d="M56 89 C74 86 86 70 84 52 C80 70 70 82 56 89 Z" fill="' + C.amarilloOscuro + '" opacity=".7"/>' +
+      '<path d="M58 22 C64 10 76 6 88 8 C84 18 74 24 58 22 Z" fill="' + C.limaOscura + '"/>' +
+      '<ellipse cx="42" cy="44" rx="5" ry="9" transform="rotate(35 42 44)" fill="#fff" opacity=".28"/>'
+    ),
+    "🫐": svg(
+      '<path d="M50 30 C54 20 64 15 74 16 C71 25 62 30 50 30 Z" fill="' + C.limaOscura + '"/>' +
+      '<circle cx="31" cy="50" r="17" fill="' + C.arandanoOscuro + '"/><circle cx="69" cy="50" r="17" fill="' + C.arandano + '"/>' +
+      '<circle cx="50" cy="68" r="21" fill="' + C.arandano + '"/>' +
+      '<path d="M50 50 l3 4 5 0 -4 3 2 5 -6 -3 -6 3 2 -5 -4 -3 5 0 Z" fill="' + C.arandanoOscuro + '" transform="translate(0 -3)"/>' +
+      '<circle cx="24" cy="44" r="3.5" fill="#fff" opacity=".3"/><circle cx="62" cy="44" r="3.5" fill="#fff" opacity=".3"/><circle cx="40" cy="60" r="4" fill="#fff" opacity=".3"/>'
     ),
   };
 
@@ -242,6 +264,7 @@
     "🍎": [50, 64, 1], "🍏": [50, 64, 1], "🍊": [50, 60, 0.9], "🍋": [50, 60, 0.8],
     "🍌": [47, 63, 0.56], "🍉": [50, 46, 0.62], "🍇": [53, 58, 0.72], "🍓": [50, 60, 0.8],
     "🍒": [33, 71, 0.46], "🍑": [50, 62, 0.9], "🍍": [50, 67, 0.72], "🥝": [50, 54, 0.62], "🥥": [50, 54, 0.66],
+    "🍐": [50, 74, 0.7], "🥭": [53, 60, 0.82], "🫐": [50, 72, 0.6],
   };
 
   function inner(markup) {
