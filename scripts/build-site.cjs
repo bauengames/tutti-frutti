@@ -176,26 +176,23 @@ const GUIDES = [
   },
   {
     key: "quienes",
-    // Oculta (noindex, fuera del pie, del menú y del sitemap) hasta completar los datos del equipo.
-    // Cuando esté completa, borrar esta línea y volver a generar.
-    hidden: true,
     urls: { es: "/quienes-somos", en: "/en/about-us", pt: "/pt/quem-somos" },
     es: {
       nav: "Quiénes somos",
       title: "Quiénes somos | tutti.frutti",
-      description: "Conoce a quienes hacen tutti.frutti, el juego de tutti frutti online gratis con salas privadas, rival al azar y un juez con inteligencia artificial.",
+      description: "tutti.frutti es un proyecto de Bauen Games, un equipo nacido en Argentina que quiere conectar a las personas a través de jugar con amigos.",
       ogTitle: "Quiénes somos",
     },
     en: {
       nav: "About us",
       title: "About us | tutti.frutti",
-      description: "Meet the people behind tutti.frutti, the free online Stop game with private rooms, random opponents and an AI judge.",
+      description: "tutti.frutti is made by Bauen Games, a team born in Argentina that wants to bring people together by playing with friends.",
       ogTitle: "About us",
     },
     pt: {
       nav: "Quem somos",
       title: "Quem somos | tutti.frutti",
-      description: "Conheça quem faz o tutti.frutti, o jogo de Stop online grátis com salas privadas, adversário aleatório e um juiz com inteligência artificial.",
+      description: "O tutti.frutti é da Bauen Games, uma equipe nascida na Argentina que quer conectar as pessoas através de jogar com os amigos.",
       ogTitle: "Quem somos",
     },
   },
@@ -542,6 +539,7 @@ function homeJsonLd(lang) {
           height: 512,
         },
         email: "bauengames@gmail.com",
+        parentOrganization: { "@type": "Organization", name: "Bauen Games", email: "bauengames@gmail.com" },
       },
       {
         "@type": "WebApplication",
