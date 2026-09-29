@@ -8,6 +8,8 @@
     amarillo: "#FFD23F", amarilloOscuro: "#EDB800", durazno: "#FF9B7A", duraznoOscuro: "#F07A5A",
     marron: "#8B5A2B", tinta: "#14101F", crema: "#FFF3E2", rosa: "#FF8583", cielo: "#35C8F2",
     pera: "#CDE55A", peraOscura: "#A9C93A", arandano: "#5B6CF0", arandanoOscuro: "#3F4FC9",
+    palta: "#4E7D2A", paltaClara: "#D6E88C", tomate: "#F2473F", tomateOscuro: "#C9302A",
+    melon: "#D9E58A", melonRed: "#B7C764", oro: "#FFC83D", oroOscuro: "#E0A21A",
   };
   var APPLE_BODY = "M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z";
   var LEAF_R = "M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z";
@@ -122,12 +124,39 @@
       '<path d="M50 50 l3 4 5 0 -4 3 2 5 -6 -3 -6 3 2 -5 -4 -3 5 0 Z" fill="' + C.arandanoOscuro + '" transform="translate(0 -3)"/>' +
       '<circle cx="24" cy="44" r="3.5" fill="#fff" opacity=".3"/><circle cx="62" cy="44" r="3.5" fill="#fff" opacity=".3"/><circle cx="40" cy="60" r="4" fill="#fff" opacity=".3"/>'
     ),
+    "🍅": svg(
+      '<ellipse cx="50" cy="60" rx="36" ry="31" fill="' + C.tomate + '"/>' +
+      '<path d="M34 72 C42 84 62 86 74 74 C62 80 44 80 34 72 Z" fill="' + C.tomateOscuro + '" opacity=".7"/>' +
+      '<path d="M50 34 L44 24 L50 28 L54 18 L57 29 L66 24 L60 33 L70 36 L58 38 L50 42 L42 38 L30 36 L40 33 Z" fill="' + C.limaOscura + '"/>' +
+      '<path d="M50 30 L50 18" stroke="' + C.limaOscura + '" stroke-width="4" stroke-linecap="round"/>' + SHINE
+    ),
+    "🥑": svg(
+      '<path d="M50 10 C38 10 33 24 31 36 C28 50 18 58 18 72 C18 86 32 94 50 94 C68 94 82 86 82 72 C82 58 72 50 69 36 C67 24 62 10 50 10 Z" fill="' + C.palta + '"/>' +
+      '<path d="M50 18 C41 18 38 29 37 38 C35 50 26 58 26 71 C26 82 37 87 50 87 C63 87 74 82 74 71 C74 58 65 50 63 38 C62 29 59 18 50 18 Z" fill="' + C.paltaClara + '"/>' +
+      '<circle cx="50" cy="68" r="13" fill="' + C.marron + '"/>' +
+      '<ellipse cx="46" cy="64" rx="3.5" ry="5" fill="#fff" opacity=".3"/>'
+    ),
+    "🍈": svg(
+      '<circle cx="50" cy="56" r="36" fill="' + C.melon + '"/>' +
+      '<g fill="none" stroke="' + C.melonRed + '" stroke-width="2" opacity=".9">' +
+      '<path d="M22 44 C34 52 40 66 38 86"/><path d="M34 26 C46 38 52 60 50 92"/><path d="M58 22 C64 40 66 62 62 90"/><path d="M78 36 C80 52 80 70 74 82"/>' +
+      '<path d="M16 60 C34 56 60 58 86 62"/><path d="M22 76 C40 72 62 74 80 78"/><path d="M24 40 C42 38 62 38 80 42"/></g>' +
+      '<path d="M50 20 L50 10" stroke="' + C.marron + '" stroke-width="4" stroke-linecap="round"/>' + SHINE
+    ),
+    // La manzana dorada: el premio más caro de la tienda.
+    "🍎✨": svg(
+      apple(C.oro, C.lima, C.limaOscura) +
+      '<path d="M25 75 C34 86 56 90 72 80 C58 86 38 84 25 75 Z" fill="' + C.oroOscuro + '" opacity=".6"/>' + SHINE +
+      '<path d="M82 60 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3 Z" fill="#FFF3E2"/>' +
+      '<path d="M18 30 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2 Z" fill="#FFF3E2"/>'
+    ),
   };
 
   window.fruitSvg = function (emoji) {
     return FRUITS[emoji] || FRUITS["🍏"];
   };
-  window.FRUIT_KEYS = Object.keys(FRUITS).filter(function (k) { return k !== "🍏"; });
+  // La manzana verde y la dorada no aparecen en el confeti ni en la ruleta (la dorada es un premio).
+  window.FRUIT_KEYS = Object.keys(FRUITS).filter(function (k) { return k !== "🍏" && k !== "🍎✨"; });
 
   // ---------- Mascota: la manzana del logo, con caras ----------
   var EYE_OPEN = function (x, y, lookX, lookY) {
@@ -265,13 +294,71 @@
     "🍌": [47, 63, 0.56], "🍉": [50, 46, 0.62], "🍇": [53, 58, 0.72], "🍓": [50, 60, 0.8],
     "🍒": [33, 71, 0.46], "🍑": [50, 62, 0.9], "🍍": [50, 67, 0.72], "🥝": [50, 54, 0.62], "🥥": [50, 54, 0.66],
     "🍐": [50, 74, 0.7], "🥭": [53, 60, 0.82], "🫐": [50, 72, 0.6],
+    "🍅": [50, 62, 0.85], "🥑": [50, 47, 0.5], "🍈": [50, 58, 0.85], "🍎✨": [50, 64, 1],
   };
 
   function inner(markup) {
     return markup.replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, "");
   }
 
-  window.mascotSvg = function (mood, fruit) {
+  // ---------- Accesorios de la tienda (se dibujan sobre la cara de la mascota) ----------
+  // Coordenadas pensadas sobre la manzana (ojos en y=60, frente en y=40, base en y=88);
+  // después se ubican en cada fruta con la misma posición y escala que la cara.
+  var ACCESSORIES = {
+    // Gorros
+    cap:
+      '<path d="M28 40 C28 22 38 14 50 14 C62 14 72 22 72 40 Z" fill="' + C.cielo + '"/>' +
+      '<path d="M60 38 C72 36 84 38 92 43 C80 45 68 44 60 42 Z" fill="#1FA6D0"/>' +
+      '<path d="M50 14 L50 40" stroke="#1FA6D0" stroke-width="2"/><circle cx="50" cy="14" r="3" fill="' + C.crema + '"/>',
+    straw:
+      '<ellipse cx="50" cy="40" rx="40" ry="8" fill="#E9C46A"/>' +
+      '<path d="M32 40 C32 22 40 14 50 14 C60 14 68 22 68 40 Z" fill="#F2D27E"/>' +
+      '<path d="M32 33 C44 36 56 36 68 33 L68 39 C56 42 44 42 32 39 Z" fill="' + C.pomelo + '"/>' +
+      '<path d="M16 42 C30 45 70 45 84 42" stroke="#D4A843" stroke-width="1.5" fill="none"/>',
+    beanie:
+      '<path d="M26 42 C26 20 38 10 50 10 C62 10 74 20 74 42 Z" fill="' + C.uva + '"/>' +
+      '<rect x="24" y="34" width="52" height="10" rx="5" fill="' + C.uvaOscura + '"/>' +
+      '<g stroke="' + C.uva + '" stroke-width="2"><path d="M32 35 V43"/><path d="M40 35 V43"/><path d="M48 35 V43"/><path d="M56 35 V43"/><path d="M64 35 V43"/></g>' +
+      '<circle cx="50" cy="9" r="7" fill="' + C.crema + '"/>',
+    tophat:
+      '<ellipse cx="50" cy="40" rx="28" ry="6" fill="' + C.tinta + '"/>' +
+      '<rect x="35" y="4" width="30" height="36" rx="3" fill="' + C.tinta + '"/>' +
+      '<rect x="35" y="30" width="30" height="6" fill="' + C.pomelo + '"/>' +
+      '<rect x="38" y="7" width="4" height="20" rx="2" fill="#fff" opacity=".15"/>',
+    party:
+      '<path d="M34 42 L50 4 L66 42 Z" fill="' + C.lima + '"/>' +
+      '<path d="M40 28 L46 14 L50 22 Z M44 42 L52 22 L58 36 Z" fill="' + C.cielo + '"/>' +
+      '<path d="M37 36 L63 36 L66 42 L34 42 Z" fill="' + C.pomelo + '"/>' +
+      '<circle cx="50" cy="5" r="5" fill="' + C.mandarina + '"/>',
+    crown:
+      '<path d="M28 42 L30 16 L40 28 L50 8 L60 28 L70 16 L72 42 Z" fill="' + C.amarillo + '"/>' +
+      '<rect x="28" y="36" width="44" height="8" rx="2" fill="' + C.mandarina + '"/>' +
+      '<circle cx="38" cy="40" r="2.5" fill="' + C.pomelo + '"/><circle cx="50" cy="40" r="2.5" fill="' + C.cielo + '"/><circle cx="62" cy="40" r="2.5" fill="' + C.pomelo + '"/>' +
+      '<circle cx="30" cy="15" r="3" fill="' + C.amarillo + '"/><circle cx="50" cy="7" r="3" fill="' + C.amarillo + '"/><circle cx="70" cy="15" r="3" fill="' + C.amarillo + '"/>',
+    // Anteojos
+    sunglasses:
+      '<path d="M28 56 H48 V62 C48 67 44 70 39 70 C33 70 28 67 28 62 Z" fill="' + C.tinta + '"/>' +
+      '<path d="M52 56 H72 V62 C72 67 67 70 61 70 C56 70 52 67 52 62 Z" fill="' + C.tinta + '"/>' +
+      '<path d="M46 57 H54" stroke="' + C.tinta + '" stroke-width="3"/>' +
+      '<path d="M28 57 L20 54 M72 57 L80 54" stroke="' + C.tinta + '" stroke-width="2.5" stroke-linecap="round"/>' +
+      '<path d="M31 59 L36 59" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".5"/><path d="M55 59 L60 59" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".5"/>',
+    roundglasses:
+      '<circle cx="40" cy="60" r="9" fill="#fff" fill-opacity=".18" stroke="' + C.marron + '" stroke-width="3"/>' +
+      '<circle cx="60" cy="60" r="9" fill="#fff" fill-opacity=".18" stroke="' + C.marron + '" stroke-width="3"/>' +
+      '<path d="M49 59 Q50 56 51 59" stroke="' + C.marron + '" stroke-width="3" fill="none"/>' +
+      '<path d="M31 58 L22 55 M69 58 L78 55" stroke="' + C.marron + '" stroke-width="2.5" stroke-linecap="round"/>',
+    // Cuello
+    bowtie:
+      '<path d="M50 88 L34 80 L34 96 Z" fill="' + C.pomelo + '"/><path d="M50 88 L66 80 L66 96 Z" fill="' + C.pomelo + '"/>' +
+      '<rect x="45" y="83" width="10" height="10" rx="3" fill="' + C.pomeloOscuro + '"/>',
+    scarf:
+      '<path d="M22 80 C36 90 64 90 78 80 L80 88 C64 98 36 98 20 88 Z" fill="' + C.cielo + '"/>' +
+      '<path d="M60 88 L64 104 L74 102 L68 86 Z" fill="' + C.cielo + '"/>' +
+      '<g stroke="' + C.crema + '" stroke-width="2.5"><path d="M34 88 L32 94"/><path d="M46 90 L45 96"/><path d="M58 90 L58 96"/><path d="M65 95 L72 94"/></g>',
+  };
+  var SLOT_ORDER = ["neck", "glasses", "hat"];
+
+  window.mascotSvg = function (mood, fruit, acc) {
     var face = FACES[mood] || FACES.neutral;
     var key = FRUITS[fruit] ? fruit : "🍎";
     // Las semillas negras (sandía, kiwi) se confunden con los ojos: en la
@@ -279,8 +366,17 @@
     var body = key === "🍎" ? apple(C.pomelo, C.lima, C.limaOscura)
       : inner(FRUITS[key]).replace(/<ellipse[^>]*fill="#14101F"[^>]*\/>/g, "");
     var spot = FACE_SPOTS[key];
-    var placed = '<g transform="translate(' + spot[0] + " " + spot[1] + ") scale(" + spot[2] + ') translate(-50 -64)">' + face + "</g>";
-    return '<svg class="mascot-svg" viewBox="0 0 100 100" aria-hidden="true" focusable="false">' + body + placed + "</svg>";
+    var extras = "";
+    if (acc) SLOT_ORDER.forEach(function (slot) { if (acc[slot] && ACCESSORIES[acc[slot]]) extras += ACCESSORIES[acc[slot]]; });
+    var placed = '<g transform="translate(' + spot[0] + " " + spot[1] + ") scale(" + spot[2] + ') translate(-50 -64)">' + face + extras + "</g>";
+    return '<svg class="mascot-svg" viewBox="0 0 100 100" style="overflow:visible" aria-hidden="true" focusable="false">' + body + placed + "</svg>";
+  };
+  // Accesorios que tiene puestos este jugador (se guardan con la billetera de semillas).
+  window.myAccessories = function () {
+    try {
+      var w = JSON.parse(localStorage.getItem("tuttifruti_wallet") || "null");
+      return (w && w.equipped && typeof w.equipped === "object") ? w.equipped : {};
+    } catch (e) { return {}; }
   };
 
   // ---------- Logo: la fruta elegida por el jugador reemplaza a la manzana ----------

@@ -31,10 +31,14 @@ Recibís una letra y una lista de respuestas objetadas, cada una con su categor�
 Para cada respuesta decidí si es válida.
 
 Criterios:
-- Debe empezar con la letra indicada (ignorando tildes y mayúsculas).
+- La letra inicial ya fue verificada antes de llegar a vos: NO la evalúes ni la uses como motivo.
+- Nunca invalides una respuesta por mayúsculas, minúsculas, tildes o diéresis: "maria", "MARIA", "María" y "maría" son la misma respuesta.
 - Debe pertenecer razonablemente a la categoría.
 - Aceptá regionalismos de cualquier país hispanohablante (lunfardo, jerga peruana, mexicanismos, etc.), nombres populares y marcas reales cuando la categoría lo admite.
 - Aceptá errores menores de ortografía si la palabra es claramente reconocible.
+- No conocer una palabra NO es motivo para rechazarla. Existen miles de marcas, comercios, lugares, equipos, artistas y personas locales que quizás no conozcas: si la respuesta podría razonablemente pertenecer a la categoría, es válida.
+- Muchas marcas, lugares y equipos se llaman como personas o como palabras comunes (por ejemplo Isadora, Mimo o Lucía son marcas argentinas): que suene a nombre de persona no invalida una respuesta en Marca, ni al revés.
+- Rechazá solo lo que claramente no corresponde (por ejemplo "perro" como Color), las letras sin sentido o lo que no es una palabra real.
 - Ante la duda razonable, la respuesta es válida.
 
 Respondé SOLO con JSON, sin texto adicional ni bloques de código, con este formato:
@@ -43,10 +47,14 @@ Completá "motivo" con una frase breve EN ESPAÑOL solo cuando "valida" sea fals
   en: `You are the judge of a word game (tutti frutti / Scattergories-style). You receive a letter and a list of challenged answers, each with its category. For each answer, decide whether it's valid.
 
 Criteria:
-- It must start with the given letter (ignoring accents and case).
+- The first letter has already been checked before reaching you: do NOT evaluate it or use it as a reason.
+- Never reject an answer because of uppercase, lowercase or accents: "maria", "MARIA", "María" and "maría" are the same answer.
 - It must reasonably belong to the category.
 - Accept regional terms, slang, common names and real brands when the category allows it.
 - Accept minor spelling mistakes if the word is clearly recognizable.
+- Not knowing a word is NOT a reason to reject it. There are thousands of local brands, shops, places, teams, artists and people you may not know: if the answer could reasonably belong to the category, it is valid.
+- Many brands, places and teams are named like people or common words: sounding like a person's name doesn't invalidate a Brand answer, or the other way around.
+- Only reject what clearly doesn't fit (for example "dog" as a Color), random letters or things that aren't real words.
 - When in reasonable doubt, the answer is valid.
 
 Respond ONLY with JSON, no extra text or code fences, in this format:
@@ -55,15 +63,45 @@ Fill in "motivo" with a short reason IN ENGLISH only when "valida" is false.`,
   pt: `Você é o juiz de um jogo de palavras (tutti frutti / estilo Adedanha). Você recebe uma letra e uma lista de respostas contestadas, cada uma com sua categoria. Para cada resposta, decida se ela é válida.
 
 Critérios:
-- Deve começar com a letra indicada (ignorando acentos e maiúsculas/minúsculas).
+- A letra inicial já foi verificada antes de chegar a você: NÃO a avalie nem a use como motivo.
+- Nunca invalide uma resposta por maiúsculas, minúsculas ou acentos: "maria", "MARIA", "María" e "maría" são a mesma resposta.
 - Deve pertencer razoavelmente à categoria.
 - Aceite regionalismos, gírias, nomes populares e marcas reais quando a categoria permitir.
 - Aceite pequenos erros de ortografia se a palavra for claramente reconhecível.
+- Não conhecer uma palavra NÃO é motivo para rejeitá-la. Existem milhares de marcas, lojas, lugares, times, artistas e pessoas locais que você talvez não conheça: se a resposta puder razoavelmente pertencer à categoria, ela é válida.
+- Muitas marcas, lugares e times têm nome de pessoa ou de palavra comum: parecer nome de pessoa não invalida uma resposta em Marca, nem o contrário.
+- Rejeite só o que claramente não corresponde (por exemplo "cachorro" como Cor), letras sem sentido ou o que não é uma palavra real.
 - Em caso de dúvida razoável, a resposta é válida.
 
 Responda APENAS com JSON, sem texto adicional nem blocos de código, neste formato:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
 Preencha "motivo" com uma frase breve EM PORTUGUÊS somente quando "valida" for false.`,
+};
+
+// Compara sin tildes ni mayúsculas, pero la Ñ sigue siendo una letra distinta de la N.
+function sinTildes(texto) {
+  return texto.toLowerCase()
+    .replace(/ñ/g, "\u0000")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/\u0000/g, "ñ");
+}
+
+function empiezaConLetra(palabra, letra) {
+  const p = sinTildes(palabra).replace(/^[^a-zñ0-9]+/, "");
+  const l = sinTildes(letra).trim();
+  return l.length > 0 && p.startsWith(l);
+}
+
+// "maria de los angeles" -> "Maria De Los Angeles": así el juez no confunde un nombre
+// escrito en minúscula con una palabra común.
+function conMayusculaInicial(palabra) {
+  return palabra.trim().toLowerCase().replace(/(^|[\s-])(\S)/g, (m, sep, c) => sep + c.toUpperCase());
+}
+
+const MOTIVO_LETRA = {
+  es: "No empieza con la letra de la ronda",
+  en: "Doesn't start with the round's letter",
+  pt: "Não começa com a letra da rodada",
 };
 
 const HOSTS_PERMITIDOS = new Set([
@@ -136,6 +174,10 @@ exports.handler = async (event) => {
     if (d.categoria.length > MAX_LARGO_CATEGORIA || d.palabra.length > MAX_LARGO_PALABRA) {
       return jsonResponse(400, { error: "Palabra o categoría demasiado larga" });
     }
+    // En los jefes de la Aventura cada categoría tiene su propia letra.
+    if (d.letra !== undefined && (typeof d.letra !== "string" || d.letra.length > 2)) {
+      return jsonResponse(400, { error: "Una disputa tiene formato inválido" });
+    }
   }
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -143,9 +185,18 @@ exports.handler = async (event) => {
     return jsonResponse(500, { error: "Falta configurar la clave del juez en el servidor" });
   }
 
+  const idioma2 = PROMPTS_SISTEMA[idioma] ? idioma : "es";
+  const letraDe = d => (typeof d.letra === "string" && d.letra ? d.letra : letra);
+  const conLetraMal = disputas.filter(d => !empiezaConLetra(d.palabra, letraDe(d)));
+  const paraElJuez = disputas.filter(d => empiezaConLetra(d.palabra, letraDe(d)));
+  const veredictosLetra = conLetraMal.map(d => ({ id: d.id, valida: false, motivo: MOTIVO_LETRA[idioma2] }));
+  if (paraElJuez.length === 0) {
+    return jsonResponse(200, { veredictos: veredictosLetra });
+  }
+
   const contenidoUsuario = JSON.stringify({
     letra,
-    disputas: disputas.map(d => ({ id: d.id, categoria: d.categoria, palabra: d.palabra })),
+    disputas: paraElJuez.map(d => ({ id: d.id, categoria: d.categoria, palabra: conMayusculaInicial(d.palabra) })),
   });
 
   let respuestaAnthropic;
@@ -193,7 +244,7 @@ exports.handler = async (event) => {
     parsed = null;
   }
 
-  const idsValidos = new Set(disputas.map(d => d.id));
+  const idsValidos = new Set(paraElJuez.map(d => d.id));
   const veredictos = [];
   if (parsed && Array.isArray(parsed.veredictos)) {
     parsed.veredictos.forEach(v => {
@@ -215,5 +266,5 @@ exports.handler = async (event) => {
     }
   });
 
-  return jsonResponse(200, { veredictos });
+  return jsonResponse(200, { veredictos: veredictos.concat(veredictosLetra) });
 };

@@ -278,6 +278,20 @@
           ".validate": false
         }
       }
+    },
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && auth.token.email != null",
+        "data": {
+          "$key": {
+            ".validate": "$key.matches(/^tuttifruti_(adventure|wallet|progress|stats|streak_history|duels|daily|avatar|playerName|preset)$/) && newData.isString() && newData.val().length <= 30000"
+          }
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
     }
   }
 }

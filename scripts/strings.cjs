@@ -3,6 +3,11 @@
    este archivo, correr: node scripts/build-site.cjs */
 module.exports = {
   "es": {
+    "home_profile_aria": "Mi fruta",
+    "home_profile_title": "Arma tu fruta y guarda tu progreso",
+    "home_profile_desc": "Vístela con gorros, anteojos y más, y guarda tus semillas y estrellas con tu cuenta de Google.",
+    "privacidad_s1_sub4_heading": "Si inicias sesión con Google",
+    "privacidad_s1_sub4_p": "Iniciar sesión es opcional. Si lo haces, Google nos comparte tu nombre y tu dirección de email para identificar tu cuenta, y guardamos en nuestra base de datos (Firebase) tu progreso en el juego —semillas, compras de la tienda, estrellas de la Aventura, logros, estadísticas y duelos— para que no lo pierdas y puedas usarlo en otros dispositivos. No usamos tu email para enviarte mensajes ni lo compartimos con nadie. Puedes cerrar sesión cuando quieras, y pedirnos que borremos tu cuenta y tus datos escribiendo a bauengames@gmail.com.",
     "home_adv_title": "Aventura",
     "home_adv_desc": "30 niveles para jugar solo, con estrellas y vidas.",
     "home_duel_title": "Duelo con amigos",
@@ -89,7 +94,7 @@ module.exports = {
     "privacidad_intro": "Esta política explica qué información recolecta tutti.frutti (el \"Sitio\"), cómo se usa y qué opciones tienes al respecto. Al usar el Sitio, aceptas esta política.",
     "privacidad_s1_heading": "Qué datos recolectamos",
     "privacidad_s1_sub1_heading": "Datos que ingresas tú",
-    "privacidad_s1_li1_html": "<strong>Nombre de jugador:</strong> el que escribes antes de jugar. No pedimos apellido, email ni ningún dato que te identifique fuera del juego.",
+    "privacidad_s1_li1_html": "<strong>Nombre de jugador:</strong> el que escribes antes de jugar. No pedimos apellido, email ni ningún dato que te identifique fuera del juego, salvo que elijas iniciar sesión con Google (ver más abajo).",
     "privacidad_s1_li2_html": "<strong>Respuestas de la partida:</strong> las palabras que escribes en cada categoría durante una ronda, para poder compararlas con las de los demás jugadores y calcular el puntaje.",
     "privacidad_s1_li3_html": "<strong>Código de sala:</strong> se genera automáticamente al crear una partida.",
     "privacidad_s1_p1": "Estos datos se guardan en una base de datos (Firebase, de Google) asociados a un identificador anónimo que se genera en tu navegador, no a tu identidad real. Las salas y sus datos no están pensados para conservarse indefinidamente. Si juegas el desafío del día o el contrarreloj, tu nombre de jugador, tu fruta y tu puntaje aparecen en los rankings públicos de ese día o de esa semana.",
@@ -156,6 +161,11 @@ module.exports = {
     "notfound_home": "Ir al inicio"
   },
   "en": {
+    "home_profile_aria": "My fruit",
+    "home_profile_title": "Dress up your fruit and save your progress",
+    "home_profile_desc": "Give it hats, glasses and more, and keep your seeds and stars safe with your Google account.",
+    "privacidad_s1_sub4_heading": "If you sign in with Google",
+    "privacidad_s1_sub4_p": "Signing in is optional. If you do, Google shares your name and email address with us to identify your account, and we store your game progress in our database (Firebase) —seeds, shop purchases, Adventure stars, achievements, stats and duels— so you don't lose it and can use it on other devices. We don't use your email to send you messages and we don't share it with anyone. You can sign out at any time, and ask us to delete your account and data by writing to bauengames@gmail.com.",
     "home_adv_title": "Adventure",
     "home_adv_desc": "30 solo levels with stars and lives.",
     "home_duel_title": "Duel with friends",
@@ -242,7 +252,7 @@ module.exports = {
     "privacidad_intro": "This policy explains what information tutti.frutti (the \"Site\") collects, how it's used, and what choices you have about it. By using the Site, you accept this policy.",
     "privacidad_s1_heading": "What data we collect",
     "privacidad_s1_sub1_heading": "Data you enter",
-    "privacidad_s1_li1_html": "<strong>Player name:</strong> the one you type before playing. We don't ask for a last name, email, or any data that identifies you outside the game.",
+    "privacidad_s1_li1_html": "<strong>Player name:</strong> the one you type before playing. We don't ask for a last name, email, or any data that identifies you outside the game, unless you choose to sign in with Google (see below).",
     "privacidad_s1_li2_html": "<strong>Game answers:</strong> the words you type in each category during a round, so they can be compared with other players' answers to calculate the score.",
     "privacidad_s1_li3_html": "<strong>Room code:</strong> generated automatically when a game is created.",
     "privacidad_s1_p1": "This data is stored in a database (Firebase, by Google) tied to an anonymous identifier generated in your browser, not your real identity. Rooms and their data aren't meant to be kept indefinitely. If you play the daily challenge or time attack, your player name, fruit and score appear in that day's or that week's public rankings.",
@@ -309,6 +319,11 @@ module.exports = {
     "notfound_home": "Go to home"
   },
   "pt": {
+    "home_profile_aria": "Minha fruta",
+    "home_profile_title": "Monte sua fruta e salve seu progresso",
+    "home_profile_desc": "Vista com chapéus, óculos e mais, e guarde suas sementes e estrelas com sua conta do Google.",
+    "privacidad_s1_sub4_heading": "Se você entrar com o Google",
+    "privacidad_s1_sub4_p": "Entrar é opcional. Se você entrar, o Google compartilha seu nome e seu endereço de email conosco para identificar sua conta, e guardamos no nosso banco de dados (Firebase) seu progresso no jogo —sementes, compras da loja, estrelas da Aventura, conquistas, estatísticas e duelos— para que você não o perca e possa usá-lo em outros dispositivos. Não usamos seu email para enviar mensagens nem o compartilhamos com ninguém. Você pode sair quando quiser e pedir que apaguemos sua conta e seus dados escrevendo para bauengames@gmail.com.",
     "home_adv_title": "Aventura",
     "home_adv_desc": "30 níveis para jogar sozinho, com estrelas e vidas.",
     "home_duel_title": "Duelo com amigos",
@@ -395,7 +410,7 @@ module.exports = {
     "privacidad_intro": "Esta política explica quais informações o tutti.frutti (o \"Site\") coleta, como são usadas e quais opções você tem a respeito. Ao usar o Site, você aceita esta política.",
     "privacidad_s1_heading": "Quais dados coletamos",
     "privacidad_s1_sub1_heading": "Dados que você digita",
-    "privacidad_s1_li1_html": "<strong>Nome de jogador:</strong> o que você digita antes de jogar. Não pedimos sobrenome, e-mail nem nenhum dado que te identifique fora do jogo.",
+    "privacidad_s1_li1_html": "<strong>Nome de jogador:</strong> o que você digita antes de jogar. Não pedimos sobrenome, e-mail nem nenhum dado que te identifique fora do jogo, a não ser que você escolha entrar com o Google (veja abaixo).",
     "privacidad_s1_li2_html": "<strong>Respostas da partida:</strong> as palavras que você digita em cada categoria durante uma rodada, para poder compará-las com as dos outros jogadores e calcular a pontuação.",
     "privacidad_s1_li3_html": "<strong>Código da sala:</strong> gerado automaticamente ao criar uma partida.",
     "privacidad_s1_p1": "Esses dados são armazenados em um banco de dados (Firebase, do Google) associados a um identificador anônimo gerado no seu navegador, não à sua identidade real. As salas e seus dados não foram pensados para ser guardados indefinidamente. Se você jogar o desafio do dia ou o contra-relógio, seu nome de jogador, sua fruta e sua pontuação aparecem nos rankings públicos daquele dia ou daquela semana.",

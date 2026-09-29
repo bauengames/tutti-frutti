@@ -11,7 +11,7 @@ var AVATARS = ["🍎", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓", "🍒", "
 // Frutas compradas en la tienda del juego (misma clave que jugar.html).
 try {
   var ownedFruits = (JSON.parse(localStorage.getItem("tuttifruti_wallet") || "null") || {}).owned || [];
-  ["🍏", "🍐", "🥭", "🫐"].forEach(function (f) { if (ownedFruits.indexOf(f) !== -1) AVATARS.push(f); });
+  ["🍏", "🍐", "🥭", "🫐", "🍅", "🥑", "🍈", "🍎✨"].forEach(function (f) { if (ownedFruits.indexOf(f) !== -1) AVATARS.push(f); });
 } catch (e) { /* storage unavailable */ }
 var AVATAR_KEY = "tuttifruti_avatar";
 
@@ -29,6 +29,7 @@ function setHomeAvatar(avatar) {
   try { localStorage.setItem(AVATAR_KEY, avatar); } catch (e) { /* storage unavailable */ }
   renderHomeAvatarPicker();
   if (window.applyLogoFruit) applyLogoFruit(avatar);
+  if (typeof renderHomeMascots === "function") renderHomeMascots();
 }
 
 function renderHomeAvatarPicker() {
@@ -50,3 +51,16 @@ function goPlay(event) {
   location.href = "/jugar";
   return false;
 }
+
+/* ---------- "Mi fruta": la fruta del jugador con sus accesorios ---------- */
+function renderHomeMascots() {
+  var acc = window.myAccessories ? window.myAccessories() : {};
+  var svgHtml = window.mascotSvg ? window.mascotSvg("happy", getHomeAvatar(), acc) : "";
+  document.querySelectorAll("[data-home-mascot]").forEach(function (el) { el.innerHTML = svgHtml; });
+  // El puntito invita a guardar el progreso mientras no haya una cuenta de Google en este navegador.
+  var hasAccount = false;
+  try { hasAccount = localStorage.getItem("tuttifruti_has_account") === "1"; } catch (e) { /* storage unavailable */ }
+  document.querySelectorAll("[data-home-dot]").forEach(function (el) { el.hidden = hasAccount; });
+}
+renderHomeMascots();
+

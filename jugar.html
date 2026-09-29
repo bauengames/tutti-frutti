@@ -766,6 +766,11 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
 .twist-chip .twist-text { display: flex; flex-direction: column; gap: 2px; }
 .twist-chip strong { font-size: 15px; }
 .twist-chip small { font-size: 13px; color: var(--text-muted); line-height: 1.35; }
+.twist-chip .twist-text { flex: 1; }
+.price-tag { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 4px 9px; border-radius: var(--radius-pill); background: var(--crema-08); font: 700 12px var(--font-mono); color: var(--text); white-space: nowrap; }
+.cat-chip .price-tag { padding: 1px 6px; font-size: 10px; margin-left: 4px; vertical-align: 1px; }
+.create-cost { display: block; margin: 0 0 8px; padding: 8px 12px; border-radius: var(--radius); background: var(--surface); font-size: 14px; text-align: center; }
+.create-cost.short { background: rgba(255,94,91,.14); color: var(--text); font-weight: 600; }
 .twist-note { color: var(--pomelo); }
 html[data-light] .twist-note { color: var(--tinta); }
 .vote-options { display: flex; flex-direction: column; gap: 10px; margin: 20px 0 14px; }
@@ -789,18 +794,25 @@ html[data-light] .adventure-banner .daily-arrow { color: var(--tinta); }
 .adv-star { width: 20px; height: 20px; display: block; flex-shrink: 0; }
 .adv-star path { fill: var(--mandarina); }
 .adv-star.off path { fill: var(--crema-08); stroke: var(--borde-fuerte); stroke-width: 1.5; }
-.hero-band .adv-star path { fill: var(--tinta); }
-.hero-band .adv-star.off path { fill: rgba(20,16,31,.14); stroke: none; }
+.hero-band .adv-big-stars .adv-star path { fill: var(--tinta); }
+.hero-band .adv-big-stars .adv-star.off path { fill: rgba(20,16,31,.14); stroke: none; }
+/* Vidas: corazón rojo = la tenés; solo contorno = te falta. Siempre sobre fondo oscuro para que se lea en todos los temas. */
 .adv-heart { width: 24px; height: 22px; display: block; flex-shrink: 0; }
-.adv-heart path { fill: var(--primary); }
-.adv-heart.empty path { fill: none; stroke: var(--borde-fuerte); stroke-width: 2.2; }
-.hero-band .adv-heart path { fill: var(--tinta); }
-.hero-band .adv-heart.empty path { fill: none; stroke: rgba(20,16,31,.4); }
+.adv-heart path { fill: var(--pomelo); }
+.adv-heart .shine { fill: #fff; opacity: .35; }
+.adv-heart.empty path { fill: none; stroke: rgba(255,243,226,.4); stroke-width: 2; }
+.adv-heart.empty .shine { display: none; }
 .adv-hearts { display: flex; gap: 3px; }
+.hero-band .adv-hearts, .adv-status-item { background: var(--tinta); color: #FFF3E2; border-radius: var(--radius-pill); padding: 8px 14px; }
+.hero-band .adv-hearts { display: inline-flex; }
+.adv-rule .adv-heart.empty path, .shop-art .adv-heart.empty path { stroke: var(--borde-fuerte); }
 
-.adv-status { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; margin-top: 16px; }
-.adv-status-item { display: flex; align-items: center; gap: 10px; }
-.adv-status-text { font: 700 13px/1.2 var(--font-mono); letter-spacing: .04em; }
+.adv-status { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; }
+.adv-status-item { display: inline-flex; align-items: center; gap: 10px; }
+.adv-status-item.adv-lives { flex-direction: column; align-items: flex-start; gap: 6px; border-radius: 16px; padding: 10px 14px; }
+.adv-lives .adv-status-text { font-size: 12px; opacity: .8; }
+.adv-lives .adv-hearts { padding: 0; background: none; border-radius: 0; }
+.adv-status-text { font: 700 13px/1.2 var(--font-mono); letter-spacing: .04em; white-space: nowrap; }
 .adv-status-item .adv-star { width: 24px; height: 24px; }
 
 .adv-world { background: var(--surface); border-radius: var(--radius-card); padding: 18px 16px; margin-bottom: 12px; }
@@ -815,30 +827,34 @@ html[data-light] .adventure-banner .daily-arrow { color: var(--tinta); }
 .adv-world.locked .adv-world-fruit { filter: grayscale(1); opacity: .6; }
 .adv-lock-note { display: flex; align-items: center; gap: 8px; margin: 12px 0 0; font-size: 14px; color: var(--text-muted); }
 .adv-lock-note svg { width: 16px; height: 16px; flex-shrink: 0; }
-.adv-path { position: relative; height: 480px; margin-top: 50px; }
-.adv-trail { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.adv-trail path { fill: none; stroke: var(--borde-fuerte); stroke-width: 4; stroke-dasharray: 2 10; stroke-linecap: round; vector-effect: non-scaling-stroke; }
-.adv-trail path.done { stroke: var(--primary); stroke-dasharray: none; opacity: .6; }
-.adv-node { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 6px; border: 0; background: none; padding: 0; cursor: pointer; color: var(--text); font-family: var(--font-body); }
-.adv-node:disabled { cursor: default; }
-.adv-disc { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font: 800 24px/1 var(--font-display); background: var(--primary); color: var(--tinta); box-shadow: 0 4px 0 rgba(0,0,0,.18); transition: transform .12s; }
-.adv-node:not(:disabled):active .adv-disc { transform: translateY(2px); }
-.adv-disc svg { width: 22px; height: 22px; }
-.adv-node.locked .adv-disc { background: var(--bg); color: var(--text-muted); border: 2px solid var(--borde-fuerte); box-shadow: none; }
-.adv-node.current .adv-disc { width: 72px; height: 72px; font-size: 28px; outline: 4px solid var(--primary); outline-offset: 4px; animation: adv-pulse 1.6s ease-in-out infinite; }
-@keyframes adv-pulse { 50% { outline-offset: 9px; outline-color: transparent; } }
-/* El jefe es un cuadrado girado: el margen compensa lo que ocupa al girar, así no tapa la etiqueta. */
-.adv-node.boss .adv-disc { width: 64px; height: 64px; border-radius: 18px; transform: rotate(45deg); margin: 14px 0 10px; }
-.adv-node.boss.current .adv-disc { width: 70px; height: 70px; margin: 17px 0 12px; }
-.adv-node.boss .adv-disc > * { transform: rotate(-45deg); display: flex; }
-.adv-node.boss .adv-disc svg { width: 30px; height: 30px; }
 .adv-mini-stars { display: flex; gap: 1px; }
 .adv-mini-stars .adv-star { width: 15px; height: 15px; }
 .adv-tag { font: 700 10px/1 var(--font-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); white-space: nowrap; }
 .adv-tag.now { background: var(--primary); color: var(--tinta); padding: 5px 9px; border-radius: var(--radius-pill); }
-.adv-here { position: absolute; transform: translate(-50%, -100%); width: 54px; z-index: 2; pointer-events: none; animation: adv-bob 1.6s ease-in-out infinite; }
-.adv-here svg { width: 100%; height: auto; display: block; }
-@keyframes adv-bob { 50% { transform: translate(-50%, calc(-100% - 5px)); } }
+/* Cajón de verdulería: 6 lugares por mundo. */
+.adv-crate { position: relative; margin-top: 14px; padding: 26px 12px 14px; border-radius: 14px; background: #B7824E; box-shadow: inset 0 -6px 0 #8B5A2B; }
+.adv-crate::before { content: ""; position: absolute; inset: 0; border-radius: 14px; background: repeating-linear-gradient(0deg, transparent 0 32px, rgba(0,0,0,.08) 32px 34px); pointer-events: none; }
+.adv-crate-plate { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); padding: 4px 14px; border-radius: 6px; background: #FFF3E2; color: #14101F; font: 800 14px/1.2 var(--font-display); white-space: nowrap; box-shadow: 0 2px 0 rgba(0,0,0,.15); }
+.adv-slots { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.adv-slot { position: relative; min-width: 0; aspect-ratio: 1 / 1.08; border: 0; border-radius: 10px; padding: 6px 4px; background: #8B5A2B; box-shadow: inset 0 4px 8px rgba(0,0,0,.35); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #FFF3E2; font-family: var(--font-body); cursor: pointer; transition: transform .1s; }
+.adv-slot:disabled { cursor: default; }
+.adv-slot:not(:disabled):active { transform: translateY(2px); }
+.adv-slot-n { position: absolute; left: 7px; top: 5px; font: 800 13px var(--font-display); opacity: .85; }
+.adv-slot-fruit { width: 60%; animation: adv-bob 3s ease-in-out infinite; filter: drop-shadow(0 3px 2px rgba(0,0,0,.3)); }
+.adv-slot-fruit svg { width: 100%; height: auto; display: block; }
+.adv-slot .adv-mini-stars .adv-star { width: 13px; height: 13px; }
+.adv-slot .adv-mini-stars .adv-star.off path { fill: rgba(255,243,226,.25); stroke: none; }
+.adv-slot > svg { width: 20px; height: 20px; opacity: .55; }
+.adv-slot.now { background: rgba(0,0,0,.28); outline: 3px dashed var(--primary); outline-offset: -3px; animation: adv-glow 1.6s ease-in-out infinite; }
+@keyframes adv-glow { 50% { outline-color: rgba(255,255,255,.25); } }
+.adv-slot-big { font: 800 30px/1 var(--font-display); }
+.adv-slot .adv-tag { font-size: 9px; letter-spacing: .06em; }
+.adv-slot .adv-tag:not(.now) { color: rgba(255,243,226,.8); }
+.adv-slot.boss { background: linear-gradient(#C99A2E, #8B5A2B); }
+.adv-slot-crown { width: 28px; height: 28px; }
+.adv-slot-crown svg { width: 100%; height: 100%; display: block; }
+.adv-slot.boss.done .adv-slot-crown { position: absolute; top: -12px; right: -6px; transform: rotate(18deg); }
+@keyframes adv-bob { 50% { transform: translateY(-4px); } }
 
 .adv-kicker { display: flex; align-items: center; gap: 8px; font-weight: 600; }
 .adv-kicker svg { width: 26px; height: 26px; }
@@ -853,6 +869,60 @@ html[data-light] .adventure-banner .daily-arrow { color: var(--tinta); }
 .adv-tier .adv-mini-stars { width: 50px; }
 .adv-rule { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; font-size: 15px; color: var(--crema-72); }
 .adv-rule .adv-heart { width: 18px; height: 17px; }
+#advLevelBoss .inline-icon { margin: 0 6px 0 0; }
+.card { position: relative; }
+.profile-btn { position: relative; padding: 4px; overflow: visible; }
+.profile-btn .mascot-svg { width: 34px; height: 34px; display: block; }
+.profile-dot { position: absolute; top: -3px; right: -3px; width: 12px; height: 12px; border-radius: 50%; background: var(--pomelo); border: 2px solid var(--bg); }
+.profile-hero { text-align: center; }
+.profile-mascot { width: 150px; height: 150px; margin: 18px auto 10px; }
+.profile-mascot .mascot-svg { width: 100%; height: 100%; }
+.profile-hero p { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: var(--radius-pill); background: var(--tinta); color: #FFF3E2; font: 700 15px var(--font-mono); }
+.acc-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.acc-tile { width: calc(33.3% - 6px); min-width: 90px; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 6px; border-radius: var(--radius-card); border: 2px solid var(--borde); background: var(--surface); color: var(--text); font: 600 12px/1.2 var(--font-body); cursor: pointer; }
+.acc-tile.on { border-color: var(--primary); background: var(--crema-08); }
+.acc-art, .acc-preview { width: 60px; height: 60px; }
+.acc-art .mascot-svg, .acc-preview .mascot-svg { width: 100%; height: 100%; display: block; }
+.shop-item .acc-preview { width: 70px; height: 70px; margin-top: 8px; }
+.account-box.invite { align-items: center; padding: 18px 16px; border-radius: var(--radius-card); background: var(--surface); border: 2px solid var(--primary); text-align: center; }
+.invite-mascot { width: 64px; height: 64px; }
+.invite-mascot .mascot-svg { width: 100%; height: 100%; display: block; }
+.invite-title { font: 800 19px/1.2 var(--font-display); }
+.invite-list { margin: 0 0 6px; padding: 0; list-style: none; font-size: 14px; color: var(--crema-72); display: flex; flex-direction: column; gap: 4px; }
+.invite-list li::before { content: "✓ "; color: var(--primary); font-weight: 800; }
+.lobby-account { margin-top: 18px; }
+#screen-profile .invite-mascot { display: none; }
+.account-box { display: flex; flex-direction: column; align-items: stretch; gap: 6px; margin: 10px 0 4px; text-align: center; }
+.account-box small { font-size: 12px; color: var(--text-muted); }
+.google-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 13px 16px; border-radius: var(--radius); border: 2px solid var(--borde-fuerte); background: #FFFFFF; color: #1F1F1F; font: 600 15px var(--font-body); cursor: pointer; }
+.google-btn:disabled { opacity: .6; cursor: wait; }
+.account-g { width: 20px; height: 20px; flex-shrink: 0; display: inline-flex; }
+.account-g svg { width: 100%; height: 100%; display: block; }
+.account-box.logged { flex-direction: row; align-items: center; gap: 12px; padding: 10px 14px; border-radius: var(--radius-card); background: var(--surface); text-align: left; }
+.account-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.account-text strong { font-size: 14px; }
+.account-text small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.account-logout { border: 0; background: none; color: var(--text-muted); font: 600 13px var(--font-body); text-decoration: underline; cursor: pointer; flex-shrink: 0; }
+.hero-band + [data-account-box] .account-box { margin: -8px 0 20px; }
+.joker-btn { position: absolute; right: 2px; top: -4px; width: 28px; height: 28px; border-radius: 8px; border: 2px solid var(--borde); background: var(--surface); font-size: 15px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+.joker-btn[aria-pressed="true"] { border-color: var(--primary); background: var(--primary); }
+.joker-btn:disabled { opacity: .3; cursor: not-allowed; }
+.card.joker-on input { border-color: var(--primary); font-weight: 700; opacity: 1; -webkit-text-fill-color: var(--text); }
+.card:has(.joker-btn) .card-label { padding-right: 34px; }
+.shop-joker { font-size: 34px; line-height: 1; }
+.adv-item-toggle { width: 100%; display: flex; align-items: center; gap: 10px; margin: 12px 0 0; padding: 12px 14px; border-radius: var(--radius-card); border: 2px solid var(--borde); background: var(--surface); color: var(--text); font: 600 15px var(--font-body); text-align: left; cursor: pointer; }
+.adv-item-toggle[aria-pressed="true"] { border-color: var(--primary); background: var(--crema-08); }
+.adv-item-toggle > span:nth-child(2) { flex: 1; }
+.adv-item-check { width: 24px; height: 24px; border-radius: 6px; border: 2px solid var(--borde-fuerte); display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--primary); }
+.adv-item-ico { width: 24px; height: 24px; flex-shrink: 0; display: inline-flex; }
+.adv-item-ico svg { width: 100%; height: 100%; display: block; }
+.shop-item.wide .shop-art .adv-heart { width: 40px; height: 36px; }
+.shop-item.wide .shop-art svg { width: 100%; height: 100%; }
+.shop-item.wide .shop-art { display: flex; align-items: center; justify-content: center; }
+.shop-art-x { position: relative; display: inline-flex; }
+.shop-art-x b { position: absolute; right: -8px; bottom: -4px; padding: 1px 5px; border-radius: 8px; background: var(--tinta); color: #FFF3E2; font: 800 11px/1.3 var(--font-mono); }
+#advLevelBoss { background: var(--surface); border: 2px dashed var(--primary); border-radius: var(--radius-card); padding: 12px 14px; color: var(--text); line-height: 1.45; }
+.cat-letter { display: inline-flex; align-items: center; justify-content: center; min-width: 26px; height: 26px; padding: 0 6px; margin-right: 8px; border-radius: 8px; background: var(--primary); color: var(--tinta); font: 800 17px/1 var(--font-display); letter-spacing: 0; vertical-align: middle; text-transform: none; }
 .adv-rule .inline-icon { margin: 0; }
 
 .adv-big-stars { display: flex; align-items: flex-end; gap: 6px; margin: 0 0 14px; }
@@ -999,6 +1069,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
     <span class="wordmark">tutti<span class="apple-dot"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span><span class="sr-only">.</span>frutti</span>
   </button>
   <div class="top-actions">
+    <button type="button" class="icon-btn profile-btn" id="profileBtn" onclick="openProfile()" aria-label="Mi fruta" data-i18n-aria="profile_btn_aria"></button>
     <div class="theme-picker" id="themePicker">
       <button type="button" class="icon-btn" onclick="toggleThemeMenu()" aria-label="Cambiar tema" data-i18n-aria="theme_btn_aria"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M203.57,51A107.9,107.9,0,0,0,20,128c0,44.72,27.6,82.25,72,97.94A36,36,0,0,0,140,192a12,12,0,0,1,12-12h46.21a35.79,35.79,0,0,0,35.1-28A108.6,108.6,0,0,0,236,127.09,107.23,107.23,0,0,0,203.57,51Zm6.34,95.67a11.91,11.91,0,0,1-11.7,9.3H152a36,36,0,0,0-36,36,12,12,0,0,1-16,11.3c-16.65-5.88-30.65-15.76-40.48-28.56A76,76,0,0,1,44,128a84,84,0,0,1,83.13-84H128a84.35,84.35,0,0,1,84,83.29A84.72,84.72,0,0,1,209.91,146.71ZM144,76a16,16,0,1,1-16-16A16,16,0,0,1,144,76Zm-44,24A16,16,0,1,1,84,84,16,16,0,0,1,100,100Zm0,56a16,16,0,1,1-16-16A16,16,0,0,1,100,156Zm88-56a16,16,0,1,1-16-16A16,16,0,0,1,188,100Z"/></svg></button>
       <div class="theme-menu" id="themeMenu">
@@ -1120,6 +1191,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
             <input type="text" id="newCatInput" maxlength="40" placeholder="O escribí una categoría propia" onkeydown="if(event.key==='Enter') addCategory()" data-i18n-placeholder="new_cat_placeholder" />
             <button type="button" onclick="addCategory()" data-i18n="add_btn">Agregar</button>
           </div>
+          <p class="hint" id="customCatHint"></p>
         </div>
       </div>
 
@@ -1179,12 +1251,14 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
     <p class="online-note" id="joinConfigNote" style="display:none;" data-i18n="join_config_note">La persona que creó la sala ya eligió las categorías, el tiempo por ronda y las letras — vas a jugar con esa configuración.</p>
 
     <div class="lobby-footer">
+      <p class="create-cost" id="createCostNote" style="display:none;"></p>
       <button class="btn btn-primary btn-block" id="playBtn" disabled onclick="beginGame()">Empezar a jugar</button>
       <div class="lobby-links">
         <button type="button" class="btn btn-ghost" onclick="showStatsScreen()" data-i18n="view_stats_btn">Ver mis estadísticas</button>
         <button type="button" class="btn btn-ghost" onclick="openShop()" id="shopBtn"><span data-i18n="shop_heading">Tienda</span></button>
       </div>
     </div>
+    <div data-account-box class="lobby-account"></div>
     <button type="button" class="btn btn-ghost btn-block install-btn" id="installAppBtn" style="display:none;" onclick="installApp()"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/></svg><span data-install-label data-i18n="install_app_btn">Instalar la app</span></button>
   </div>
 </div>
@@ -1197,6 +1271,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
         <h2 data-i18n="stats_heading">Tus estadísticas</h2>
         <p data-i18n="stats_lead">Guardadas en este dispositivo — nadie más las ve.</p>
       </div>
+      <div data-account-box></div>
       <div class="stats-grid">
         <div class="stat-card"><span class="stat-value" id="statGames">0</span><span class="stat-label" data-i18n="stats_games">Partidas jugadas</span></div>
         <div class="stat-card"><span class="stat-value" id="statRounds">0</span><span class="stat-label" data-i18n="stats_rounds">Rondas jugadas</span></div>
@@ -1226,7 +1301,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
         <h2><span data-i18n="adv_map_title">Aventura</span></h2>
         <p data-i18n="adv_map_lead">30 niveles en 5 mundos. Llegá a la meta de puntos para pasar cada uno.</p>
         <div class="adv-status">
-          <div class="adv-status-item"><div class="adv-hearts" id="advMapHearts"></div><span class="adv-status-text" data-adv-countdown></span></div>
+          <div class="adv-status-item adv-lives"><div class="adv-hearts" id="advMapHearts"></div><span class="adv-status-text" data-adv-countdown></span></div>
           <div class="adv-status-item"><span id="advMapStarIcon"></span><span class="adv-status-text" id="advMapStars"></span></div>
         </div>
       </div>
@@ -1261,6 +1336,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <div id="advLevelTiers"></div>
       <p class="adv-rule" id="advLevelBoss" style="display:none;"></p>
       <p class="adv-rule" id="advLevelLife"></p>
+      <div id="advLevelItems"></div>
       <div class="actions-row">
         <button class="secondary" onclick="openAdventure()" data-i18n="adv_map_btn">Volver al mapa</button>
         <button class="primary" onclick="startAdventureLevel()" data-i18n="adv_play_btn">Jugar</button>
@@ -1288,6 +1364,28 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
   </div>
 </div>
 
+<!-- MI FRUTA (perfil) -->
+<div class="screen" id="screen-profile">
+  <div class="results">
+    <div class="results-card">
+      <div class="hero-band profile-hero">
+        <div class="profile-mascot" id="profileMascot"></div>
+        <h2 id="profileName"></h2>
+        <p id="profileSub"></p>
+      </div>
+      <div data-account-box></div>
+      <h2 class="section-title" data-i18n="profile_acc_heading">Tus accesorios</h2>
+      <div id="profileAccessories"></div>
+      <button type="button" class="btn btn-secondary btn-block" style="margin-top:10px;" onclick="openShop('acc')" data-i18n="profile_to_shop">Conseguir más en la tienda</button>
+      <h2 class="section-title" style="margin-top:28px;" data-i18n="profile_fruit_heading">Tu fruta</h2>
+      <div class="avatar-picker" id="profileAvatarPicker"></div>
+      <div class="actions-row">
+        <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- TIENDA -->
 <div class="screen" id="screen-shop">
   <div class="results">
@@ -1299,6 +1397,10 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       </div>
       <h2 class="section-title" data-i18n="shop_fruits_heading">Frutas para tu avatar</h2>
       <div class="shop-grid" id="shopFruits"></div>
+      <h2 class="section-title" id="shopAccHeading" data-i18n="shop_acc_heading">Accesorios para tu fruta</h2>
+      <div class="shop-grid" id="shopAccessories"></div>
+      <h2 class="section-title" data-i18n="shop_items_heading">Para todos los modos</h2>
+      <div class="shop-grid" id="shopItems"></div>
       <h2 class="section-title" data-i18n="shop_adv_heading">Aventura</h2>
       <div class="shop-grid" id="shopAdventure"></div>
       <h2 class="section-title" data-i18n="shop_how_heading">Cómo ganar semillas</h2>
@@ -1436,11 +1538,9 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
   <div class="results">
     <div class="results-card">
       <h2 data-i18n="review_heading">Revisá las respuestas</h2>
-      <p class="lead" data-i18n="review_lead">Objetá cualquier respuesta que te parezca inválida. El autor puede aceptar la objeción (vale 0), o si no, decide un juez con IA al cerrar esta pantalla. Ojo: si el juez le da la razón al autor, cada uno que objetó pierde 5 puntos.</p>
+      <p class="lead" data-i18n="review_lead"></p>
       <div id="reviewList"></div>
       <p class="hint" id="reviewReadyStatus" style="text-align:center;"></p>
-      <div class="progress-track"><div class="progress-fill" id="reviewProgressFill" style="width:100%;"></div></div>
-      <p class="hint" id="reviewCountdown" style="text-align:center;"></p>
       <div class="review-actions">
         <button class="btn btn-primary btn-block" id="reviewReadyBtn" onclick="markReviewReady()"><svg class="ph" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M176.49,95.51a12,12,0,0,1,0,17l-56,56a12,12,0,0,1-17,0l-24-24a12,12,0,1,1,17-17L112,143l47.51-47.52A12,12,0,0,1,176.49,95.51ZM236,128A108,108,0,1,1,128,20,108.12,108.12,0,0,1,236,128Zm-24,0a84,84,0,1,0-84,84A84.09,84.09,0,0,0,212,128Z"/></svg><span data-i18n="review_ready_btn">Listo, ya revisé</span></button>
         <button class="btn btn-secondary btn-block" id="reviewFinalizeBtn" style="display:none;" onclick="hostFinalizeReviewNow()" data-i18n="review_finalize_btn">Calcular puntaje ahora</button>
@@ -1552,7 +1652,8 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
     serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst, limitToLast
   } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
   import {
-    getAuth, signInAnonymously, setPersistence, browserLocalPersistence
+    getAuth, signInAnonymously, setPersistence, browserLocalPersistence,
+    GoogleAuthProvider, linkWithPopup, signInWithPopup, signInWithCredential, signOut
   } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
   const firebaseConfig = {
@@ -1572,14 +1673,18 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
   // cada jugador solo pueda escribir sus propias respuestas. Queda guardada en
   // el navegador, así el jugador sigue siendo el mismo en los rankings aunque
   // cierre la pestaña (dos pestañas del mismo navegador son el mismo jugador).
+  // Si el jugador ya inició sesión con Google en este navegador, se reutiliza esa sesión;
+  // si no, se usa (o se crea) la identidad anónima de siempre.
+  const auth = getAuth(app);
   async function signIn() {
     try {
-      const auth = getAuth(app);
       await setPersistence(auth, browserLocalPersistence);
+      await auth.authStateReady();
+      if (auth.currentUser) return auth.currentUser.uid;
       const cred = await signInAnonymously(auth);
       return cred.user.uid;
     } catch (e) {
-      console.error("No se pudo iniciar sesión anónima en Firebase", e);
+      console.error("No se pudo iniciar sesión en Firebase", e);
       return null;
     }
   }
@@ -1596,6 +1701,45 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
     const newUid = await signIn();
     if (newUid) window.FB.uid = newUid;
     return newUid;
+  };
+
+  // ---------- Cuenta de Google (opcional) ----------
+  window.FB.user = () => {
+    const u = auth.currentUser;
+    if (!u) return null;
+    return { uid: u.uid, isAnonymous: u.isAnonymous, name: u.displayName || "", email: u.email || "" };
+  };
+  // Convierte la identidad anónima en una cuenta de Google (mismo uid: rankings y duelos
+  // siguen siendo del jugador). Si esa cuenta de Google ya existía, se entra a ella.
+  window.FB.loginWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+    try {
+      if (auth.currentUser && auth.currentUser.isAnonymous) {
+        try {
+          await linkWithPopup(auth.currentUser, provider);
+        } catch (e) {
+          if (e.code !== "auth/credential-already-in-use" && e.code !== "auth/email-already-in-use") throw e;
+          const credential = GoogleAuthProvider.credentialFromError(e);
+          if (!credential) throw e;
+          await signInWithCredential(auth, credential);
+        }
+      } else {
+        await signInWithPopup(auth, provider);
+      }
+      await auth.currentUser.getIdToken(true);
+      window.FB.uid = auth.currentUser.uid;
+      return { ok: true };
+    } catch (e) {
+      console.error("No se pudo iniciar sesión con Google", e);
+      return { ok: false, code: e.code || "" };
+    }
+  };
+  // Al salir, el dispositivo vuelve a una identidad anónima nueva.
+  window.FB.logout = async () => {
+    await signOut(auth);
+    const cred = await signInAnonymously(auth);
+    window.FB.uid = cred.user.uid;
   };
   window.dispatchEvent(new Event("firebase-ready"));
 </script>
@@ -1802,6 +1946,11 @@ const I18N = {
     adv_boss_flash: "Nivel jefe: ronda relámpago de {s} segundos.",
     adv_boss_long: "Nivel jefe: las palabras tienen que tener 5 letras o más.",
     adv_boss_long_note: "Palabras de 5 letras o más",
+    adv_boss_mixed: "Nivel jefe: cada categoría tiene su propia letra.",
+    adv_boss_mixed_note: "Cada categoría tiene su propia letra",
+    adv_extra_flash: "Además, es una ronda relámpago de {s} segundos.",
+    adv_extra_long: "Además, las palabras tienen que tener 5 letras o más.",
+    adv_result_sub_mixed: "Mundo {world} · Nivel {n} · Letras mezcladas",
     adv_play_btn: "Jugar",
     adv_map_btn: "Volver al mapa",
     adv_round_label: "Aventura · Mundo {world} · Nivel {n}",
@@ -1829,13 +1978,18 @@ const I18N = {
     share_adv_subtitle: "{stars} de 3 estrellas en el Mundo {world}",
     share_adv_text: "¡Pasé el nivel {n} de la Aventura de tutti.frutti con {stars} ⭐! ¿Llegás más lejos?",
     seeds_earned_toast: "+{n} semillas",
+    seeds_spent_toast: "-{n} semillas",
+    create_cost_ok: "Esta partida cuesta 🌱 {cost} · tenés {seeds}",
+    create_cost_short: "Te faltan 🌱 {missing} semillas: sacá algo o jugá para juntar.",
+    create_cost_alert: "Te faltan {missing} semillas para crear esta sala.",
+    custom_cat_price_hint: "Cada categoría propia cuesta 🌱 {price} por partida. Las de la lista y los paquetes son gratis.",
     shop_heading: "Tienda",
     shop_lead: "Juntá semillas jugando y cambialas por frutas nuevas o vidas para la Aventura.",
     shop_balance: "{n} semillas",
     shop_fruits_heading: "Frutas para tu avatar",
     shop_adv_heading: "Aventura",
     shop_how_heading: "Cómo ganar semillas",
-    shop_how_text: "1 semilla por cada 10 puntos en el desafío del día, el contrarreloj, los duelos y las salas online. En la Aventura, 10 semillas por cada estrella nueva.",
+    shop_how_text: "1 semilla por cada 10 puntos en el desafío del día, el contrarreloj, los duelos y las salas online. En la Aventura, 10 semillas por cada estrella nueva. Además de la tienda, las semillas sirven para crear salas con categorías propias (5 cada una) y vueltas de tuerca (10 cada una).",
     shop_use: "Usar",
     shop_in_use: "En uso",
     shop_life_title: "Una vida extra",
@@ -1845,6 +1999,63 @@ const I18N = {
     fruit_pear: "Pera",
     fruit_mango: "Mango",
     fruit_blueberry: "Arándanos",
+    fruit_tomato: "Tomate",
+    fruit_avocado: "Palta",
+    fruit_melon: "Melón",
+    fruit_golden_apple: "Manzana dorada",
+    shop_full_lives_title: "Vidas llenas",
+    shop_items_heading: "Para todos los modos",
+    login_btn: "Continuar con Google",
+    login_hint: "Es opcional y gratis. Solo usamos tu cuenta para guardar tu progreso.",
+    login_done: "¡Listo! Tu progreso queda guardado en tu cuenta",
+    login_error: "No se pudo iniciar sesión con Google. Probá de nuevo en un rato.",
+    login_popup_blocked: "El navegador bloqueó la ventana de Google. Permití las ventanas emergentes para tuttipuntofrutti.com y probá de nuevo.",
+    login_in_app_browser: "Para iniciar sesión con Google, abrí tuttipuntofrutti.com en Chrome o Safari (Google no deja iniciar sesión desde dentro de WhatsApp o Instagram).",
+    login_sync_error: "Iniciaste sesión, pero no se pudo traer tu progreso. Se va a volver a intentar la próxima vez que entres.",
+    account_logged_title: "Progreso guardado en tu cuenta",
+    login_invite_title: "Guardá tu fruta y tu progreso",
+    login_invite_li1: "Tus semillas, accesorios y estrellas no se pierden",
+    login_invite_li2: "Seguí jugando en el celu o en la compu con lo mismo",
+    profile_btn_aria: "Mi fruta",
+    profile_title: "Mi fruta",
+    profile_acc_heading: "Tus accesorios",
+    profile_no_acc: "Todavía no tenés accesorios. ¡Conseguí gorros, anteojos y más en la tienda!",
+    profile_to_shop: "Conseguir más en la tienda",
+    profile_fruit_heading: "Tu fruta",
+    shop_acc_heading: "Accesorios para tu fruta",
+    shop_put_on: "Poner",
+    shop_take_off: "Sacar",
+    acc_slot_hat: "Gorros",
+    acc_slot_glasses: "Anteojos",
+    acc_slot_neck: "Cuello",
+    acc_party: "Gorrito de cumple",
+    acc_cap: "Gorra",
+    acc_beanie: "Gorro de lana",
+    acc_straw: "Sombrero de paja",
+    acc_tophat: "Galera",
+    acc_crown: "Corona",
+    acc_roundglasses: "Anteojos redondos",
+    acc_sunglasses: "Anteojos de sol",
+    acc_bowtie: "Moño",
+    acc_scarf: "Bufanda",
+    logout_btn: "Cerrar sesión",
+    logout_confirm: "¿Cerrar sesión en este dispositivo? Tu progreso queda guardado en tu cuenta de Google.",
+    welcome_gift_toast: "¡Regalo de bienvenida: {n} semillas!",
+    shop_joker_title: "Comodín",
+    shop_joker_desc: "Si no se te ocurre una palabra, tocá 🃏 en esa categoría y cuenta como válida ({pts} puntos). Uno por ronda. Tenés {n}.",
+    joker_label: "Comodín",
+    joker_use_title: "Usar un comodín (tenés {n})",
+    joker_result_note: "Comodín: {pts} puntos fijos",
+    shop_full_lives_desc: "Recarga las 5 vidas de la Aventura de una.",
+    shop_clock_title: "Reloj extra",
+    shop_clock_desc: "+{s} segundos en un nivel de la Aventura. Tenés {n}.",
+    shop_shield_title: "Escudo",
+    shop_shield_desc: "Si fallás un nivel, no perdés la vida. Se usa solo. Tenés {n}.",
+    adv_use_clock: "Usar reloj extra (+{s} s) · tenés {n}",
+    adv_clock_on: "Reloj extra: +{s} s",
+    adv_shield_info_one: "Tenés 1 escudo: si fallás, te salva la vida.",
+    adv_shield_info_many: "Tenés {n} escudos: si fallás, uno te salva la vida.",
+    adv_shield_saved: "¡Tu escudo te salvó una vida!",
     duel_banner_title: "Duelo con amigos",
     duel_banner_sub: "Jugá una ronda y desafiá a quien quieras con un link",
     duel_need_name: "Escribí tu nombre para jugar un duelo.",
@@ -1886,6 +2097,7 @@ const I18N = {
     duels_status_win: "Ganaste {me} a {them}",
     duels_status_lose: "Perdiste {me} a {them}",
     duels_new_badge: "Nuevo",
+    duels_status_notplayed: "Todavía no lo jugaste",
     duels_banner_news_one: "¡Alguien jugó uno de tus duelos!",
     duels_banner_news_many: "¡Hay novedades en {n} de tus duelos!",
     mascot_adv_win: ["¡Así se hace!", "¡Nivel pasado! Vamos por el próximo.", "¡Qué nivel!"],
@@ -1928,7 +2140,7 @@ const I18N = {
     letra_label: "Letra de la ronda",
     basta_btn: "¡Basta!",
     review_heading: "Revisá las respuestas",
-    review_lead: "Objetá cualquier respuesta que te parezca inválida. El autor puede aceptar la objeción (vale 0), o si no, decide un juez con IA al cerrar esta pantalla. Ojo: si el juez le da la razón al autor, cada uno que objetó pierde 5 puntos.",
+    review_lead: "Tomate tu tiempo: objetá cualquier respuesta que te parezca inválida. El autor puede aceptar la objeción (vale 0) y, si no, decide un juez con IA. El puntaje se calcula cuando todos tocan «Listo, ya revisé». Ojo: si el juez le da la razón al autor, cada uno que objetó pierde 5 puntos.",
     review_ready_btn: "Listo, ya revisé",
     review_ready_waiting: "Listo ✓ — esperando a los demás",
     review_finalize_btn: "Calcular puntaje ahora",
@@ -2170,6 +2382,11 @@ const I18N = {
     adv_boss_flash: "Boss level: a lightning round of {s} seconds.",
     adv_boss_long: "Boss level: words must have 5 letters or more.",
     adv_boss_long_note: "Words of 5 letters or more",
+    adv_boss_mixed: "Boss level: every category has its own letter.",
+    adv_boss_mixed_note: "Every category has its own letter",
+    adv_extra_flash: "Plus, it's a lightning round of {s} seconds.",
+    adv_extra_long: "Plus, words must have 5 letters or more.",
+    adv_result_sub_mixed: "{world} World · Level {n} · Mixed letters",
     adv_play_btn: "Play",
     adv_map_btn: "Back to map",
     adv_round_label: "Adventure · {world} World · Level {n}",
@@ -2197,13 +2414,18 @@ const I18N = {
     share_adv_subtitle: "{stars} of 3 stars in the {world} World",
     share_adv_text: "I cleared level {n} of the tutti.frutti Adventure with {stars} ⭐! Can you go further?",
     seeds_earned_toast: "+{n} seeds",
+    seeds_spent_toast: "-{n} seeds",
+    create_cost_ok: "This game costs 🌱 {cost} · you have {seeds}",
+    create_cost_short: "You need 🌱 {missing} more seeds: remove something or play to earn more.",
+    create_cost_alert: "You need {missing} more seeds to create this room.",
+    custom_cat_price_hint: "Each custom category costs 🌱 {price} per game. Categories from the list and packs are free.",
     shop_heading: "Shop",
     shop_lead: "Collect seeds as you play and trade them for new fruits or Adventure lives.",
     shop_balance: "{n} seeds",
     shop_fruits_heading: "Fruits for your avatar",
     shop_adv_heading: "Adventure",
     shop_how_heading: "How to earn seeds",
-    shop_how_text: "1 seed for every 10 points in the daily challenge, time attack, duels and online rooms. In the Adventure, 10 seeds for every new star.",
+    shop_how_text: "1 seed for every 10 points in the daily challenge, time attack, duels and online rooms. In the Adventure, 10 seeds for every new star. Besides the shop, seeds let you create rooms with your own categories (5 each) and twists (10 each).",
     shop_use: "Use",
     shop_in_use: "In use",
     shop_life_title: "An extra life",
@@ -2213,6 +2435,63 @@ const I18N = {
     fruit_pear: "Pear",
     fruit_mango: "Mango",
     fruit_blueberry: "Blueberries",
+    fruit_tomato: "Tomato",
+    fruit_avocado: "Avocado",
+    fruit_melon: "Melon",
+    fruit_golden_apple: "Golden apple",
+    shop_full_lives_title: "Full lives",
+    shop_items_heading: "For every mode",
+    login_btn: "Continue with Google",
+    login_hint: "Optional and free. We only use your account to save your progress.",
+    login_done: "Done! Your progress is saved to your account",
+    login_error: "Couldn't sign in with Google. Please try again in a bit.",
+    login_popup_blocked: "Your browser blocked the Google window. Allow pop-ups for tuttipuntofrutti.com and try again.",
+    login_in_app_browser: "To sign in with Google, open tuttipuntofrutti.com in Chrome or Safari (Google doesn't allow signing in from inside WhatsApp or Instagram).",
+    login_sync_error: "You're signed in, but your progress couldn't be loaded. It will try again next time.",
+    account_logged_title: "Progress saved to your account",
+    login_invite_title: "Save your fruit and your progress",
+    login_invite_li1: "Your seeds, accessories and stars won't get lost",
+    login_invite_li2: "Keep playing on your phone or computer with the same stuff",
+    profile_btn_aria: "My fruit",
+    profile_title: "My fruit",
+    profile_acc_heading: "Your accessories",
+    profile_no_acc: "You don't have accessories yet. Get hats, glasses and more in the shop!",
+    profile_to_shop: "Get more in the shop",
+    profile_fruit_heading: "Your fruit",
+    shop_acc_heading: "Accessories for your fruit",
+    shop_put_on: "Wear",
+    shop_take_off: "Take off",
+    acc_slot_hat: "Hats",
+    acc_slot_glasses: "Glasses",
+    acc_slot_neck: "Neck",
+    acc_party: "Party hat",
+    acc_cap: "Cap",
+    acc_beanie: "Beanie",
+    acc_straw: "Straw hat",
+    acc_tophat: "Top hat",
+    acc_crown: "Crown",
+    acc_roundglasses: "Round glasses",
+    acc_sunglasses: "Sunglasses",
+    acc_bowtie: "Bow tie",
+    acc_scarf: "Scarf",
+    logout_btn: "Sign out",
+    logout_confirm: "Sign out on this device? Your progress stays saved in your Google account.",
+    welcome_gift_toast: "Welcome gift: {n} seeds!",
+    shop_joker_title: "Joker",
+    shop_joker_desc: "Can't think of a word? Tap 🃏 on that category and it counts as valid ({pts} points). One per round. You have {n}.",
+    joker_label: "Joker",
+    joker_use_title: "Use a joker (you have {n})",
+    joker_result_note: "Joker: {pts} fixed points",
+    shop_full_lives_desc: "Refills all 5 Adventure lives at once.",
+    shop_clock_title: "Extra clock",
+    shop_clock_desc: "+{s} seconds on an Adventure level. You have {n}.",
+    shop_shield_title: "Shield",
+    shop_shield_desc: "If you fail a level, you don't lose the life. Used automatically. You have {n}.",
+    adv_use_clock: "Use extra clock (+{s} s) · you have {n}",
+    adv_clock_on: "Extra clock: +{s} s",
+    adv_shield_info_one: "You have 1 shield: if you fail, it saves your life.",
+    adv_shield_info_many: "You have {n} shields: if you fail, one saves your life.",
+    adv_shield_saved: "Your shield saved a life!",
     duel_banner_title: "Duel with friends",
     duel_banner_sub: "Play a round and challenge anyone with a link",
     duel_need_name: "Type your name to play a duel.",
@@ -2254,6 +2533,7 @@ const I18N = {
     duels_status_win: "You won {me} to {them}",
     duels_status_lose: "You lost {me} to {them}",
     duels_new_badge: "New",
+    duels_status_notplayed: "You haven't played it yet",
     duels_banner_news_one: "Someone played one of your duels!",
     duels_banner_news_many: "There's news in {n} of your duels!",
     mascot_adv_win: ["Way to go!", "Level cleared! On to the next one.", "What a level!"],
@@ -2296,7 +2576,7 @@ const I18N = {
     letra_label: "Round letter",
     basta_btn: "Stop!",
     review_heading: "Review the answers",
-    review_lead: "Challenge any answer that looks invalid to you. The author can accept the challenge (it's worth 0), or if not, an AI judge decides when this screen closes. Careful: if the judge sides with the author, everyone who challenged it loses 5 points.",
+    review_lead: "Take your time: challenge any answer that looks invalid to you. The author can accept the challenge (it's worth 0); if not, an AI judge decides. The score is calculated once everyone taps \"Done, I reviewed\". Careful: if the judge sides with the author, everyone who challenged it loses 5 points.",
     review_ready_btn: "Done, I reviewed",
     review_ready_waiting: "Done ✓ — waiting for the others",
     review_finalize_btn: "Calculate score now",
@@ -2538,6 +2818,11 @@ const I18N = {
     adv_boss_flash: "Nível chefe: rodada relâmpago de {s} segundos.",
     adv_boss_long: "Nível chefe: as palavras precisam ter 5 letras ou mais.",
     adv_boss_long_note: "Palavras de 5 letras ou mais",
+    adv_boss_mixed: "Nível chefe: cada categoria tem a sua própria letra.",
+    adv_boss_mixed_note: "Cada categoria tem a sua própria letra",
+    adv_extra_flash: "Além disso, é uma rodada relâmpago de {s} segundos.",
+    adv_extra_long: "Além disso, as palavras precisam ter 5 letras ou mais.",
+    adv_result_sub_mixed: "Mundo {world} · Nível {n} · Letras misturadas",
     adv_play_btn: "Jogar",
     adv_map_btn: "Voltar ao mapa",
     adv_round_label: "Aventura · Mundo {world} · Nível {n}",
@@ -2565,13 +2850,18 @@ const I18N = {
     share_adv_subtitle: "{stars} de 3 estrelas no Mundo {world}",
     share_adv_text: "Passei o nível {n} da Aventura do tutti.frutti com {stars} ⭐! Você vai mais longe?",
     seeds_earned_toast: "+{n} sementes",
+    seeds_spent_toast: "-{n} sementes",
+    create_cost_ok: "Esta partida custa 🌱 {cost} · você tem {seeds}",
+    create_cost_short: "Faltam 🌱 {missing} sementes: tire algo ou jogue para juntar.",
+    create_cost_alert: "Faltam {missing} sementes para criar esta sala.",
+    custom_cat_price_hint: "Cada categoria própria custa 🌱 {price} por partida. As da lista e os pacotes são grátis.",
     shop_heading: "Loja",
     shop_lead: "Junte sementes jogando e troque por frutas novas ou vidas para a Aventura.",
     shop_balance: "{n} sementes",
     shop_fruits_heading: "Frutas para o seu avatar",
     shop_adv_heading: "Aventura",
     shop_how_heading: "Como ganhar sementes",
-    shop_how_text: "1 semente a cada 10 pontos no desafio do dia, no contra o relógio, nos duelos e nas salas online. Na Aventura, 10 sementes por estrela nova.",
+    shop_how_text: "1 semente a cada 10 pontos no desafio do dia, no contra o relógio, nos duelos e nas salas online. Na Aventura, 10 sementes por estrela nova. Além da loja, as sementes servem para criar salas com categorias próprias (5 cada) e reviravoltas (10 cada).",
     shop_use: "Usar",
     shop_in_use: "Em uso",
     shop_life_title: "Uma vida extra",
@@ -2581,6 +2871,63 @@ const I18N = {
     fruit_pear: "Pera",
     fruit_mango: "Manga",
     fruit_blueberry: "Mirtilos",
+    fruit_tomato: "Tomate",
+    fruit_avocado: "Abacate",
+    fruit_melon: "Melão",
+    fruit_golden_apple: "Maçã dourada",
+    shop_full_lives_title: "Vidas cheias",
+    shop_items_heading: "Para todos os modos",
+    login_btn: "Continuar com o Google",
+    login_hint: "É opcional e grátis. Só usamos sua conta para salvar seu progresso.",
+    login_done: "Pronto! Seu progresso fica salvo na sua conta",
+    login_error: "Não foi possível entrar com o Google. Tente de novo daqui a pouco.",
+    login_popup_blocked: "O navegador bloqueou a janela do Google. Permita pop-ups para tuttipuntofrutti.com e tente de novo.",
+    login_in_app_browser: "Para entrar com o Google, abra tuttipuntofrutti.com no Chrome ou no Safari (o Google não deixa entrar de dentro do WhatsApp ou do Instagram).",
+    login_sync_error: "Você entrou, mas não foi possível carregar seu progresso. Vamos tentar de novo da próxima vez.",
+    account_logged_title: "Progresso salvo na sua conta",
+    login_invite_title: "Salve sua fruta e seu progresso",
+    login_invite_li1: "Suas sementes, acessórios e estrelas não se perdem",
+    login_invite_li2: "Continue jogando no celular ou no computador com o mesmo",
+    profile_btn_aria: "Minha fruta",
+    profile_title: "Minha fruta",
+    profile_acc_heading: "Seus acessórios",
+    profile_no_acc: "Você ainda não tem acessórios. Consiga chapéus, óculos e mais na loja!",
+    profile_to_shop: "Conseguir mais na loja",
+    profile_fruit_heading: "Sua fruta",
+    shop_acc_heading: "Acessórios para sua fruta",
+    shop_put_on: "Usar",
+    shop_take_off: "Tirar",
+    acc_slot_hat: "Chapéus",
+    acc_slot_glasses: "Óculos",
+    acc_slot_neck: "Pescoço",
+    acc_party: "Chapeuzinho de festa",
+    acc_cap: "Boné",
+    acc_beanie: "Gorro de lã",
+    acc_straw: "Chapéu de palha",
+    acc_tophat: "Cartola",
+    acc_crown: "Coroa",
+    acc_roundglasses: "Óculos redondos",
+    acc_sunglasses: "Óculos de sol",
+    acc_bowtie: "Gravata-borboleta",
+    acc_scarf: "Cachecol",
+    logout_btn: "Sair",
+    logout_confirm: "Sair neste dispositivo? Seu progresso continua salvo na sua conta do Google.",
+    welcome_gift_toast: "Presente de boas-vindas: {n} sementes!",
+    shop_joker_title: "Coringa",
+    shop_joker_desc: "Não lembra de uma palavra? Toque 🃏 nessa categoria e ela vale como válida ({pts} pontos). Um por rodada. Você tem {n}.",
+    joker_label: "Coringa",
+    joker_use_title: "Usar um coringa (você tem {n})",
+    joker_result_note: "Coringa: {pts} pontos fixos",
+    shop_full_lives_desc: "Recarrega as 5 vidas da Aventura de uma vez.",
+    shop_clock_title: "Relógio extra",
+    shop_clock_desc: "+{s} segundos num nível da Aventura. Você tem {n}.",
+    shop_shield_title: "Escudo",
+    shop_shield_desc: "Se falhar um nível, você não perde a vida. É usado sozinho. Você tem {n}.",
+    adv_use_clock: "Usar relógio extra (+{s} s) · você tem {n}",
+    adv_clock_on: "Relógio extra: +{s} s",
+    adv_shield_info_one: "Você tem 1 escudo: se falhar, ele salva sua vida.",
+    adv_shield_info_many: "Você tem {n} escudos: se falhar, um salva sua vida.",
+    adv_shield_saved: "Seu escudo salvou uma vida!",
     duel_banner_title: "Duelo com amigos",
     duel_banner_sub: "Jogue uma rodada e desafie quem quiser com um link",
     duel_need_name: "Escreva seu nome para jogar um duelo.",
@@ -2622,6 +2969,7 @@ const I18N = {
     duels_status_win: "Você ganhou {me} a {them}",
     duels_status_lose: "Você perdeu {me} a {them}",
     duels_new_badge: "Novo",
+    duels_status_notplayed: "Você ainda não jogou",
     duels_banner_news_one: "Alguém jogou um dos seus duelos!",
     duels_banner_news_many: "Tem novidade em {n} dos seus duelos!",
     mascot_adv_win: ["Isso aí!", "Nível concluído! Vamos para o próximo.", "Que nível!"],
@@ -2664,7 +3012,7 @@ const I18N = {
     letra_label: "Letra da rodada",
     basta_btn: "Basta!",
     review_heading: "Revise as respostas",
-    review_lead: "Conteste qualquer resposta que pareça inválida. O autor pode aceitar a contestação (vale 0), ou então um juiz com IA decide ao fechar esta tela. Atenção: se o juiz der razão ao autor, cada um que contestou perde 5 pontos.",
+    review_lead: "Sem pressa: conteste qualquer resposta que pareça inválida. O autor pode aceitar a contestação (vale 0); se não, um juiz com IA decide. A pontuação é calculada quando todos tocarem em \"Pronto, já revisei\". Atenção: se o juiz der razão ao autor, cada um que contestou perde 5 pontos.",
     review_ready_btn: "Pronto, já revisei",
     review_ready_waiting: "Pronto ✓ — esperando os demais",
     review_finalize_btn: "Calcular pontuação agora",
@@ -2920,7 +3268,7 @@ function playerColor(pid, players) {
 // estas frutas, así nadie puede meter HTML haciéndolo pasar por avatar.
 const BASE_AVATARS = ["🍎", "🍊", "🍋", "🍌", "🍉", "🍇", "🍓", "🍒", "🍑", "🍍", "🥝", "🥥"];
 // Todas las frutas que se pueden mostrar (incluye las de la tienda, que otros jugadores pueden tener).
-const AVATARS = [...BASE_AVATARS, "🍏", "🍐", "🥭", "🫐"];
+const AVATARS = [...BASE_AVATARS, "🍏", "🍐", "🥭", "🫐", "🍅", "🥑", "🍈", "🍎✨"];
 function myAvailableAvatars() {
   let owned = [];
   try { owned = (JSON.parse(localStorage.getItem("tuttifruti_wallet") || "null") || {}).owned || []; } catch (e) { owned = []; }
@@ -2946,6 +3294,7 @@ function setMyAvatar(avatar) {
   try { localStorage.setItem(AVATAR_KEY, avatar); } catch (e) { /* storage unavailable */ }
   renderAvatarPicker();
   if (window.applyLogoFruit) applyLogoFruit(avatar);
+  refreshMyFruit();
 }
 
 function renderAvatarPicker() {
@@ -3331,7 +3680,7 @@ function mascotHtml(mood, lineKey, size = "") {
   const lines = lineKey ? t(lineKey) : null;
   const line = Array.isArray(lines) ? lines[Math.floor(Math.random() * lines.length)] : "";
   return `<div class="mascot-wrap">
-    <div class="mascot ${size} mood-${mood}">${mascotSvg(mood, getMyAvatar())}</div>
+    <div class="mascot ${size} mood-${mood}">${mascotSvg(mood, getMyAvatar(), myEquipped())}</div>
     ${line ? `<div class="mascot-bubble">${escapeHtml(line)}</div>` : ""}
   </div>`;
 }
@@ -3497,11 +3846,14 @@ function renderCatChips() {
   state.categories.forEach(cat => {
     const span = document.createElement("span");
     span.className = "cat-chip";
-    span.innerHTML = `${escapeHtml(catLabel(cat))} <button aria-label="${escapeHtml(t('remove_category_aria', { cat: catLabel(cat) }))}" onclick="removeCategory('${escapeForJsAttr(cat)}')">×</button>`;
+    const price = isCustomCategory(cat) ? `<span class="price-tag">${seedIcon()}${CUSTOM_CAT_PRICE}</span>` : "";
+    span.innerHTML = `${escapeHtml(catLabel(cat))}${price} <button aria-label="${escapeHtml(t('remove_category_aria', { cat: catLabel(cat) }))}" onclick="removeCategory('${escapeForJsAttr(cat)}')">×</button>`;
     row.appendChild(span);
   });
   renderCategoryPicker();
   checkCanPlay();
+  const hint = document.getElementById("customCatHint");
+  if (hint) hint.innerHTML = escapeHtml(t("custom_cat_price_hint", { price: CUSTOM_CAT_PRICE })).replace(/🌱/g, seedIcon());
 
   const isRandomPack = state.categoriesMode === "random";
   const editor = document.getElementById("categoryEditor");
@@ -3548,6 +3900,86 @@ function setMode(mode) {
   checkCanPlay();
 }
 
+// ---------- Lo que cuesta armar una sala (se paga con semillas) ----------
+const CUSTOM_CAT_PRICE = 5;
+const TWIST_PRICE = 10;
+
+// Una categoría propia es la que escribió el jugador (no está en la lista ni en los paquetes).
+// ---------- Comodín: una categoría cuenta como válida sin escribir nada ----------
+// Se guarda como respuesta "🃏" (así viaja igual en las salas online). Vale 10 puntos fijos,
+// sin multiplicadores, no se puede objetar y se usa uno por ronda como máximo.
+const JOKER_MARK = "🃏";
+const JOKER_POINTS = 10;
+function isJoker(val) { return typeof val === "string" && val.trim() === JOKER_MARK; }
+function answerText(val) { return isJoker(val) ? JOKER_MARK + " " + t("joker_label") : val; }
+
+function toggleJoker(cat) {
+  const w = getWallet();
+  const input = document.querySelector(`#catGrid input[data-cat="${CSS.escape(cat)}"]`);
+  if (!input) return;
+  const card = input.closest(".card");
+  if (state.jokerCat === cat) {
+    state.jokerCat = null;
+    state.answers[cat] = "";
+    input.value = "";
+    input.disabled = false;
+    card.classList.remove("joker-on");
+  } else {
+    if (state.jokerCat || w.items.joker <= 0) return;
+    state.jokerCat = cat;
+    state.answers[cat] = JOKER_MARK;
+    input.value = answerText(JOKER_MARK);
+    input.disabled = true;
+    card.classList.add("joker-on");
+  }
+  document.querySelectorAll("#catGrid .joker-btn").forEach(b => {
+    b.disabled = !!state.jokerCat && b.dataset.cat !== state.jokerCat;
+    b.setAttribute("aria-pressed", String(b.dataset.cat === state.jokerCat));
+  });
+}
+
+// Se descuenta de la billetera recién cuando termina la ronda (antes se puede deshacer).
+function consumeJokerIfUsed() {
+  const cat = state.jokerCat;
+  state.jokerCat = null;
+  if (!cat || !isJoker(state.answers[cat])) return;
+  const w = getWallet();
+  if (w.items.joker > 0) {
+    w.items.joker -= 1;
+    saveWallet(w);
+    track("item_used", { item: "joker" });
+  } else {
+    state.answers[cat] = "";
+  }
+}
+
+function isCustomCategory(cat) {
+  return !isMysterySlot(cat) && !CATEGORY_LABELS[cat];
+}
+
+function createRoomCost() {
+  if (state.mode !== "create") return { customs: 0, twists: 0, total: 0 };
+  const customs = state.categoriesMode === "random" ? 0 : state.categories.filter(isCustomCategory).length;
+  const twists = ["hard", "flash", "vote"].filter(k => state.twists && state.twists[k]).length;
+  return { customs, twists, total: customs * CUSTOM_CAT_PRICE + twists * TWIST_PRICE };
+}
+
+function renderCreateCost() {
+  const note = document.getElementById("createCostNote");
+  if (!note) return true;
+  const cost = createRoomCost();
+  const seeds = getWallet().seeds;
+  if (!cost.total) { note.style.display = "none"; return true; }
+  const enough = seeds >= cost.total;
+  note.style.display = "block";
+  note.classList.toggle("short", !enough);
+  note.innerHTML = enough
+    ? `${escapeHtml(t("create_cost_ok", { cost: cost.total, seeds }))}`
+    : `${escapeHtml(t("create_cost_short", { missing: cost.total - seeds }))}`;
+  note.innerHTML = note.innerHTML.replace(/🌱/g, seedIcon());
+  return enough;
+}
+
 function checkCanPlay() {
   const name = document.getElementById("playerName").value.trim();
   let roomOk = true;
@@ -3562,7 +3994,8 @@ function checkCanPlay() {
   } else if (state.mode === "streak") {
     categoriesOk = true; // el modo elige categorías al azar en cada ronda
   }
-  document.getElementById("playBtn").disabled = !(name && categoriesOk && roomOk && lettersOk);
+  const costOk = typeof getWallet === "function" ? renderCreateCost() : true;
+  document.getElementById("playBtn").disabled = !(name && categoriesOk && roomOk && lettersOk && costOk);
 }
 
 
@@ -3987,6 +4420,8 @@ function renderWaitingRoom(data) {
 const HARD_LETTERS = ["K", "Ñ", "Q", "W", "X", "Y", "Z"];
 const FLASH_DURATION = 20;
 const FLASH_CHANCE = 0.3;
+// Entre dos rondas relámpago tiene que haber al menos 2 rondas normales, así no salen seguidas.
+const FLASH_MIN_GAP = 3;
 const VOTE_SECONDS = 8;
 const TWISTS_KEY = "tuttifruti_twists";
 
@@ -4001,8 +4436,11 @@ function loadTwists() {
 function renderTwists() {
   ["hard", "flash", "vote"].forEach(key => {
     const btn = document.getElementById("twist-" + key);
-    if (btn) btn.setAttribute("aria-pressed", String(!!state.twists[key]));
+    if (!btn) return;
+    btn.setAttribute("aria-pressed", String(!!state.twists[key]));
+    if (!btn.querySelector(".price-tag")) btn.insertAdjacentHTML("beforeend", `<span class="price-tag">${seedIcon()}${TWIST_PRICE}</span>`);
   });
+  checkCanPlay();
 }
 
 function toggleTwist(key) {
@@ -4049,7 +4487,10 @@ function hostStartGame() {
     ? pickRandomCategorySet(RANDOM_PACK_CATEGORY_COUNT)
     : (hasMysterySlots ? resolveCategories(baseCategories) : baseCategories);
   const wildcard = pickWildcard(roundCategories);
-  const flash = !!twists.flash && round > 1 && Math.random() < FLASH_CHANCE;
+  // lastFlashRound queda guardado en la sala; si es de una partida anterior (revancha), no cuenta.
+  const lastFlash = (state.room.lastFlashRound || 0) < round ? (state.room.lastFlashRound || 0) : 0;
+  const flashAllowed = round > 1 && (!lastFlash || round - lastFlash >= FLASH_MIN_GAP);
+  const flash = !!twists.flash && flashAllowed && Math.random() < FLASH_CHANCE;
   const updates = {
     status: "playing",
     round,
@@ -4058,6 +4499,7 @@ function hostStartGame() {
     usedLetters: used,
     hardLetter: !!twists.hard && HARD_LETTERS.includes(letter),
     roundDuration: flash ? FLASH_DURATION : (config.duration || state.duration),
+    lastFlashRound: flash ? round : (lastFlash || null),
     roundStartAt: window.FB.serverTimestamp(),
     bastaBy: null,
     [`answers/${round}`]: null,
@@ -4236,6 +4678,7 @@ function triggerBasta() {
 
 function onRoundCollecting() {
   clearInterval(state.timerId);
+  consumeJokerIfUsed();
   const round = state.room.round || 1;
   const answersRef = window.FB.ref(window.FB.db, `rooms/${state.roomCode}/answers/${round}/${state.playerId}`);
   window.FB.set(answersRef, state.answers);
@@ -4257,7 +4700,6 @@ async function hostOpenReview(round) {
   });
 }
 
-const REVIEW_SECONDS = 40;
 const OBJECTION_PENALTY = 5;
 const JUDGE_TIMEOUT_MS = 5000;
 
@@ -4324,19 +4766,13 @@ function startReviewPhase(data) {
   readyBtn.textContent = t("review_ready_btn");
   renderReviewAnswers(data);
 
-  const startMs = typeof data.reviewStartAt === "number" ? data.reviewStartAt : serverNow();
-  clearInterval(state.reviewCountdownId);
-  lastReviewTickSecond = null;
-  updateReviewCountdown(startMs);
-  state.reviewCountdownId = setInterval(() => updateReviewCountdown(startMs), 250);
-
-  const finalizeBtn = document.getElementById("reviewFinalizeBtn");
-  finalizeBtn.style.display = state.isHost ? "block" : "none";
+  // Sin reloj: el puntaje se calcula cuando todos los jugadores conectados tocan "Listo".
+  // Quien creó la sala puede forzarlo, pero recién después de haber tocado "Listo" él mismo
+  // (por si alguien se colgó); así nunca se corta la revisión de los demás de apuro.
+  document.getElementById("reviewFinalizeBtn").style.display = "none";
 
   if (state.isHost) {
     state.reviewFinalizing = false;
-    clearTimeout(state.reviewTimeoutId);
-    state.reviewTimeoutId = setTimeout(() => hostFinalizeReview(data.round), REVIEW_SECONDS * 1000);
     checkAllReviewReady(data);
   }
 }
@@ -4347,6 +4783,7 @@ function markReviewReady() {
   const readyBtn = document.getElementById("reviewReadyBtn");
   readyBtn.disabled = true;
   readyBtn.textContent = t("review_ready_waiting");
+  if (state.isHost) document.getElementById("reviewFinalizeBtn").style.display = "block";
   const round = state.room.round;
   const path = `rooms/${state.roomCode}/reviewReady/${round}/${state.playerId}`;
   window.FB.set(window.FB.ref(window.FB.db, path), true);
@@ -4373,31 +4810,8 @@ function checkAllReviewReady(data) {
   const connected = connectedPlayerIds(data);
   const allReady = connected.length > 0 && connected.every(pid => readyMap[pid]);
   if (allReady) {
-    clearTimeout(state.reviewTimeoutId);
     hostFinalizeReview(round);
   }
-}
-
-let lastReviewTickSecond = null;
-function updateReviewCountdown(startMs) {
-  const elapsed = (serverNow() - startMs) / 1000;
-  const left = Math.max(0, Math.ceil(REVIEW_SECONDS - elapsed));
-  const el = document.getElementById("reviewCountdown");
-  if (el) el.textContent = left > 0 ? t("calculating_score_in", { left }) : t("calculating_score");
-  const fill = document.getElementById("reviewProgressFill");
-  if (fill) {
-    const pct = Math.max(0, Math.min(100, (left / REVIEW_SECONDS) * 100));
-    fill.style.width = pct + "%";
-    fill.classList.toggle("urgent", left <= 10);
-  }
-  if (left !== lastReviewTickSecond) {
-    lastReviewTickSecond = left;
-    if (left > 0 && left <= 5) {
-      playTic();
-      vibrate(50);
-    }
-  }
-  if (left <= 0) clearInterval(state.reviewCountdownId);
 }
 
 const REACTION_EMOJIS = ["😂", "👍", "😱"];
@@ -4451,7 +4865,7 @@ function renderReviewAnswers(data) {
       const name = (players[pid] && players[pid].name) || "?";
 
       let statusHtml = "";
-      if (!isMine && val) {
+      if (!isMine && val && !isJoker(val)) {
         statusHtml = `<button type="button" class="objection-btn${objectedByMe ? " active" : ""}" onclick="toggleObjection('${catEsc}','${pid}')">${objectedByMe ? t("objected_btn") : t("object_btn")}${count > 0 ? " (" + count + ")" : ""}</button>`;
       } else if (isMine && val && count > 0) {
         if (isAccepted) {
@@ -4470,7 +4884,7 @@ function renderReviewAnswers(data) {
       rows += `
         <div class="answer-row" style="flex-wrap:wrap;">
           <span class="answer-cat">${playerDotHtml(pid, players)}${escapeHtml(name)}${isMine ? t("you_suffix") : ""}</span>
-          <span class="answer-val ${val ? "" : "empty"}">${val ? escapeHtml(val) : t("no_answer")}</span>
+          <span class="answer-val ${val ? "" : "empty"}">${val ? escapeHtml(answerText(val)) : t("no_answer")}</span>
           ${statusHtml}
           ${val ? renderReactionRow(cat, pid, reactionsForThis) : ""}
         </div>
@@ -4501,7 +4915,6 @@ function acceptObjection(cat, targetPid) {
 }
 
 function hostFinalizeReviewNow() {
-  clearTimeout(state.reviewTimeoutId);
   if (state.room) hostFinalizeReview(state.room.round);
 }
 
@@ -4558,11 +4971,18 @@ async function computeAndApplyScores(data, round) {
   // categoría solo cuenta la primera vez.
   const usedByPlayer = {};
   pids.forEach(pid => { usedByPlayer[pid] = new Set(); });
+  // Como máximo un comodín por jugador en la ronda (aunque alguien mande más a mano).
+  const jokerUsed = {};
   categories.forEach(cat => {
     classification[cat] = {};
     pids.forEach(pid => {
       const raw = ((answers[pid] || {})[cat] || "").trim();
       if (!raw) { classification[cat][pid] = { status: "empty" }; return; }
+      if (isJoker(raw)) {
+        classification[cat][pid] = jokerUsed[pid] ? { status: "empty" } : { status: "joker" };
+        jokerUsed[pid] = true;
+        return;
+      }
       if (!answerMatchesLetter(raw, letter)) { classification[cat][pid] = { status: "badLetter" }; return; }
       if (isTrivialAnswer(raw)) { classification[cat][pid] = { status: "tooShort" }; return; }
       const norm = normalizeAnswer(raw);
@@ -4639,6 +5059,8 @@ async function computeAndApplyScores(data, round) {
         judgeInfo[`${cat}|${pid}`] = { demasiadoCorta: true };
       } else if (c.status === "repeatedCat") {
         judgeInfo[`${cat}|${pid}`] = { repetida: true };
+      } else if (c.status === "joker") {
+        judgeInfo[`${cat}|${pid}`] = { comodin: true };
       }
       normalized[cat][pid] = isValid ? normalizeAnswer(raw) : "";
     });
@@ -4655,6 +5077,10 @@ async function computeAndApplyScores(data, round) {
       if (filled.length === 1) { roundScores[pid][cat] = 20 * multiplier; return; }
       const count = filled.filter(p2 => answersAreSimilar(normalized[cat][p2], norm)).length;
       roundScores[pid][cat] = (count === 1 ? 10 : 5) * multiplier;
+    });
+    // El comodín vale puntos fijos y no compite con las palabras de los demás.
+    pids.forEach(pid => {
+      if (classification[cat][pid].status === "joker") roundScores[pid][cat] = JOKER_POINTS;
     });
   });
 
@@ -4785,6 +5211,8 @@ function renderOnlineResults(data) {
         extra = `<div style="font-size:11px; color:var(--text-support);">${t("answer_too_short")}</div>`;
       } else if (info.repetida) {
         extra = `<div style="font-size:11px; color:var(--text-support);">${t("answer_repeated_cat")}</div>`;
+      } else if (info.comodin) {
+        extra = `<div style="font-size:11px; color:var(--text-support);">${t("joker_result_note", { pts: JOKER_POINTS })}</div>`;
       } else if (typeof info.valida === "boolean") {
         const colorClass = info.valida ? "text-positive" : "text-negative";
         extra = `<div class="${colorClass}" style="font-size:11px;">${state.lang === "en" ? "Judge" : "Juez"}: ${info.valida ? t("judge_valid") : t("judge_invalid")}${info.motivo ? " — " + escapeHtml(info.motivo) : ""}${info.sinRespuesta ? t("judge_no_response") : ""}</div>`;
@@ -4795,7 +5223,7 @@ function renderOnlineResults(data) {
     row.style.flexWrap = "wrap";
     row.innerHTML = `
       <span class="answer-cat">${escapeHtml(catLabel(cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
-      <span class="answer-val ${val ? "" : "empty"}">${val ? escapeHtml(val) : t("no_answer")}</span>
+      <span class="answer-val ${val ? "" : "empty"}">${val ? escapeHtml(answerText(val)) : t("no_answer")}</span>
       <span class="points points-${basePts}" title="${t('score_label_' + basePts)}">+${pts}</span>
       ${extra ? `<div style="flex-basis:100%;">${extra}</div>` : ""}
     `;
@@ -4976,6 +5404,15 @@ function beginGame() {
   track("mode_start", { mode: state.mode });
 
   if (state.mode === "create") {
+    const cost = createRoomCost();
+    if (cost.total > 0) {
+      const w = getWallet();
+      if (w.seeds < cost.total) { alert(t("create_cost_alert", { missing: cost.total - w.seeds })); return; }
+      w.seeds -= cost.total;
+      saveWallet(w);
+      seedToast(t("seeds_spent_toast", { n: cost.total }));
+      track("seeds_spent", { item: "room", amount: cost.total, customs: cost.customs, twists: cost.twists });
+    }
     state.duration = Number(document.getElementById("durationSelect").value);
     state.totalRounds = Number(document.getElementById("roundsSelect").value);
     state.online = true;
@@ -5020,15 +5457,21 @@ function focusFirstAnswer() {
 function renderCatGrid() {
   const grid = document.getElementById("catGrid");
   grid.innerHTML = "";
+  state.jokerCat = null;
+  // En el desafío del día no hay comodines: su ranking es igual para todos.
+  const jokers = state.dailyMode ? 0 : getWallet().items.joker;
   state.categories.forEach((cat, i) => {
     const card = document.createElement("div");
     card.className = "card";
     card.style.animationDelay = (i * 0.05) + "s";
     const isWild = cat === state.wildcardCategory;
+    const ownLetter = state.adventureMode && state.letterByCat ? state.letterByCat[cat] : null;
+    if (ownLetter) card.classList.add("has-letter");
     card.innerHTML = `
       <div class="card-pin"></div>
-      <p class="card-label">${escapeHtml(catLabel(cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</p>
-      <input type="text" maxlength="40" placeholder="${escapeHtml(state.letter)}..." data-cat="${escapeHtml(cat)}" oninput="onAnswerInput(this)" onkeydown="onAnswerKeydown(event, this)" />
+      <p class="card-label">${ownLetter ? `<span class="cat-letter">${escapeHtml(ownLetter)}</span>` : ""}${escapeHtml(catLabel(cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</p>
+      <input type="text" maxlength="40" placeholder="${escapeHtml(ownLetter || state.letter)}..." data-cat="${escapeHtml(cat)}" oninput="onAnswerInput(this)" onkeydown="onAnswerKeydown(event, this)" />
+      ${jokers > 0 ? `<button type="button" class="joker-btn" data-cat="${escapeHtml(cat)}" aria-pressed="false" title="${escapeHtml(t("joker_use_title", { n: jokers }))}" onclick="toggleJoker('${escapeForJsAttr(cat)}')">${JOKER_MARK}</button>` : ""}
     `;
     grid.appendChild(card);
   });
@@ -5188,6 +5631,7 @@ function onStreakReadyTap() {
 async function finishStreakRound() {
   if (state.streakFinishing) return;
   state.streakFinishing = true;
+  consumeJokerIfUsed();
   clearInterval(state.timerId);
   clearTimeout(state.spinId);
   const results = await judgeSoloAnswers(state.categories, state.answers, state.letter, state.streakRound, state.roomCode);
@@ -5198,7 +5642,7 @@ async function finishStreakRound() {
   // pierde la partida por fallar, solo termina cuando se acaba el tiempo.
   let roundPoints = 0;
   results.forEach(r => {
-    if (r.valid) roundPoints += r.cat === state.wildcardCategory ? STREAK_POINTS_PER_CATEGORY * 2 : STREAK_POINTS_PER_CATEGORY;
+    if (r.valid) roundPoints += r.joker ? JOKER_POINTS : (r.cat === state.wildcardCategory ? STREAK_POINTS_PER_CATEGORY * 2 : STREAK_POINTS_PER_CATEGORY);
   });
   state.streakScore += roundPoints;
 
@@ -5217,7 +5661,7 @@ function showStreakRoundToast(points, valid, total) {
   if (!stack) return;
   const el = document.createElement("div");
   el.className = "toast";
-  el.innerHTML = `<span class="toast-icon">${mascotSvg(valid === total ? "happy" : (valid ? "neutral" : "sad"), getMyAvatar())}</span>` +
+  el.innerHTML = `<span class="toast-icon">${mascotSvg(valid === total ? "happy" : (valid ? "neutral" : "sad"), getMyAvatar(), myEquipped())}</span>` +
     `<span><strong>+${points} pts</strong><br>${escapeHtml(t("streak_round_toast", { valid, total }))}</span>`;
   stack.appendChild(el);
   setTimeout(() => el.classList.add("out"), 2200);
@@ -5255,14 +5699,14 @@ function renderStreakResult(results) {
   results.forEach((r, i) => {
     const isWild = r.cat === state.wildcardCategory;
     const basePts = r.valid ? STREAK_POINTS_PER_CATEGORY : 0;
-    const pts = isWild ? basePts * 2 : basePts;
+    const pts = r.joker ? JOKER_POINTS : (isWild ? basePts * 2 : basePts);
     const reason = soloReasonText(r, state.letter);
     const row = document.createElement("div");
     row.className = "answer-row";
     row.style.flexWrap = "wrap";
     row.innerHTML = `
       <span class="answer-cat">${escapeHtml(catLabel(r.cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
-      <span class="answer-val ${r.val ? "" : "empty"}">${r.val ? escapeHtml(r.val) : t("no_answer")}</span>
+      <span class="answer-val ${r.val ? "" : "empty"}">${r.val ? escapeHtml(answerText(r.val)) : t("no_answer")}</span>
       <span class="points points-${basePts}" title="${t(basePts ? "score_label_20" : "score_label_0")}">+${pts}</span>
       ${reason ? `<div style="flex-basis:100%; font-size:11px; color:var(--text-support);">${reason}</div>` : ""}
     `;
@@ -5353,7 +5797,7 @@ function pickWordOfRound(data, round, categories) {
       const base = pts / roundMultiplier(data, cat);
       if (base < 10) return;
       const word = (((answers[pid] || {})[cat]) || "").trim();
-      if (!word) return;
+      if (!word || isJoker(word)) return;
       const len = normalizeAnswer(word).length;
       if (!best || len > best.len) best = { pid, cat, word, len };
     });
@@ -5704,6 +6148,7 @@ function tickDaily() {
 async function finishDailyRound() {
   if (state.dailyFinishing || !state.dailyMode) return;
   state.dailyFinishing = true;
+  consumeJokerIfUsed();
   clearInterval(state.timerId);
   clearTimeout(state.spinId);
   const ch = state.dailyChallenge;
@@ -5714,14 +6159,14 @@ async function finishDailyRound() {
   results.forEach(r => {
     if (!r.valid) return;
     valid++;
-    score += DAILY_POINTS_PER_CATEGORY * (r.cat === ch.wildcard ? 2 : 1);
+    score += r.joker ? JOKER_POINTS : DAILY_POINTS_PER_CATEGORY * (r.cat === ch.wildcard ? 2 : 1);
   });
   const bonus = valid > 0 ? secondsLeft : 0;
   score += bonus;
   const record = {
     date: ch.key, letter: ch.letter, wildcard: ch.wildcard, score, bonus, valid, total: results.length,
     grid: results.map(r => (r.valid ? "1" : "0")).join(""),
-    results: results.map(r => ({ cat: r.cat, val: r.val, valid: !!r.valid, reason: r.reason || "", motivo: r.motivo || "" })),
+    results: results.map(r => ({ cat: r.cat, val: r.val, valid: !!r.valid, joker: !!r.joker, reason: r.reason || "", motivo: r.motivo || "" })),
   };
   saveDaily(record);
   bumpProgress(p => { p.dailyCount += 1; }, "daily:" + ch.key);
@@ -5762,18 +6207,19 @@ const ADV_CATS = {
   hard: ["Instrumento musical", "Personaje ficticio", "Programa de TV", "Cantante o banda", "Personaje histórico", "Equipo de fútbol"],
 };
 // cats y time: uno por nivel del mundo (el 6.º es el jefe). goal: parte de las categorías que hay que acertar.
+// Los jefes juegan con una letra distinta en cada categoría; boss es la regla extra de cada mundo.
 const ADV_WORLDS = [
-  { fruit: "🍎", key: "manzana", cats: [4, 4, 5, 5, 5, 5], time: [90, 90, 80, 80, 75, 40], letters: ["easy"], pools: ["easy"], goal: 0.5, boss: "flash" },
-  { fruit: "🍊", key: "naranja", cats: [5, 5, 5, 6, 6, 5], time: [60, 60, 55, 55, 50, 25], letters: ["easy"], pools: ["easy", "medium"], goal: 0.6, boss: "flash" },
-  { fruit: "🍇", key: "uva", cats: [5, 6, 6, 6, 6, 6], time: [75, 75, 70, 70, 65, 75], letters: ["easy", "medium"], pools: ["medium", "hard"], goal: 0.6, boss: "long" },
-  { fruit: "🍋", key: "limon", cats: [5, 5, 6, 6, 6, 6], time: [75, 75, 70, 70, 65, 70], letters: ["hard"], pools: ["easy", "medium"], goal: 0.5, boss: "long" },
-  { fruit: "🍍", key: "anana", cats: [6, 7, 7, 8, 8, 8], time: [65, 65, 60, 60, 55, 40], letters: ["medium", "hard"], pools: ["easy", "medium", "hard"], goal: 0.7, boss: "flash" },
+  { fruit: "🍎", key: "manzana", cats: [4, 4, 5, 5, 5, 5], time: [90, 90, 80, 80, 75, 75], letters: ["easy"], pools: ["easy"], goal: 0.5, boss: null },
+  { fruit: "🍊", key: "naranja", cats: [5, 5, 5, 6, 6, 5], time: [60, 60, 55, 55, 50, 45], letters: ["easy"], pools: ["easy", "medium"], goal: 0.6, boss: "flash" },
+  { fruit: "🍇", key: "uva", cats: [5, 6, 6, 6, 6, 6], time: [75, 75, 70, 70, 65, 85], letters: ["easy", "medium"], pools: ["medium", "hard"], goal: 0.6, boss: "long" },
+  { fruit: "🍋", key: "limon", cats: [5, 5, 6, 6, 6, 6], time: [75, 75, 70, 70, 65, 80], letters: ["hard"], pools: ["easy", "medium"], goal: 0.5, boss: null },
+  { fruit: "🍍", key: "anana", cats: [6, 7, 7, 8, 8, 7], time: [65, 65, 60, 60, 55, 70], letters: ["medium", "hard"], pools: ["easy", "medium", "hard"], goal: 0.7, boss: "long" },
 ];
 const ADV_TOTAL = ADV_WORLDS.length * 6;
-// Posición de cada nivel en el camino del mundo (x e y en %).
-const ADV_PATH = [[22, 9], [62, 23], [78, 41], [44, 55], [18, 70], [56, 86]];
+// Lo que muestra la medalla de la letra en los jefes (cada categoría tiene la suya).
+const ADV_MIXED_SYMBOL = "★";
 
-const ADV_HEART_SVG = '<svg class="adv-heart%c" viewBox="0 0 24 22" aria-hidden="true"><path d="M12 21 C5 15.5 1.5 11.8 1.5 7.4 C1.5 4 4.1 1.5 7.2 1.5 C9.2 1.5 10.9 2.6 12 4.3 C13.1 2.6 14.8 1.5 16.8 1.5 C19.9 1.5 22.5 4 22.5 7.4 C22.5 11.8 19 15.5 12 21 Z"/></svg>';
+const ADV_HEART_SVG = '<svg class="adv-heart%c" viewBox="0 0 24 22" aria-hidden="true"><path d="M12 21 C5 15.5 1.5 11.8 1.5 7.4 C1.5 4 4.1 1.5 7.2 1.5 C9.2 1.5 10.9 2.6 12 4.3 C13.1 2.6 14.8 1.5 16.8 1.5 C19.9 1.5 22.5 4 22.5 7.4 C22.5 11.8 19 15.5 12 21 Z"/><ellipse class="shine" cx="7.2" cy="6.8" rx="2.3" ry="1.5" transform="rotate(-30 7.2 6.8)"/></svg>';
 const ADV_STAR_SVG = '<svg class="adv-star%c" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 17.1l-6.1 3.5 1.5-6.8L2.2 9.2l6.9-.7z"/></svg>';
 const ADV_LOCK_SVG = '<svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M208,80H176V56a48,48,0,0,0-96,0V80H48A16,16,0,0,0,32,96V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V96A16,16,0,0,0,208,80ZM96,56a32,32,0,0,1,64,0V80H96ZM208,208H48V96H208V208Z"/></svg>';
 function advHeart(full) { return ADV_HEART_SVG.replace("%c", full ? "" : " empty"); }
@@ -5804,7 +6250,7 @@ function advLevel(n) {
   const lettersLabel = letterKinds.length > 1 ? "adv_letters_mixed" : "adv_letters_" + letterKinds[0];
   return {
     n, world: w, index: i, W, categories, wildcard, target, target2, time: W.time[i],
-    letters: letterKinds.flatMap(k => ADV_LETTERS[k]), lettersLabel, boss: i === 5 ? W.boss : null,
+    letters: letterKinds.flatMap(k => ADV_LETTERS[k]), lettersLabel, boss: i === 5 ? W.boss : null, mixed: i === 5,
   };
 }
 
@@ -5889,8 +6335,6 @@ function renderAdventureMap() {
   document.querySelector("#screen-adventure [data-adv-countdown]").textContent = advCountdownText(d);
   document.getElementById("advMapStarIcon").innerHTML = advStar(true);
   document.getElementById("advMapStars").textContent = advTotalStars(d) + " / " + ADV_TOTAL * 3;
-  const current = advCurrent(d);
-  const avatar = getMyAvatar();
   document.getElementById("advWorlds").innerHTML = ADV_WORLDS.map((W, w) => {
     const first = w * 6 + 1;
     let got = 0;
@@ -5901,27 +6345,31 @@ function renderAdventureMap() {
     if (!advUnlocked(d, first)) {
       return `<div class="adv-world locked">${head}<p class="adv-lock-note">${ADV_LOCK_SVG}${escapeHtml(t("adv_world_locked", { name: advWorldName(ADV_WORLDS[w - 1]) }))}</p></div>`;
     }
-    let trail = "", done = "", nodes = "";
-    ADV_PATH.forEach(([x, y], i) => {
+    // Cada mundo es un cajón de verdulería con 6 lugares: cada nivel pasado pone su fruta.
+    let slots = "";
+    for (let i = 0; i < 6; i++) {
       const n = first + i;
-      const cmd = (i ? " L" : "M") + x * 4 + " " + y * 4.8;
-      trail += cmd;
-      if (advUnlocked(d, n)) done += cmd;
       const unlocked = advUnlocked(d, n);
       const st = d.stars[n] || 0;
       const boss = i === 5;
-      let cls = "adv-node" + (boss ? " boss" : "");
-      let inner = boss ? `<span>${iconSvg("crown")}</span>` : `<span>${n}</span>`;
-      let below = "";
-      if (!unlocked) { cls += " locked"; if (!boss) inner = ADV_LOCK_SVG; }
-      else if (n === current) { cls += " current"; below = `<span class="adv-tag now">${escapeHtml(t("adv_your_turn"))}</span>`; }
-      else if (st > 0) below = `<span class="adv-mini-stars">${advStars(st)}</span>`;
-      if (boss && !(n === current)) below = (st > 0 ? `<span class="adv-mini-stars">${advStars(st)}</span>` : "") + `<span class="adv-tag">${escapeHtml(t("adv_boss"))}</span>`;
-      nodes += `<button type="button" class="${cls}" style="left:${x}%;top:${y}%" ${unlocked ? `onclick="openAdventureLevel(${n})"` : "disabled"} aria-label="${escapeHtml(t("adv_level_title", { n }))}"><span class="adv-disc">${inner}</span>${below}</button>`;
-      if (n === current) nodes += `<span class="adv-here" style="left:${x}%;top:calc(${y}% - ${boss ? 58 : 46}px)">${mascotSvg("happy", avatar)}</span>`;
-    });
-    return `<div class="adv-world">${head}<div class="adv-path">
-      <svg class="adv-trail" viewBox="0 0 400 480" preserveAspectRatio="none" aria-hidden="true"><path d="${trail}"/><path class="done" d="${done}"/></svg>${nodes}</div></div>`;
+      const label = escapeHtml(t("adv_level_title", { n }));
+      let cls = "adv-slot" + (boss ? " boss" : "");
+      let inner;
+      if (st > 0) {
+        cls += " done";
+        inner = `<span class="adv-slot-n">${n}</span>${boss ? `<span class="adv-slot-crown">${iconSvg("crown")}</span>` : ""}<span class="adv-slot-fruit">${fruitSvg(W.fruit)}</span><span class="adv-mini-stars">${advStars(st)}</span>`;
+      } else if (unlocked) {
+        cls += " now";
+        inner = `${boss ? `<span class="adv-slot-crown">${iconSvg("crown")}</span>` : ""}<span class="adv-slot-big">${n}</span><span class="adv-tag now">${escapeHtml(t("adv_your_turn"))}</span>`;
+      } else {
+        cls += " locked";
+        inner = boss
+          ? `<span class="adv-slot-crown">${iconSvg("crown")}</span>${ADV_LOCK_SVG}<span class="adv-tag">${escapeHtml(t("adv_boss"))}</span>`
+          : `<span class="adv-slot-n">${n}</span>${ADV_LOCK_SVG}`;
+      }
+      slots += `<button type="button" class="${cls}" ${unlocked ? `onclick="openAdventureLevel(${n})"` : "disabled"} aria-label="${label}">${inner}</button>`;
+    }
+    return `<div class="adv-world">${head}<div class="adv-crate"><span class="adv-crate-plate">${escapeHtml(advWorldName(W))}</span><div class="adv-slots">${slots}</div></div></div>`;
   }).join("");
 }
 
@@ -5946,17 +6394,34 @@ function openAdventureLevel(n) {
     [3, t("adv_tier_perfect", { s: ADV_PERFECT_SECONDS })],
   ].map(([k, text]) => `<div class="adv-tier"><span class="adv-mini-stars">${advStars(k)}</span><span>${escapeHtml(text)}</span></div>`).join("");
   const bossEl = document.getElementById("advLevelBoss");
-  if (L.boss) {
-    bossEl.style.display = "flex";
-    bossEl.innerHTML = inlineIcon(L.boss === "flash" ? "bolt" : "crown") + escapeHtml(L.boss === "flash" ? t("adv_boss_flash", { s: L.time }) : t("adv_boss_long"));
+  if (L.mixed) {
+    bossEl.style.display = "block";
+    const extra = L.boss === "flash" ? t("adv_extra_flash", { s: L.time }) : (L.boss === "long" ? t("adv_extra_long") : "");
+    bossEl.innerHTML = inlineIcon("crown") + escapeHtml(t("adv_boss_mixed")) + (extra ? " " + escapeHtml(extra) : "");
   } else {
     bossEl.style.display = "none";
   }
   document.getElementById("advLevelLife").innerHTML = passed
     ? advStar(true).replace('class="adv-star"', 'class="adv-star" style="width:18px;height:18px"') + escapeHtml(t("adv_replay_free"))
     : advHeart(true) + escapeHtml(t("adv_life_warning"));
+  renderAdventureLevelItems(passed);
   showScreen("screen-adventure-level");
   window.scrollTo(0, 0);
+}
+
+// Reloj extra (se activa a mano) y escudo (se usa solo si fallás un nivel nuevo).
+function renderAdventureLevelItems(passed) {
+  const w = getWallet();
+  const box = document.getElementById("advLevelItems");
+  let html = "";
+  if (w.items.clock > 0) {
+    html += `<button type="button" class="adv-item-toggle" aria-pressed="${!!state.advUseClock}" onclick="state.advUseClock = !state.advUseClock; renderAdventureLevelItems(${passed})">
+      <span class="adv-item-ico">${iconSvg("stopwatch")}</span><span>${escapeHtml(t("adv_use_clock", { s: CLOCK_SECONDS, n: w.items.clock }))}</span><span class="adv-item-check">${state.advUseClock ? "✓" : ""}</span></button>`;
+  }
+  if (w.items.shield > 0 && !passed) {
+    html += `<p class="adv-rule"><span class="adv-item-ico">${SHIELD_SVG}</span>${escapeHtml(w.items.shield === 1 ? t("adv_shield_info_one") : t("adv_shield_info_many", { n: w.items.shield }))}</p>`;
+  }
+  box.innerHTML = html;
 }
 
 function startAdventureLevel(n = state.advLevelN) {
@@ -5977,7 +6442,16 @@ function startAdventureLevel(n = state.advLevelN) {
     advSave(d);
   }
   const options = L.letters.filter(l => l !== state.advLastLetter);
-  const letter = options[Math.floor(Math.random() * options.length)];
+  let letter = options[Math.floor(Math.random() * options.length)];
+  let letterByCat = null;
+  if (L.mixed) {
+    // Una letra distinta por categoría; si el grupo de letras del mundo no alcanza, se completa con las medias.
+    let pool = [...L.letters].sort(() => Math.random() - 0.5);
+    if (pool.length < L.categories.length) pool = pool.concat(ADV_LETTERS.medium.filter(x => !pool.includes(x)).sort(() => Math.random() - 0.5));
+    letterByCat = {};
+    L.categories.forEach((cat, k) => { letterByCat[cat] = pool[k]; });
+    letter = ADV_MIXED_SYMBOL;
+  }
   clearInterval(state.advTickId);
   cleanupRandomSearch();
   if (!state.adventureMode && !state.categoriesBeforeAdventure) state.categoriesBeforeAdventure = state.categories;
@@ -5988,17 +6462,31 @@ function startAdventureLevel(n = state.advLevelN) {
   state.online = false;
   state.advLevelN = n;
   state.advLevel = L;
+  state.letterByCat = letterByCat;
   state.categories = [...L.categories];
   state.wildcardCategory = L.wildcard;
   state.letter = letter;
   state.usedLetters = [];
   state.answers = {};
-  state.duration = L.time;
-  state.secondsLeft = L.time;
+  let levelTime = L.time;
+  state.advClockUsed = false;
+  if (state.advUseClock) {
+    const wallet = getWallet();
+    if (wallet.items.clock > 0) {
+      wallet.items.clock -= 1;
+      saveWallet(wallet);
+      levelTime += CLOCK_SECONDS;
+      state.advClockUsed = true;
+      track("item_used", { item: "clock" });
+    }
+    state.advUseClock = false;
+  }
+  state.duration = levelTime;
+  state.secondsLeft = levelTime;
   state.playerName = document.getElementById("playerName").value.trim() || state.playerName || "";
   getAudioCtx();
   recordGameStart();
-  recordRoundPlayed(letter);
+  if (!letterByCat) recordRoundPlayed(letter);
   renderStreakPlayersStrip();
   track("adventure_level_start", { level: n });
 
@@ -6012,9 +6500,17 @@ function startAdventureLevel(n = state.advLevelN) {
     renderLetterHistory();
     renderWildcardNote();
     renderTwistNote(false, L.boss === "flash" ? L.time : 0);
-    if (L.boss === "long") {
+    if (state.advClockUsed) {
       const note = document.getElementById("twistNote");
-      note.innerHTML = inlineIcon("crown") + escapeHtml(t("adv_boss_long_note"));
+      note.innerHTML = (note.style.display === "flex" && note.innerHTML ? note.innerHTML + " · " : "") + inlineIcon("stopwatch") + escapeHtml(t("adv_clock_on", { s: CLOCK_SECONDS }));
+      note.style.display = "flex";
+    }
+    if (L.mixed) {
+      const note = document.getElementById("twistNote");
+      const parts = [inlineIcon("crown") + escapeHtml(t("adv_boss_mixed_note"))];
+      if (L.boss === "flash") parts.push(inlineIcon("bolt") + escapeHtml(t("flash_round_note", { s: L.time })));
+      if (L.boss === "long") parts.push(escapeHtml(t("adv_boss_long_note")));
+      note.innerHTML = parts.join(" · ");
       note.style.display = "flex";
     }
     document.getElementById("timerWrap").style.display = "block";
@@ -6044,23 +6540,26 @@ function tickAdventure() {
 async function finishAdventureRound() {
   if (state.advFinishing || !state.adventureMode) return;
   state.advFinishing = true;
+  consumeJokerIfUsed();
   clearInterval(state.timerId);
   clearTimeout(state.spinId);
   const L = state.advLevel;
   const letter = state.letter;
   const secondsLeft = Math.max(0, state.secondsLeft);
-  const results = await judgeSoloAnswers(state.categories, state.answers, letter, 1, "AVENTURA");
+  const letterByCat = state.letterByCat;
+  const results = await judgeSoloAnswers(state.categories, state.answers, letter, 1, "AVENTURA", letterByCat);
   if (!state.adventureMode) return;
+  if (letterByCat) results.forEach(r => { r.letter = letterByCat[r.cat]; });
   if (L.boss === "long") {
     results.forEach(r => {
-      if (r.valid && normalizeAnswer(r.val).replace(/[^a-zñ]/g, "").length < 5) { r.valid = false; r.reason = "adv_long"; }
+      if (r.valid && !r.joker && normalizeAnswer(r.val).replace(/[^a-zñ]/g, "").length < 5) { r.valid = false; r.reason = "adv_long"; }
     });
   }
   let words = 0, valid = 0;
   results.forEach(r => {
     if (!r.valid) return;
     valid++;
-    words += ADV_POINTS * (r.cat === L.wildcard ? 2 : 1);
+    words += r.joker ? JOKER_POINTS : ADV_POINTS * (r.cat === L.wildcard ? 2 : 1);
   });
   const allValid = valid === results.length;
   const bonus = allValid ? secondsLeft : 0;
@@ -6073,7 +6572,19 @@ async function finishAdventureRound() {
     if (allValid && secondsLeft >= ADV_PERFECT_SECONDS) stars = 3;
   }
   const d = advLoad();
-  const lostLife = !passed && d.pending === L.n;
+  let lostLife = !passed && d.pending === L.n;
+  let shieldSaved = false;
+  if (lostLife) {
+    const wallet = getWallet();
+    if (wallet.items.shield > 0) {
+      wallet.items.shield -= 1;
+      saveWallet(wallet);
+      d.lives = Math.min(ADV_MAX_LIVES, d.lives + 1);
+      lostLife = false;
+      shieldSaved = true;
+      track("item_used", { item: "shield" });
+    }
+  }
   const newStars = passed ? Math.max(0, stars - (d.stars[L.n] || 0)) : 0;
   const newWorld = passed && !(d.stars[L.n] > 0) && L.index === 5 && L.world + 1 < ADV_WORLDS.length;
   if (passed) {
@@ -6083,11 +6594,12 @@ async function finishAdventureRound() {
   }
   d.pending = null;
   advSave(d);
-  state.advLastLetter = letter;
+  if (!letterByCat) state.advLastLetter = letter;
   state.advFinishing = false;
-  renderAdventureResult({ L, results, letter, words, bonus, score, passed, stars, valid, secondsLeft, lives: d.lives, lostLife });
+  renderAdventureResult({ L, results, letter, mixed: !!letterByCat, words, bonus, score, passed, stars, valid, secondsLeft, lives: d.lives, lostLife });
   track("adventure_level_end", { level: L.n, passed, stars });
   if (newStars) addSeeds(newStars * SEEDS_PER_STAR);
+  if (shieldSaved) advToast(SHIELD_SVG, t("adv_shield_saved"));
   if (newWorld) advToast(fruitSvg(ADV_WORLDS[L.world + 1].fruit), t("adv_new_world", { name: advWorldName(ADV_WORLDS[L.world + 1]) }));
 }
 
@@ -6107,6 +6619,7 @@ function leaveAdventureGame() {
   clearInterval(state.timerId);
   clearTimeout(state.spinId);
   state.adventureMode = false;
+  state.letterByCat = null;
   if (state.categoriesBeforeAdventure) {
     state.categories = state.categoriesBeforeAdventure;
     state.categoriesBeforeAdventure = null;
@@ -6131,7 +6644,9 @@ function renderAdventureResult(r) {
   document.getElementById("advResultTitle").textContent = r.passed
     ? t(r.stars === 3 ? "adv_result_perfect" : "adv_result_pass")
     : t(noLives ? "adv_result_nolives" : "adv_result_fail");
-  document.getElementById("advResultSub").textContent = t("adv_result_sub", { world: advWorldName(L.W), n: L.n, letter: r.letter });
+  document.getElementById("advResultSub").textContent = r.mixed
+    ? t("adv_result_sub_mixed", { world: advWorldName(L.W), n: L.n })
+    : t("adv_result_sub", { world: advWorldName(L.W), n: L.n, letter: r.letter });
   setMascot("advResultMascot", r.passed ? "happy" : (noLives ? "sleepy" : "sad"),
     r.passed ? (r.stars === 3 ? "mascot_adv_perfect" : "mascot_adv_win") : (noLives ? "mascot_adv_nolives" : "mascot_adv_fail"), "small");
 
@@ -6139,14 +6654,14 @@ function renderAdventureResult(r) {
   list.innerHTML = "";
   r.results.forEach((res, i) => {
     const isWild = res.cat === L.wildcard;
-    const pts = res.valid ? ADV_POINTS * (isWild ? 2 : 1) : 0;
-    const reason = res.reason === "adv_long" && res.val ? t("adv_reason_long") : soloReasonText(res, r.letter);
+    const pts = !res.valid ? 0 : (res.joker ? JOKER_POINTS : ADV_POINTS * (isWild ? 2 : 1));
+    const reason = res.reason === "adv_long" && res.val ? t("adv_reason_long") : soloReasonText(res, res.letter || r.letter);
     const row = document.createElement("div");
     row.className = "answer-row";
     row.style.flexWrap = "wrap";
     row.innerHTML = `
-      <span class="answer-cat">${escapeHtml(catLabel(res.cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
-      <span class="answer-val ${res.val ? "" : "empty"}">${res.val ? escapeHtml(res.val) : t("no_answer")}</span>
+      <span class="answer-cat">${res.letter ? `<span class="cat-letter">${escapeHtml(res.letter)}</span>` : ""}${escapeHtml(catLabel(res.cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
+      <span class="answer-val ${res.val ? "" : "empty"}">${res.val ? escapeHtml(answerText(res.val)) : t("no_answer")}</span>
       <span class="points points-${res.valid ? 10 : 0}">+${pts}</span>
       ${reason ? `<div style="flex-basis:100%; font-size:11px; color:var(--text-support);">${reason}</div>` : ""}`;
     revealRow(row, i);
@@ -6252,7 +6767,18 @@ const SHOP_FRUITS = [
   { emoji: "🍐", price: 100, name: "fruit_pear" },
   { emoji: "🥭", price: 150, name: "fruit_mango" },
   { emoji: "🫐", price: 200, name: "fruit_blueberry" },
+  { emoji: "🍅", price: 80, name: "fruit_tomato" },
+  { emoji: "🥑", price: 120, name: "fruit_avocado" },
+  { emoji: "🍈", price: 150, name: "fruit_melon" },
+  { emoji: "🍎✨", price: 400, name: "fruit_golden_apple" },
 ];
+// Objetos para la Aventura: se acumulan en la billetera y se usan cuando hace falta.
+const SHOP_FULL_LIVES_PRICE = 120;
+const SHOP_CLOCK_PRICE = 25;
+const SHOP_SHIELD_PRICE = 30;
+const SHOP_JOKER_PRICE = 30;
+const CLOCK_SECONDS = 15;
+const SHIELD_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 L20 5 V11 C20 16.5 16.6 20.4 12 22 C7.4 20.4 4 16.5 4 11 V5 Z" fill="#35C8F2"/><path d="M12 2 L20 5 V11 C20 16.5 16.6 20.4 12 22 Z" fill="#1FA6D0"/><path d="M8.5 12 L11 14.5 L15.8 9.5" stroke="#FFF3E2" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const SEED_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22 C6.5 22 4 17.5 4 13.5 C4 8 8.5 3.5 12 2 C15.5 3.5 20 8 20 13.5 C20 17.5 17.5 22 12 22 Z" fill="#8B5A2B"/><path d="M12 2 C13.8 6 13.8 11 12 16" stroke="#6B4320" stroke-width="1.6" fill="none" stroke-linecap="round"/><ellipse cx="8.6" cy="11" rx="1.6" ry="3" transform="rotate(20 8.6 11)" fill="#fff" opacity=".3"/></svg>';
 function seedIcon() { return `<span class="seed-icon">${SEED_SVG}</span>`; }
 
@@ -6261,11 +6787,18 @@ function getWallet() {
   try { w = JSON.parse(localStorage.getItem(WALLET_KEY) || "null"); } catch (e) { w = null; }
   if (!w || typeof w.seeds !== "number") w = { seeds: 0, owned: [] };
   if (!Array.isArray(w.owned)) w.owned = [];
+  if (!w.items || typeof w.items !== "object") w.items = {};
+  w.welcome = !!w.welcome;
+  if (!w.equipped || typeof w.equipped !== "object") w.equipped = {};
+  w.items.clock = Math.max(0, Math.floor(w.items.clock || 0));
+  w.items.shield = Math.max(0, Math.floor(w.items.shield || 0));
+  w.items.joker = Math.max(0, Math.floor(w.items.joker || 0));
   return w;
 }
 function saveWallet(w) {
   try { localStorage.setItem(WALLET_KEY, JSON.stringify(w)); } catch (e) { /* storage unavailable */ }
   renderShopButton();
+  checkCanPlay();
 }
 
 function addSeeds(n) {
@@ -6283,6 +6816,16 @@ function addSeeds(n) {
   setTimeout(() => el.classList.add("out"), 2600);
   setTimeout(() => el.remove(), 3100);
 }
+function seedToast(text) {
+  const stack = document.getElementById("toastStack");
+  if (!stack) return;
+  const el = document.createElement("div");
+  el.className = "toast";
+  el.innerHTML = `<span class="toast-icon">${SEED_SVG}</span><span><strong>${escapeHtml(text)}</strong></span>`;
+  stack.appendChild(el);
+  setTimeout(() => el.classList.add("out"), 2600);
+  setTimeout(() => el.remove(), 3100);
+}
 function seedsForScore(score) { return Math.floor((score || 0) / 10); }
 
 function renderShopButton() {
@@ -6290,13 +6833,15 @@ function renderShopButton() {
   if (btn) btn.innerHTML = `${escapeHtml(t("shop_heading"))} · ${seedIcon()} ${getWallet().seeds}`;
 }
 
-function openShop() {
+function openShop(section) {
   renderShop();
   showScreen("screen-shop");
   window.scrollTo(0, 0);
+  if (section === "acc") document.getElementById("shopAccHeading").scrollIntoView({ block: "start" });
 }
 
 function renderShop() {
+  renderShopAccessories();
   const w = getWallet();
   const mine = getMyAvatar();
   document.getElementById("shopBalance").innerHTML = `${seedIcon()} ${escapeHtml(t("shop_balance", { n: w.seeds }))}`;
@@ -6310,11 +6855,37 @@ function renderShop() {
   }).join("");
   const d = advLoad();
   const full = d.lives >= ADV_MAX_LIVES;
-  document.getElementById("shopAdventure").innerHTML = `<div class="shop-item wide">
-    <span class="shop-art">${advHeart(true)}</span>
-    <span class="shop-text"><strong>${escapeHtml(t("shop_life_title"))}</strong><small>${escapeHtml(full ? t("shop_lives_full") : t("shop_life_desc", { n: d.lives }))}</small></span>
-    <button ${full || w.seeds < SHOP_LIFE_PRICE ? "disabled" : ""} onclick="buyLife()">${seedIcon()} ${SHOP_LIFE_PRICE}</button>
+  const item = (art, title, desc, price, disabled, action) => `<div class="shop-item wide">
+    <span class="shop-art">${art}</span>
+    <span class="shop-text"><strong>${escapeHtml(title)}</strong><small>${escapeHtml(desc)}</small></span>
+    <button ${disabled || w.seeds < price ? "disabled" : ""} onclick="${action}">${seedIcon()} ${price}</button>
   </div>`;
+  document.getElementById("shopItems").innerHTML =
+    item(`<span class="shop-joker">${JOKER_MARK}</span>`, t("shop_joker_title"), t("shop_joker_desc", { pts: JOKER_POINTS, n: w.items.joker }), SHOP_JOKER_PRICE, false, "buyShopItem('joker')");
+  document.getElementById("shopAdventure").innerHTML =
+    item(advHeart(true), t("shop_life_title"), full ? t("shop_lives_full") : t("shop_life_desc", { n: d.lives }), SHOP_LIFE_PRICE, full, "buyLife()") +
+    item(`<span class="shop-art-x">${advHeart(true)}<b>×5</b></span>`, t("shop_full_lives_title"), full ? t("shop_lives_full") : t("shop_full_lives_desc"), SHOP_FULL_LIVES_PRICE, full, "buyShopItem('full')") +
+    item(iconSvg("stopwatch"), t("shop_clock_title"), t("shop_clock_desc", { s: CLOCK_SECONDS, n: w.items.clock }), SHOP_CLOCK_PRICE, false, "buyShopItem('clock')") +
+    item(SHIELD_SVG, t("shop_shield_title"), t("shop_shield_desc", { n: w.items.shield }), SHOP_SHIELD_PRICE, false, "buyShopItem('shield')");
+}
+
+function buyShopItem(kind) {
+  const w = getWallet();
+  const price = { full: SHOP_FULL_LIVES_PRICE, clock: SHOP_CLOCK_PRICE, shield: SHOP_SHIELD_PRICE, joker: SHOP_JOKER_PRICE }[kind];
+  if (!price || w.seeds < price) return;
+  if (kind === "full") {
+    const d = advLoad();
+    if (d.lives >= ADV_MAX_LIVES) return;
+    d.lives = ADV_MAX_LIVES;
+    d.livesAt = Date.now();
+    advSave(d);
+  } else {
+    w.items[kind] += 1;
+  }
+  w.seeds -= price;
+  saveWallet(w);
+  track("shop_buy", { item: kind });
+  renderShop();
 }
 
 function buyFruit(emoji) {
@@ -6470,6 +7041,7 @@ function leaveDuelGame() {
 async function finishDuelRound() {
   if (state.duelFinishing || !state.duelMode) return;
   state.duelFinishing = true;
+  consumeJokerIfUsed();
   clearInterval(state.timerId);
   clearTimeout(state.spinId);
   const duel = state.duel;
@@ -6481,7 +7053,7 @@ async function finishDuelRound() {
   results.forEach(r => {
     if (!r.valid) return;
     valid++;
-    score += DAILY_POINTS_PER_CATEGORY * (r.cat === duel.wildcard ? 2 : 1);
+    score += r.joker ? JOKER_POINTS : DAILY_POINTS_PER_CATEGORY * (r.cat === duel.wildcard ? 2 : 1);
   });
   if (valid > 0) score += secondsLeft;
   leaveDuelGame();
@@ -6597,9 +7169,10 @@ function duelStatus(data, uid) {
     if (me === (best.score || 0)) return { title, text: t("duels_status_tie", { score: me }), cls: "" };
     return { title, text: t("duels_status_behind", { name: best.name || "?", them: best.score || 0, me }), cls: "bad" };
   }
-  const mine = rivals.find(r => r.uid === uid) || {};
-  const me = mine.score || 0, them = creator.score || 0;
+  const mine = rivals.find(r => r.uid === uid);
   const title = t("duels_row_vs", { name: creator.name || "?" });
+  if (!mine) return { title, text: t("duels_status_notplayed"), cls: "" };
+  const me = mine.score || 0, them = creator.score || 0;
   if (me > them) return { title, text: t("duels_status_win", { me, them }), cls: "good" };
   if (me < them) return { title, text: t("duels_status_lose", { me, them }), cls: "bad" };
   return { title, text: t("duels_status_tie", { score: me }), cls: "" };
@@ -6672,6 +7245,8 @@ function showDuelResult(id, data, fresh) {
   const everyone = [{ ...creator }, ...rivals].sort((a, b) => (b.score || 0) - (a.score || 0));
   const isCreator = creator.uid === uid;
   const mineEntry = isCreator ? creator : rivals.find(r => r.uid === uid);
+  // Si esta identidad no jugó el duelo (por ejemplo, se jugó antes de iniciar sesión con otra cuenta), se ofrece jugarlo.
+  if (!mineEntry) { openDuelLink(id); return; }
   state.duelShare = { id, score: mineEntry ? mineEntry.score : 0 };
   if (mineEntry) {
     rememberDuel(id, isCreator ? "creator" : "rival", duelPlayersCount(data));
@@ -6699,12 +7274,12 @@ function showDuelResult(id, data, fresh) {
   const cats = data.categories || [];
   const mineRes = (mineEntry && mineEntry.results) || [];
   const theirRes = creator.results || [];
-  const pts = (res, cat) => (res && res.ok ? DAILY_POINTS_PER_CATEGORY * (cat === data.wildcard ? 2 : 1) : 0);
-  const cell = (res, cat) => `<div class="duel-cell"><span class="answer-val ${res && res.v ? "" : "empty"}">${res && res.v ? escapeHtml(res.v) : t("no_answer")}</span><span class="points points-${res && res.ok ? 10 : 0}">+${pts(res, cat)}</span></div>`;
+  const pts = (res, cat) => (res && res.ok ? (isJoker(res.v) ? JOKER_POINTS : DAILY_POINTS_PER_CATEGORY * (cat === data.wildcard ? 2 : 1)) : 0);
+  const cell = (res, cat) => `<div class="duel-cell"><span class="answer-val ${res && res.v ? "" : "empty"}">${res && res.v ? escapeHtml(answerText(res.v)) : t("no_answer")}</span><span class="points points-${res && res.ok ? 10 : 0}">+${pts(res, cat)}</span></div>`;
   const answers = document.getElementById("duelResultAnswers");
   if (isCreator) {
     answers.innerHTML = cats.map((cat, i) => `<div class="answer-row"><span class="answer-cat">${escapeHtml(catLabel(cat))}${cat === data.wildcard ? '<span class="wildcard-badge">×2</span>' : ""}</span>
-      <span class="answer-val ${mineRes[i] && mineRes[i].v ? "" : "empty"}">${mineRes[i] && mineRes[i].v ? escapeHtml(mineRes[i].v) : t("no_answer")}</span><span class="points points-${mineRes[i] && mineRes[i].ok ? 10 : 0}">+${pts(mineRes[i], cat)}</span></div>`).join("");
+      <span class="answer-val ${mineRes[i] && mineRes[i].v ? "" : "empty"}">${mineRes[i] && mineRes[i].v ? escapeHtml(answerText(mineRes[i].v)) : t("no_answer")}</span><span class="points points-${mineRes[i] && mineRes[i].ok ? 10 : 0}">+${pts(mineRes[i], cat)}</span></div>`).join("");
   } else {
     answers.innerHTML = `<p class="label">${escapeHtml(t("letter_word"))}: <strong>${escapeHtml(data.letter)}</strong></p>
       <div class="duel-cols"><span>${escapeHtml(t("duel_you"))}</span><span>${escapeHtml(creator.name || "?")}</span></div>
@@ -6730,6 +7305,346 @@ async function shareDuel() {
   track("share", { type: "duel" });
   const canvas = await buildShareCanvas(info.score + " pts", t("duel_share_subtitle"), iconSvg("trophy"));
   shareCanvasImage(canvas, t("duel_share_text", { score: info.score }), duelUrl(info.id));
+}
+
+// ---------- Cuenta de Google: el progreso se guarda también en Firebase ----------
+// Sin cuenta, todo vive solo en este navegador. Con cuenta, estas claves se copian a
+// users/{uid}/data y se combinan con lo que haya en otros dispositivos.
+const SYNC_KEYS = [
+  "tuttifruti_adventure", "tuttifruti_wallet", "tuttifruti_progress", "tuttifruti_stats",
+  "tuttifruti_streak_history", "tuttifruti_duels", "tuttifruti_daily",
+  "tuttifruti_avatar", "tuttifruti_playerName", "tuttifruti_preset",
+];
+const syncPending = new Set();
+let syncTimer = null;
+let syncApplying = false;
+
+function isGoogleUser() {
+  const u = window.FB && window.FB.user && window.FB.user();
+  return !!(u && !u.isAnonymous && u.email);
+}
+
+// Cada vez que el juego guarda una de estas claves, se programa la copia a la cuenta.
+(function watchLocalSaves() {
+  const original = Storage.prototype.setItem;
+  Storage.prototype.setItem = function (key, value) {
+    original.call(this, key, value);
+    if (this === window.localStorage && !syncApplying && SYNC_KEYS.includes(key) && isGoogleUser()) {
+      syncPending.add(key);
+      clearTimeout(syncTimer);
+      syncTimer = setTimeout(pushPendingSync, 1500);
+    }
+  };
+})();
+
+function pushPendingSync() {
+  if (!isGoogleUser() || !syncPending.size) return;
+  const updates = {};
+  syncPending.forEach(key => {
+    const v = localStorage.getItem(key);
+    if (v != null && v.length <= 30000) updates[key] = v;
+  });
+  syncPending.clear();
+  window.FB.update(window.FB.ref(window.FB.db, `users/${window.FB.uid}/data`), updates)
+    .catch(e => console.error("No se pudo guardar el progreso en la cuenta", e));
+}
+
+function parseJson(raw) { try { return raw == null ? null : JSON.parse(raw); } catch (e) { return null; } }
+function maxMap(a, b) {
+  const out = { ...(a || {}) };
+  Object.entries(b || {}).forEach(([k, v]) => { out[k] = Math.max(out[k] || 0, v || 0); });
+  return out;
+}
+
+// Combina lo local con lo de la cuenta quedándose con lo mejor de cada lado.
+// Las semillas no se suman (se toma el mayor), así no se pueden duplicar entrando desde otro lado.
+function mergeSyncValue(key, localRaw, remoteRaw) {
+  if (remoteRaw == null) return localRaw;
+  if (localRaw == null) return remoteRaw;
+  const L = parseJson(localRaw), R = parseJson(remoteRaw);
+  switch (key) {
+    case "tuttifruti_adventure": {
+      if (!L || !R) return remoteRaw;
+      return JSON.stringify({
+        ...R, v: 1, pending: null,
+        stars: maxMap(L.stars, R.stars), best: maxMap(L.best, R.best),
+        lives: Math.max(L.lives || 0, R.lives || 0), livesAt: Math.min(L.livesAt || Date.now(), R.livesAt || Date.now()),
+      });
+    }
+    case "tuttifruti_wallet": {
+      if (!L || !R) return remoteRaw;
+      return JSON.stringify({
+        seeds: Math.max(L.seeds || 0, R.seeds || 0),
+        owned: [...new Set([...(R.owned || []), ...(L.owned || [])])],
+        items: maxMap(L.items, R.items),
+        welcome: !!(L.welcome || R.welcome),
+        equipped: (R.equipped && Object.keys(R.equipped).length ? R.equipped : L.equipped) || {},
+      });
+    }
+    case "tuttifruti_progress": {
+      if (!L || !R) return remoteRaw;
+      const newer = (L.lastDay || "") > (R.lastDay || "") ? L : R;
+      const out = { ...R };
+      ["wins", "uniqueWords", "judgeWins", "bestStreakRounds", "dailyCount", "bestDayStreak"].forEach(k => { out[k] = Math.max(L[k] || 0, R[k] || 0); });
+      out.lastDay = newer.lastDay || null;
+      out.dayStreak = newer.dayStreak || 0;
+      out.unlocked = [...new Set([...(R.unlocked || []), ...(L.unlocked || [])])];
+      out.counted = [...new Set([...(R.counted || []), ...(L.counted || [])])].slice(-80);
+      return JSON.stringify(out);
+    }
+    case "tuttifruti_stats": {
+      if (!L || !R) return remoteRaw;
+      return JSON.stringify({
+        gamesPlayed: Math.max(L.gamesPlayed || 0, R.gamesPlayed || 0),
+        roundsPlayed: Math.max(L.roundsPlayed || 0, R.roundsPlayed || 0),
+        letterCounts: maxMap(L.letterCounts, R.letterCounts),
+      });
+    }
+    case "tuttifruti_streak_history": {
+      const all = [...(Array.isArray(R) ? R : []), ...(Array.isArray(L) ? L : [])];
+      const seen = new Set();
+      const unique = all.filter(x => { const id = `${x.score}|${x.rounds}|${x.date || ""}`; if (seen.has(id)) return false; seen.add(id); return true; });
+      return JSON.stringify(unique.sort((a, b) => b.score - a.score).slice(0, STREAK_HISTORY_LIMIT));
+    }
+    case "tuttifruti_duels": {
+      const byId = new Map();
+      [...(Array.isArray(L) ? L : []), ...(Array.isArray(R) ? R : [])].forEach(d => {
+        if (!d || !d.id) return;
+        const prev = byId.get(d.id);
+        byId.set(d.id, prev ? { ...prev, seen: Math.max(prev.seen || 0, d.seen || 0), at: Math.min(prev.at || 0, d.at || 0) || prev.at } : d);
+      });
+      return JSON.stringify([...byId.values()].sort((a, b) => (b.at || 0) - (a.at || 0)).slice(0, MY_DUELS_MAX));
+    }
+    case "tuttifruti_daily": {
+      if (!L || !R) return remoteRaw;
+      if (L.date !== R.date) return (L.date || "") > (R.date || "") ? localRaw : remoteRaw;
+      if (L.unfinished && !R.unfinished) return remoteRaw;
+      if (R.unfinished && !L.unfinished) return localRaw;
+      return (L.score || 0) >= (R.score || 0) ? localRaw : remoteRaw;
+    }
+    default:
+      // Nombre, fruta y tema: manda lo guardado en la cuenta.
+      return remoteRaw;
+  }
+}
+
+// Trae lo de la cuenta, lo combina con lo de este navegador y deja las dos cosas iguales.
+async function syncWithAccount() {
+  if (!isGoogleUser()) return;
+  const snap = await window.FB.get(window.FB.ref(window.FB.db, `users/${window.FB.uid}/data`));
+  const remote = snap.exists() ? snap.val() : {};
+  const updates = {};
+  syncApplying = true;
+  try {
+    SYNC_KEYS.forEach(key => {
+      const localRaw = localStorage.getItem(key);
+      const remoteRaw = typeof remote[key] === "string" ? remote[key] : null;
+      const merged = mergeSyncValue(key, localRaw, remoteRaw);
+      if (merged == null) return;
+      if (merged !== localRaw) localStorage.setItem(key, merged);
+      if (merged !== remoteRaw && merged.length <= 30000) updates[key] = merged;
+    });
+  } finally {
+    syncApplying = false;
+  }
+  if (Object.keys(updates).length) await window.FB.update(window.FB.ref(window.FB.db, `users/${window.FB.uid}/data`), updates);
+  refreshAfterSync();
+}
+
+// Vuelve a dibujar todo lo que depende de lo guardado.
+function refreshAfterSync() {
+  try {
+    const name = localStorage.getItem("tuttifruti_playerName");
+    if (name) document.getElementById("playerName").value = name;
+    const preset = localStorage.getItem("tuttifruti_preset");
+    if (preset && PRESETS.some(p => p.key === preset)) setPreset(preset);
+  } catch (e) { /* storage unavailable */ }
+  renderAvatarPicker();
+  if (window.applyLogoFruit) applyLogoFruit(getMyAvatar());
+  renderShopButton();
+  renderDailyBanner();
+  renderAdventureBanner();
+  refreshDuelBanner();
+  checkAchievements();
+  checkCanPlay();
+  renderAccountBoxes();
+}
+
+function isInAppBrowser() {
+  return /FBAN|FBAV|Instagram|WhatsApp|Line\/|; wv\)|GSA\//i.test(navigator.userAgent || "");
+}
+
+async function loginWithGoogle() {
+  if (isInAppBrowser()) { alert(t("login_in_app_browser")); return; }
+  if (!window.FB) return;
+  const btns = document.querySelectorAll(".google-btn");
+  btns.forEach(b => { b.disabled = true; });
+  const res = await window.FB.loginWithGoogle();
+  btns.forEach(b => { b.disabled = false; });
+  if (!res.ok) {
+    if (res.code !== "auth/popup-closed-by-user" && res.code !== "auth/cancelled-popup-request") {
+      alert(res.code === "auth/popup-blocked" ? t("login_popup_blocked") : t("login_error"));
+    }
+    return;
+  }
+  state.playerId = window.FB.uid;
+  track("login", { method: "google" });
+  try {
+    await syncWithAccount();
+    seedToast(t("login_done"));
+  } catch (e) {
+    console.error("No se pudo sincronizar el progreso", e);
+    alert(t("login_sync_error"));
+  }
+  renderAccountBoxes();
+}
+
+async function logoutGoogle() {
+  if (!confirm(t("logout_confirm"))) return;
+  pushPendingSync();
+  await window.FB.logout();
+  state.playerId = window.FB.uid;
+  renderAccountBoxes();
+}
+
+const GOOGLE_G_SVG = '<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"/></svg>';
+
+function renderAccountBoxes() {
+  const user = window.FB && window.FB.user ? window.FB.user() : null;
+  const logged = !!(user && !user.isAnonymous && user.email);
+  // La home (que no carga Firebase) usa esta marca para saber si mostrar el puntito de "guardá tu progreso".
+  if (window.FB) { try { localStorage.setItem("tuttifruti_has_account", logged ? "1" : "0"); } catch (e) { /* storage unavailable */ } }
+  const html = logged
+    ? `<div class="account-box logged"><span class="account-g">${GOOGLE_G_SVG}</span><span class="account-text"><strong>${escapeHtml(t("account_logged_title"))}</strong><small>${escapeHtml(user.email)}</small></span><button type="button" class="account-logout" onclick="logoutGoogle()">${escapeHtml(t("logout_btn"))}</button></div>`
+    : `<div class="account-box invite">
+        <span class="invite-mascot">${mascotSvg("happy", getMyAvatar(), myEquipped())}</span>
+        <strong class="invite-title">${escapeHtml(t("login_invite_title"))}</strong>
+        <ul class="invite-list"><li>${escapeHtml(t("login_invite_li1"))}</li><li>${escapeHtml(t("login_invite_li2"))}</li></ul>
+        <button type="button" class="google-btn" onclick="loginWithGoogle()"><span class="account-g">${GOOGLE_G_SVG}</span>${escapeHtml(t("login_btn"))}</button>
+        <small>${escapeHtml(t("login_hint"))}</small>
+      </div>`;
+  document.querySelectorAll("[data-account-box]").forEach(el => { el.innerHTML = html; });
+  renderProfileButton();
+}
+
+// Regalo de bienvenida: 30 semillas, una sola vez por jugador.
+const WELCOME_SEEDS = 30;
+function giveWelcomeGift() {
+  const w = getWallet();
+  if (w.welcome) return;
+  w.welcome = true;
+  w.seeds += WELCOME_SEEDS;
+  saveWallet(w);
+  setTimeout(() => seedToast(t("welcome_gift_toast", { n: WELCOME_SEEDS })), 900);
+}
+
+// ---------- Accesorios para la fruta (gorros, anteojos, cuello) ----------
+const ACCESSORY_ITEMS = [
+  { id: "party", slot: "hat", price: 60 }, { id: "cap", slot: "hat", price: 80 }, { id: "beanie", slot: "hat", price: 90 },
+  { id: "straw", slot: "hat", price: 100 }, { id: "tophat", slot: "hat", price: 150 }, { id: "crown", slot: "hat", price: 300 },
+  { id: "roundglasses", slot: "glasses", price: 60 }, { id: "sunglasses", slot: "glasses", price: 70 },
+  { id: "bowtie", slot: "neck", price: 50 }, { id: "scarf", slot: "neck", price: 70 },
+];
+const ACC_SLOTS = ["hat", "glasses", "neck"];
+function accOwnedKey(id) { return "acc:" + id; }
+
+// Lo que tiene puesto el jugador (solo cuenta lo que realmente compró).
+function myEquipped() {
+  const w = getWallet();
+  const out = {};
+  ACC_SLOTS.forEach(slot => {
+    const id = w.equipped[slot];
+    if (id && w.owned.includes(accOwnedKey(id))) out[slot] = id;
+  });
+  return out;
+}
+
+function buyAccessory(id) {
+  const item = ACCESSORY_ITEMS.find(a => a.id === id);
+  const w = getWallet();
+  if (!item || w.owned.includes(accOwnedKey(id)) || w.seeds < item.price) return;
+  w.seeds -= item.price;
+  w.owned.push(accOwnedKey(id));
+  w.equipped[item.slot] = id;
+  saveWallet(w);
+  track("shop_buy", { item: "acc_" + id });
+  launchConfetti();
+  refreshMyFruit();
+}
+
+function toggleAccessory(id) {
+  const item = ACCESSORY_ITEMS.find(a => a.id === id);
+  const w = getWallet();
+  if (!item || !w.owned.includes(accOwnedKey(id))) return;
+  w.equipped[item.slot] = w.equipped[item.slot] === id ? null : id;
+  saveWallet(w);
+  refreshMyFruit();
+}
+
+// Redibuja todo lo que muestra la fruta del jugador.
+function refreshMyFruit() {
+  renderProfileButton();
+  if (document.getElementById("screen-profile").classList.contains("active")) renderProfile();
+  if (document.getElementById("screen-shop").classList.contains("active")) renderShop();
+}
+
+function renderProfileButton() {
+  const btn = document.getElementById("profileBtn");
+  if (!btn) return;
+  btn.innerHTML = mascotSvg("happy", getMyAvatar(), myEquipped()) + (isGoogleUser() ? "" : '<span class="profile-dot" aria-hidden="true"></span>');
+}
+
+function openProfile() {
+  renderProfile();
+  showScreen("screen-profile");
+  window.scrollTo(0, 0);
+}
+
+function renderProfile() {
+  const w = getWallet();
+  const eq = myEquipped();
+  document.getElementById("profileMascot").innerHTML = mascotSvg("happy", getMyAvatar(), eq);
+  const name = document.getElementById("playerName").value.trim();
+  document.getElementById("profileName").textContent = name || t("profile_title");
+  document.getElementById("profileSub").innerHTML = `${seedIcon()} ${escapeHtml(t("shop_balance", { n: w.seeds }))}`;
+  const owned = ACCESSORY_ITEMS.filter(a => w.owned.includes(accOwnedKey(a.id)));
+  const box = document.getElementById("profileAccessories");
+  if (!owned.length) {
+    box.innerHTML = `<p class="hint">${escapeHtml(t("profile_no_acc"))}</p>`;
+  } else {
+    box.innerHTML = ACC_SLOTS.map(slot => {
+      const items = owned.filter(a => a.slot === slot);
+      if (!items.length) return "";
+      return `<p class="label" style="margin-top:12px;">${escapeHtml(t("acc_slot_" + slot))}</p><div class="acc-row">${items.map(a =>
+        `<button type="button" class="acc-tile${eq[slot] === a.id ? " on" : ""}" onclick="toggleAccessory('${a.id}')" aria-pressed="${eq[slot] === a.id}">
+          <span class="acc-art">${mascotSvg("happy", getMyAvatar(), { [slot]: a.id })}</span><span>${escapeHtml(t("acc_" + a.id))}</span></button>`).join("")}</div>`;
+    }).join("");
+  }
+  const picker = document.getElementById("profileAvatarPicker");
+  const mine = getMyAvatar();
+  picker.innerHTML = myAvailableAvatars().map(a =>
+    `<button type="button" class="avatar-option${a === mine ? " selected" : ""}" role="radio" aria-checked="${a === mine}" onclick="setMyAvatar('${a}')">${fruitSvg(a)}</button>`).join("");
+  renderAccountBoxes();
+}
+
+function renderShopAccessories() {
+  const w = getWallet();
+  const eq = myEquipped();
+  document.getElementById("shopAccessories").innerHTML = ACCESSORY_ITEMS.map(a => {
+    const owned = w.owned.includes(accOwnedKey(a.id));
+    let btn;
+    if (owned) btn = `<button class="${eq[a.slot] === a.id ? "in-use" : "owned"}" onclick="toggleAccessory('${a.id}')">${escapeHtml(t(eq[a.slot] === a.id ? "shop_take_off" : "shop_put_on"))}</button>`;
+    else btn = `<button ${w.seeds < a.price ? "disabled" : ""} onclick="buyAccessory('${a.id}')">${seedIcon()} ${a.price}</button>`;
+    return `<div class="shop-item"><span class="shop-art acc-preview">${mascotSvg("happy", getMyAvatar(), { ...eq, [a.slot]: a.id })}</span><strong>${escapeHtml(t("acc_" + a.id))}</strong>${btn}</div>`;
+  }).join("");
+}
+
+// /jugar?perfil (desde la home): abre "Mi fruta".
+function applyProfileLinkFromUrl() {
+  const params = new URLSearchParams(location.search);
+  if (!params.has("perfil")) return false;
+  history.replaceState(null, "", location.pathname);
+  return true;
 }
 
 function soloReasonText(r, letter) {
@@ -6767,8 +7682,8 @@ function showDailyResult(record, fresh) {
     row.style.flexWrap = "wrap";
     row.innerHTML = `
       <span class="answer-cat">${escapeHtml(catLabel(r.cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
-      <span class="answer-val ${r.val ? "" : "empty"}">${r.val ? escapeHtml(r.val) : t("no_answer")}</span>
-      <span class="points points-${r.valid ? 10 : 0}">+${isWild ? basePts * 2 : basePts}</span>
+      <span class="answer-val ${r.val ? "" : "empty"}">${r.val ? escapeHtml(answerText(r.val)) : t("no_answer")}</span>
+      <span class="points points-${r.valid ? 10 : 0}">+${r.joker ? JOKER_POINTS : (isWild ? basePts * 2 : basePts)}</span>
       ${reason ? `<div style="flex-basis:100%; font-size:11px; color:var(--text-support);">${reason}</div>` : ""}
     `;
     if (fresh) revealRow(row, i);
@@ -6816,12 +7731,14 @@ async function shareDailyResult(record) {
 
 // Valida las respuestas de una partida individual (contrarreloj o desafío del
 // día): lo obvio se resuelve acá gratis y el resto se lo pregunta al juez.
-async function judgeSoloAnswers(categories, answers, letter, round, salaId) {
+async function judgeSoloAnswers(categories, answers, letter, round, salaId, letterByCat = null) {
   const usedWords = new Set();
+  const letterOf = cat => (letterByCat && letterByCat[cat]) || letter;
   const results = categories.map(cat => {
     const val = (answers[cat] || "").trim();
     if (!val) return { cat, val, valid: false, reason: "empty" };
-    if (!answerMatchesLetter(val, letter)) return { cat, val, valid: false, reason: "letter" };
+    if (isJoker(val)) return { cat, val, valid: true, joker: true };
+    if (!answerMatchesLetter(val, letterOf(cat))) return { cat, val, valid: false, reason: "letter" };
     if (isTrivialAnswer(val)) return { cat, val, valid: false, reason: "short" };
     const norm = normalizeAnswer(val);
     if (usedWords.has(norm)) return { cat, val, valid: false, reason: "repeated", repeated: true };
@@ -6831,8 +7748,10 @@ async function judgeSoloAnswers(categories, answers, letter, round, salaId) {
   const pending = results.filter(r => r.valid === null);
   if (pending.length > 0) {
     showScreen("screen-judging");
-    const disputas = pending.map(r => ({ id: r.cat, categoria: r.cat, palabra: r.val }));
-    const judged = await callJudge(salaId, round, letter, disputas);
+    const disputas = pending.map(r => (letterByCat
+      ? { id: r.cat, categoria: r.cat, palabra: r.val, letra: letterOf(r.cat) }
+      : { id: r.cat, categoria: r.cat, palabra: r.val }));
+    const judged = await callJudge(salaId, round, letterByCat ? letterOf(categories[0]) : letter, disputas);
     pending.forEach(r => {
       const v = judged.verdicts[r.cat];
       r.valid = judged.failed || !v ? true : v.valida !== false;
@@ -7018,7 +7937,7 @@ async function shareFinalResult() {
   const canvas = await buildShareCanvas(
     info.score + " pts",
     info.won ? t("share_final_won_subtitle") : t("share_final_subtitle"),
-    mascotSvg(info.won ? "happy" : "sad", getMyAvatar())
+    mascotSvg(info.won ? "happy" : "sad", getMyAvatar(), myEquipped())
   );
   shareCanvasImage(canvas, info.won ? t("share_final_won_text", { score: info.score }) : t("share_final_text", { score: info.score }));
 }
@@ -7164,6 +8083,14 @@ document.getElementById("duelBannerIcon").innerHTML = iconSvg("trophy");
 refreshDuelBanner();
 renderShopButton();
 applyDuelLinkFromUrl();
+giveWelcomeGift();
+renderAccountBoxes();
+renderProfileButton();
+if (applyProfileLinkFromUrl()) openProfile();
+(function syncOnLoad() {
+  const run = () => { renderAccountBoxes(); if (isGoogleUser()) syncWithAccount().catch(e => console.error("No se pudo sincronizar el progreso", e)); };
+  if (window.FB) run(); else window.addEventListener("firebase-ready", run, { once: true });
+})();
 checkAchievements();
 </script>
 <div class="confetti-container" id="confettiContainer"></div>
