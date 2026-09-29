@@ -27,7 +27,7 @@ function estaBloqueadoPorRateLimit(ip) {
 
 const PROMPTS_SISTEMA = {
   es: `Sos el juez de un juego de tutti frutti (también llamado Stop, Basta o Bachillerato) que se juega en toda Latinoamérica y España.
-Recibís una letra y una lista de respuestas objetadas, cada una con su categoría.
+Recibís una lista de respuestas objetadas, cada una con su categoría.
 Para cada respuesta decidí si es válida.
 
 Criterios:
@@ -44,7 +44,7 @@ Criterios:
 Respondé SOLO con JSON, sin texto adicional ni bloques de código, con este formato:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
 Completá "motivo" con una frase breve EN ESPAÑOL solo cuando "valida" sea false.`,
-  en: `You are the judge of a word game (tutti frutti / Scattergories-style). You receive a letter and a list of challenged answers, each with its category. For each answer, decide whether it's valid.
+  en: `You are the judge of a word game (tutti frutti / Scattergories-style). You receive a list of challenged answers, each with its category. For each answer, decide whether it's valid.
 
 Criteria:
 - The first letter has already been checked before reaching you: do NOT evaluate it or use it as a reason.
@@ -60,7 +60,7 @@ Criteria:
 Respond ONLY with JSON, no extra text or code fences, in this format:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
 Fill in "motivo" with a short reason IN ENGLISH only when "valida" is false.`,
-  pt: `Você é o juiz de um jogo de palavras (tutti frutti / estilo Adedanha). Você recebe uma letra e uma lista de respostas contestadas, cada uma com sua categoria. Para cada resposta, decida se ela é válida.
+  pt: `Você é o juiz de um jogo de palavras (tutti frutti / estilo Adedanha). Você recebe uma lista de respostas contestadas, cada uma com sua categoria. Para cada resposta, decida se ela é válida.
 
 Critérios:
 - A letra inicial já foi verificada antes de chegar a você: NÃO a avalie nem a use como motivo.
@@ -194,8 +194,8 @@ exports.handler = async (event) => {
     return jsonResponse(200, { veredictos: veredictosLetra });
   }
 
+  // La letra ya se verificó acá arriba: al juez solo le llegan categoría y palabra, así no la confunde.
   const contenidoUsuario = JSON.stringify({
-    letra,
     disputas: paraElJuez.map(d => ({ id: d.id, categoria: d.categoria, palabra: conMayusculaInicial(d.palabra) })),
   });
 
