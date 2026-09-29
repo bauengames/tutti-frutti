@@ -61,6 +61,7 @@ function renderHomeMascots() {
   var hasAccount = false;
   try { hasAccount = localStorage.getItem("tuttifruti_has_account") === "1"; } catch (e) { /* storage unavailable */ }
   document.querySelectorAll("[data-home-dot]").forEach(function (el) { el.hidden = hasAccount; });
+  document.querySelectorAll("[data-home-login]").forEach(function (el) { el.style.display = hasAccount ? "none" : ""; });
 }
 renderHomeMascots();
 

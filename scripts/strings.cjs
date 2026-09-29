@@ -3,6 +3,8 @@
    este archivo, correr: node scripts/build-site.cjs */
 module.exports = {
   "es": {
+    "home_login_btn": "Iniciar sesión con Google",
+    "home_login_note": "Guarda tus semillas, tu fruta y tus estrellas.",
     "home_profile_aria": "Mi fruta",
     "home_profile_title": "Arma tu fruta y guarda tu progreso",
     "home_profile_desc": "Vístela con gorros, anteojos y más, y guarda tus semillas y estrellas con tu cuenta de Google.",
@@ -18,7 +20,7 @@ module.exports = {
     "reglas_modes_li3_html": "<strong>Contrarreloj:</strong> juegas solo contra un reloj de 2 minutos y sumas todos los puntos que puedas, ronda tras ronda.",
     "reglas_modes_li4_html": "<strong>Desafío del día:</strong> la misma letra y las mismas categorías para todos, con un solo intento por día.",
     "home_daily_title": "Desafío del día",
-    "home_daily_desc": "La misma letra para todos, 60 segundos y un solo intento.",
+    "home_daily_desc": "La misma letra para todos, 60 segundos y un solo intento. Los 3 mejores ganan semillas.",
     "nav_home": "Inicio",
     "nav_reglas": "Reglas del juego",
     "nav_privacidad": "Privacidad",
@@ -161,6 +163,8 @@ module.exports = {
     "notfound_home": "Ir al inicio"
   },
   "en": {
+    "home_login_btn": "Sign in with Google",
+    "home_login_note": "Keep your seeds, your fruit and your stars.",
     "home_profile_aria": "My fruit",
     "home_profile_title": "Dress up your fruit and save your progress",
     "home_profile_desc": "Give it hats, glasses and more, and keep your seeds and stars safe with your Google account.",
@@ -176,7 +180,7 @@ module.exports = {
     "reglas_modes_li3_html": "<strong>Time attack:</strong> play solo against a 2-minute clock and score as many points as you can, round after round.",
     "reglas_modes_li4_html": "<strong>Daily challenge:</strong> the same letter and categories for everyone, with one try per day.",
     "home_daily_title": "Daily challenge",
-    "home_daily_desc": "Same letter for everyone, 60 seconds and one try.",
+    "home_daily_desc": "Same letter for everyone, 60 seconds and one try. The top 3 win seeds.",
     "nav_home": "Home",
     "nav_reglas": "Game rules",
     "nav_privacidad": "Privacy",
@@ -319,6 +323,8 @@ module.exports = {
     "notfound_home": "Go to home"
   },
   "pt": {
+    "home_login_btn": "Entrar com o Google",
+    "home_login_note": "Guarde suas sementes, sua fruta e suas estrelas.",
     "home_profile_aria": "Minha fruta",
     "home_profile_title": "Monte sua fruta e salve seu progresso",
     "home_profile_desc": "Vista com chapéus, óculos e mais, e guarde suas sementes e estrelas com sua conta do Google.",
@@ -334,7 +340,7 @@ module.exports = {
     "reglas_modes_li3_html": "<strong>Contra o relógio:</strong> você joga sozinho contra um relógio de 2 minutos e soma todos os pontos que puder, rodada após rodada.",
     "reglas_modes_li4_html": "<strong>Desafio do dia:</strong> a mesma letra e as mesmas categorias para todos, com uma única tentativa por dia.",
     "home_daily_title": "Desafio do dia",
-    "home_daily_desc": "A mesma letra para todos, 60 segundos e uma única tentativa.",
+    "home_daily_desc": "A mesma letra para todos, 60 segundos e uma única tentativa. Os 3 melhores ganham sementes.",
     "nav_home": "Início",
     "nav_reglas": "Regras do jogo",
     "nav_privacidad": "Privacidade",

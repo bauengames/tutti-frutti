@@ -875,7 +875,7 @@ html[data-light] .adventure-banner .daily-arrow { color: var(--tinta); }
 .profile-btn .mascot-svg { width: 34px; height: 34px; display: block; }
 .profile-dot { position: absolute; top: -3px; right: -3px; width: 12px; height: 12px; border-radius: 50%; background: var(--pomelo); border: 2px solid var(--bg); }
 .profile-hero { text-align: center; }
-.profile-mascot { width: 150px; height: 150px; margin: 18px auto 10px; }
+.profile-mascot { width: 150px; height: 150px; margin: 18px auto 10px; padding: 14px; border-radius: 50%; background: #FFF3E2; box-shadow: 0 6px 0 rgba(0,0,0,.12); }
 .profile-mascot .mascot-svg { width: 100%; height: 100%; }
 .profile-hero p { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: var(--radius-pill); background: var(--tinta); color: #FFF3E2; font: 700 15px var(--font-mono); }
 .acc-row { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -977,7 +977,7 @@ html[data-light] .shop-balance { color: #FFF3E2; }
 .duel-banner.has-news .daily-sub { color: var(--text); font-weight: 700; }
 .duel-banner .daily-arrow { color: var(--secondary); }
 html[data-light] .duel-banner .daily-arrow { color: var(--tinta); }
-.duel-intro-avatar { width: 84px; height: 84px; margin: 0 0 10px; }
+.duel-intro-avatar { width: 84px; height: 84px; margin: 0 0 10px; padding: 8px; border-radius: 50%; background: #FFF3E2; }
 .duel-intro-avatar svg { width: 100%; height: 100%; display: block; }
 .duel-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; }
 .duel-compare-row { display: contents; }
@@ -2275,6 +2275,8 @@ const I18N = {
     daily_result_summary: "{valid} de {total} válidas · {score} pts",
     daily_time_bonus: "Incluye {bonus} pts de bonus por los segundos que te sobraron.",
     daily_come_back: "Mañana hay una letra nueva.",
+    daily_prize_info: "Los 3 mejores del día ganan semillas: 100, 60 y 40.",
+    daily_prize_toast: "¡Saliste {place}.º en el desafío del {date}! +{n} semillas",
     daily_board_heading: "Ranking de hoy",
     daily_board_empty: "Todavía nadie terminó el desafío de hoy.",
     daily_unfinished: "Empezaste el desafío de hoy pero no lo terminaste. Mañana hay otro.",
@@ -2711,6 +2713,8 @@ const I18N = {
     daily_result_summary: "{valid} of {total} valid · {score} pts",
     daily_time_bonus: "Includes a {bonus}-point bonus for the seconds you had left.",
     daily_come_back: "A new letter comes out tomorrow.",
+    daily_prize_info: "The top 3 of the day win seeds: 100, 60 and 40.",
+    daily_prize_toast: "You placed #{place} in the {date} challenge! +{n} seeds",
     daily_board_heading: "Today's ranking",
     daily_board_empty: "Nobody has finished today's challenge yet.",
     daily_unfinished: "You started today's challenge but didn't finish it. There's a new one tomorrow.",
@@ -3147,6 +3151,8 @@ const I18N = {
     daily_result_summary: "{valid} de {total} válidas · {score} pts",
     daily_time_bonus: "Inclui {bonus} pts de bônus pelos segundos que sobraram.",
     daily_come_back: "Amanhã tem uma letra nova.",
+    daily_prize_info: "Os 3 melhores do dia ganham sementes: 100, 60 e 40.",
+    daily_prize_toast: "Você ficou em {place}º no desafio de {date}! +{n} sementes",
     daily_board_heading: "Ranking de hoje",
     daily_board_empty: "Ninguém terminou o desafio de hoje ainda.",
     daily_unfinished: "Você começou o desafio de hoje mas não terminou. Amanhã tem outro.",
@@ -6790,6 +6796,7 @@ function getWallet() {
   if (!w.items || typeof w.items !== "object") w.items = {};
   w.welcome = !!w.welcome;
   if (!w.equipped || typeof w.equipped !== "object") w.equipped = {};
+  if (!Array.isArray(w.dailyChecked)) w.dailyChecked = [];
   w.items.clock = Math.max(0, Math.floor(w.items.clock || 0));
   w.items.shield = Math.max(0, Math.floor(w.items.shield || 0));
   w.items.joker = Math.max(0, Math.floor(w.items.joker || 0));
@@ -7379,6 +7386,7 @@ function mergeSyncValue(key, localRaw, remoteRaw) {
         items: maxMap(L.items, R.items),
         welcome: !!(L.welcome || R.welcome),
         equipped: (R.equipped && Object.keys(R.equipped).length ? R.equipped : L.equipped) || {},
+        dailyChecked: [...new Set([...(R.dailyChecked || []), ...(L.dailyChecked || [])])].slice(-30),
       });
     }
     case "tuttifruti_progress": {
@@ -7647,6 +7655,43 @@ function applyProfileLinkFromUrl() {
   return true;
 }
 
+// ---------- Premios del desafío del día (los 3 primeros ganan semillas) ----------
+// No hay servidor que cierre el día: el premio se cobra cuando el ganador vuelve a entrar,
+// una vez que ese día terminó en todas las zonas horarias (36 h después de su 00:00 UTC).
+const DAILY_PRIZES = [100, 60, 40];
+
+function dailyDateClosed(key) {
+  const [y, m, d] = key.split("-").map(Number);
+  return Date.now() > Date.UTC(y, m - 1, d) + 36 * 3600 * 1000;
+}
+
+async function claimDailyPrizes() {
+  if (!window.FB || !window.FB.uid) return;
+  const F = window.FB;
+  for (let off = 1; off <= 7; off++) {
+    const key = dayKey(-off);
+    const w = getWallet();
+    if (w.dailyChecked.includes(key) || !dailyDateClosed(key)) continue;
+    const snap = await F.get(F.query(F.ref(F.db, `daily/${key}`), F.orderByChild("score"), F.limitToLast(10)));
+    const entries = [];
+    snap.forEach(c => { entries.push({ uid: c.key, score: (c.val() || {}).score || 0 }); });
+    const mine = entries.find(e => e.uid === F.uid);
+    const w2 = getWallet();
+    w2.dailyChecked = [...w2.dailyChecked, key].slice(-30);
+    let prize = 0, place = 0;
+    if (mine && mine.score > 0) {
+      place = entries.filter(e => e.score > mine.score).length + 1;
+      prize = DAILY_PRIZES[place - 1] || 0;
+    }
+    if (prize) w2.seeds += prize;
+    saveWallet(w2);
+    if (prize) {
+      track("daily_prize", { place, seeds: prize });
+      seedToast(t("daily_prize_toast", { place, date: formatDayLabel(key), n: prize }));
+    }
+  }
+}
+
 function soloReasonText(r, letter) {
   if (r.valid || !r.val) return "";
   if (r.reason === "letter") return t("doesnt_start_with", { letter });
@@ -7693,7 +7738,7 @@ function showDailyResult(record, fresh) {
   note.className = "hint";
   note.style.textAlign = "center";
   note.style.marginTop = "14px";
-  note.textContent = (record.bonus ? t("daily_time_bonus", { bonus: record.bonus }) + " " : "") + t("daily_come_back");
+  note.textContent = (record.bonus ? t("daily_time_bonus", { bonus: record.bonus }) + " " : "") + t("daily_come_back") + " " + t("daily_prize_info");
   list.appendChild(note);
 
   const objContainer = document.getElementById("myObjectionsOutcome");
@@ -8088,7 +8133,11 @@ renderAccountBoxes();
 renderProfileButton();
 if (applyProfileLinkFromUrl()) openProfile();
 (function syncOnLoad() {
-  const run = () => { renderAccountBoxes(); if (isGoogleUser()) syncWithAccount().catch(e => console.error("No se pudo sincronizar el progreso", e)); };
+  const run = async () => {
+    renderAccountBoxes();
+    if (isGoogleUser()) await syncWithAccount().catch(e => console.error("No se pudo sincronizar el progreso", e));
+    claimDailyPrizes().catch(e => console.error("No se pudieron revisar los premios del desafío", e));
+  };
   if (window.FB) run(); else window.addEventListener("firebase-ready", run, { once: true });
 })();
 checkAchievements();
