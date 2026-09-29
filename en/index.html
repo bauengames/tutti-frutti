@@ -95,10 +95,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 .bg-blobs { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-.bg-blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .35; transition: background-color .3s ease; }
-.bg-blob-1 { width: 420px; height: 420px; top: -140px; left: -120px; background: var(--primary); }
-.bg-blob-2 { width: 380px; height: 380px; bottom: -160px; right: -100px; background: var(--secondary); }
-.bg-blob-3 { width: 320px; height: 320px; top: 45%; left: 55%; background: var(--lima); opacity: .22; }
+/* Degradés radiales en vez de filter:blur: el blur se cortaba en línea recta en algunos navegadores */
+.bg-blob { position: absolute; border-radius: 50%; opacity: .35; background: radial-gradient(closest-side, var(--blob), transparent); }
+.bg-blob-1 { --blob: var(--primary); width: 600px; height: 600px; top: -230px; left: -210px; }
+.bg-blob-2 { --blob: var(--secondary); width: 560px; height: 560px; bottom: -250px; right: -190px; }
+.bg-blob-3 { --blob: var(--lima); width: 500px; height: 500px; top: calc(45% - 90px); left: calc(55% - 90px); opacity: .16; }
 html[data-light] .bg-blob { opacity: .32; }
 html[data-light] .bg-blob-3 { opacity: .24; }
 :focus-visible { outline: 2px solid var(--pomelo); outline-offset: 2px; }

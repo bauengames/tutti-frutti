@@ -115,10 +115,11 @@ body {
 
 /* ---------- Fondo con manchas de color (se adapta solo al tema elegido) ---------- */
 .bg-blobs { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
-.bg-blob { position: absolute; border-radius: 50%; filter: blur(70px); opacity: .35; transition: background-color .3s ease; }
-.bg-blob-1 { width: 420px; height: 420px; top: -140px; left: -120px; background: var(--primary); }
-.bg-blob-2 { width: 380px; height: 380px; bottom: -160px; right: -100px; background: var(--secondary); }
-.bg-blob-3 { width: 320px; height: 320px; top: 45%; left: 55%; background: var(--lima); opacity: .22; }
+/* Degradés radiales en vez de filter:blur: el blur se cortaba en línea recta en algunos navegadores */
+.bg-blob { position: absolute; border-radius: 50%; opacity: .35; background: radial-gradient(closest-side, var(--blob), transparent); }
+.bg-blob-1 { --blob: var(--primary); width: 600px; height: 600px; top: -230px; left: -210px; }
+.bg-blob-2 { --blob: var(--secondary); width: 560px; height: 560px; bottom: -250px; right: -190px; }
+.bg-blob-3 { --blob: var(--lima); width: 500px; height: 500px; top: calc(45% - 90px); left: calc(55% - 90px); opacity: .16; }
 html[data-light] .bg-blob { opacity: .32; }
 html[data-light] .bg-blob-3 { opacity: .24; }
 
@@ -296,6 +297,13 @@ html[data-light] .room-row button.copied { color: var(--tinta); border-color: va
   transition: border-color .15s, color .15s;
 }
 .pack-btn:hover { border-color: var(--primary); color: var(--primary); }
+.pack-btn.selected { background: var(--primary); border-color: var(--primary); color: var(--tinta); }
+.cat-clear-btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: var(--radius-pill);
+  border: 1px dashed var(--borde-fuerte); background: transparent; color: var(--crema-72);
+  font: 600 13px var(--font-body); white-space: nowrap; cursor: pointer; transition: border-color .15s, color .15s;
+}
+.cat-clear-btn:hover { border-color: var(--pomelo); color: var(--pomelo); }
 .cat-picker-grid { display: flex; flex-wrap: wrap; gap: 8px; max-height: 196px; overflow-y: auto; padding: 4px 2px; }
 .cat-pick-chip {
   padding: 10px 18px; border-radius: var(--radius-pill);
@@ -364,7 +372,8 @@ html[data-light] .cat-pick-chip-random { color: var(--tinta); }
 }
 .lobby-footer, .review-actions { position: sticky; bottom: 16px; padding-top: 4px; z-index: 5; isolation: isolate; }
 .lobby-footer::before, .review-actions::before {
-  content: ''; position: absolute; inset: -24px calc(-1 * var(--page-pad-x)) -16px; z-index: -1;
+  /* De borde a borde de la pantalla: si solo cubre la columna del juego, en pantallas anchas se ve un corte recto en el fondo */
+  content: ''; position: absolute; top: -24px; bottom: -16px; left: calc(50% - 50vw); right: calc(50% - 50vw); z-index: -1;
   background: linear-gradient(to bottom, transparent, var(--bg) 40%);
 }
 
@@ -794,7 +803,9 @@ html[data-light] .adventure-banner .daily-arrow { color: var(--tinta); }
 .adv-star { width: 20px; height: 20px; display: block; flex-shrink: 0; }
 .adv-star path { fill: var(--mandarina); }
 .adv-star.off path { fill: var(--crema-08); stroke: var(--borde-fuerte); stroke-width: 1.5; }
-.hero-band .adv-big-stars .adv-star path { fill: var(--tinta); }
+/* Estrellas del resultado: doradas con un sombreado amarillo más oscuro abajo */
+.hero-band .adv-big-stars .adv-star { overflow: visible; filter: drop-shadow(0 3px 0 #D99A0B); }
+.hero-band .adv-big-stars .adv-star path { fill: #FFD23F; }
 .hero-band .adv-big-stars .adv-star.off path { fill: rgba(20,16,31,.14); stroke: none; }
 /* Vidas: corazón rojo = la tenés; solo contorno = te falta. Siempre sobre fondo oscuro para que se lea en todos los temas. */
 .adv-heart { width: 24px; height: 22px; display: block; flex-shrink: 0; }
@@ -836,22 +847,24 @@ html[data-light] .adventure-banner .daily-arrow { color: var(--tinta); }
 .adv-crate::before { content: ""; position: absolute; inset: 0; border-radius: 14px; background: repeating-linear-gradient(0deg, transparent 0 32px, rgba(0,0,0,.08) 32px 34px); pointer-events: none; }
 .adv-crate-plate { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); padding: 4px 14px; border-radius: 6px; background: #FFF3E2; color: #14101F; font: 800 14px/1.2 var(--font-display); white-space: nowrap; box-shadow: 0 2px 0 rgba(0,0,0,.15); }
 .adv-slots { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.adv-slot { position: relative; min-width: 0; aspect-ratio: 1 / 1.08; border: 0; border-radius: 10px; padding: 6px 4px; background: #8B5A2B; box-shadow: inset 0 4px 8px rgba(0,0,0,.35); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #FFF3E2; font-family: var(--font-body); cursor: pointer; transition: transform .1s; }
+.adv-slot { position: relative; min-width: 0; aspect-ratio: 1 / 1.08; border: 0; border-radius: 10px; padding: 6px 4px; background: #8B5A2B; box-shadow: inset 0 4px 8px rgba(0,0,0,.35); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #FFF3E2; font-family: var(--font-body); cursor: pointer; transition: transform .1s; container-type: inline-size; }
 .adv-slot:disabled { cursor: default; }
 .adv-slot:not(:disabled):active { transform: translateY(2px); }
-.adv-slot-n { position: absolute; left: 7px; top: 5px; font: 800 13px var(--font-display); opacity: .85; }
+.adv-slot-n { position: absolute; left: 7px; top: 5px; font: 800 clamp(13px, 9cqw, 22px) var(--font-display); opacity: .85; }
 .adv-slot-fruit { width: 60%; animation: adv-bob 3s ease-in-out infinite; filter: drop-shadow(0 3px 2px rgba(0,0,0,.3)); }
 .adv-slot-fruit svg { width: 100%; height: auto; display: block; }
-.adv-slot .adv-mini-stars .adv-star { width: 13px; height: 13px; }
+/* Crecen con el casillero (cqw = % del ancho del casillero), así en la compu no quedan diminutas */
+.adv-slot .adv-mini-stars { gap: clamp(1px, 1.5cqw, 4px); }
+.adv-slot .adv-mini-stars .adv-star { width: clamp(13px, 12cqw, 30px); height: clamp(13px, 12cqw, 30px); }
 .adv-slot .adv-mini-stars .adv-star.off path { fill: rgba(255,243,226,.25); stroke: none; }
-.adv-slot > svg { width: 20px; height: 20px; opacity: .55; }
+.adv-slot > svg { width: clamp(20px, 18cqw, 40px); height: clamp(20px, 18cqw, 40px); opacity: .55; }
 .adv-slot.now { background: rgba(0,0,0,.28); outline: 3px dashed var(--primary); outline-offset: -3px; animation: adv-glow 1.6s ease-in-out infinite; }
 @keyframes adv-glow { 50% { outline-color: rgba(255,255,255,.25); } }
-.adv-slot-big { font: 800 30px/1 var(--font-display); }
-.adv-slot .adv-tag { font-size: 9px; letter-spacing: .06em; }
+.adv-slot-big { font: 800 clamp(30px, 26cqw, 56px)/1 var(--font-display); }
+.adv-slot .adv-tag { font-size: clamp(9px, 7cqw, 14px); letter-spacing: .06em; }
 .adv-slot .adv-tag:not(.now) { color: rgba(255,243,226,.8); }
 .adv-slot.boss { background: linear-gradient(#C99A2E, #8B5A2B); }
-.adv-slot-crown { width: 28px; height: 28px; }
+.adv-slot-crown { width: clamp(28px, 22cqw, 50px); height: clamp(28px, 22cqw, 50px); }
 .adv-slot-crown svg { width: 100%; height: 100%; display: block; }
 .adv-slot.boss.done .adv-slot-crown { position: absolute; top: -12px; right: -6px; transform: rotate(18deg); }
 @keyframes adv-bob { 50% { transform: translateY(-4px); } }
@@ -1177,11 +1190,11 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <div class="field" id="categoriesField">
         <span class="label" data-i18n="categories_label">Categorías (tocá las que quieras agregar)</span>
         <div class="pack-row">
-          <button type="button" class="pack-btn" onclick="loadPack('clasico')" data-i18n="pack_clasico">Clásico</button>
-          <button type="button" class="pack-btn" onclick="loadPack('argento')" data-i18n="pack_argento">Cultura argentina</button>
-          <button type="button" class="pack-btn" onclick="loadPack('peru')" data-i18n="pack_peru">Cultura peruana</button>
-          <button type="button" class="pack-btn" onclick="loadPack('mexico')" data-i18n="pack_mexico">Cultura mexicana</button>
-          <button type="button" class="pack-btn" onclick="loadPack('random')" data-i18n="pack_random">Random</button>
+          <button type="button" class="pack-btn" data-pack="clasico" onclick="loadPack('clasico')" data-i18n="pack_clasico">Clásico</button>
+          <button type="button" class="pack-btn" data-pack="argento" onclick="loadPack('argento')" data-i18n="pack_argento">Cultura argentina</button>
+          <button type="button" class="pack-btn" data-pack="peru" onclick="loadPack('peru')" data-i18n="pack_peru">Cultura peruana</button>
+          <button type="button" class="pack-btn" data-pack="mexico" onclick="loadPack('mexico')" data-i18n="pack_mexico">Cultura mexicana</button>
+          <button type="button" class="pack-btn" data-pack="random" onclick="loadPack('random')" data-i18n="pack_random">Random</button>
         </div>
         <p class="online-note" id="randomCategoriesNote" style="display:none;" data-i18n="random_categories_note">Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!</p>
         <div id="categoryEditor">
@@ -2105,6 +2118,7 @@ const I18N = {
     mascot_adv_fail: ["Casi... ¡otra vez!", "Uy, por poquito.", "La próxima sale."],
     mascot_adv_nolives: ["Me quedé sin energía... volvé en un rato.", "Zzz... las vidas se recargan solas."],
     pack_random: "Random",
+    clear_categories_btn: "Borrar todas",
     random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
     random_category_chip: "Random",
     mystery_category_label: "Sorpresa",
@@ -2543,6 +2557,7 @@ const I18N = {
     mascot_adv_fail: ["So close... try again!", "Oops, almost.", "You'll get it next time."],
     mascot_adv_nolives: ["I'm out of energy... come back in a bit.", "Zzz... lives refill on their own."],
     pack_random: "Random",
+    clear_categories_btn: "Clear all",
     random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
     random_category_chip: "Random",
     mystery_category_label: "Surprise",
@@ -2981,6 +2996,7 @@ const I18N = {
     mascot_adv_fail: ["Quase... de novo!", "Ops, foi por pouco.", "Na próxima sai."],
     mascot_adv_nolives: ["Fiquei sem energia... volte daqui a pouco.", "Zzz... as vidas recarregam sozinhas."],
     pack_random: "Random",
+    clear_categories_btn: "Limpar todas",
     random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
     random_category_chip: "Random",
     mystery_category_label: "Surpresa",
@@ -3659,6 +3675,8 @@ document.addEventListener("click", function (e) {
 });
 
 function loadPack(name) {
+  // Tocar de nuevo el paquete que ya está elegido lo saca (deja la lista vacía).
+  if (activePackName() === name) { clearCategories(); return; }
   if (name === "random") {
     state.categoriesMode = "random";
     // Solo para mostrar algo en la vista previa — las categorías reales de
@@ -3774,7 +3792,7 @@ function applyPackLinkFromUrl() {
   if (!pack || !Object.prototype.hasOwnProperty.call(CATEGORY_PACKS, pack) || params.has("room")) return;
   history.replaceState(null, "", location.pathname);
   state.mode = "create";
-  loadPack(pack);
+  if (activePackName() !== pack) loadPack(pack);
 }
 
 // /jugar?desafio (desde la página /desafio-del-dia): abre el desafío del día.
@@ -3856,6 +3874,16 @@ function renderCatChips() {
     span.innerHTML = `${escapeHtml(catLabel(cat))}${price} <button aria-label="${escapeHtml(t('remove_category_aria', { cat: catLabel(cat) }))}" onclick="removeCategory('${escapeForJsAttr(cat)}')">×</button>`;
     row.appendChild(span);
   });
+  if (state.categories.length >= 2) {
+    const clearBtn = document.createElement("button");
+    clearBtn.type = "button";
+    clearBtn.className = "cat-clear-btn";
+    clearBtn.textContent = "× " + t("clear_categories_btn");
+    clearBtn.onclick = clearCategories;
+    row.appendChild(clearBtn);
+  }
+  const activePack = activePackName();
+  document.querySelectorAll(".pack-btn[data-pack]").forEach(b => b.classList.toggle("selected", b.dataset.pack === activePack));
   renderCategoryPicker();
   checkCanPlay();
   const hint = document.getElementById("customCatHint");
@@ -3866,6 +3894,20 @@ function renderCatChips() {
   const note = document.getElementById("randomCategoriesNote");
   if (editor) editor.style.display = isRandomPack ? "none" : "block";
   if (note) note.style.display = isRandomPack ? "block" : "none";
+}
+
+// Qué paquete está cargado en la lista (para pintarlo como elegido). Sigue pintado si se agregan categorías
+// de más; deja de estarlo si se saca alguna del paquete.
+function activePackName() {
+  if (state.categoriesMode === "random") return "random";
+  const cats = state.categories;
+  return Object.keys(CATEGORY_PACKS).find(k => CATEGORY_PACKS[k].length > 0 && CATEGORY_PACKS[k].every(c => cats.includes(c))) || null;
+}
+
+function clearCategories() {
+  state.categoriesMode = "fixed";
+  state.categories = [];
+  renderCatChips();
 }
 
 function removeCategory(cat) {
