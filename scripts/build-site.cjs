@@ -363,14 +363,15 @@ function head(page) {
     '<script src="/fruits.js" defer></script>',
   );
   if (page.scripts) for (const s of page.scripts) lines.push(`<script src="${s}" defer></script>`);
-  // Orden: analytics.js fija el consentimiento por defecto (Consent Mode), cookie-consent.js aplica
-  // la elección guardada o muestra el banner fuera de Europa, y AdSense carga último y más tarde.
-  // AdSense carga unos segundos más tarde (ads-loader.js); la meta mantiene verificada la cuenta.
+  // analytics.js fija el consentimiento por defecto (Consent Mode) y cookie-consent.js aplica la
+  // elección guardada o muestra el banner fuera de Europa. El código de AdSense va escrito directo
+  // en el <head>, como lo pide Google, para que su revisión lo encuentre en todas las páginas.
+  // (Una vez aprobada la cuenta se puede volver a la carga demorada con /ads-loader.js.)
   lines.push(
     '<meta name="google-adsense-account" content="ca-pub-9897296561814312" />',
     '<script src="/analytics.js" defer></script>',
     '<script src="/cookie-consent.js" defer></script>',
-    '<script src="/ads-loader.js" defer></script>',
+    '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9897296561814312" crossorigin="anonymous"></script>',
   );
   if (page.jsonld) for (const block of [].concat(page.jsonld)) lines.push(jsonLd(block));
   lines.push("</head>");
