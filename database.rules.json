@@ -366,6 +366,15 @@
           ".validate": "newData.isString() && newData.val().length <= 12"
         }
       }
+    },
+    "referrals": {
+      "$inviter": {
+        ".read": "auth != null && auth.uid === $inviter",
+        "$invitee": {
+          ".write": "auth != null && auth.uid === $invitee && auth.token.email != null && $invitee !== $inviter && !data.exists() && !root.child('users').child($invitee).exists()",
+          ".validate": "newData.isString() && root.child('friendCodes').child(newData.val()).val() === $inviter"
+        }
+      }
     }
   }
 }
