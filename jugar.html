@@ -2429,6 +2429,7 @@ const I18N = {
     shop_owned: "Comprado ✓",
     shop_try: "Probar",
     shop_listen: "Escuchar",
+    sound_muted_hint: "Tenés el sonido del juego apagado: tocá el parlante de arriba para prenderlo",
     shop_hint_title: "Pista",
     shop_hint_desc: "Te muestra una palabra posible para una categoría. Tenés {n}.",
     shop_reroll_title: "Cambiar letra",
@@ -2993,6 +2994,7 @@ const I18N = {
     shop_owned: "Owned ✓",
     shop_try: "Try",
     shop_listen: "Listen",
+    sound_muted_hint: "The game sound is off: tap the speaker at the top to turn it on",
     shop_hint_title: "Hint",
     shop_hint_desc: "Shows you a possible word for a category. You have {n}.",
     shop_reroll_title: "Change letter",
@@ -3557,6 +3559,7 @@ const I18N = {
     shop_owned: "Comprado ✓",
     shop_try: "Testar",
     shop_listen: "Ouvir",
+    sound_muted_hint: "O som do jogo está desligado: toque no alto-falante lá em cima para ligar",
     shop_hint_title: "Dica",
     shop_hint_desc: "Mostra uma palavra possível para uma categoria. Você tem {n}.",
     shop_reroll_title: "Trocar letra",
@@ -4156,6 +4159,8 @@ function uid() {
 }
 
 function getAudioCtx() {
+  // En iPhone, sin esto Safari calla todos los sonidos si el celular está en modo silencio.
+  try { if (navigator.audioSession && navigator.audioSession.type !== "playback") navigator.audioSession.type = "playback"; } catch (e) { /* no soportado */ }
   if (!state.audioCtx) {
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return null;
@@ -4169,6 +4174,12 @@ function beep({ freq = 440, duration = 0.12, type = "sine", vol = 0.18, delay = 
   if (state.muted) return;
   const ctx = getAudioCtx();
   if (!ctx) return;
+  // Si el audio todavía se está habilitando (primer toque), se espera a que arranque:
+  // si no, el navegador descarta el sonido.
+  if (ctx.state !== "running") {
+    ctx.resume().then(() => { if (ctx.state === "running") beep({ freq, duration, type, vol, delay }); }).catch(() => {});
+    return;
+  }
   try {
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
@@ -8291,7 +8302,7 @@ function renderShopExtras(w) {
     BASTA_SOUNDS.map(x => `<div class="shop-item">
       <span class="shop-art fx-preview">${SPEAKER_ON_SVG}</span>
       <strong>${escapeHtml(t("snd_" + x.id))}</strong>
-      <button type="button" class="owned try-btn" onclick="playBastaSound('${x.id}')">${escapeHtml(t("shop_listen"))}</button>
+      <button type="button" class="owned try-btn" onclick="previewBastaSound('${x.id}')">${escapeHtml(t("shop_listen"))}</button>
       ${ownBtn("snd:" + x.id, x.price, eq.snd === x.id, `buyExtra('snd','${x.id}')`, `toggleExtra('snd','${x.id}')`)}</div>`).join("");
   document.getElementById("shopThemes").innerHTML = PRESETS.filter(p => p.price).map(p => {
     const owned = presetOwned(p);
@@ -9096,6 +9107,12 @@ function playBastaSound(id = myBastaSound()) {
   } else {
     playDing();
   }
+}
+
+// Botón "Escuchar" de la tienda: si el sonido del juego está apagado, avisa en vez de no hacer nada.
+function previewBastaSound(id) {
+  if (state.muted) { seedToast(t("sound_muted_hint")); return; }
+  playBastaSound(id);
 }
 
 const FX_COLORS = ["#FF5E5B", "#FFA62B", "#FFD23F", "#B6EF3C", "#35C8F2", "#9C6BFF", "#FF8583"];
