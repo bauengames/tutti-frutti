@@ -218,7 +218,22 @@ body:has(#screen-lobby.active) .brand-mini { visibility: hidden; }
 
 /* ---------- Pantallas ---------- */
 .screen { display: none; width: 100%; flex-direction: column; align-items: center; }
-.screen.active { display: flex; }
+.screen.active { display: flex; animation: screen-in .28s cubic-bezier(.2, .8, .2, 1) both; }
+/* Cada pantalla del juego entra con un fundido corto, así los cambios no son de golpe. */
+@keyframes screen-in { from { opacity: 0; transform: translateY(10px); } }
+/* ---------- Transición suave al pasar de una página a otra ----------
+   Los navegadores que la soportan (Chrome, Edge, Safari 18.2+) funden una página con la
+   siguiente; los demás navegan como siempre. Las manchas del fondo no se animan. */
+@view-transition { navigation: auto; }
+.bg-blobs { view-transition-name: fondo; }
+::view-transition-old(root) { animation: vt-salida .16s ease-in both; }
+::view-transition-new(root) { animation: vt-entrada .3s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes vt-salida { to { opacity: 0; } }
+@keyframes vt-entrada { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
+
 .wrap { width: 100%; max-width: 640px; }
 
 /* ---------- Botones ---------- */

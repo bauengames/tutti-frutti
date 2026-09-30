@@ -411,6 +411,19 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
 @media (min-width: 900px) {
   .hero .wordmark { font-size: clamp(72px, 8vw, 128px); }
 }
+
+/* ---------- Transición suave al pasar de una página a otra ----------
+   Los navegadores que la soportan (Chrome, Edge, Safari 18.2+) funden una página con la
+   siguiente; los demás navegan como siempre. Las manchas del fondo no se animan. */
+@view-transition { navigation: auto; }
+.bg-blobs { view-transition-name: fondo; }
+::view-transition-old(root) { animation: vt-salida .16s ease-in both; }
+::view-transition-new(root) { animation: vt-entrada .3s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes vt-salida { to { opacity: 0; } }
+@keyframes vt-entrada { from { opacity: 0; transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}
 </style>
 <script>
 (function () {
