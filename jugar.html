@@ -12,6 +12,28 @@
      Si la URL trae código de sala (?room=...), además nofollow. -->
 <meta name="robots" content="noindex, follow" />
 <script>if (/[?&]room=/.test(location.search)) document.querySelector('meta[name="robots"]').setAttribute("content", "noindex, nofollow");</script>
+<!-- Aplica el tema elegido antes de dibujar nada (igual que en las demás páginas): así al entrar
+     no se ve primero el tema claro de fábrica y después un fundido al tuyo. -->
+<script>
+(function () {
+  var PRESETS = {
+    "pomelo__crema": { theme: "pomelo", bg: "crema" },
+    "cielo__violeta": { theme: "cielo", bg: "violeta" },
+    "uva__violeta": { theme: "uva", bg: "violeta" },
+    "lima__petroleo": { theme: "lima", bg: "petroleo" },
+    "mandarina__lavanda": { theme: "mandarina", bg: "lavanda" },
+  };
+  var root = document.documentElement;
+  var preset;
+  try { preset = PRESETS[localStorage.getItem("tuttifruti_preset")]; } catch (e) { preset = null; }
+  preset = preset || PRESETS.pomelo__crema;
+  root.setAttribute("data-theme", preset.theme);
+  root.setAttribute("data-bg", preset.bg);
+  if (preset.bg === "crema" || preset.bg === "lavanda") root.setAttribute("data-light", "");
+  // Mientras arranca el juego no se animan los colores (se saca al terminar de cargar).
+  root.setAttribute("data-booting", "");
+})();
+</script>
 <!-- Preview al compartir el link de una sala (WhatsApp, Telegram, redes). -->
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="tutti.frutti" />
@@ -217,10 +239,19 @@ body:has(#screen-lobby.active) .brand-mini { visibility: hidden; }
 .theme-swatch::after { content: ''; position: absolute; right: 0; bottom: 0; width: 50%; height: 50%; background: var(--sw2); }
 
 /* ---------- Pantallas ---------- */
+html[data-booting] *, html[data-booting] *::before, html[data-booting] *::after { transition: none !important; }
 .screen { display: none; width: 100%; flex-direction: column; align-items: center; }
 .screen.active { display: flex; animation: screen-in .28s cubic-bezier(.2, .8, .2, 1) both; }
 /* Cada pantalla del juego entra con un fundido corto, así los cambios no son de golpe. */
 @keyframes screen-in { from { opacity: 0; transform: translateY(10px); } }
+/* Menús y partes de una pantalla que se muestran u ocultan (pestañas, campos del lobby,
+   tablero de la ronda): entran con un fundido corto en vez de aparecer de golpe. */
+@keyframes menu-in { from { opacity: 0; transform: translateY(-6px) scale(.97); } }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes rise-in { from { opacity: 0; transform: translateY(8px); } }
+.lang-menu.open, .theme-menu.open { animation: menu-in .16s cubic-bezier(.2, .8, .2, 1) both; transform-origin: top right; }
+.profile-panel, #roomFieldCreate, #roomFieldJoin, #hostConfigFields, .online-note, #catGrid, #bastaWrap { animation: rise-in .26s cubic-bezier(.2, .8, .2, 1) both; }
+#timerWrap { animation: fade-in .3s ease both; }
 /* ---------- Transición suave al pasar de una página a otra ----------
    Los navegadores que la soportan (Chrome, Edge, Safari 18.2+) funden una página con la
    siguiente; los demás navegan como siempre. Las manchas del fondo no se animan. */
@@ -756,12 +787,33 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
 .global-board .board-me { text-align: center; margin: 10px 0 6px; }
 
 /* ---------- Mi fruta: pestañas ---------- */
-.profile-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 18px 0 8px; padding: 4px; border-radius: 14px; background: var(--crema-08); }
-.profile-tab { position: relative; border: 0; border-radius: 10px; padding: 10px 4px; background: transparent; color: var(--text-muted); font: 700 13px var(--font-body); cursor: pointer; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Se desliza de costado si no entran todas (en celulares chicos). */
+.profile-tabs { position: relative; display: flex; gap: 6px; margin: 18px 0 8px; padding: 4px; border-radius: 14px; background: var(--crema-08); overflow-x: auto; scrollbar-width: none; }
+.profile-tabs::-webkit-scrollbar { display: none; }
+.profile-tab { position: relative; flex: 1 0 auto; border: 0; border-radius: 10px; padding: 10px 12px; background: transparent; color: var(--text-muted); font: 700 13px var(--font-body); cursor: pointer; white-space: nowrap; }
 .profile-tab.active { background: var(--primary); color: var(--tinta); }
 .tab-dot { display: none; width: 8px; height: 8px; border-radius: 50%; background: var(--pomelo); margin-left: 4px; vertical-align: 2px; }
 .profile-tab.active .tab-dot { background: var(--tinta); }
 @media (max-width: 380px) { .profile-tab { font-size: 12px; } }
+
+/* ---------- Amigos ---------- */
+.friend-code-card { text-align: center; padding: 18px; border-radius: var(--radius-card); background: var(--surface); margin: 8px 0 14px; }
+.friend-code { display: block; font: 800 30px/1.2 var(--font-mono); letter-spacing: .12em; color: var(--primary); margin: 6px 0 12px; }
+html[data-light] .friend-code { color: var(--tinta); }
+.friend-code-actions { display: flex; gap: 8px; }
+.friend-code-actions .btn { flex: 1; min-width: 0; padding: 12px; }
+.friend-add { display: flex; gap: 8px; margin-bottom: 18px; }
+.friend-add input { flex: 1; min-width: 0; padding: 12px 14px; border-radius: 10px; border: 2px solid var(--borde); background: var(--surface); color: var(--text); font: 700 15px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; outline: none; }
+.friend-add input:focus { border-color: var(--primary); }
+.friend-add button { padding: 0 18px; border-radius: 10px; border: 0; background: var(--primary); color: var(--tinta); font: 700 14px var(--font-body); cursor: pointer; }
+.friend-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 14px; margin-bottom: 8px; border: 0; border-radius: var(--radius-card); background: var(--surface); color: var(--text); text-align: left; cursor: pointer; font-family: var(--font-body); }
+.friend-row:hover { filter: brightness(1.1); }
+.friend-row .friend-avatar { width: 48px; height: 48px; flex-shrink: 0; border-radius: 50%; background: #FFF3E2; padding: 4px; }
+.friend-row .friend-avatar svg { width: 100%; height: 100%; display: block; }
+.friend-row strong { display: block; font-size: 16px; }
+.friend-row small { color: var(--text-muted); font-size: 13px; }
+.friend-row .friend-arrow { margin-left: auto; color: var(--text-muted); }
+.danger-link { color: var(--pomelo) !important; }
 
 /* ---------- Misiones del día ---------- */
 .mission { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: var(--radius-card); background: var(--surface); margin-bottom: 10px; border: 2px solid transparent; }
@@ -1425,6 +1477,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
         <button type="button" role="tab" class="profile-tab" data-tab="missions" onclick="setProfileTab('missions')"><span data-i18n="profile_tab_missions">Misiones</span><span class="tab-dot" id="missionsTabDot"></span></button>
         <button type="button" role="tab" class="profile-tab" data-tab="achievements" onclick="setProfileTab('achievements')"><span data-i18n="profile_tab_achievements">Logros</span><span class="tab-dot" id="achTabDot"></span></button>
         <button type="button" role="tab" class="profile-tab" data-tab="stats" onclick="setProfileTab('stats')" data-i18n="profile_tab_stats">Estadísticas</button>
+        <button type="button" role="tab" class="profile-tab" data-tab="friends" onclick="setProfileTab('friends')" data-i18n="profile_tab_friends">Amigos</button>
       </div>
 
       <div class="profile-panel" data-panel="fruit">
@@ -1447,6 +1500,10 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
         <div class="achievements-grid" id="achievementsGrid"></div>
       </div>
 
+      <div class="profile-panel" data-panel="friends">
+        <div id="friendsPanel"></div>
+      </div>
+
       <div class="profile-panel" data-panel="stats">
         <p class="hint" data-i18n="stats_lead">Guardadas en este dispositivo — nadie más las ve.</p>
         <div class="stats-grid">
@@ -1464,6 +1521,25 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       </div>
       <div class="actions-row">
         <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PERFIL DE UN AMIGO -->
+<div class="screen" id="screen-friend">
+  <div class="results">
+    <div class="results-card">
+      <div class="hero-band profile-hero">
+        <div class="profile-mascot" id="friendMascot"></div>
+        <h2 id="friendName"></h2>
+        <p id="friendSub"></p>
+      </div>
+      <div class="stats-grid" id="friendStats"></div>
+      <button type="button" class="btn btn-primary btn-block" onclick="openDuelCreate()" data-i18n="friend_duel_btn">Desafiar a un duelo</button>
+      <div class="actions-row">
+        <button class="secondary" onclick="openProfile('friends')" data-i18n="friend_back_btn">Volver a mis amigos</button>
+        <button class="secondary danger-link" id="friendRemoveBtn" data-i18n="friend_remove_btn">Eliminar amigo</button>
       </div>
     </div>
   </div>
@@ -2248,6 +2324,29 @@ const I18N = {
     ach_adv_stars_45_d: "Juntaste 45 estrellas en la Aventura.",
     ach_missions_10_t: "Cumplidor",
     ach_missions_10_d: "Cobraste 10 misiones del día.",
+    profile_tab_friends: "Amigos",
+    friends_heading: "Tus amigos",
+    friends_login_needed: "Para agregar amigos y ver sus frutas y estadísticas, iniciá sesión con Google. Es gratis y tu progreso queda guardado.",
+    friends_login_to_add: "Te invitaron a ser amigos. Iniciá sesión con Google y se agrega solo.",
+    friends_your_code: "Tu código de amigo",
+    friends_share_btn: "Invitar",
+    friends_copy_btn: "Copiar",
+    friends_code_placeholder: "Código de un amigo",
+    friends_empty: "Todavía no agregaste amigos. Mandales tu invitación o escribí su código.",
+    friends_error: "No pudimos cargar tus amigos. Probá de nuevo en un rato.",
+    friends_wins: "{n} victorias",
+    friends_share_text: "¡Agregame como amigo en tutti.frutti! Mi código es {code}",
+    friends_link_copied: "Link de invitación copiado",
+    friends_bad_code: "Ese código no parece válido. Tiene que ser algo como KIWI-7K2Q.",
+    friends_code_not_found: "No encontramos a nadie con ese código.",
+    friends_own_code: "¡Ese es tu propio código!",
+    friends_added: "¡{name} ya es tu amigo!",
+    friends_remove_confirm: "¿Eliminar a {name} de tus amigos?",
+    friend_duel_btn: "Desafiar a un duelo",
+    friend_back_btn: "Volver a mis amigos",
+    friend_remove_btn: "Eliminar amigo",
+    friend_stat_stars: "Estrellas en la Aventura",
+    friend_stat_ach: "Logros",
     clear_categories_btn: "Borrar todas",
     random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
     random_category_chip: "Random",
@@ -2732,6 +2831,29 @@ const I18N = {
     ach_adv_stars_45_d: "You collected 45 stars in the Adventure.",
     ach_missions_10_t: "Reliable",
     ach_missions_10_d: "You claimed 10 daily missions.",
+    profile_tab_friends: "Friends",
+    friends_heading: "Your friends",
+    friends_login_needed: "To add friends and see their fruits and stats, sign in with Google. It's free and your progress stays saved.",
+    friends_login_to_add: "You were invited to be friends. Sign in with Google and they'll be added automatically.",
+    friends_your_code: "Your friend code",
+    friends_share_btn: "Invite",
+    friends_copy_btn: "Copy",
+    friends_code_placeholder: "A friend's code",
+    friends_empty: "You haven't added friends yet. Send them your invite or type their code.",
+    friends_error: "We couldn't load your friends. Try again in a bit.",
+    friends_wins: "{n} wins",
+    friends_share_text: "Add me as a friend on tutti.frutti! My code is {code}",
+    friends_link_copied: "Invite link copied",
+    friends_bad_code: "That code doesn't look right. It should look like KIWI-7K2Q.",
+    friends_code_not_found: "We couldn't find anyone with that code.",
+    friends_own_code: "That's your own code!",
+    friends_added: "{name} is now your friend!",
+    friends_remove_confirm: "Remove {name} from your friends?",
+    friend_duel_btn: "Challenge to a duel",
+    friend_back_btn: "Back to my friends",
+    friend_remove_btn: "Remove friend",
+    friend_stat_stars: "Adventure stars",
+    friend_stat_ach: "Badges",
     clear_categories_btn: "Clear all",
     random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
     random_category_chip: "Random",
@@ -3216,6 +3338,29 @@ const I18N = {
     ach_adv_stars_45_d: "Você juntou 45 estrelas na Aventura.",
     ach_missions_10_t: "Cumpridor",
     ach_missions_10_d: "Você resgatou 10 missões do dia.",
+    profile_tab_friends: "Amigos",
+    friends_heading: "Seus amigos",
+    friends_login_needed: "Para adicionar amigos e ver as frutas e estatísticas deles, entre com o Google. É grátis e seu progresso fica salvo.",
+    friends_login_to_add: "Você foi convidado para ser amigo. Entre com o Google e ele é adicionado automaticamente.",
+    friends_your_code: "Seu código de amigo",
+    friends_share_btn: "Convidar",
+    friends_copy_btn: "Copiar",
+    friends_code_placeholder: "Código de um amigo",
+    friends_empty: "Você ainda não adicionou amigos. Mande seu convite ou digite o código deles.",
+    friends_error: "Não conseguimos carregar seus amigos. Tente de novo daqui a pouco.",
+    friends_wins: "{n} vitórias",
+    friends_share_text: "Me adicione como amigo no tutti.frutti! Meu código é {code}",
+    friends_link_copied: "Link de convite copiado",
+    friends_bad_code: "Esse código não parece válido. Deve ser algo como KIWI-7K2Q.",
+    friends_code_not_found: "Não encontramos ninguém com esse código.",
+    friends_own_code: "Esse é o seu próprio código!",
+    friends_added: "{name} agora é seu amigo!",
+    friends_remove_confirm: "Remover {name} dos seus amigos?",
+    friend_duel_btn: "Desafiar para um duelo",
+    friend_back_btn: "Voltar para meus amigos",
+    friend_remove_btn: "Remover amigo",
+    friend_stat_stars: "Estrelas na Aventura",
+    friend_stat_ach: "Conquistas",
     clear_categories_btn: "Limpar todas",
     random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
     random_category_chip: "Random",
@@ -6390,6 +6535,231 @@ function claimAchievement(id) {
   renderProfileButton();
 }
 
+// ---------- Amigos ----------
+// Solo para quienes iniciaron sesión con Google. Cada uno tiene un código (friendCodes/{código} -> uid)
+// y un perfil público en profiles/{uid} con su fruta, accesorios y algunas estadísticas (nunca el email).
+// Agregar es instantáneo y de a dos: con el código se escribe friends/{yo}/{amigo} y friends/{amigo}/{yo}.
+// Las reglas de Firebase solo dejan leer un perfil a sus amigos, y solo dejan anotarse en la lista de
+// otro a quien tiene su código.
+const FRIEND_CODE_WORDS = ["KIWI", "MANGO", "UVA", "PERA", "LIMA", "COCO", "MORA", "PAPAYA", "DURAZNO", "CEREZA"];
+const FRIEND_CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const PENDING_FRIEND_KEY = "tuttifruti_pending_friend";
+const MAX_FRIENDS = 100;
+
+function newFriendCode() {
+  const bytes = new Uint8Array(5);
+  crypto.getRandomValues(bytes);
+  const word = FRIEND_CODE_WORDS[bytes[0] % FRIEND_CODE_WORDS.length];
+  return word + Array.from(bytes.slice(1), b => FRIEND_CODE_CHARS[b % FRIEND_CODE_CHARS.length]).join("");
+}
+function normalizeFriendCode(raw) { return String(raw || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 12); }
+// "KIWI7K2Q" -> "KIWI-7K2Q" (el guion es solo para leerlo mejor).
+function formatFriendCode(code) { return code ? code.slice(0, -4) + "-" + code.slice(-4) : ""; }
+function friendInviteUrl(code) { return "https://tuttipuntofrutti.com/jugar?amigo=" + code; }
+
+async function ensureFriendCode() {
+  if (state.friendCode) return state.friendCode;
+  const F = window.FB;
+  const snap = await F.get(F.ref(F.db, `profiles/${F.uid}/code`));
+  if (snap.exists()) { state.friendCode = snap.val(); return state.friendCode; }
+  for (let i = 0; i < 5; i++) {
+    const code = newFriendCode();
+    try {
+      // Las reglas solo dejan crear un código que no existe: si justo está usado, se prueba otro.
+      await F.set(F.ref(F.db, `friendCodes/${code}`), F.uid);
+      state.friendCode = code;
+      return code;
+    } catch (e) { /* código ocupado */ }
+  }
+  throw new Error("No se pudo crear el código de amigo");
+}
+
+function cleanAccessories(acc) {
+  const out = {};
+  ACC_SLOTS.forEach(slot => {
+    const id = acc && acc[slot];
+    if (typeof id === "string" && ACCESSORY_ITEMS.some(a => a.id === id && a.slot === slot)) out[slot] = id;
+  });
+  return out;
+}
+
+async function publishProfile() {
+  if (!isGoogleUser()) return;
+  const code = await ensureFriendCode();
+  const p = getProgress();
+  const hist = getStreakHistory();
+  const name = (document.getElementById("playerName").value.trim() || localStorage.getItem("tuttifruti_playerName") || t("profile_title")).slice(0, 30);
+  const F = window.FB;
+  await F.set(F.ref(F.db, `profiles/${F.uid}`), {
+    name, code, avatar: getMyAvatar(), acc: myEquipped(),
+    stats: {
+      stars: advTotalStars(advLoad()), ach: (p.unlocked || []).length, wins: p.wins || 0,
+      best: hist.length ? (Number(hist[0].score) || 0) : 0, days: currentDayStreak(p), games: getStats().gamesPlayed,
+    },
+    updatedAt: F.serverTimestamp(),
+  });
+}
+let publishProfileTimer = null;
+function publishProfileSoon() {
+  clearTimeout(publishProfileTimer);
+  publishProfileTimer = setTimeout(() => publishProfile().catch(e => console.error("No se pudo publicar el perfil", e)), 4000);
+}
+
+async function loadFriends() {
+  const F = window.FB;
+  const snap = await F.get(F.ref(F.db, `friends/${F.uid}`));
+  const ids = snap.exists() ? Object.keys(snap.val()).slice(0, MAX_FRIENDS) : [];
+  const profiles = await Promise.all(ids.map(id => F.get(F.ref(F.db, `profiles/${id}`))
+    .then(ps => (ps.exists() ? { uid: id, ...ps.val() } : null))
+    .catch(() => null))); // si esa persona te sacó de sus amigos, su perfil ya no se puede leer
+  state.friends = profiles.filter(Boolean).sort((a, b) => String(a.name).localeCompare(String(b.name)));
+  return state.friends;
+}
+
+function friendMascot(fp, mood = "happy") {
+  return mascotSvg(mood, avatarOf(fp), cleanAccessories(fp.acc));
+}
+
+async function renderFriendsPanel() {
+  const box = document.getElementById("friendsPanel");
+  if (!box) return;
+  if (!isGoogleUser()) {
+    const pending = sessionStorage.getItem(PENDING_FRIEND_KEY);
+    box.innerHTML = `<h2 class="section-title">${escapeHtml(t("friends_heading"))}</h2>
+      <p class="hint">${escapeHtml(t(pending ? "friends_login_to_add" : "friends_login_needed"))}</p>`; // el botón de Google ya está arriba, en la caja de la cuenta
+    return;
+  }
+  box.innerHTML = `<p class="hint">${escapeHtml(t("board_loading"))}</p>`;
+  try {
+    // Primero se publica el perfil: sin él, nadie puede anotarse con tu código.
+    await publishProfile();
+    const code = state.friendCode;
+    const friends = await loadFriends();
+    box.innerHTML = `
+      <div class="friend-code-card">
+        <span class="label">${escapeHtml(t("friends_your_code"))}</span>
+        <span class="friend-code">${escapeHtml(formatFriendCode(code))}</span>
+        <div class="friend-code-actions">
+          <button type="button" class="btn btn-primary" onclick="shareFriendInvite()">${escapeHtml(t("friends_share_btn"))}</button>
+          <button type="button" class="btn btn-secondary" id="copyFriendCodeBtn" onclick="copyFriendCode()">${escapeHtml(t("friends_copy_btn"))}</button>
+        </div>
+      </div>
+      <div class="friend-add">
+        <input type="text" id="friendCodeInput" maxlength="14" placeholder="${escapeHtml(t("friends_code_placeholder"))}" onkeydown="if(event.key==='Enter') addFriendFromInput()" autocomplete="off" autocapitalize="characters" />
+        <button type="button" onclick="addFriendFromInput()">${escapeHtml(t("add_btn"))}</button>
+      </div>
+      <h2 class="section-title">${escapeHtml(t("friends_heading"))} (${friends.length})</h2>
+      ${friends.length ? friends.map(fp => `
+        <button type="button" class="friend-row" onclick="openFriend('${escapeForJsAttr(fp.uid)}')">
+          <span class="friend-avatar">${friendMascot(fp)}</span>
+          <span><strong>${escapeHtml(fp.name || "?")}</strong><small>${iconSvgInline("star")} ${Number(fp.stats && fp.stats.stars) || 0} · ${escapeHtml(t("friends_wins", { n: Number(fp.stats && fp.stats.wins) || 0 }))}</small></span>
+          <span class="friend-arrow">›</span>
+        </button>`).join("") : `<p class="hint">${escapeHtml(t("friends_empty"))}</p>`}`;
+  } catch (e) {
+    console.error("No se pudieron cargar los amigos", e);
+    box.innerHTML = `<p class="hint">${escapeHtml(t("friends_error"))}</p>`;
+  }
+}
+function iconSvgInline(name) { return `<span class="inline-icon">${iconSvg(name)}</span>`; }
+
+function copyFriendCode() {
+  if (!state.friendCode || !navigator.clipboard) return;
+  navigator.clipboard.writeText(formatFriendCode(state.friendCode)).then(() => {
+    const btn = document.getElementById("copyFriendCodeBtn");
+    if (btn) { btn.textContent = t("copied_btn"); setTimeout(() => { btn.textContent = t("friends_copy_btn"); }, 1500); }
+  }).catch(() => {});
+}
+
+function shareFriendInvite() {
+  if (!state.friendCode) return;
+  const url = friendInviteUrl(state.friendCode);
+  const text = t("friends_share_text", { code: formatFriendCode(state.friendCode) });
+  track("share", { type: "friend" });
+  if (navigator.share) { navigator.share({ title: "tutti.frutti", text, url }).catch(() => {}); return; }
+  if (navigator.clipboard) navigator.clipboard.writeText(text + " " + url).then(() => seedToast(t("friends_link_copied"))).catch(() => {});
+}
+
+function addFriendFromInput() {
+  const input = document.getElementById("friendCodeInput");
+  if (input) addFriendByCode(input.value);
+}
+
+async function addFriendByCode(raw) {
+  const code = normalizeFriendCode(raw);
+  if (code.length < 6) { alert(t("friends_bad_code")); return; }
+  if (!isGoogleUser()) {
+    try { sessionStorage.setItem(PENDING_FRIEND_KEY, code); } catch (e) { /* storage unavailable */ }
+    openProfile("friends");
+    return;
+  }
+  const F = window.FB;
+  try {
+    const snap = await F.get(F.ref(F.db, `friendCodes/${code}`));
+    if (!snap.exists()) { alert(t("friends_code_not_found")); return; }
+    const fid = snap.val();
+    if (fid === F.uid) { alert(t("friends_own_code")); return; }
+    await publishProfile();
+    // Las dos listas a la vez: en la del otro solo se puede anotar quien tiene su código.
+    await F.update(F.ref(F.db), { [`friends/${F.uid}/${fid}`]: code, [`friends/${fid}/${F.uid}`]: code });
+    track("friend_add");
+    const fsnap = await F.get(F.ref(F.db, `profiles/${fid}`)).catch(() => null);
+    const name = fsnap && fsnap.exists() ? fsnap.val().name : "";
+    seedToast(t("friends_added", { name: name || formatFriendCode(code) }));
+    launchConfetti();
+    state.profileTab = "friends";
+    if (document.getElementById("screen-profile").classList.contains("active")) renderFriendsPanel();
+    else openProfile("friends");
+  } catch (e) {
+    console.error("No se pudo agregar el amigo", e);
+    alert(t("friends_error"));
+  }
+}
+
+function openFriend(fid) {
+  const fp = (state.friends || []).find(f => f.uid === fid);
+  if (!fp) return;
+  const st = fp.stats || {};
+  document.getElementById("friendMascot").innerHTML = friendMascot(fp);
+  document.getElementById("friendName").textContent = fp.name || "?";
+  document.getElementById("friendSub").textContent = fp.code ? formatFriendCode(fp.code) : "";
+  const cell = (v, key) => `<div class="stat-card"><span class="stat-value">${Number(v) || 0}</span><span class="stat-label">${escapeHtml(t(key))}</span></div>`;
+  document.getElementById("friendStats").innerHTML =
+    cell(st.stars, "friend_stat_stars") + cell(st.ach, "friend_stat_ach") + cell(st.wins, "stats_wins") +
+    cell(st.best, "stats_streak_best") + cell(st.days, "stats_day_streak") + cell(st.games, "stats_games");
+  document.getElementById("friendRemoveBtn").onclick = () => removeFriend(fid, fp.name);
+  showScreen("screen-friend");
+  window.scrollTo(0, 0);
+}
+
+async function removeFriend(fid, name) {
+  if (!confirm(t("friends_remove_confirm", { name: name || "?" }))) return;
+  const F = window.FB;
+  try {
+    await F.update(F.ref(F.db), { [`friends/${F.uid}/${fid}`]: null, [`friends/${fid}/${F.uid}`]: null });
+  } catch (e) {
+    // Si el otro ya me había sacado, al menos lo saco de mi lista.
+    await F.remove(F.ref(F.db, `friends/${F.uid}/${fid}`)).catch(() => {});
+  }
+  openProfile("friends");
+}
+
+// /jugar?amigo=CODIGO (el link de invitación): agrega a esa persona apenas haya sesión con Google.
+function applyFriendLinkFromUrl() {
+  const params = new URLSearchParams(location.search);
+  const code = normalizeFriendCode(params.get("amigo"));
+  if (!code) return;
+  history.replaceState(null, "", location.pathname);
+  try { sessionStorage.setItem(PENDING_FRIEND_KEY, code); } catch (e) { /* storage unavailable */ }
+  openProfile("friends");
+}
+function processPendingFriend() {
+  let code = null;
+  try { code = sessionStorage.getItem(PENDING_FRIEND_KEY); } catch (e) { code = null; }
+  if (!code || !isGoogleUser()) return;
+  try { sessionStorage.removeItem(PENDING_FRIEND_KEY); } catch (e) { /* storage unavailable */ }
+  addFriendByCode(code);
+}
+
 // ---------- Misiones del día ----------
 // Tres por día, iguales para todos (salen de la fecha). Cada una da semillas al cobrarla,
 // y completar las tres suma un premio extra. El avance se guarda dentro del progreso.
@@ -7948,6 +8318,7 @@ function isGoogleUser() {
       syncPending.add(key);
       clearTimeout(syncTimer);
       syncTimer = setTimeout(pushPendingSync, 1500);
+      publishProfileSoon();
     }
   };
 })();
@@ -8073,6 +8444,8 @@ async function syncWithAccount() {
   }
   if (Object.keys(updates).length) await window.FB.update(window.FB.ref(window.FB.db, `users/${window.FB.uid}/data`), updates);
   refreshAfterSync();
+  publishProfile().catch(e => console.error("No se pudo publicar el perfil", e));
+  processPendingFriend();
 }
 
 // Vuelve a dibujar todo lo que depende de lo guardado.
@@ -8128,6 +8501,8 @@ async function logoutGoogle() {
   pushPendingSync();
   await window.FB.logout();
   state.playerId = window.FB.uid;
+  state.friendCode = null;
+  state.friends = [];
   renderAccountBoxes();
 }
 
@@ -8245,9 +8620,16 @@ function renderProfileTabs() {
     b.setAttribute("aria-selected", String(on));
   });
   document.querySelectorAll(".profile-panel").forEach(p => { p.style.display = p.dataset.panel === tab ? "block" : "none"; });
+  // Si las pestañas no entran en la pantalla, se desliza la barra hasta la elegida.
+  const bar = document.querySelector(".profile-tabs");
+  const activeBtn = bar && bar.querySelector(".profile-tab.active");
+  requestAnimationFrame(() => {
+    if (activeBtn && bar.scrollWidth > bar.clientWidth) bar.scrollLeft = activeBtn.offsetLeft - (bar.clientWidth - activeBtn.offsetWidth) / 2;
+  });
   if (tab === "missions") renderMissions();
   if (tab === "achievements") renderAchievements();
   if (tab === "stats") renderStatsPanel();
+  if (tab === "friends") renderFriendsPanel();
   const p = getProgress();
   document.getElementById("missionsTabDot").style.display = missionsClaimable(p) ? "inline-block" : "none";
   document.getElementById("achTabDot").style.display = achievementsClaimable(p) ? "inline-block" : "none";
@@ -8807,6 +9189,7 @@ state.timed = loadTimedSetting();
 renderTimedToggle();
 renderMissionsButton();
 applyDailyLinkFromUrl();
+requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.removeAttribute("data-booting")));
 
 // Si la pestaña quedó abierta desde antes de un deploy (muy común en la compu),
 // se recarga sola al volver a ella, siempre que no estés en medio de una
@@ -8837,6 +9220,7 @@ giveWelcomeGift();
 renderAccountBoxes();
 renderProfileButton();
 if (applyProfileLinkFromUrl()) openProfile();
+applyFriendLinkFromUrl();
 (function syncOnLoad() {
   const run = async () => {
     renderAccountBoxes();

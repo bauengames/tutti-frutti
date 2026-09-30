@@ -382,3 +382,11 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
 }
+
+/* ---------- Apariciones suaves: menús y partes que se muestran u ocultan ---------- */
+@keyframes menu-in { from { opacity: 0; transform: translateY(-6px) scale(.97); } }
+@keyframes fade-in { from { opacity: 0; } }
+.lang-menu.open, .theme-menu.open { animation: menu-in .16s cubic-bezier(.2, .8, .2, 1) both; transform-origin: top right; }
+.side-menu-overlay.open { animation: fade-in .2s ease both; }
+.side-menu { transition: transform .28s cubic-bezier(.2, .8, .2, 1); }
+[data-home-mascot] > svg { animation: fade-in .3s ease both; }

@@ -292,6 +292,80 @@
           ".validate": false
         }
       }
+    },
+    "profiles": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('friends').child($uid).child(auth.uid).exists())",
+        ".write": "auth != null && auth.uid === $uid && auth.token.email != null",
+        ".validate": "newData.hasChildren(['name', 'code', 'avatar', 'stats', 'updatedAt']) && root.child('friendCodes').child(newData.child('code').val()).val() === $uid",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
+        },
+        "code": {
+          ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9]{6,12}$/)"
+        },
+        "avatar": {
+          ".validate": "newData.isString() && newData.val().length <= 8"
+        },
+        "acc": {
+          "hat": {
+            ".validate": "newData.isString() && newData.val().length <= 20"
+          },
+          "glasses": {
+            ".validate": "newData.isString() && newData.val().length <= 20"
+          },
+          "neck": {
+            ".validate": "newData.isString() && newData.val().length <= 20"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "stats": {
+          "stars": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000"
+          },
+          "ach": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000"
+          },
+          "wins": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000"
+          },
+          "best": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000"
+          },
+          "days": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000"
+          },
+          "games": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000000"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "updatedAt": {
+          ".validate": "newData.val() === now"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "friendCodes": {
+      "$code": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.token.email != null && !data.exists() && newData.val() === auth.uid && $code.matches(/^[A-Z0-9]{6,12}$/)"
+      }
+    },
+    "friends": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$fid": {
+          ".write": "auth != null && auth.token.email != null && $fid !== $uid && (auth.uid === $uid || (auth.uid === $fid && (!newData.exists() || newData.val() === root.child('profiles').child($uid).child('code').val())))",
+          ".validate": "newData.isString() && newData.val().length <= 12"
+        }
+      }
     }
   }
 }

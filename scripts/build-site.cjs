@@ -20,7 +20,7 @@ const TPL = path.join(__dirname, "templates");
 const STRINGS = require("./strings.cjs");
 
 const SITE = "https://tuttipuntofrutti.com";
-const TODAY = "2026-09-29";
+const TODAY = "2026-09-30";
 const YEAR = "2026";
 const THEME_COLOR = "#14101F";
 const LANGS = ["es", "en", "pt"];
@@ -38,7 +38,7 @@ const I18N_PAGES = {
 };
 
 // Fechas de "Última actualización" de las páginas legales.
-const UPDATED = { privacidad: [2026, 9, 29], terminos: [2026, 9, 22] };
+const UPDATED = { privacidad: [2026, 9, 30], terminos: [2026, 9, 22] };
 
 // Guías de contenido. Plantillas en scripts/templates/guias/<idioma>/<key>.html.
 // Una guía puede existir solo en algunos idiomas: se generan los que tengan URL en "urls".
