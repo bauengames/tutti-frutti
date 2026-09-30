@@ -341,6 +341,50 @@
       '<rect x="28" y="36" width="44" height="8" rx="2" fill="' + C.mandarina + '"/>' +
       '<circle cx="38" cy="40" r="2.5" fill="' + C.pomelo + '"/><circle cx="50" cy="40" r="2.5" fill="' + C.cielo + '"/><circle cx="62" cy="40" r="2.5" fill="' + C.pomelo + '"/>' +
       '<circle cx="30" cy="15" r="3" fill="' + C.amarillo + '"/><circle cx="50" cy="7" r="3" fill="' + C.amarillo + '"/><circle cx="70" cy="15" r="3" fill="' + C.amarillo + '"/>',
+    sombrero:
+      '<ellipse cx="50" cy="40" rx="44" ry="9" fill="' + C.amarillo + '"/>' +
+      '<ellipse cx="50" cy="40" rx="44" ry="9" fill="none" stroke="' + C.amarilloOscuro + '" stroke-width="2"/>' +
+      '<path d="M34 40 C34 20 40 12 50 12 C60 12 66 20 66 40 Z" fill="' + C.amarillo + '"/>' +
+      '<path d="M35 34 L40 29 L45 34 L50 29 L55 34 L60 29 L65 34 L65 39 L35 39 Z" fill="' + C.pomelo + '"/>' +
+      '<path d="M12 42 C30 47 70 47 88 42" stroke="' + C.lima + '" stroke-width="2.5" fill="none" stroke-dasharray="4 3"/>',
+    santa:
+      '<path d="M30 40 C32 22 44 10 60 12 C70 14 78 22 82 30 C76 26 70 26 66 30 L70 40 Z" fill="' + C.pomelo + '"/>' +
+      '<rect x="26" y="34" width="48" height="10" rx="5" fill="#fff"/>' +
+      '<circle cx="84" cy="32" r="6" fill="#fff"/>',
+    // Cara
+    mustache:
+      '<path d="M50 67 C45 61 36 60 30 66 C33 69 38 70 42 69 C45 68.5 48 68 50 69 C52 68 55 68.5 58 69 C62 70 67 69 70 66 C64 60 55 61 50 67 Z" fill="#5A3A22"/>',
+    facepaint:
+      '<g stroke-width="2.6" stroke-linecap="round"><path d="M22 65 L33 65" stroke="' + C.cielo + '"/><path d="M22 70 L33 70" stroke="#fff"/><path d="M22 75 L33 75" stroke="' + C.cielo + '"/>' +
+      '<path d="M67 65 L78 65" stroke="' + C.cielo + '"/><path d="M67 70 L78 70" stroke="#fff"/><path d="M67 75 L78 75" stroke="' + C.cielo + '"/></g>',
+    bandaid:
+      '<g transform="rotate(-28 66 47)"><rect x="55" y="43" width="22" height="8" rx="4" fill="#F2C9A0"/><rect x="63" y="43" width="6" height="8" fill="#E3B283"/>' +
+      '<circle cx="58.5" cy="47" r=".9" fill="#C99A6E"/><circle cx="73.5" cy="47" r=".9" fill="#C99A6E"/></g>',
+    sparkles:
+      '<g fill="' + C.amarillo + '"><path d="M22 50 L24 55 L29 57 L24 59 L22 64 L20 59 L15 57 L20 55 Z"/>' +
+      '<path d="M80 46 L81.5 50 L85.5 51.5 L81.5 53 L80 57 L78.5 53 L74.5 51.5 L78.5 50 Z"/>' +
+      '<path d="M76 78 L77 81 L80 82 L77 83 L76 86 L75 83 L72 82 L75 81 Z"/></g>',
+    // En la mano (se dibujan al costado de la fruta)
+    balloon:
+      '<path d="M88 86 C84 76 92 66 90 50" stroke="' + C.crema + '" stroke-width="1.5" fill="none"/>' +
+      '<ellipse cx="91" cy="38" rx="11" ry="13" fill="' + C.pomelo + '"/><path d="M89 51 L93 51 L91 48 Z" fill="' + C.pomeloOscuro + '"/>' +
+      '<ellipse cx="87" cy="33" rx="3" ry="5" fill="#fff" opacity=".35"/>',
+    mic:
+      '<rect x="84" y="66" width="7" height="24" rx="3.5" transform="rotate(18 87 78)" fill="' + C.tinta + '"/>' +
+      '<circle cx="92" cy="63" r="8" fill="#B9B4C7"/><path d="M86 60 L98 66 M87 66 L97 60" stroke="#8C87A0" stroke-width="1.2"/>',
+    icecream:
+      '<rect x="88" y="72" width="4" height="18" rx="2" fill="#E3B283"/>' +
+      '<rect x="80" y="44" width="20" height="32" rx="10" fill="' + C.rosa + '"/>' +
+      '<path d="M80 56 C86 60 94 52 100 56 L100 66 C94 62 86 70 80 66 Z" fill="' + C.crema + '" opacity=".85"/>',
+    trophy:
+      '<path d="M80 58 L100 58 L98 70 C97 76 94 78 90 78 C86 78 83 76 82 70 Z" fill="' + C.amarillo + '"/>' +
+      '<path d="M80 60 C74 60 74 68 81 69 M100 60 C106 60 106 68 99 69" stroke="' + C.amarilloOscuro + '" stroke-width="2.4" fill="none"/>' +
+      '<rect x="88" y="78" width="4" height="6" fill="' + C.amarilloOscuro + '"/><rect x="83" y="84" width="14" height="5" rx="1.5" fill="' + C.amarilloOscuro + '"/>',
+    mate:
+      '<path d="M97 48 L91 70" stroke="#C9C4D6" stroke-width="2.4" stroke-linecap="round"/>' +
+      '<path d="M78 70 C78 62 84 60 90 60 C96 60 102 62 102 70 C102 82 96 90 90 90 C84 90 78 82 78 70 Z" fill="' + C.marron + '"/>' +
+      '<ellipse cx="90" cy="62" rx="10" ry="3" fill="' + C.palta + '"/>' +
+      '<path d="M80 74 C86 77 94 77 100 74" stroke="' + C.mandarina + '" stroke-width="2" fill="none"/>',
     // Anteojos
     sunglasses:
       '<path d="M28 56 H48 V62 C48 67 44 70 39 70 C33 70 28 67 28 62 Z" fill="' + C.tinta + '"/>' +
@@ -362,7 +406,7 @@
       '<path d="M60 88 L64 104 L74 102 L68 86 Z" fill="' + C.cielo + '"/>' +
       '<g stroke="' + C.crema + '" stroke-width="2.5"><path d="M34 88 L32 94"/><path d="M46 90 L45 96"/><path d="M58 90 L58 96"/><path d="M65 95 L72 94"/></g>',
   };
-  var SLOT_ORDER = ["neck", "glasses", "hat"];
+  var SLOT_ORDER = ["neck", "face", "glasses", "hat", "hand"];
 
   window.mascotSvg = function (mood, fruit, acc) {
     var face = FACES[mood] || FACES.neutral;

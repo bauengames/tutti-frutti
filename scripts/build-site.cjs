@@ -278,6 +278,8 @@ const THEME_BOOT = `<script>
     "uva__violeta": { theme: "uva", bg: "violeta" },
     "lima__petroleo": { theme: "lima", bg: "petroleo" },
     "mandarina__lavanda": { theme: "mandarina", bg: "lavanda" },
+    "sandia__noche": { theme: "sandia", bg: "noche" },
+    "estrella__noche": { theme: "estrella", bg: "noche" },
   };
   var LIGHT_BACKGROUNDS = ["crema", "lavanda"];
   var preset;

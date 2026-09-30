@@ -1,7 +1,7 @@
 /* tutti.frutti · selector de tema compartido por las páginas de contenido
    (reglas, privacidad, términos, contacto). Usa los mismos presets que jugar.html/index.html. */
 (function () {
-  var BG_COLOR = { tinta: "#14101F", violeta: "#2A1F47", petroleo: "#103036", crema: "#FFF3E2", lavanda: "#ECE4FF" };
+  var BG_COLOR = { tinta: "#14101F", violeta: "#2A1F47", petroleo: "#103036", crema: "#FFF3E2", lavanda: "#ECE4FF", noche: "#11142B" };
   var LIGHT_BACKGROUNDS = ["crema", "lavanda"];
   var PRESETS = [
     { key: "pomelo__crema", theme: "pomelo", bg: "crema", label: "Pomelo", color: "#FF5E5B" },
@@ -10,6 +10,16 @@
     { key: "lima__petroleo", theme: "lima", bg: "petroleo", label: "Lima", color: "#B6EF3C" },
     { key: "mandarina__lavanda", theme: "mandarina", bg: "lavanda", label: "Mandarina", color: "#FFA62B" },
   ];
+  // Temas que se compran en la tienda del juego: acá solo aparecen si ya los compraste.
+  var PREMIUM = [
+    { key: "sandia__noche", theme: "sandia", bg: "noche", label: "Sandía", color: "#FF5C7A" },
+    { key: "estrella__noche", theme: "estrella", bg: "noche", label: "Noche", color: "#FFD23F" },
+  ];
+  try {
+    var wallet = JSON.parse(localStorage.getItem("tuttifruti_wallet") || "null");
+    var owned = (wallet && wallet.owned) || [];
+    PREMIUM.forEach(function (p) { if (owned.indexOf("theme:" + p.key) !== -1) PRESETS.push(p); });
+  } catch (e) { /* storage unavailable */ }
 
   window.renderPresetGrid = function () {
     var grid = document.getElementById("presetGrid");

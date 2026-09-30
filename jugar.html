@@ -22,6 +22,8 @@
     "uva__violeta": { theme: "uva", bg: "violeta" },
     "lima__petroleo": { theme: "lima", bg: "petroleo" },
     "mandarina__lavanda": { theme: "mandarina", bg: "lavanda" },
+    "sandia__noche": { theme: "sandia", bg: "noche" },
+    "estrella__noche": { theme: "estrella", bg: "noche" },
   };
   var root = document.documentElement;
   var preset;
@@ -105,12 +107,16 @@ html[data-bg="violeta"]  { --bg: #2A1F47; --surface: #3A2C60; --surface-media: #
 html[data-bg="petroleo"] { --bg: #103036; --surface: #1B434A; --surface-media: #173B41; }
 html[data-bg="crema"]    { --bg: #FFF3E2; --surface: #FFFFFF; --surface-media: #FFFFFF; --crema: #14101F; --fg-rgb: 20, 16, 31; }
 html[data-bg="lavanda"]  { --bg: #ECE4FF; --surface: #FFFFFF; --surface-media: #FFFFFF; --crema: #14101F; --fg-rgb: 20, 16, 31; }
+html[data-bg="noche"]    { --bg: #11142B; --surface: #1E2347; --surface-media: #1A1F3F; }
 
 html[data-theme="pomelo"]    { --primary: var(--pomelo);    --secondary: var(--mandarina); }
 html[data-theme="cielo"]     { --primary: var(--cielo);     --secondary: var(--uva); }
 html[data-theme="uva"]       { --primary: var(--uva);       --secondary: var(--pomelo); }
 html[data-theme="lima"]      { --primary: var(--lima);      --secondary: var(--cielo); }
 html[data-theme="mandarina"] { --primary: var(--mandarina); --secondary: var(--pomelo); }
+/* Temas que se compran en la tienda */
+html[data-theme="sandia"]    { --primary: #FF5C7A; --secondary: #4CD97B; }
+html[data-theme="estrella"]  { --primary: #FFD23F; --secondary: #35C8F2; }
 
 html { background: var(--bg); overflow-x: clip; }
 body {
@@ -236,6 +242,9 @@ body:has(#screen-lobby.active) .brand-mini { visibility: hidden; }
 .theme-option:hover { background: var(--crema-08); }
 .theme-option.selected { font-weight: 700; background: var(--crema-08); }
 .theme-swatch { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; position: relative; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+.theme-option.locked { opacity: .75; }
+.theme-price { margin-left: auto; display: inline-flex; align-items: center; gap: 3px; font: 700 12px var(--font-mono); color: var(--text-muted); }
+.theme-price .seed-icon { width: 13px; height: 13px; display: inline-block; }
 .theme-swatch::after { content: ''; position: absolute; right: 0; bottom: 0; width: 50%; height: 50%; background: var(--sw2); }
 
 /* ---------- Pantallas ---------- */
@@ -795,6 +804,33 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
 .tab-dot { display: none; width: 8px; height: 8px; border-radius: 50%; background: var(--pomelo); margin-left: 4px; vertical-align: 2px; }
 .profile-tab.active .tab-dot { background: var(--tinta); }
 @media (max-width: 380px) { .profile-tab { font-size: 12px; } }
+
+/* ---------- Fondos de perfil, stickers, festejos y ayudas ---------- */
+.profile-mascot { position: relative; }
+.profile-mascot > svg { position: relative; }
+.mascot-bg { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; }
+.mascot-bg svg { width: 100%; height: 100%; display: block; }
+.shop-art.bg-preview { position: relative; width: 76px; height: 76px; padding: 8px; border-radius: 50%; background: #FFF3E2; }
+.shop-art.bg-preview > svg { position: relative; }
+.bg-mini { display: block; width: 100%; height: 100%; border-radius: 50%; overflow: hidden; }
+.bg-mini svg { width: 100%; height: 100%; display: block; }
+.shop-sub { margin: -6px 0 12px; }
+.sticker-preview { display: flex; gap: 6px; flex-shrink: 0; }
+.reaction-icon.sticker { width: auto; min-width: 22px; height: 22px; align-items: center; }
+.reaction-icon.sticker svg { width: 20px; height: 20px; }
+.sticker-text { font: 800 11px/1 var(--font-display); padding: 3px 6px; border-radius: 6px; background: var(--primary); color: var(--tinta); white-space: nowrap; }
+.reaction-btn.locked { opacity: .7; cursor: default; }
+.fx-preview { display: flex; align-items: center; justify-content: center; }
+.fx-preview svg { width: 48px; height: 48px; }
+.acc-art > .ph { width: 60%; height: 60%; margin: 20%; display: block; }
+.shop-item button.try-btn { margin-top: 0; padding: 8px 10px; font-size: 13px; }
+.theme-preview { position: relative; width: 64px; height: 64px; border-radius: 50%; overflow: hidden; }
+.theme-preview span { position: absolute; left: 0; top: 0; width: 50%; height: 100%; }
+.solo-tools { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+.solo-tool { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--radius-pill); border: 2px solid var(--primary); background: transparent; color: var(--text); font: 700 13px var(--font-body); cursor: pointer; }
+.solo-tool:disabled { opacity: .5; cursor: default; }
+.solo-tool .inline-icon { width: 18px; height: 18px; }
+#catGrid input.hinted::placeholder { color: var(--primary); opacity: 1; font-weight: 700; }
 
 /* ---------- Amigos ---------- */
 .friend-code-card { text-align: center; padding: 18px; border-radius: var(--radius-card); background: var(--surface); margin: 8px 0 14px; }
@@ -1486,6 +1522,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
         <h2 class="section-title" data-i18n="profile_acc_heading">Tus accesorios</h2>
         <div id="profileAccessories"></div>
         <button type="button" class="btn btn-secondary btn-block" style="margin-top:10px;" onclick="openShop('acc')" data-i18n="profile_to_shop">Conseguir más en la tienda</button>
+        <div id="profileExtras"></div>
         <h2 class="section-title" style="margin-top:28px;" data-i18n="profile_fruit_heading">Tu fruta</h2>
         <div class="avatar-picker" id="profileAvatarPicker"></div>
       </div>
@@ -1560,8 +1597,21 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <div class="shop-grid" id="shopFruits"></div>
       <h2 class="section-title" id="shopAccHeading" data-i18n="shop_acc_heading">Accesorios para tu fruta</h2>
       <div class="shop-grid" id="shopAccessories"></div>
+      <h2 class="section-title" id="shopBgHeading" data-i18n="shop_bg_heading">Fondos para tu perfil</h2>
+      <p class="hint shop-sub" data-i18n="shop_bg_sub">Tus amigos los ven cuando entran a tu perfil.</p>
+      <div class="shop-grid" id="shopBackgrounds"></div>
+      <h2 class="section-title" data-i18n="shop_stickers_heading">Stickers para reaccionar</h2>
+      <p class="hint shop-sub" data-i18n="shop_stickers_sub">Para usar en la revisión de las partidas online: los ve toda la sala.</p>
+      <div class="shop-grid" id="shopStickers"></div>
+      <h2 class="section-title" data-i18n="shop_fx_heading">Festejos y sonidos</h2>
+      <div class="shop-grid" id="shopFx"></div>
+      <h2 class="section-title" id="shopThemesHeading" data-i18n="shop_themes_heading">Temas de colores</h2>
+      <div class="shop-grid" id="shopThemes"></div>
       <h2 class="section-title" data-i18n="shop_items_heading">Para todos los modos</h2>
       <div class="shop-grid" id="shopItems"></div>
+      <h2 class="section-title" data-i18n="shop_solo_heading">Para jugar solo</h2>
+      <p class="hint shop-sub" data-i18n="shop_solo_sub">Solo en la Aventura y el contrarreloj.</p>
+      <div class="shop-grid" id="shopSolo"></div>
       <h2 class="section-title" data-i18n="shop_adv_heading">Aventura</h2>
       <div class="shop-grid" id="shopAdventure"></div>
       <h2 class="section-title" data-i18n="shop_how_heading">Cómo ganar semillas</h2>
@@ -1685,6 +1735,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
     <div class="letter-history" id="letterHistory"></div>
     <p class="wildcard-note" id="wildcardNote" style="display:none;"></p>
     <p class="wildcard-note twist-note" id="twistNote" style="display:none;"></p>
+    <div class="solo-tools" id="soloTools" style="display:none;"></div>
   </div>
 
   <div class="grid" id="catGrid" style="display:none;"></div>
@@ -2353,6 +2404,59 @@ const I18N = {
     referral_note: "Por cada amigo que se registre con tu invitación ganás 🌱 {n}.",
     referral_reward_toast: "¡{name} se sumó con tu invitación! +{n} semillas",
     referral_reward_toast_anon: "¡Alguien se sumó con tu invitación! +{n} semillas",
+    shop_limited_xmas: "Solo en Navidad",
+    acc_slot_face: "Cara",
+    acc_slot_hand: "En la mano",
+    acc_sombrero: "Sombrero mexicano",
+    acc_santa: "Gorro navideño",
+    acc_mustache: "Bigote",
+    acc_facepaint: "Cachetes pintados",
+    acc_bandaid: "Curita",
+    acc_sparkles: "Brillitos",
+    acc_balloon: "Globo",
+    acc_icecream: "Paleta helada",
+    acc_mic: "Micrófono",
+    acc_mate: "Mate",
+    acc_trophy: "Trofeo",
+    shop_bg_heading: "Fondos para tu perfil",
+    shop_bg_sub: "Tus amigos los ven cuando entran a tu perfil.",
+    shop_stickers_heading: "Stickers para reaccionar",
+    shop_stickers_sub: "Para usar en la revisión de las partidas online: los ve toda la sala.",
+    shop_fx_heading: "Festejos y sonidos",
+    shop_themes_heading: "Temas de colores",
+    shop_solo_heading: "Para jugar solo",
+    shop_solo_sub: "Solo en la Aventura y el contrarreloj.",
+    shop_owned: "Comprado ✓",
+    shop_try: "Probar",
+    shop_listen: "Escuchar",
+    shop_hint_title: "Pista",
+    shop_hint_desc: "Te muestra una palabra posible para una categoría. Tenés {n}.",
+    shop_reroll_title: "Cambiar letra",
+    shop_reroll_desc: "Si te tocó una letra difícil, sorteás otra (una vez por ronda). Tenés {n}.",
+    bg_sunset: "Atardecer",
+    bg_stars: "Noche estrellada",
+    bg_beach: "Playa",
+    bg_party: "Fiesta",
+    bg_field: "Cancha",
+    stk_hinchada: "Pack Hinchada: fueguito, corona y ¡Crack!",
+    stk_picante: "Pack Picante: ¿En serio?, Uy… y rayo",
+    sticker_crack: "¡Crack!",
+    sticker_enserio: "¿En serio?",
+    sticker_uy: "Uy…",
+    sticker_locked_title: "Conseguí este pack en la tienda",
+    fx_hearts: "Lluvia de corazones",
+    fx_stars: "Lluvia de estrellas",
+    fx_fireworks: "Chispas de colores",
+    snd_whistle: "Silbato de árbitro",
+    snd_horn: "Bocina",
+    snd_drum: "Redoble",
+    profile_bg_label: "Fondo",
+    profile_fx_label: "Festejo al ganar",
+    profile_snd_label: "Sonido del ¡Basta!",
+    tool_hint_btn: "Pista ({n})",
+    tool_reroll_btn: "Cambiar letra ({n})",
+    tool_hint_none: "Ya completaste todas las categorías",
+    tool_hint_error: "No pudimos traer la pista. Probá de nuevo.",
     clear_categories_btn: "Borrar todas",
     random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
     random_category_chip: "Random",
@@ -2864,6 +2968,59 @@ const I18N = {
     referral_note: "For every friend who signs up with your invite you get 🌱 {n}.",
     referral_reward_toast: "{name} joined with your invite! +{n} seeds",
     referral_reward_toast_anon: "Someone joined with your invite! +{n} seeds",
+    shop_limited_xmas: "Christmas only",
+    acc_slot_face: "Face",
+    acc_slot_hand: "In hand",
+    acc_sombrero: "Mexican sombrero",
+    acc_santa: "Santa hat",
+    acc_mustache: "Mustache",
+    acc_facepaint: "Face paint",
+    acc_bandaid: "Band-aid",
+    acc_sparkles: "Sparkles",
+    acc_balloon: "Balloon",
+    acc_icecream: "Ice pop",
+    acc_mic: "Microphone",
+    acc_mate: "Mate",
+    acc_trophy: "Trophy",
+    shop_bg_heading: "Profile backgrounds",
+    shop_bg_sub: "Your friends see them when they open your profile.",
+    shop_stickers_heading: "Reaction stickers",
+    shop_stickers_sub: "Use them while reviewing online games: the whole room sees them.",
+    shop_fx_heading: "Celebrations and sounds",
+    shop_themes_heading: "Color themes",
+    shop_solo_heading: "For solo play",
+    shop_solo_sub: "Only in Adventure and Time attack.",
+    shop_owned: "Owned ✓",
+    shop_try: "Try",
+    shop_listen: "Listen",
+    shop_hint_title: "Hint",
+    shop_hint_desc: "Shows you a possible word for a category. You have {n}.",
+    shop_reroll_title: "Change letter",
+    shop_reroll_desc: "Got a tough letter? Draw another one (once per round). You have {n}.",
+    bg_sunset: "Sunset",
+    bg_stars: "Starry night",
+    bg_beach: "Beach",
+    bg_party: "Party",
+    bg_field: "Soccer field",
+    stk_hinchada: "Fans pack: fire, crown and Legend!",
+    stk_picante: "Spicy pack: Really?, Oops… and bolt",
+    sticker_crack: "Legend!",
+    sticker_enserio: "Really?",
+    sticker_uy: "Oops…",
+    sticker_locked_title: "Get this pack in the shop",
+    fx_hearts: "Heart shower",
+    fx_stars: "Star shower",
+    fx_fireworks: "Colorful sparks",
+    snd_whistle: "Referee whistle",
+    snd_horn: "Horn",
+    snd_drum: "Drumroll",
+    profile_bg_label: "Background",
+    profile_fx_label: "Win celebration",
+    profile_snd_label: "Stop! sound",
+    tool_hint_btn: "Hint ({n})",
+    tool_reroll_btn: "Change letter ({n})",
+    tool_hint_none: "You already filled every category",
+    tool_hint_error: "We couldn't get a hint. Try again.",
     clear_categories_btn: "Clear all",
     random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
     random_category_chip: "Random",
@@ -3375,6 +3532,59 @@ const I18N = {
     referral_note: "Para cada amigo que se cadastrar com seu convite você ganha 🌱 {n}.",
     referral_reward_toast: "{name} entrou com seu convite! +{n} sementes",
     referral_reward_toast_anon: "Alguém entrou com seu convite! +{n} sementes",
+    shop_limited_xmas: "Só no Natal",
+    acc_slot_face: "Rosto",
+    acc_slot_hand: "Na mão",
+    acc_sombrero: "Sombrero mexicano",
+    acc_santa: "Gorro de Natal",
+    acc_mustache: "Bigode",
+    acc_facepaint: "Bochechas pintadas",
+    acc_bandaid: "Curativo",
+    acc_sparkles: "Brilhinhos",
+    acc_balloon: "Balão",
+    acc_icecream: "Picolé",
+    acc_mic: "Microfone",
+    acc_mate: "Chimarrão",
+    acc_trophy: "Troféu",
+    shop_bg_heading: "Fundos para o seu perfil",
+    shop_bg_sub: "Seus amigos veem quando entram no seu perfil.",
+    shop_stickers_heading: "Figurinhas para reagir",
+    shop_stickers_sub: "Para usar na revisão das partidas online: a sala toda vê.",
+    shop_fx_heading: "Comemorações e sons",
+    shop_themes_heading: "Temas de cores",
+    shop_solo_heading: "Para jogar sozinho",
+    shop_solo_sub: "Só na Aventura e no contrarrelógio.",
+    shop_owned: "Comprado ✓",
+    shop_try: "Testar",
+    shop_listen: "Ouvir",
+    shop_hint_title: "Dica",
+    shop_hint_desc: "Mostra uma palavra possível para uma categoria. Você tem {n}.",
+    shop_reroll_title: "Trocar letra",
+    shop_reroll_desc: "Caiu uma letra difícil? Sorteie outra (uma vez por rodada). Você tem {n}.",
+    bg_sunset: "Pôr do sol",
+    bg_stars: "Noite estrelada",
+    bg_beach: "Praia",
+    bg_party: "Festa",
+    bg_field: "Campo de futebol",
+    stk_hinchada: "Pacote Torcida: foguinho, coroa e Craque!",
+    stk_picante: "Pacote Picante: Sério?, Ops… e raio",
+    sticker_crack: "Craque!",
+    sticker_enserio: "Sério?",
+    sticker_uy: "Ops…",
+    sticker_locked_title: "Consiga este pacote na loja",
+    fx_hearts: "Chuva de corações",
+    fx_stars: "Chuva de estrelas",
+    fx_fireworks: "Faíscas coloridas",
+    snd_whistle: "Apito de juiz",
+    snd_horn: "Buzina",
+    snd_drum: "Rufar de tambor",
+    profile_bg_label: "Fundo",
+    profile_fx_label: "Comemoração ao ganhar",
+    profile_snd_label: "Som do Basta!",
+    tool_hint_btn: "Dica ({n})",
+    tool_reroll_btn: "Trocar letra ({n})",
+    tool_hint_none: "Você já preencheu todas as categorias",
+    tool_hint_error: "Não conseguimos trazer a dica. Tente de novo.",
     clear_categories_btn: "Limpar todas",
     random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
     random_category_chip: "Random",
@@ -4004,6 +4214,7 @@ const BG_COLOR = {
   petroleo: "#103036",
   crema: "#FFF3E2",
   lavanda: "#ECE4FF",
+  noche: "#11142B",
 };
 const LIGHT_BACKGROUNDS = ["crema", "lavanda"];
 
@@ -4013,16 +4224,22 @@ const PRESETS = [
   { key: "uva__violeta", theme: "uva", bg: "violeta", label: "Uva", color: "#9C6BFF" },
   { key: "lima__petroleo", theme: "lima", bg: "petroleo", label: "Lima", color: "#B6EF3C" },
   { key: "mandarina__lavanda", theme: "mandarina", bg: "lavanda", label: "Mandarina", color: "#FFA62B" },
+  // Se compran en la tienda (el precio en semillas los marca como bloqueados hasta comprarlos).
+  { key: "sandia__noche", theme: "sandia", bg: "noche", label: "Sandía", color: "#FF5C7A", price: 150 },
+  { key: "estrella__noche", theme: "estrella", bg: "noche", label: "Noche", color: "#FFD23F", price: 150 },
 ];
+function presetOwned(p) { return !p.price || getWallet().owned.includes("theme:" + p.key); }
 
 function renderPresetGrid() {
   const grid = document.getElementById("presetGrid");
-  if (!grid || grid.childElementCount) return;
-  grid.innerHTML = PRESETS.map(p => `
-    <button type="button" class="theme-option" data-preset="${p.key}" onclick="setPreset('${p.key}')">
-      <span class="theme-swatch" style="background:${p.color}; --sw2:${BG_COLOR[p.bg]};"></span>${p.label}
-    </button>
-  `).join("");
+  if (!grid) return;
+  grid.innerHTML = PRESETS.map(p => {
+    const locked = !presetOwned(p);
+    return `
+    <button type="button" class="theme-option${locked ? " locked" : ""}" data-preset="${p.key}" onclick="${locked ? "openShop('themes')" : `setPreset('${p.key}')`}">
+      <span class="theme-swatch" style="background:${p.color}; --sw2:${BG_COLOR[p.bg]};"></span>${p.label}${locked ? `<span class="theme-price">${seedIcon()}${p.price}</span>` : ""}
+    </button>`;
+  }).join("");
 }
 
 function toggleThemeMenu() {
@@ -4031,7 +4248,8 @@ function toggleThemeMenu() {
 }
 
 function setPreset(key) {
-  const preset = PRESETS.find(p => p.key === key) || PRESETS[0];
+  let preset = PRESETS.find(p => p.key === key) || PRESETS[0];
+  if (!presetOwned(preset)) preset = PRESETS[0];
   document.documentElement.setAttribute("data-theme", preset.theme);
   document.documentElement.setAttribute("data-bg", preset.bg);
   if (LIGHT_BACKGROUNDS.includes(preset.bg)) {
@@ -5243,15 +5461,15 @@ function serverNow() {
 
 function onBastaTap() {
   if (state.duelMode) {
-    playDing();
+    playBastaSound();
     vibrate([30, 40, 30]);
     finishDuelRound();
   } else if (state.adventureMode) {
-    playDing();
+    playBastaSound();
     vibrate([30, 40, 30]);
     finishAdventureRound();
   } else if (state.dailyMode) {
-    playDing();
+    playBastaSound();
     vibrate([30, 40, 30]);
     finishDailyRound();
   } else if (state.streakMode) {
@@ -5264,7 +5482,7 @@ function onBastaTap() {
 function triggerBasta() {
   if (state.bastaTriggered) return;
   state.bastaTriggered = true;
-  playDing();
+  playBastaSound();
   vibrate([30, 40, 30]);
   const statusRef = window.FB.ref(window.FB.db, "rooms/" + state.roomCode + "/status");
   window.FB.runTransaction(statusRef, current => (current === "playing" ? "collecting" : current))
@@ -5417,21 +5635,35 @@ function checkAllReviewReady(data) {
 }
 
 const REACTION_EMOJIS = ["😂", "👍", "😱"];
-const REACTION_ICONS = { "😂": () => mascotSvg("happy"), "👍": () => iconSvg("thumb"), "😱": () => mascotSvg("surprised") };
+const REACTION_ICONS = {
+  "😂": () => mascotSvg("happy"), "👍": () => iconSvg("thumb"), "😱": () => mascotSvg("surprised"),
+  // Stickers de la tienda
+  fire: () => iconSvg("flame"), crown: () => iconSvg("crown"), bolt: () => iconSvg("bolt"),
+  crack: () => `<span class="sticker-text">${escapeHtml(t("sticker_crack"))}</span>`,
+  enserio: () => `<span class="sticker-text">${escapeHtml(t("sticker_enserio"))}</span>`,
+  uy: () => `<span class="sticker-text">${escapeHtml(t("sticker_uy"))}</span>`,
+};
 
 function renderReactionRow(cat, targetPid, reactionsForThis) {
   const catEsc = escapeForJsAttr(cat);
-  const buttons = REACTION_EMOJIS.map(emoji => {
+  // Las 3 de siempre + los stickers que compraste + los que usaron otros (esos se ven, pero
+  // para ponerlos vos hay que tener el pack).
+  const usable = [...REACTION_EMOJIS, ...ownedStickers()];
+  const usedByOthers = Object.keys(reactionsForThis || {}).filter(k => REACTION_ICONS[k] && !usable.includes(k));
+  const buttons = [...usable, ...usedByOthers].map(emoji => {
     const reactors = Object.keys((reactionsForThis && reactionsForThis[emoji]) || {});
     const count = reactors.length;
     const mine = reactors.includes(state.playerId);
-    return `<button type="button" class="reaction-btn${mine ? " mine" : ""}" onclick="toggleReaction('${catEsc}','${targetPid}','${emoji}')"><span class="reaction-icon">${REACTION_ICONS[emoji]()}</span>${count > 0 ? `<span class="count">${count}</span>` : ""}</button>`;
+    const canUse = usable.includes(emoji);
+    if (!canUse && count === 0) return "";
+    return `<button type="button" class="reaction-btn${mine ? " mine" : ""}${canUse ? "" : " locked"}" ${canUse ? `onclick="toggleReaction('${catEsc}','${targetPid}','${emoji}')"` : `title="${escapeHtml(t("sticker_locked_title"))}"`}><span class="reaction-icon${REACTION_EMOJIS.includes(emoji) ? "" : " sticker"}">${REACTION_ICONS[emoji]()}</span>${count > 0 ? `<span class="count">${count}</span>` : ""}</button>`;
   }).join("");
   return `<div class="reaction-row" style="flex-basis:100%;">${buttons}</div>`;
 }
 
 function toggleReaction(cat, targetPid, emoji) {
   if (!state.room) return;
+  if (!REACTION_EMOJIS.includes(emoji) && !ownedStickers().includes(emoji)) return;
   const round = state.room.round;
   const reactions = state.room.reactions || {};
   const current = ((((reactions[round] || {})[cat] || {})[targetPid] || {})[emoji] || {})[state.playerId];
@@ -6082,6 +6314,8 @@ function renderCatGrid() {
   const grid = document.getElementById("catGrid");
   grid.innerHTML = "";
   state.jokerCat = null;
+  state.hintedCats = [];
+  state.rerollUsed = false;
   // En el desafío del día no hay comodines: su ranking es igual para todos.
   const jokers = state.dailyMode ? 0 : getWallet().items.joker;
   state.categories.forEach((cat, i) => {
@@ -6099,6 +6333,86 @@ function renderCatGrid() {
     `;
     grid.appendChild(card);
   });
+  renderSoloTools();
+}
+
+// Pista y Cambiar letra: solo en la Aventura y el contrarreloj.
+function soloToolsAllowed() { return !!(state.adventureMode || state.streakMode); }
+function renderSoloTools() {
+  const bar = document.getElementById("soloTools");
+  if (!bar) return;
+  const w = getWallet();
+  if (!soloToolsAllowed() || (!w.items.hint && !w.items.reroll)) { bar.style.display = "none"; bar.innerHTML = ""; return; }
+  const canReroll = w.items.reroll > 0 && !state.rerollUsed && !state.letterByCat;
+  bar.innerHTML =
+    (w.items.hint > 0 ? `<button type="button" class="solo-tool" onclick="useHint()" ${state.hintBusy ? "disabled" : ""}>${iconSvgInline("sun")}${escapeHtml(t("tool_hint_btn", { n: w.items.hint }))}</button>` : "") +
+    (canReroll ? `<button type="button" class="solo-tool" onclick="useReroll()">${iconSvgInline("dice")}${escapeHtml(t("tool_reroll_btn", { n: w.items.reroll }))}</button>` : "");
+  bar.style.display = bar.innerHTML ? "flex" : "none";
+}
+
+// Pista: pide a la IA una palabra para la categoría elegida (la que tenés seleccionada o la
+// primera vacía) y la muestra adentro del casillero. Solo se descuenta si llega la pista.
+async function useHint() {
+  const w = getWallet();
+  if (!soloToolsAllowed() || w.items.hint <= 0 || state.hintBusy) return;
+  const inputs = Array.from(document.querySelectorAll("#catGrid input"));
+  const focused = inputs.find(i => i === document.activeElement && !i.value.trim() && !state.hintedCats.includes(i.dataset.cat));
+  const target = focused || inputs.find(i => !i.value.trim() && !state.hintedCats.includes(i.dataset.cat));
+  if (!target) { seedToast(t("tool_hint_none")); return; }
+  const cat = target.dataset.cat;
+  const letter = (state.letterByCat && state.letterByCat[cat]) || state.letter;
+  state.hintBusy = true;
+  renderSoloTools();
+  try {
+    const res = await fetch("/.netlify/functions/rival", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ letra: letter, categorias: [catLabel(cat)], idioma: state.lang }),
+    });
+    const json = res.ok ? await res.json() : null;
+    const word = json && json.respuestas && json.respuestas[catLabel(cat)];
+    if (!word) throw new Error("sin pista");
+    const w2 = getWallet();
+    w2.items.hint = Math.max(0, w2.items.hint - 1);
+    saveWallet(w2);
+    state.hintedCats.push(cat);
+    target.placeholder = "💡 " + word;
+    target.classList.add("hinted");
+    target.focus();
+    track("item_used", { item: "hint" });
+  } catch (e) {
+    seedToast(t("tool_hint_error"));
+  }
+  state.hintBusy = false;
+  renderSoloTools();
+}
+
+// Cambiar letra: una vez por ronda, sortea otra letra y borra lo escrito. El reloj sigue.
+function useReroll() {
+  const w = getWallet();
+  if (!soloToolsAllowed() || w.items.reroll <= 0 || state.rerollUsed || state.letterByCat) return;
+  let letter;
+  if (state.adventureMode) {
+    const pool = state.advLevel.letters.filter(l => l !== state.letter);
+    if (!pool.length) return;
+    letter = pool[Math.floor(Math.random() * pool.length)];
+  } else {
+    letter = drawLetter();
+  }
+  w.items.reroll -= 1;
+  saveWallet(w);
+  state.rerollUsed = true;
+  state.letter = letter;
+  state.answers = {};
+  document.getElementById("medal").textContent = letter;
+  document.querySelectorAll("#catGrid input").forEach(i => { i.value = ""; i.placeholder = letter + "..."; i.classList.remove("hinted"); });
+  document.querySelectorAll("#catGrid .joker-btn[aria-pressed='true']").forEach(b => b.click());
+  state.hintedCats = [];
+  renderLetterHistory();
+  playDing();
+  track("item_used", { item: "reroll" });
+  renderSoloTools();
+  focusFirstAnswer();
 }
 
 function onAnswerKeydown(e, el) {
@@ -6607,7 +6921,7 @@ async function publishProfile() {
   const name = (document.getElementById("playerName").value.trim() || localStorage.getItem("tuttifruti_playerName") || t("profile_title")).slice(0, 30);
   const F = window.FB;
   await F.set(F.ref(F.db, `profiles/${F.uid}`), {
-    name, code, avatar: getMyAvatar(), acc: myEquipped(),
+    name, code, avatar: getMyAvatar(), acc: myEquipped(), bg: myBackground() || "",
     stats: {
       stars: advTotalStars(advLoad()), ach: (p.unlocked || []).length, wins: p.wins || 0,
       best: hist.length ? (Number(hist[0].score) || 0) : 0, days: currentDayStreak(p), games: getStats().gamesPlayed,
@@ -6749,7 +7063,7 @@ function openFriend(fid) {
   const fp = (state.friends || []).find(f => f.uid === fid);
   if (!fp) return;
   const st = fp.stats || {};
-  document.getElementById("friendMascot").innerHTML = friendMascot(fp);
+  document.getElementById("friendMascot").innerHTML = mascotStageHtml("happy", avatarOf(fp), cleanAccessories(fp.acc), BG_ART[fp.bg] ? fp.bg : null);
   document.getElementById("friendName").textContent = fp.name || "?";
   document.getElementById("friendSub").textContent = fp.code ? formatFriendCode(fp.code) : "";
   const cell = (v, key) => `<div class="stat-card"><span class="stat-value">${Number(v) || 0}</span><span class="stat-label">${escapeHtml(t(key))}</span></div>`;
@@ -7844,6 +8158,9 @@ const SHOP_FULL_LIVES_PRICE = 120;
 const SHOP_CLOCK_PRICE = 25;
 const SHOP_SHIELD_PRICE = 30;
 const SHOP_JOKER_PRICE = 30;
+// Ayudas para jugar solo (Aventura y contrarreloj; nunca en el desafío del día, duelos ni online).
+const SHOP_HINT_PRICE = 20;
+const SHOP_REROLL_PRICE = 25;
 const CLOCK_SECONDS = 15;
 const SHIELD_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 L20 5 V11 C20 16.5 16.6 20.4 12 22 C7.4 20.4 4 16.5 4 11 V5 Z" fill="#35C8F2"/><path d="M12 2 L20 5 V11 C20 16.5 16.6 20.4 12 22 Z" fill="#1FA6D0"/><path d="M8.5 12 L11 14.5 L15.8 9.5" stroke="#FFF3E2" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const SEED_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22 C6.5 22 4 17.5 4 13.5 C4 8 8.5 3.5 12 2 C15.5 3.5 20 8 20 13.5 C20 17.5 17.5 22 12 22 Z" fill="#8B5A2B"/><path d="M12 2 C13.8 6 13.8 11 12 16" stroke="#6B4320" stroke-width="1.6" fill="none" stroke-linecap="round"/><ellipse cx="8.6" cy="11" rx="1.6" ry="3" transform="rotate(20 8.6 11)" fill="#fff" opacity=".3"/></svg>';
@@ -7862,6 +8179,8 @@ function getWallet() {
   w.items.clock = Math.max(0, Math.floor(w.items.clock || 0));
   w.items.shield = Math.max(0, Math.floor(w.items.shield || 0));
   w.items.joker = Math.max(0, Math.floor(w.items.joker || 0));
+  w.items.hint = Math.max(0, Math.floor(w.items.hint || 0));
+  w.items.reroll = Math.max(0, Math.floor(w.items.reroll || 0));
   return w;
 }
 function saveWallet(w) {
@@ -7906,7 +8225,10 @@ function openShop(section) {
   renderShop();
   showScreen("screen-shop");
   window.scrollTo(0, 0);
-  if (section === "acc") document.getElementById("shopAccHeading").scrollIntoView({ block: "start" });
+  const anchor = { acc: "shopAccHeading", themes: "shopThemesHeading", bg: "shopBgHeading" }[section];
+  if (anchor) document.getElementById(anchor).scrollIntoView({ block: "start" });
+  const menu = document.getElementById("themeMenu");
+  if (menu) menu.classList.remove("open");
 }
 
 function renderShop() {
@@ -7931,6 +8253,10 @@ function renderShop() {
   </div>`;
   document.getElementById("shopItems").innerHTML =
     item(`<span class="shop-joker">${JOKER_MARK}</span>`, t("shop_joker_title"), t("shop_joker_desc", { pts: JOKER_POINTS, n: w.items.joker }), SHOP_JOKER_PRICE, false, "buyShopItem('joker')");
+  document.getElementById("shopSolo").innerHTML =
+    item(iconSvg("sun"), t("shop_hint_title"), t("shop_hint_desc", { n: w.items.hint }), SHOP_HINT_PRICE, false, "buyShopItem('hint')") +
+    item(iconSvg("dice"), t("shop_reroll_title"), t("shop_reroll_desc", { n: w.items.reroll }), SHOP_REROLL_PRICE, false, "buyShopItem('reroll')");
+  renderShopExtras(w);
   document.getElementById("shopAdventure").innerHTML =
     item(advHeart(true), t("shop_life_title"), full ? t("shop_lives_full") : t("shop_life_desc", { n: d.lives }), SHOP_LIFE_PRICE, full, "buyLife()") +
     item(`<span class="shop-art-x">${advHeart(true)}<b>×5</b></span>`, t("shop_full_lives_title"), full ? t("shop_lives_full") : t("shop_full_lives_desc"), SHOP_FULL_LIVES_PRICE, full, "buyShopItem('full')") +
@@ -7938,9 +8264,78 @@ function renderShop() {
     item(SHIELD_SVG, t("shop_shield_title"), t("shop_shield_desc", { n: w.items.shield }), SHOP_SHIELD_PRICE, false, "buyShopItem('shield')");
 }
 
+// Fondos, stickers, festejos, sonidos y temas: se compran una vez y quedan para siempre.
+function renderShopExtras(w) {
+  const eq = w.equipped;
+  const ownBtn = (key, price, isOn, buyAction, useAction) => {
+    if (!w.owned.includes(key)) return `<button ${w.seeds < price ? "disabled" : ""} onclick="${buyAction}">${seedIcon()} ${price}</button>`;
+    return `<button class="${isOn ? "in-use" : "owned"}" onclick="${useAction}">${escapeHtml(t(isOn ? "shop_take_off" : "shop_put_on"))}</button>`;
+  };
+  document.getElementById("shopBackgrounds").innerHTML = PROFILE_BGS.map(b => `<div class="shop-item">
+      <span class="shop-art bg-preview">${mascotStageHtml("happy", getMyAvatar(), myEquipped(), b.id)}</span>
+      <strong>${escapeHtml(t("bg_" + b.id))}</strong>
+      ${ownBtn("bg:" + b.id, b.price, eq.bg === b.id, `buyExtra('bg','${b.id}')`, `toggleExtra('bg','${b.id}')`)}</div>`).join("");
+  document.getElementById("shopStickers").innerHTML = STICKER_PACKS.map(p => {
+    const owned = w.owned.includes("stk:" + p.id);
+    return `<div class="shop-item wide">
+      <span class="sticker-preview">${p.items.map(k => `<span class="reaction-icon sticker">${REACTION_ICONS[k]()}</span>`).join("")}</span>
+      <span class="shop-text"><strong>${escapeHtml(t("stk_" + p.id))}</strong></span>
+      ${owned ? `<button class="in-use" disabled>${escapeHtml(t("shop_owned"))}</button>` : `<button ${w.seeds < p.price ? "disabled" : ""} onclick="buyExtra('stk','${p.id}')">${seedIcon()} ${p.price}</button>`}</div>`;
+  }).join("");
+  document.getElementById("shopFx").innerHTML =
+    WIN_FX.map(x => `<div class="shop-item">
+      <span class="shop-art fx-preview">${fxPieceSvg(x.id)}</span>
+      <strong>${escapeHtml(t("fx_" + x.id))}</strong>
+      <button type="button" class="owned try-btn" onclick="launchFruitConfetti('${x.id}')">${escapeHtml(t("shop_try"))}</button>
+      ${ownBtn("fx:" + x.id, x.price, eq.fx === x.id, `buyExtra('fx','${x.id}')`, `toggleExtra('fx','${x.id}')`)}</div>`).join("") +
+    BASTA_SOUNDS.map(x => `<div class="shop-item">
+      <span class="shop-art fx-preview">${SPEAKER_ON_SVG}</span>
+      <strong>${escapeHtml(t("snd_" + x.id))}</strong>
+      <button type="button" class="owned try-btn" onclick="playBastaSound('${x.id}')">${escapeHtml(t("shop_listen"))}</button>
+      ${ownBtn("snd:" + x.id, x.price, eq.snd === x.id, `buyExtra('snd','${x.id}')`, `toggleExtra('snd','${x.id}')`)}</div>`).join("");
+  document.getElementById("shopThemes").innerHTML = PRESETS.filter(p => p.price).map(p => {
+    const owned = presetOwned(p);
+    const inUse = document.documentElement.getAttribute("data-theme") === p.theme;
+    const btn = !owned
+      ? `<button ${w.seeds < p.price ? "disabled" : ""} onclick="buyExtra('theme','${p.key}')">${seedIcon()} ${p.price}</button>`
+      : `<button class="${inUse ? "in-use" : "owned"}" ${inUse ? "disabled" : ""} onclick="setPreset('${p.key}'); renderShop();">${escapeHtml(t(inUse ? "shop_in_use" : "shop_use"))}</button>`;
+    return `<div class="shop-item"><span class="shop-art theme-preview" style="background:${BG_COLOR[p.bg]}"><span style="background:${p.color}"></span></span><strong>${escapeHtml(p.label)}</strong>${btn}</div>`;
+  }).join("");
+}
+
+function buyExtra(kind, id) {
+  const price = kind === "bg" ? (PROFILE_BGS.find(x => x.id === id) || {}).price
+    : kind === "stk" ? (STICKER_PACKS.find(x => x.id === id) || {}).price
+    : kind === "fx" ? (WIN_FX.find(x => x.id === id) || {}).price
+    : kind === "snd" ? (BASTA_SOUNDS.find(x => x.id === id) || {}).price
+    : kind === "theme" ? (PRESETS.find(x => x.key === id) || {}).price : 0;
+  const w = getWallet();
+  const key = kind + ":" + id;
+  if (!price || w.owned.includes(key) || w.seeds < price) return;
+  w.seeds -= price;
+  w.owned.push(key);
+  if (kind === "bg" || kind === "fx" || kind === "snd") w.equipped[kind] = id;
+  saveWallet(w);
+  track("shop_buy", { item: key });
+  launchConfetti();
+  if (kind === "snd") playBastaSound(id);
+  if (kind === "theme") { setPreset(id); renderPresetGrid(); }
+  refreshMyFruit();
+  renderShop();
+}
+
+function toggleExtra(kind, id) {
+  const w = getWallet();
+  if (!w.owned.includes(kind + ":" + id)) return;
+  w.equipped[kind] = w.equipped[kind] === id ? null : id;
+  saveWallet(w);
+  refreshMyFruit();
+  if (document.getElementById("screen-shop").classList.contains("active")) renderShop();
+}
+
 function buyShopItem(kind) {
   const w = getWallet();
-  const price = { full: SHOP_FULL_LIVES_PRICE, clock: SHOP_CLOCK_PRICE, shield: SHOP_SHIELD_PRICE, joker: SHOP_JOKER_PRICE }[kind];
+  const price = { full: SHOP_FULL_LIVES_PRICE, clock: SHOP_CLOCK_PRICE, shield: SHOP_SHIELD_PRICE, joker: SHOP_JOKER_PRICE, hint: SHOP_HINT_PRICE, reroll: SHOP_REROLL_PRICE }[kind];
   if (!price || w.seeds < price) return;
   if (kind === "full") {
     const d = advLoad();
@@ -8638,10 +9033,88 @@ const ACCESSORY_ITEMS = [
   { id: "bowtie", slot: "neck", price: 50 }, { id: "scarf", slot: "neck", price: 70 },
   // Edición limitada: solo se compra en temporada de Halloween; quien lo tiene lo conserva siempre.
   { id: "witch", slot: "hat", price: 80, season: "spooky" },
+  { id: "sombrero", slot: "hat", price: 120 }, { id: "santa", slot: "hat", price: 90, season: "xmas" },
+  { id: "mustache", slot: "face", price: 50 }, { id: "facepaint", slot: "face", price: 60 },
+  { id: "bandaid", slot: "face", price: 40 }, { id: "sparkles", slot: "face", price: 90 },
+  { id: "balloon", slot: "hand", price: 70 }, { id: "icecream", slot: "hand", price: 80 },
+  { id: "mic", slot: "hand", price: 100 }, { id: "mate", slot: "hand", price: 110 }, { id: "trophy", slot: "hand", price: 250 },
 ];
-function accForSale(a) { return !a.season || isSpookySeason(); }
-const ACC_SLOTS = ["hat", "glasses", "neck"];
+// Navidad: del 1 de diciembre al 6 de enero.
+function isXmasSeason(date = new Date()) {
+  const m = date.getMonth(), d = date.getDate();
+  return m === 11 || (m === 0 && d <= 6);
+}
+function accForSale(a) {
+  if (a.season === "spooky") return isSpookySeason();
+  if (a.season === "xmas") return isXmasSeason();
+  return true;
+}
+const ACC_SLOTS = ["hat", "face", "glasses", "neck", "hand"];
 function accOwnedKey(id) { return "acc:" + id; }
+
+// ---------- Fondos para el perfil (los ven tus amigos) ----------
+// Dibujos de 100x100 que van dentro del círculo detrás de la fruta. Sin degradados
+// (con id) para que no choquen si hay varios en la misma pantalla.
+const PROFILE_BGS = [
+  { id: "sunset", price: 80 }, { id: "stars", price: 120 }, { id: "beach", price: 120 },
+  { id: "party", price: 150 }, { id: "field", price: 200 },
+];
+const BG_ART = {
+  sunset: '<rect width="100" height="100" fill="#FFB067"/><rect y="0" width="100" height="30" fill="#FF8A7A"/><rect y="30" width="100" height="20" fill="#FF9E72"/><circle cx="50" cy="70" r="26" fill="#FFD23F"/><rect y="74" width="100" height="26" fill="#9C6BFF" opacity=".55"/>',
+  stars: '<rect width="100" height="100" fill="#1B1E45"/><g fill="#FFF3E2"><circle cx="15" cy="20" r="1.6"/><circle cx="32" cy="10" r="1"/><circle cx="80" cy="16" r="1.8"/><circle cx="90" cy="40" r="1.1"/><circle cx="10" cy="55" r="1.2"/><circle cx="24" cy="85" r="1.6"/><circle cx="85" cy="80" r="1.3"/><circle cx="62" cy="8" r="1.1"/></g><path d="M74 26 C66 28 62 36 66 44 C60 42 58 32 64 26 C67 24 71 24 74 26 Z" fill="#FFD23F"/>',
+  beach: '<rect width="100" height="100" fill="#8FDCF7"/><circle cx="80" cy="18" r="9" fill="#FFD23F"/><rect y="58" width="100" height="18" fill="#35C8F2"/><path d="M0 62 C12 58 22 66 34 62 C46 58 56 66 68 62 C80 58 90 66 100 62 L100 66 L0 66 Z" fill="#FFF3E2" opacity=".7"/><rect y="76" width="100" height="24" fill="#F7D98B"/>',
+  party: '<rect width="100" height="100" fill="#EADBFF"/><g><circle cx="14" cy="18" r="4" fill="#FF5E5B"/><circle cx="84" cy="22" r="3.5" fill="#35C8F2"/><circle cx="24" cy="80" r="3.5" fill="#B6EF3C"/><circle cx="80" cy="82" r="4" fill="#FFA62B"/><rect x="60" y="8" width="7" height="3" rx="1.5" fill="#9C6BFF" transform="rotate(30 63 9)"/><rect x="8" y="46" width="7" height="3" rx="1.5" fill="#FFA62B" transform="rotate(-25 11 47)"/><rect x="88" y="54" width="7" height="3" rx="1.5" fill="#FF5E5B" transform="rotate(40 91 55)"/><rect x="42" y="90" width="7" height="3" rx="1.5" fill="#35C8F2"/></g>',
+  field: '<rect width="100" height="100" fill="#4FB548"/><g fill="#5CC454"><rect x="0" width="12.5" height="100"/><rect x="25" width="12.5" height="100"/><rect x="50" width="12.5" height="100"/><rect x="75" width="12.5" height="100"/></g><g fill="none" stroke="#fff" stroke-width="1.6" opacity=".85"><circle cx="50" cy="50" r="16"/><path d="M50 0 V100"/></g>',
+};
+function bgSvg(id) { return BG_ART[id] ? `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${BG_ART[id]}</svg>` : ""; }
+function myBackground() {
+  const w = getWallet();
+  const id = w.equipped.bg;
+  return id && BG_ART[id] && w.owned.includes("bg:" + id) ? id : null;
+}
+// Fruta con su fondo (el fondo va recortado en el círculo; los gorros pueden sobresalir).
+function mascotStageHtml(mood, fruit, acc, bg) {
+  return (bg && BG_ART[bg] ? `<span class="mascot-bg">${bgSvg(bg)}</span>` : "") + mascotSvg(mood, fruit, acc);
+}
+
+// ---------- Festejos al ganar y sonidos del ¡Basta! ----------
+const WIN_FX = [{ id: "hearts", price: 100 }, { id: "stars", price: 100 }, { id: "fireworks", price: 150 }];
+const BASTA_SOUNDS = [{ id: "whistle", price: 80 }, { id: "horn", price: 80 }, { id: "drum", price: 100 }];
+function myWinFx() { const w = getWallet(); const id = w.equipped.fx; return id && w.owned.includes("fx:" + id) ? id : null; }
+function myBastaSound() { const w = getWallet(); const id = w.equipped.snd; return id && w.owned.includes("snd:" + id) ? id : null; }
+
+function playBastaSound(id = myBastaSound()) {
+  if (id === "whistle") {
+    [0, 0.12, 0.24].forEach(d => beep({ freq: 2300, duration: 0.1, type: "triangle", vol: 0.16, delay: d }));
+    beep({ freq: 2500, duration: 0.35, type: "triangle", vol: 0.16, delay: 0.36 });
+  } else if (id === "horn") {
+    [220, 277, 330].forEach(f => beep({ freq: f, duration: 0.55, type: "sawtooth", vol: 0.07 }));
+  } else if (id === "drum") {
+    beep({ freq: 90, duration: 0.18, type: "sine", vol: 0.35 });
+    beep({ freq: 90, duration: 0.18, type: "sine", vol: 0.35, delay: 0.16 });
+    beep({ freq: 1800, duration: 0.25, type: "triangle", vol: 0.12, delay: 0.32 });
+  } else {
+    playDing();
+  }
+}
+
+const FX_COLORS = ["#FF5E5B", "#FFA62B", "#FFD23F", "#B6EF3C", "#35C8F2", "#9C6BFF", "#FF8583"];
+function fxPieceSvg(fx) {
+  const c = FX_COLORS[Math.floor(Math.random() * FX_COLORS.length)];
+  if (fx === "hearts") return `<svg viewBox="0 0 24 24"><path d="M12 21 C5 15 2 12 2 8 C2 5 4.5 3 7 3 C9 3 11 4.2 12 6 C13 4.2 15 3 17 3 C19.5 3 22 5 22 8 C22 12 19 15 12 21 Z" fill="${c}"/></svg>`;
+  if (fx === "stars") return ADV_STAR_SVG.replace("%c", "").replace("<path ", `<path fill="${c}" `);
+  return `<svg viewBox="0 0 24 24"><path d="M12 1 L14 10 L23 12 L14 14 L12 23 L10 14 L1 12 L10 10 Z" fill="${c}"/></svg>`;
+}
+
+// ---------- Stickers para reaccionar en la revisión (los ve toda la sala) ----------
+const STICKER_PACKS = [
+  { id: "hinchada", price: 60, items: ["fire", "crown", "crack"] },
+  { id: "picante", price: 60, items: ["enserio", "uy", "bolt"] },
+];
+function ownedStickers() {
+  const w = getWallet();
+  return STICKER_PACKS.filter(p => w.owned.includes("stk:" + p.id)).flatMap(p => p.items);
+}
 
 // Lo que tiene puesto el jugador (solo cuenta lo que realmente compró).
 function myEquipped() {
@@ -8674,6 +9147,23 @@ function toggleAccessory(id) {
   w.equipped[item.slot] = w.equipped[item.slot] === id ? null : id;
   saveWallet(w);
   refreshMyFruit();
+}
+
+// Fondos, festejo y sonido que ya compraste, para elegir en Mi fruta.
+function renderProfileExtras() {
+  const box = document.getElementById("profileExtras");
+  if (!box) return;
+  const w = getWallet();
+  const eq = w.equipped;
+  const tile = (kind, id, art, label) => `<button type="button" class="acc-tile${eq[kind] === id ? " on" : ""}" aria-pressed="${eq[kind] === id}" onclick="toggleExtra('${kind}','${id}')"><span class="acc-art">${art}</span><span>${escapeHtml(label)}</span></button>`;
+  const bgs = PROFILE_BGS.filter(b => w.owned.includes("bg:" + b.id));
+  const fxs = WIN_FX.filter(x => w.owned.includes("fx:" + x.id));
+  const snds = BASTA_SOUNDS.filter(x => w.owned.includes("snd:" + x.id));
+  let html = "";
+  if (bgs.length) html += `<p class="label" style="margin-top:16px;">${escapeHtml(t("profile_bg_label"))}</p><div class="acc-row">${bgs.map(b => tile("bg", b.id, `<span class="bg-mini">${bgSvg(b.id)}</span>`, t("bg_" + b.id))).join("")}</div>`;
+  if (fxs.length) html += `<p class="label" style="margin-top:16px;">${escapeHtml(t("profile_fx_label"))}</p><div class="acc-row">${fxs.map(x => tile("fx", x.id, fxPieceSvg(x.id), t("fx_" + x.id))).join("")}</div>`;
+  if (snds.length) html += `<p class="label" style="margin-top:16px;">${escapeHtml(t("profile_snd_label"))}</p><div class="acc-row">${snds.map(x => tile("snd", x.id, SPEAKER_ON_SVG, t("snd_" + x.id))).join("")}</div>`;
+  box.innerHTML = html;
 }
 
 // Redibuja todo lo que muestra la fruta del jugador.
@@ -8731,7 +9221,8 @@ function renderProfileTabs() {
 function renderProfile() {
   const w = getWallet();
   const eq = myEquipped();
-  document.getElementById("profileMascot").innerHTML = mascotSvg("happy", getMyAvatar(), eq);
+  document.getElementById("profileMascot").innerHTML = mascotStageHtml("happy", getMyAvatar(), eq, myBackground());
+  renderProfileExtras();
   const name = document.getElementById("playerName").value.trim();
   document.getElementById("profileName").textContent = name || t("profile_title");
   document.getElementById("profileSub").innerHTML = `${seedIcon()} ${escapeHtml(t("shop_balance", { n: w.seeds }))}`;
@@ -8764,7 +9255,7 @@ function renderShopAccessories() {
     let btn;
     if (owned) btn = `<button class="${eq[a.slot] === a.id ? "in-use" : "owned"}" onclick="toggleAccessory('${a.id}')">${escapeHtml(t(eq[a.slot] === a.id ? "shop_take_off" : "shop_put_on"))}</button>`;
     else btn = `<button ${w.seeds < a.price ? "disabled" : ""} onclick="buyAccessory('${a.id}')">${seedIcon()} ${a.price}</button>`;
-    const limited = a.season ? `<span class="shop-limited">${escapeHtml(t("shop_limited"))}</span>` : "";
+    const limited = a.season ? `<span class="shop-limited">${escapeHtml(t(a.season === "xmas" ? "shop_limited_xmas" : "shop_limited"))}</span>` : "";
     return `<div class="shop-item">${limited}<span class="shop-art acc-preview">${mascotSvg("happy", getMyAvatar(), { ...eq, [a.slot]: a.id })}</span><strong>${escapeHtml(t("acc_" + a.id))}</strong>${btn}</div>`;
   }).join("");
 }
@@ -8937,10 +9428,11 @@ function launchFruitConfetti(kind) {
   if (!container) return;
   const isWin = kind !== "lose";
   const count = isWin ? 70 : 32;
+  const fx = isWin ? (kind === "win" ? myWinFx() : kind) : null;
   for (let i = 0; i < count; i++) {
     const piece = document.createElement("div");
     piece.className = "confetti-piece" + (isWin ? "" : " confetti-piece-rotten");
-    piece.innerHTML = fruitSvg(FRUIT_KEYS[Math.floor(Math.random() * FRUIT_KEYS.length)]);
+    piece.innerHTML = fx && fx !== "win" && WIN_FX.some(x => x.id === fx) ? fxPieceSvg(fx) : fruitSvg(FRUIT_KEYS[Math.floor(Math.random() * FRUIT_KEYS.length)]);
     const size = isWin ? (24 + Math.random() * 14) : (22 + Math.random() * 10);
     piece.style.left = Math.random() * 100 + "vw";
     piece.style.width = size + "px";
@@ -9056,6 +9548,16 @@ async function buildShareCanvas(big, subtitle, badgeSvg, extras = {}) {
   ctx.beginPath();
   ctx.arc(cx, 650, 270, 0, Math.PI * 2);
   ctx.fill();
+  const myBg = myBackground();
+  const bgImg = myBg ? await loadSvgImage(bgSvg(myBg), 540) : null;
+  if (bgImg) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, 650, 270, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.drawImage(bgImg, cx - 270, 380, 540, 540);
+    ctx.restore();
+  }
   const mascot = await loadSvgImage(mascotSvg(extras.mood || "happy", getMyAvatar(), myEquipped()), 480);
   if (mascot) ctx.drawImage(mascot, cx - 210, 440, 420, 420);
   const badge = badgeSvg ? await loadSvgImage(badgeSvg, 200) : null;

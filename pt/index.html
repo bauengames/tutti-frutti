@@ -76,12 +76,15 @@ html[data-bg="violeta"]  { --bg: #2A1F47; --surface: #3A2C60; }
 html[data-bg="petroleo"] { --bg: #103036; --surface: #1B434A; }
 html[data-bg="crema"]    { --bg: #FFF3E2; --surface: #FFFFFF; --crema: #14101F; --fg-rgb: 20, 16, 31; }
 html[data-bg="lavanda"]  { --bg: #ECE4FF; --surface: #FFFFFF; --crema: #14101F; --fg-rgb: 20, 16, 31; }
+html[data-bg="noche"]    { --bg: #11142B; --surface: #1E2347; }
 
 html[data-theme="pomelo"]    { --primary: var(--pomelo);    --secondary: var(--mandarina); }
 html[data-theme="cielo"]     { --primary: var(--cielo);     --secondary: var(--uva); }
 html[data-theme="uva"]       { --primary: var(--uva);       --secondary: var(--pomelo); }
 html[data-theme="lima"]      { --primary: var(--lima);      --secondary: var(--cielo); }
 html[data-theme="mandarina"] { --primary: var(--mandarina); --secondary: var(--pomelo); }
+html[data-theme="sandia"]    { --primary: #FF5C7A; --secondary: #4CD97B; }
+html[data-theme="estrella"]  { --primary: #FFD23F; --secondary: #35C8F2; }
 
 html { background: var(--bg); overflow-x: clip; }
 body {
@@ -441,6 +444,8 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
     "uva__violeta": { theme: "uva", bg: "violeta" },
     "lima__petroleo": { theme: "lima", bg: "petroleo" },
     "mandarina__lavanda": { theme: "mandarina", bg: "lavanda" },
+    "sandia__noche": { theme: "sandia", bg: "noche" },
+    "estrella__noche": { theme: "estrella", bg: "noche" },
   };
   var LIGHT_BACKGROUNDS = ["crema", "lavanda"];
   var preset;
