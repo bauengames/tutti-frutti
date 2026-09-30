@@ -235,7 +235,8 @@ body:has(#screen-lobby.active) .brand-mini { visibility: hidden; }
 .btn-primary { background: var(--primary); color: var(--tinta); font-weight: 700; }
 .btn-primary:hover:not(:disabled) { filter: brightness(1.1); }
 .btn-primary:active:not(:disabled) { filter: brightness(.9); transform: translateY(2px); }
-.btn-primary:disabled { background: var(--crema-08); color: var(--text-muted); cursor: not-allowed; opacity: .7; }
+/* Sólido (no transparente): en la barra fija de abajo no se tiene que ver lo que pasa por detrás. */
+.btn-primary:disabled { background: color-mix(in srgb, var(--text) 10%, var(--bg)); color: var(--text-muted); cursor: not-allowed; opacity: 1; }
 .btn-secondary { background: transparent; border-color: var(--borde-fuerte); color: var(--text); font-weight: 600; }
 .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
 .btn-secondary:active { transform: translateY(2px); }
@@ -361,8 +362,8 @@ html[data-light] .cat-pick-chip-random { color: var(--tinta); }
 
 /* ---------- Lobby ---------- */
 .lobby { width: 100%; max-width: 640px; }
-.lobby-hero { padding: 12px 0 36px; text-align: center; }
-.lobby-hero .wordmark { font-size: clamp(64px, 17vw, 112px); display: block; margin-bottom: 18px; }
+.lobby-hero { padding: 8px 0 28px; text-align: center; }
+.lobby-hero .wordmark { font-size: clamp(52px, 14vw, 84px); display: block; margin-bottom: 12px; }
 .lobby-hero .lead { font-size: 19px; margin: 0 auto; }
 .online-note {
   background: rgba(255,166,43,.12); border: 1px solid rgba(255,166,43,.32); border-radius: 12px;
@@ -1074,7 +1075,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
 @media (min-width: 900px) {
   body { --page-pad-x: 32px; font-size: 18px; padding: 32px var(--page-pad-x) 72px; }
   .top-bar, .lobby, .results, .board, .grid, .basta-wrap { max-width: 880px; }
-  .lobby-hero .wordmark { font-size: clamp(72px, 8vw, 128px); }
+  .lobby-hero .wordmark { font-size: clamp(64px, 6vw, 88px); }
   .lobby-hero .lead { font-size: 20px; }
   .field input[type="text"], .field select { padding: 20px 24px; font-size: 18px; }
   .mode-tab { padding: 20px 12px; font-size: 17px; }
@@ -1276,6 +1277,11 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <div class="field" id="judgeField">
         <span class="label" data-i18n="judge_label">Objeciones</span>
         <div class="twist-list">
+          <button type="button" class="twist-chip" id="timerToggle" aria-pressed="true" onclick="toggleTimed()">
+            <span class="twist-icon" aria-hidden="true" data-icon="stopwatch"></span>
+            <span class="twist-text"><strong data-i18n="timer_toggle_title">Ronda con tiempo</strong><small id="timerToggleDesc"></small></span>
+            <span class="judge-switch" aria-hidden="true"></span>
+          </button>
           <button type="button" class="twist-chip" id="judgeToggle" aria-pressed="true" onclick="toggleJudge()">
             <span class="twist-icon" aria-hidden="true" data-icon="scales"></span>
             <span class="twist-text"><strong data-i18n="judge_toggle_title">Juez con IA</strong><small id="judgeToggleDesc"></small></span>
@@ -2185,7 +2191,11 @@ const I18N = {
     mascot_adv_fail: ["Casi... ¡otra vez!", "Uy, por poquito.", "La próxima sale."],
     mascot_adv_nolives: ["Me quedé sin energía... volvé en un rato.", "Zzz... las vidas se recargan solas."],
     pack_random: "Random",
-    judge_label: "Objeciones",
+    judge_label: "Reglas de la sala",
+    timer_toggle_title: "Ronda con tiempo",
+    timer_on_desc: "La ronda termina cuando se acaba el reloj o alguien toca ¡Basta!.",
+    timer_off_desc: "Apagado: no hay reloj. La ronda termina solo cuando alguien toca ¡Basta!.",
+    untimed_round_note: "Sin reloj: termina cuando alguien toca ¡Basta!",
     judge_toggle_title: "Juez con IA",
     judge_on_desc: "Si objetan una palabra y el autor no la acepta, la inteligencia artificial decide si vale.",
     judge_off_desc: "Apagado: lo deciden ustedes. Si la mitad o más de los demás objeta una palabra, no cuenta.",
@@ -2665,7 +2675,11 @@ const I18N = {
     mascot_adv_fail: ["So close... try again!", "Oops, almost.", "You'll get it next time."],
     mascot_adv_nolives: ["I'm out of energy... come back in a bit.", "Zzz... lives refill on their own."],
     pack_random: "Random",
-    judge_label: "Challenges",
+    judge_label: "Room rules",
+    timer_toggle_title: "Timed rounds",
+    timer_on_desc: "The round ends when the clock runs out or someone taps Stop!.",
+    timer_off_desc: "Off: no clock. The round only ends when someone taps Stop!.",
+    untimed_round_note: "No clock: it ends when someone taps Stop!",
     judge_toggle_title: "AI judge",
     judge_on_desc: "If someone challenges a word and the author doesn't accept it, the AI decides whether it counts.",
     judge_off_desc: "Off: you decide. If half or more of the other players challenge a word, it doesn't count.",
@@ -3145,7 +3159,11 @@ const I18N = {
     mascot_adv_fail: ["Quase... de novo!", "Ops, foi por pouco.", "Na próxima sai."],
     mascot_adv_nolives: ["Fiquei sem energia... volte daqui a pouco.", "Zzz... as vidas recarregam sozinhas."],
     pack_random: "Random",
-    judge_label: "Contestações",
+    judge_label: "Regras da sala",
+    timer_toggle_title: "Rodada com tempo",
+    timer_on_desc: "A rodada termina quando o tempo acaba ou alguém toca em Basta!.",
+    timer_off_desc: "Desligado: sem relógio. A rodada só termina quando alguém toca em Basta!.",
+    untimed_round_note: "Sem relógio: termina quando alguém toca em Basta!",
     judge_toggle_title: "Juiz com IA",
     judge_on_desc: "Se contestarem uma palavra e o autor não aceitar, a inteligência artificial decide se vale.",
     judge_off_desc: "Desligado: vocês decidem. Se metade ou mais dos outros contestar uma palavra, ela não vale.",
@@ -3432,6 +3450,7 @@ function setLanguage(lang) {
   document.getElementById("muteBtn").setAttribute("aria-label", state.muted ? t("mute_btn_aria_off") : t("mute_btn_aria_on"));
   renderCatChips();
   renderJudgeToggle();
+  renderTimedToggle();
   renderMissionsButton();
   renderDailyBanner();
   if (document.getElementById("tabCreate")) setMode(state.mode);
@@ -3528,6 +3547,7 @@ let state = {
   categories: [],
   categoriesMode: "fixed",
   judgeOn: true,
+  timed: true,
   duration: 45,
   totalRounds: 5,
   letter: "",
@@ -4310,6 +4330,7 @@ function createRoomOnline() {
         letterPool: state.letterPool,
         twists: { ...state.twists },
         judge: state.judgeOn !== false,
+        timed: state.timed !== false,
       },
       players: { [state.playerId]: myPlayerLabel() },
     };
@@ -4820,6 +4841,27 @@ function toggleJudge() {
   try { localStorage.setItem(JUDGE_KEY, state.judgeOn ? "on" : "off"); } catch (e) { /* storage unavailable */ }
   renderJudgeToggle();
 }
+// Ronda con tiempo: se puede apagar al crear la sala. Apagada, no hay reloj y la ronda
+// termina solo cuando alguien toca ¡Basta! (las rondas relámpago siguen teniendo su reloj).
+const TIMED_KEY = "tuttifruti_timed";
+function loadTimedSetting() {
+  try { return localStorage.getItem(TIMED_KEY) !== "off"; } catch (e) { return true; }
+}
+function renderTimedToggle() {
+  const btn = document.getElementById("timerToggle");
+  if (!btn) return;
+  btn.setAttribute("aria-pressed", String(state.timed));
+  const desc = document.getElementById("timerToggleDesc");
+  if (desc) desc.textContent = t(state.timed ? "timer_on_desc" : "timer_off_desc");
+  const durationField = document.getElementById("durationField");
+  if (durationField) durationField.style.display = state.timed ? "" : "none";
+}
+function toggleTimed() {
+  state.timed = !state.timed;
+  try { localStorage.setItem(TIMED_KEY, state.timed ? "on" : "off"); } catch (e) { /* storage unavailable */ }
+  renderTimedToggle();
+}
+
 function roomJudgeOn(data) {
   return !(data && data.config && data.config.judge === false);
 }
@@ -4830,10 +4872,11 @@ function roundMultiplier(data, cat) {
   return (cat === data.wildcard ? 2 : 1) * (data.hardLetter ? 2 : 1);
 }
 
-function renderTwistNote(hardLetter, flashSeconds) {
+function renderTwistNote(hardLetter, flashSeconds, untimed = false) {
   const note = document.getElementById("twistNote");
   if (!note) return;
   const parts = [];
+  if (untimed) parts.push(inlineIcon("stopwatch") + escapeHtml(t("untimed_round_note")));
   if (hardLetter) parts.push(inlineIcon("flame") + escapeHtml(t("hard_letter_note")));
   if (flashSeconds) parts.push(inlineIcon("bolt") + escapeHtml(t("flash_round_note", { s: flashSeconds })));
   note.innerHTML = parts.join(" · ");
@@ -4874,6 +4917,7 @@ function hostStartGame() {
     usedLetters: used,
     hardLetter: !!twists.hard && HARD_LETTERS.includes(letter),
     roundDuration: flash ? FLASH_DURATION : (config.duration || state.duration),
+    roundTimed: flash || config.timed !== false,
     lastFlashRound: flash ? round : (lastFlash || null),
     roundStartAt: window.FB.serverTimestamp(),
     bastaBy: null,
@@ -4965,8 +5009,8 @@ function playOnlineRoundIntro(data) {
   spinLetterReveal(state.letter, () => {
     renderLetterHistory();
     renderWildcardNote();
-    renderTwistNote(!!data.hardLetter, flashSeconds);
-    beginPlayingOnline(data.roundStartAt);
+    renderTwistNote(!!data.hardLetter, flashSeconds, data.roundTimed === false);
+    beginPlayingOnline(data.roundStartAt, data.roundTimed !== false);
   });
 }
 
@@ -4984,14 +5028,16 @@ function renderOnlinePlayersStrip(data) {
   });
 }
 
-function beginPlayingOnline(roundStartAt) {
-  document.getElementById("timerWrap").style.display = "block";
+function beginPlayingOnline(roundStartAt, timed = true) {
+  document.getElementById("timerWrap").style.display = timed ? "block" : "none";
   renderCatGrid();
   document.getElementById("catGrid").style.display = "grid";
   document.getElementById("bastaWrap").style.display = "flex";
   focusFirstAnswer();
   // El reloj arranca después de la ruleta de la letra, así esa animación no
   // le come segundos a la ronda.
+  clearInterval(state.timerId);
+  if (!timed) return; // sin reloj: la ronda termina cuando alguien toca ¡Basta!
   const startMs = (typeof roundStartAt === "number" ? roundStartAt : serverNow()) + ROUND_INTRO_MS;
   let lastTicSecond = null;
   const tickOnline = () => {
@@ -8742,6 +8788,8 @@ renderTwists();
 if (isSpookySeason()) document.querySelectorAll(".pack-seasonal").forEach(b => { b.style.display = ""; });
 state.judgeOn = loadJudgeSetting();
 renderJudgeToggle();
+state.timed = loadTimedSetting();
+renderTimedToggle();
 renderMissionsButton();
 applyDailyLinkFromUrl();
 
