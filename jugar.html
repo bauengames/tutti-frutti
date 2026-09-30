@@ -3611,6 +3611,8 @@ function setLanguage(lang) {
   renderCatChips();
   renderJudgeToggle();
   renderTimedToggle();
+  const fpanel = document.getElementById("friendsPanel");
+  if (fpanel) fpanel.innerHTML = ""; // se vuelve a armar en el idioma nuevo
   renderMissionsButton();
   renderDailyBanner();
   if (document.getElementById("tabCreate")) setMode(state.mode);
@@ -6620,6 +6622,8 @@ function friendMascot(fp, mood = "happy") {
   return mascotSvg(mood, avatarOf(fp), cleanAccessories(fp.acc));
 }
 
+// La tarjeta del código y el buscador se dibujan enseguida (con lo último que se sabe) y
+// después solo se completan el código y la lista: así la pestaña no salta al cargar.
 async function renderFriendsPanel() {
   const box = document.getElementById("friendsPanel");
   if (!box) return;
@@ -6629,16 +6633,11 @@ async function renderFriendsPanel() {
       <p class="hint">${escapeHtml(t(pending ? "friends_login_to_add" : "friends_login_needed"))}</p>`; // el botón de Google ya está arriba, en la caja de la cuenta
     return;
   }
-  box.innerHTML = `<p class="hint">${escapeHtml(t("board_loading"))}</p>`;
-  try {
-    // Primero se publica el perfil: sin él, nadie puede anotarse con tu código.
-    await publishProfile();
-    const code = state.friendCode;
-    const friends = await loadFriends();
+  if (!box.querySelector(".friend-code-card")) {
     box.innerHTML = `
       <div class="friend-code-card">
         <span class="label">${escapeHtml(t("friends_your_code"))}</span>
-        <span class="friend-code">${escapeHtml(formatFriendCode(code))}</span>
+        <span class="friend-code" id="myFriendCode">${escapeHtml(state.friendCode ? formatFriendCode(state.friendCode) : "····-····")}</span>
         <div class="friend-code-actions">
           <button type="button" class="btn btn-primary" onclick="shareFriendInvite()">${escapeHtml(t("friends_share_btn"))}</button>
           <button type="button" class="btn btn-secondary" id="copyFriendCodeBtn" onclick="copyFriendCode()">${escapeHtml(t("friends_copy_btn"))}</button>
@@ -6648,17 +6647,32 @@ async function renderFriendsPanel() {
         <input type="text" id="friendCodeInput" maxlength="14" placeholder="${escapeHtml(t("friends_code_placeholder"))}" onkeydown="if(event.key==='Enter') addFriendFromInput()" autocomplete="off" autocapitalize="characters" />
         <button type="button" onclick="addFriendFromInput()">${escapeHtml(t("add_btn"))}</button>
       </div>
-      <h2 class="section-title">${escapeHtml(t("friends_heading"))} (${friends.length})</h2>
+      <div id="friendsList">${state.friends ? friendsListHtml(state.friends) : `<h2 class="section-title">${escapeHtml(t("friends_heading"))}</h2><p class="hint">${escapeHtml(t("board_loading"))}</p>`}</div>`;
+  }
+  try {
+    // Primero se publica el perfil: sin él, nadie puede anotarse con tu código.
+    await publishProfile();
+    const codeEl = document.getElementById("myFriendCode");
+    if (codeEl) codeEl.textContent = formatFriendCode(state.friendCode);
+    const friends = await loadFriends();
+    const list = document.getElementById("friendsList");
+    const html = friendsListHtml(friends);
+    if (list && list.innerHTML !== html) list.innerHTML = html;
+  } catch (e) {
+    console.error("No se pudieron cargar los amigos", e);
+    const list = document.getElementById("friendsList");
+    if (list) list.innerHTML = `<p class="hint">${escapeHtml(t("friends_error"))}</p>`;
+  }
+}
+
+function friendsListHtml(friends) {
+  return `<h2 class="section-title">${escapeHtml(t("friends_heading"))} (${friends.length})</h2>
       ${friends.length ? friends.map(fp => `
         <button type="button" class="friend-row" onclick="openFriend('${escapeForJsAttr(fp.uid)}')">
           <span class="friend-avatar">${friendMascot(fp)}</span>
           <span><strong>${escapeHtml(fp.name || "?")}</strong><small>${iconSvgInline("star")} ${Number(fp.stats && fp.stats.stars) || 0} · ${escapeHtml(t("friends_wins", { n: Number(fp.stats && fp.stats.wins) || 0 }))}</small></span>
           <span class="friend-arrow">›</span>
         </button>`).join("") : `<p class="hint">${escapeHtml(t("friends_empty"))}</p>`}`;
-  } catch (e) {
-    console.error("No se pudieron cargar los amigos", e);
-    box.innerHTML = `<p class="hint">${escapeHtml(t("friends_error"))}</p>`;
-  }
 }
 function iconSvgInline(name) { return `<span class="inline-icon">${iconSvg(name)}</span>`; }
 
@@ -8502,7 +8516,9 @@ async function logoutGoogle() {
   await window.FB.logout();
   state.playerId = window.FB.uid;
   state.friendCode = null;
-  state.friends = [];
+  state.friends = null;
+  const fpanel = document.getElementById("friendsPanel");
+  if (fpanel) fpanel.innerHTML = "";
   renderAccountBoxes();
 }
 
