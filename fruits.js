@@ -330,6 +330,12 @@
       '<path d="M40 28 L46 14 L50 22 Z M44 42 L52 22 L58 36 Z" fill="' + C.cielo + '"/>' +
       '<path d="M37 36 L63 36 L66 42 L34 42 Z" fill="' + C.pomelo + '"/>' +
       '<circle cx="50" cy="5" r="5" fill="' + C.mandarina + '"/>',
+    witch:
+      '<ellipse cx="50" cy="40" rx="34" ry="7" fill="' + C.uvaOscura + '"/>' +
+      '<path d="M34 40 L46 12 C48 5 57 2 66 6 C59 8 55 12 54 17 L66 40 Z" fill="' + C.uva + '"/>' +
+      '<path d="M36 33 L64 33 L66 40 L34 40 Z" fill="' + C.mandarina + '"/>' +
+      '<rect x="46" y="32" width="8" height="8" rx="1.5" fill="none" stroke="' + C.amarillo + '" stroke-width="2"/>' +
+      '<path d="M48 14 C50 10 55 7 60 7" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none" opacity=".15"/>',
     crown:
       '<path d="M28 42 L30 16 L40 28 L50 8 L60 28 L70 16 L72 42 Z" fill="' + C.amarillo + '"/>' +
       '<rect x="28" y="36" width="44" height="8" rx="2" fill="' + C.mandarina + '"/>' +

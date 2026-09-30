@@ -298,6 +298,9 @@ html[data-light] .room-row button.copied { color: var(--tinta); border-color: va
 }
 .pack-btn:hover { border-color: var(--primary); color: var(--primary); }
 .pack-btn.selected { background: var(--primary); border-color: var(--primary); color: var(--tinta); }
+.pack-btn.pack-seasonal:not(.selected) { border-color: var(--mandarina); }
+.shop-item { position: relative; }
+.shop-limited { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); padding: 2px 8px; border-radius: 6px; background: var(--mandarina); color: var(--tinta); font: 800 10px/1.4 var(--font-body); letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; z-index: 1; }
 .cat-clear-btn {
   display: inline-flex; align-items: center; gap: 6px; padding: 10px 16px; border-radius: var(--radius-pill);
   border: 1px dashed var(--borde-fuerte); background: transparent; color: var(--crema-72);
@@ -736,6 +739,29 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
 .global-board { margin-top: 26px; }
 .global-board .board-me { text-align: center; margin: 10px 0 6px; }
 
+/* ---------- Mi fruta: pestañas ---------- */
+.profile-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 18px 0 8px; padding: 4px; border-radius: 14px; background: var(--crema-08); }
+.profile-tab { position: relative; border: 0; border-radius: 10px; padding: 10px 4px; background: transparent; color: var(--text-muted); font: 700 13px var(--font-body); cursor: pointer; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.profile-tab.active { background: var(--primary); color: var(--tinta); }
+.tab-dot { display: none; width: 8px; height: 8px; border-radius: 50%; background: var(--pomelo); margin-left: 4px; vertical-align: 2px; }
+.profile-tab.active .tab-dot { background: var(--tinta); }
+@media (max-width: 380px) { .profile-tab { font-size: 12px; } }
+
+/* ---------- Misiones del día ---------- */
+.mission { display: flex; align-items: center; gap: 12px; padding: 14px; border-radius: var(--radius-card); background: var(--surface); margin-bottom: 10px; border: 2px solid transparent; }
+.mission.done { border-color: var(--lima); }
+.mission .mission-body { flex: 1; min-width: 0; }
+.mission .mission-title { font-weight: 700; font-size: 15px; display: block; }
+.mission .mission-bar { height: 8px; border-radius: 4px; background: var(--crema-08); margin-top: 8px; overflow: hidden; }
+.mission .mission-bar span { display: block; height: 100%; background: var(--primary); border-radius: 4px; }
+.mission .mission-count { font-size: 12px; color: var(--text-muted); margin-top: 4px; display: block; }
+.claim-btn { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 10px 14px; border-radius: 10px; border: 0; background: var(--primary); color: var(--tinta); font: 700 13px var(--font-body); cursor: pointer; white-space: nowrap; }
+.claim-btn:disabled { background: var(--crema-08); color: var(--text-muted); cursor: default; }
+.claim-btn .seed-icon, .claim-btn svg { width: 16px; height: 16px; }
+.mission-bonus { text-align: center; font-size: 14px; color: var(--text-muted); margin: 6px 0 0; }
+.achievement .claim-btn { margin-top: 10px; }
+.achievement .ach-claimed { display: block; margin-top: 8px; font-size: 12px; color: var(--text-muted); }
+
 /* ---------- Logros ---------- */
 .achievements-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin: 0 0 28px; }
 .achievement {
@@ -776,6 +802,10 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
 .twist-chip strong { font-size: 15px; }
 .twist-chip small { font-size: 13px; color: var(--text-muted); line-height: 1.35; }
 .twist-chip .twist-text { flex: 1; }
+.judge-switch { position: relative; flex-shrink: 0; width: 44px; height: 26px; border-radius: 13px; background: var(--borde-fuerte); transition: background-color .15s; }
+.judge-switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: #FFF3E2; transition: transform .15s; }
+.twist-chip[aria-pressed="true"] .judge-switch { background: var(--primary); }
+.twist-chip[aria-pressed="true"] .judge-switch::after { transform: translateX(18px); }
 .price-tag { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; padding: 4px 9px; border-radius: var(--radius-pill); background: var(--crema-08); font: 700 12px var(--font-mono); color: var(--text); white-space: nowrap; }
 .cat-chip .price-tag { padding: 1px 6px; font-size: 10px; margin-left: 4px; vertical-align: 1px; }
 .create-cost { display: block; margin: 0 0 8px; padding: 8px 12px; border-radius: var(--radius); background: var(--surface); font-size: 14px; text-align: center; }
@@ -1194,6 +1224,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
           <button type="button" class="pack-btn" data-pack="argento" onclick="loadPack('argento')" data-i18n="pack_argento">Cultura argentina</button>
           <button type="button" class="pack-btn" data-pack="peru" onclick="loadPack('peru')" data-i18n="pack_peru">Cultura peruana</button>
           <button type="button" class="pack-btn" data-pack="mexico" onclick="loadPack('mexico')" data-i18n="pack_mexico">Cultura mexicana</button>
+          <button type="button" class="pack-btn pack-seasonal" data-pack="halloween" onclick="loadPack('halloween')" style="display:none;" data-i18n="pack_halloween">🎃 Halloween y Muertos</button>
           <button type="button" class="pack-btn" data-pack="random" onclick="loadPack('random')" data-i18n="pack_random">Random</button>
         </div>
         <p class="online-note" id="randomCategoriesNote" style="display:none;" data-i18n="random_categories_note">Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!</p>
@@ -1242,6 +1273,17 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
         </div>
       </div>
 
+      <div class="field" id="judgeField">
+        <span class="label" data-i18n="judge_label">Objeciones</span>
+        <div class="twist-list">
+          <button type="button" class="twist-chip" id="judgeToggle" aria-pressed="true" onclick="toggleJudge()">
+            <span class="twist-icon" aria-hidden="true" data-icon="scales"></span>
+            <span class="twist-text"><strong data-i18n="judge_toggle_title">Juez con IA</strong><small id="judgeToggleDesc"></small></span>
+            <span class="judge-switch" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
       <div class="field" id="twistsField">
         <span class="label" data-i18n="twists_label">Vueltas de tuerca (opcional)</span>
         <div class="twist-list">
@@ -1267,42 +1309,12 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <p class="create-cost" id="createCostNote" style="display:none;"></p>
       <button class="btn btn-primary btn-block" id="playBtn" disabled onclick="beginGame()">Empezar a jugar</button>
       <div class="lobby-links">
-        <button type="button" class="btn btn-ghost" onclick="showStatsScreen()" data-i18n="view_stats_btn">Ver mis estadísticas</button>
+        <button type="button" class="btn btn-ghost" onclick="openProfile('missions')" id="missionsBtn"></button>
         <button type="button" class="btn btn-ghost" onclick="openShop()" id="shopBtn"><span data-i18n="shop_heading">Tienda</span></button>
       </div>
     </div>
     <div data-account-box class="lobby-account"></div>
     <button type="button" class="btn btn-ghost btn-block install-btn" id="installAppBtn" style="display:none;" onclick="installApp()"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/></svg><span data-install-label data-i18n="install_app_btn">Instalar la app</span></button>
-  </div>
-</div>
-
-<!-- ESTADÍSTICAS PERSONALES -->
-<div class="screen" id="screen-stats">
-  <div class="results">
-    <div class="results-card">
-      <div class="hero-band">
-        <h2 data-i18n="stats_heading">Tus estadísticas</h2>
-        <p data-i18n="stats_lead">Guardadas en este dispositivo — nadie más las ve.</p>
-      </div>
-      <div data-account-box></div>
-      <div class="stats-grid">
-        <div class="stat-card"><span class="stat-value" id="statGames">0</span><span class="stat-label" data-i18n="stats_games">Partidas jugadas</span></div>
-        <div class="stat-card"><span class="stat-value" id="statRounds">0</span><span class="stat-label" data-i18n="stats_rounds">Rondas jugadas</span></div>
-        <div class="stat-card"><span class="stat-value" id="statLetter">–</span><span class="stat-label" data-i18n="stats_top_letter">Letra más frecuente</span></div>
-        <div class="stat-card"><span class="stat-value" id="statStreakBest">0</span><span class="stat-label" data-i18n="stats_streak_best">Mejor puntaje contrarreloj</span></div>
-        <div class="stat-card"><span class="stat-value" id="statDayStreak">0</span><span class="stat-label" data-i18n="stats_day_streak">Días seguidos jugando</span></div>
-        <div class="stat-card"><span class="stat-value" id="statWins">0</span><span class="stat-label" data-i18n="stats_wins">Victorias online</span></div>
-      </div>
-      <h2 class="section-title" data-i18n="achievements_heading">Logros</h2>
-      <div class="achievements-grid" id="achievementsGrid"></div>
-      <h2 class="section-title" data-i18n="weekly_board_heading">Ranking contrarreloj de la semana</h2>
-      <div id="statsWeeklyBoard"></div>
-      <h2 class="section-title" style="margin-top:28px;" data-i18n="stats_streak_top_heading">Mejores rachas</h2>
-      <div id="streakHistoryList"></div>
-      <div class="actions-row">
-        <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -1387,11 +1399,48 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
         <p id="profileSub"></p>
       </div>
       <div data-account-box></div>
-      <h2 class="section-title" data-i18n="profile_acc_heading">Tus accesorios</h2>
-      <div id="profileAccessories"></div>
-      <button type="button" class="btn btn-secondary btn-block" style="margin-top:10px;" onclick="openShop('acc')" data-i18n="profile_to_shop">Conseguir más en la tienda</button>
-      <h2 class="section-title" style="margin-top:28px;" data-i18n="profile_fruit_heading">Tu fruta</h2>
-      <div class="avatar-picker" id="profileAvatarPicker"></div>
+      <div class="profile-tabs" role="tablist">
+        <button type="button" role="tab" class="profile-tab" data-tab="fruit" onclick="setProfileTab('fruit')" data-i18n="profile_tab_fruit">Mi fruta</button>
+        <button type="button" role="tab" class="profile-tab" data-tab="missions" onclick="setProfileTab('missions')"><span data-i18n="profile_tab_missions">Misiones</span><span class="tab-dot" id="missionsTabDot"></span></button>
+        <button type="button" role="tab" class="profile-tab" data-tab="achievements" onclick="setProfileTab('achievements')"><span data-i18n="profile_tab_achievements">Logros</span><span class="tab-dot" id="achTabDot"></span></button>
+        <button type="button" role="tab" class="profile-tab" data-tab="stats" onclick="setProfileTab('stats')" data-i18n="profile_tab_stats">Estadísticas</button>
+      </div>
+
+      <div class="profile-panel" data-panel="fruit">
+        <h2 class="section-title" data-i18n="profile_acc_heading">Tus accesorios</h2>
+        <div id="profileAccessories"></div>
+        <button type="button" class="btn btn-secondary btn-block" style="margin-top:10px;" onclick="openShop('acc')" data-i18n="profile_to_shop">Conseguir más en la tienda</button>
+        <h2 class="section-title" style="margin-top:28px;" data-i18n="profile_fruit_heading">Tu fruta</h2>
+        <div class="avatar-picker" id="profileAvatarPicker"></div>
+      </div>
+
+      <div class="profile-panel" data-panel="missions">
+        <h2 class="section-title" data-i18n="missions_heading">Misiones de hoy</h2>
+        <p class="hint" id="missionsLead"></p>
+        <div id="missionsList"></div>
+      </div>
+
+      <div class="profile-panel" data-panel="achievements">
+        <h2 class="section-title" data-i18n="achievements_heading">Logros</h2>
+        <p class="hint" id="achievementsLead"></p>
+        <div class="achievements-grid" id="achievementsGrid"></div>
+      </div>
+
+      <div class="profile-panel" data-panel="stats">
+        <p class="hint" data-i18n="stats_lead">Guardadas en este dispositivo — nadie más las ve.</p>
+        <div class="stats-grid">
+          <div class="stat-card"><span class="stat-value" id="statGames">0</span><span class="stat-label" data-i18n="stats_games">Partidas jugadas</span></div>
+          <div class="stat-card"><span class="stat-value" id="statRounds">0</span><span class="stat-label" data-i18n="stats_rounds">Rondas jugadas</span></div>
+          <div class="stat-card"><span class="stat-value" id="statLetter">–</span><span class="stat-label" data-i18n="stats_top_letter">Letra más frecuente</span></div>
+          <div class="stat-card"><span class="stat-value" id="statStreakBest">0</span><span class="stat-label" data-i18n="stats_streak_best">Mejor puntaje contrarreloj</span></div>
+          <div class="stat-card"><span class="stat-value" id="statDayStreak">0</span><span class="stat-label" data-i18n="stats_day_streak">Días seguidos jugando</span></div>
+          <div class="stat-card"><span class="stat-value" id="statWins">0</span><span class="stat-label" data-i18n="stats_wins">Victorias online</span></div>
+        </div>
+        <h2 class="section-title" data-i18n="weekly_board_heading">Ranking contrarreloj de la semana</h2>
+        <div id="statsWeeklyBoard"></div>
+        <h2 class="section-title" style="margin-top:28px;" data-i18n="stats_streak_top_heading">Mejores rachas</h2>
+        <div id="streakHistoryList"></div>
+      </div>
       <div class="actions-row">
         <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
       </div>
@@ -1649,6 +1698,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
   <div class="wrap searching">
     <div id="searchSpinner"></div>
     <p class="lead" id="searchingText" data-i18n="searching_text">Buscando un rival al azar...</p>
+    <p class="hint" style="text-align:center;" data-i18n="searching_bot_hint">Si no aparece nadie en unos segundos, jugás contra Frutibot, nuestro rival automático.</p>
     <div id="searchTimeoutOptions" style="display:none;">
       <p class="lead" style="font-size:14px;" data-i18n="searching_none_found">No encontramos a nadie todavía.</p>
       <button type="button" class="btn btn-primary btn-block" onclick="keepSearching()" data-i18n="keep_searching_btn">Seguir buscando</button>
@@ -1795,7 +1845,15 @@ const CATEGORY_PACKS = {
   // el pack Random, el contrarreloj ni el desafío del día.
   peru: ["Comida peruana", "Departamento del Perú", "Postre peruano", "Palabra de la jerga peruana", "Club de fútbol peruano", "Personaje histórico peruano"],
   mexico: ["Comida mexicana", "Estado de la República Mexicana", "Mexicanismo", "Equipo de fútbol mexicano", "Cantante mexicano", "Personaje histórico mexicano"],
+  // De temporada: el botón solo aparece entre fines de septiembre y el 5 de noviembre (ver isSpookySeason).
+  halloween: ["Disfraz", "Monstruo o criatura", "Película de terror", "Golosina", "Algo que da miedo", "Algo de la ofrenda de muertos"],
 };
+
+// Temporada de Halloween y Día de Muertos: del 25 de septiembre al 5 de noviembre.
+function isSpookySeason(date = new Date()) {
+  const m = date.getMonth(), d = date.getDate();
+  return m === 9 || (m === 8 && d >= 25) || (m === 10 && d <= 5);
+}
 const RANDOM_PACK_CATEGORY_COUNT = 8;
 
 // Elige `count` categorías al azar del pool completo — se usa tanto para el
@@ -1843,6 +1901,12 @@ const CATEGORY_LABELS = {
   "Club de fútbol peruano": { es: "Club de fútbol peruano", en: "Peruvian soccer club", pt: "Time de futebol peruano" },
   "Personaje histórico peruano": { es: "Personaje histórico peruano", en: "Peruvian historical figure", pt: "Personagem histórico peruano" },
   "Comida mexicana": { es: "Comida mexicana", en: "Mexican food", pt: "Comida mexicana" },
+  "Disfraz": { es: "Disfraz", en: "Costume", pt: "Fantasia" },
+  "Monstruo o criatura": { es: "Monstruo o criatura", en: "Monster or creature", pt: "Monstro ou criatura" },
+  "Película de terror": { es: "Película de terror", en: "Horror movie", pt: "Filme de terror" },
+  "Golosina": { es: "Golosina", en: "Candy", pt: "Doce" },
+  "Algo que da miedo": { es: "Algo que da miedo", en: "Something scary", pt: "Algo que dá medo" },
+  "Algo de la ofrenda de muertos": { es: "Algo de la ofrenda de muertos", en: "Day of the Dead offering", pt: "Algo da oferenda do Dia dos Mortos" },
   "Estado de la República Mexicana": { es: "Estado de la República Mexicana", en: "Mexican state", pt: "Estado do México" },
   "Mexicanismo": { es: "Mexicanismo", en: "Mexican slang word", pt: "Gíria mexicana" },
   "Equipo de fútbol mexicano": { es: "Equipo de fútbol mexicano", en: "Mexican soccer team", pt: "Time de futebol mexicano" },
@@ -2051,6 +2115,9 @@ const I18N = {
     acc_sunglasses: "Anteojos de sol",
     acc_bowtie: "Moño",
     acc_scarf: "Bufanda",
+    acc_witch: "Sombrero de bruja",
+    shop_limited: "Solo en Halloween",
+    pack_halloween: "🎃 Halloween y Muertos",
     logout_btn: "Cerrar sesión",
     logout_confirm: "¿Cerrar sesión en este dispositivo? Tu progreso queda guardado en tu cuenta de Google.",
     welcome_gift_toast: "¡Regalo de bienvenida: {n} semillas!",
@@ -2118,6 +2185,44 @@ const I18N = {
     mascot_adv_fail: ["Casi... ¡otra vez!", "Uy, por poquito.", "La próxima sale."],
     mascot_adv_nolives: ["Me quedé sin energía... volvé en un rato.", "Zzz... las vidas se recargan solas."],
     pack_random: "Random",
+    judge_label: "Objeciones",
+    judge_toggle_title: "Juez con IA",
+    judge_on_desc: "Si objetan una palabra y el autor no la acepta, la inteligencia artificial decide si vale.",
+    judge_off_desc: "Apagado: lo deciden ustedes. Si la mitad o más de los demás objeta una palabra, no cuenta.",
+    review_lead_nojudge: "Tomate tu tiempo: objetá cualquier respuesta que te parezca inválida. El autor puede aceptar la objeción (vale 0). Esta sala juega sin juez: si la mitad o más de los demás objeta una palabra, no cuenta. El puntaje se calcula cuando todos tocan «Listo, ya revisé».",
+    outcome_votes_kept: "No alcanzaron los votos: la palabra vale igual",
+    majority_objected: "La mayoría la objetó",
+    votes_kept_mine: "La objetaron, pero no alcanzaron los votos: vale igual",
+    bot_name: "Frutibot",
+    bot_match_toast: "No había nadie buscando: jugás contra Frutibot",
+    searching_bot_hint: "Si no aparece nadie en unos segundos, jugás contra Frutibot, nuestro rival automático.",
+    profile_tab_fruit: "Mi fruta",
+    profile_tab_missions: "Misiones",
+    profile_tab_achievements: "Logros",
+    profile_tab_stats: "Estadísticas",
+    missions_heading: "Misiones de hoy",
+    missions_lead: "Se renuevan todos los días. Cumplí las tres y ganás 🌱 {n} extra.",
+    missions_lobby_btn: "Misiones del día · {done}/3",
+    missions_all_done: "¡Cumpliste todas las misiones de hoy! Mañana hay nuevas.",
+    mission_claimed: "Cobrada ✓",
+    mission_complete_toast: "¡Misión cumplida! Cobrala en Mi fruta",
+    mission_bonus_toast: "¡Misiones de hoy completas! +{n} extra",
+    mission_online_play: "Terminá una partida online",
+    mission_online_win: "Ganá una partida online",
+    mission_adv_pass: "Pasá {n} niveles de la Aventura",
+    mission_adv_3stars: "Conseguí 3 estrellas en un nivel de la Aventura",
+    mission_daily: "Jugá el desafío del día",
+    mission_streak_rounds: "Completá {n} rondas en contrarreloj",
+    mission_duel: "Jugá un duelo con amigos",
+    mission_valid_words: "Escribí {n} palabras válidas en cualquier modo",
+    mission_unique_words: "Poné {n} palabras que nadie más puso en partidas online",
+    achievements_lead: "Cada logro que desbloqueás se cobra acá: 🌱 {n} cada uno.",
+    ach_adv_world1_t: "Mundo Manzana",
+    ach_adv_world1_d: "Le ganaste al jefe del primer mundo de la Aventura.",
+    ach_adv_stars_45_t: "Coleccionista",
+    ach_adv_stars_45_d: "Juntaste 45 estrellas en la Aventura.",
+    ach_missions_10_t: "Cumplidor",
+    ach_missions_10_d: "Cobraste 10 misiones del día.",
     clear_categories_btn: "Borrar todas",
     random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
     random_category_chip: "Random",
@@ -2490,6 +2595,9 @@ const I18N = {
     acc_sunglasses: "Sunglasses",
     acc_bowtie: "Bow tie",
     acc_scarf: "Scarf",
+    acc_witch: "Witch hat",
+    shop_limited: "Halloween only",
+    pack_halloween: "🎃 Halloween",
     logout_btn: "Sign out",
     logout_confirm: "Sign out on this device? Your progress stays saved in your Google account.",
     welcome_gift_toast: "Welcome gift: {n} seeds!",
@@ -2557,6 +2665,44 @@ const I18N = {
     mascot_adv_fail: ["So close... try again!", "Oops, almost.", "You'll get it next time."],
     mascot_adv_nolives: ["I'm out of energy... come back in a bit.", "Zzz... lives refill on their own."],
     pack_random: "Random",
+    judge_label: "Challenges",
+    judge_toggle_title: "AI judge",
+    judge_on_desc: "If someone challenges a word and the author doesn't accept it, the AI decides whether it counts.",
+    judge_off_desc: "Off: you decide. If half or more of the other players challenge a word, it doesn't count.",
+    review_lead_nojudge: "Take your time: challenge any answer that looks invalid to you. The author can accept the challenge (it's worth 0). This room plays without a judge: if half or more of the others challenge a word, it doesn't count. The score is calculated once everyone taps \"Done, I reviewed\".",
+    outcome_votes_kept: "Not enough votes: the word still counts",
+    majority_objected: "Most players challenged it",
+    votes_kept_mine: "It was challenged, but there weren't enough votes: it counts",
+    bot_name: "Frutibot",
+    bot_match_toast: "Nobody else was searching: you're playing Frutibot",
+    searching_bot_hint: "If nobody shows up in a few seconds, you'll play Frutibot, our automatic opponent.",
+    profile_tab_fruit: "My fruit",
+    profile_tab_missions: "Missions",
+    profile_tab_achievements: "Badges",
+    profile_tab_stats: "Stats",
+    missions_heading: "Today's missions",
+    missions_lead: "New ones every day. Complete all three and get 🌱 {n} extra.",
+    missions_lobby_btn: "Daily missions · {done}/3",
+    missions_all_done: "You completed all of today's missions! New ones tomorrow.",
+    mission_claimed: "Claimed ✓",
+    mission_complete_toast: "Mission complete! Claim it in My fruit",
+    mission_bonus_toast: "All of today's missions done! +{n} extra",
+    mission_online_play: "Finish an online game",
+    mission_online_win: "Win an online game",
+    mission_adv_pass: "Clear {n} Adventure levels",
+    mission_adv_3stars: "Get 3 stars on an Adventure level",
+    mission_daily: "Play the daily challenge",
+    mission_streak_rounds: "Complete {n} rounds in Time attack",
+    mission_duel: "Play a duel with friends",
+    mission_valid_words: "Write {n} valid words in any mode",
+    mission_unique_words: "Write {n} words nobody else wrote in online games",
+    achievements_lead: "Claim every badge you unlock here: 🌱 {n} each.",
+    ach_adv_world1_t: "Apple World",
+    ach_adv_world1_d: "You beat the boss of the first Adventure world.",
+    ach_adv_stars_45_t: "Collector",
+    ach_adv_stars_45_d: "You collected 45 stars in the Adventure.",
+    ach_missions_10_t: "Reliable",
+    ach_missions_10_d: "You claimed 10 daily missions.",
     clear_categories_btn: "Clear all",
     random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
     random_category_chip: "Random",
@@ -2929,6 +3075,9 @@ const I18N = {
     acc_sunglasses: "Óculos de sol",
     acc_bowtie: "Gravata-borboleta",
     acc_scarf: "Cachecol",
+    acc_witch: "Chapéu de bruxa",
+    shop_limited: "Só no Halloween",
+    pack_halloween: "🎃 Halloween",
     logout_btn: "Sair",
     logout_confirm: "Sair neste dispositivo? Seu progresso continua salvo na sua conta do Google.",
     welcome_gift_toast: "Presente de boas-vindas: {n} sementes!",
@@ -2996,6 +3145,44 @@ const I18N = {
     mascot_adv_fail: ["Quase... de novo!", "Ops, foi por pouco.", "Na próxima sai."],
     mascot_adv_nolives: ["Fiquei sem energia... volte daqui a pouco.", "Zzz... as vidas recarregam sozinhas."],
     pack_random: "Random",
+    judge_label: "Contestações",
+    judge_toggle_title: "Juiz com IA",
+    judge_on_desc: "Se contestarem uma palavra e o autor não aceitar, a inteligência artificial decide se vale.",
+    judge_off_desc: "Desligado: vocês decidem. Se metade ou mais dos outros contestar uma palavra, ela não vale.",
+    review_lead_nojudge: "Sem pressa: conteste qualquer resposta que pareça inválida. O autor pode aceitar a contestação (vale 0). Esta sala joga sem juiz: se metade ou mais dos outros contestar uma palavra, ela não vale. A pontuação é calculada quando todos tocarem em \"Pronto, já revisei\".",
+    outcome_votes_kept: "Não houve votos suficientes: a palavra vale do mesmo jeito",
+    majority_objected: "A maioria contestou",
+    votes_kept_mine: "Contestaram, mas não houve votos suficientes: vale",
+    bot_name: "Frutibot",
+    bot_match_toast: "Ninguém estava procurando: você joga contra o Frutibot",
+    searching_bot_hint: "Se ninguém aparecer em alguns segundos, você joga contra o Frutibot, nosso adversário automático.",
+    profile_tab_fruit: "Minha fruta",
+    profile_tab_missions: "Missões",
+    profile_tab_achievements: "Conquistas",
+    profile_tab_stats: "Estatísticas",
+    missions_heading: "Missões de hoje",
+    missions_lead: "Mudam todo dia. Complete as três e ganhe 🌱 {n} extra.",
+    missions_lobby_btn: "Missões do dia · {done}/3",
+    missions_all_done: "Você completou todas as missões de hoje! Amanhã tem novas.",
+    mission_claimed: "Resgatada ✓",
+    mission_complete_toast: "Missão cumprida! Resgate em Minha fruta",
+    mission_bonus_toast: "Missões de hoje completas! +{n} extra",
+    mission_online_play: "Termine uma partida online",
+    mission_online_win: "Ganhe uma partida online",
+    mission_adv_pass: "Passe {n} níveis da Aventura",
+    mission_adv_3stars: "Consiga 3 estrelas num nível da Aventura",
+    mission_daily: "Jogue o desafio do dia",
+    mission_streak_rounds: "Complete {n} rodadas no contrarrelógio",
+    mission_duel: "Jogue um duelo com amigos",
+    mission_valid_words: "Escreva {n} palavras válidas em qualquer modo",
+    mission_unique_words: "Escreva {n} palavras que ninguém mais escreveu em partidas online",
+    achievements_lead: "Resgate aqui cada conquista desbloqueada: 🌱 {n} cada uma.",
+    ach_adv_world1_t: "Mundo Maçã",
+    ach_adv_world1_d: "Você venceu o chefe do primeiro mundo da Aventura.",
+    ach_adv_stars_45_t: "Colecionador",
+    ach_adv_stars_45_d: "Você juntou 45 estrelas na Aventura.",
+    ach_missions_10_t: "Cumpridor",
+    ach_missions_10_d: "Você resgatou 10 missões do dia.",
     clear_categories_btn: "Limpar todas",
     random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
     random_category_chip: "Random",
@@ -3244,6 +3431,8 @@ function setLanguage(lang) {
   if (menu) menu.classList.remove("open");
   document.getElementById("muteBtn").setAttribute("aria-label", state.muted ? t("mute_btn_aria_off") : t("mute_btn_aria_on"));
   renderCatChips();
+  renderJudgeToggle();
+  renderMissionsButton();
   renderDailyBanner();
   if (document.getElementById("tabCreate")) setMode(state.mode);
 
@@ -3338,6 +3527,7 @@ let state = {
   roomCode: "",
   categories: [],
   categoriesMode: "fixed",
+  judgeOn: true,
   duration: 45,
   totalRounds: 5,
   letter: "",
@@ -3439,7 +3629,7 @@ function topLetter(letterCounts) {
   return top;
 }
 
-function showStatsScreen() {
+function renderStatsPanel() {
   const stats = getStats();
   document.getElementById("statGames").textContent = stats.gamesPlayed;
   document.getElementById("statRounds").textContent = stats.roundsPlayed;
@@ -3449,7 +3639,6 @@ function showStatsScreen() {
   const progress = getProgress();
   document.getElementById("statDayStreak").innerHTML = currentDayStreak(progress) + (currentDayStreak(progress) ? inlineIcon("flame") : "");
   document.getElementById("statWins").textContent = progress.wins;
-  renderAchievements();
   renderLeaderboard(`weekly/${weekKey()}`, document.getElementById("statsWeeklyBoard"), "weekly_board_empty");
 
   const list = document.getElementById("streakHistoryList");
@@ -3468,7 +3657,6 @@ function showStatsScreen() {
       list.appendChild(row);
     });
   }
-  showScreen("screen-stats");
 }
 
 function getPlayerId() {
@@ -4121,6 +4309,7 @@ function createRoomOnline() {
         totalRounds: state.totalRounds,
         letterPool: state.letterPool,
         twists: { ...state.twists },
+        judge: state.judgeOn !== false,
       },
       players: { [state.playerId]: myPlayerLabel() },
     };
@@ -4215,6 +4404,7 @@ function startRandomMatch() {
 
     clearTimeout(state.randomSearchTimeoutId);
     state.randomSearchTimeoutId = setTimeout(showRandomSearchTimeoutOptions, RANDOM_SEARCH_TIMEOUT);
+    scheduleBotMatch();
   });
 }
 
@@ -4332,12 +4522,13 @@ function joinMatchedRoom(roomCode) {
 
 function cleanupRandomSearch() {
   clearTimeout(state.randomSearchTimeoutId);
+  clearTimeout(state.botTimeoutId);
   clearTimeout(state.randomRetryTimeoutId);
   if (state.queueRef) {
     window.FB.off(state.queueRef);
     state.queueRef = null;
   }
-  window.FB.remove(queueEntryRef(state.playerId)).catch(() => { /* ya no existía */ });
+  if (window.FB && window.FB.remove) window.FB.remove(queueEntryRef(state.playerId)).catch(() => { /* ya no existía */ });
 }
 
 function showRandomSearchTimeoutOptions() {
@@ -4352,6 +4543,119 @@ function keepSearching() {
   tryFindOpponent();
   clearTimeout(state.randomSearchTimeoutId);
   state.randomSearchTimeoutId = setTimeout(showRandomSearchTimeoutOptions, RANDOM_SEARCH_TIMEOUT);
+  scheduleBotMatch();
+}
+
+// ---------- Rival automático (Frutibot) ----------
+// Si en "Al azar" no aparece nadie en unos segundos, se arma una sala normal con un jugador
+// que maneja quien la creó: sus respuestas las inventa la IA (ver netlify/functions/rival.js)
+// y se cargan en la sala como las de cualquier jugador, así el puntaje, la revisión y las
+// objeciones funcionan igual que contra una persona.
+const BOT_WAIT_MS = 12000;
+
+function scheduleBotMatch(delay = BOT_WAIT_MS) {
+  clearTimeout(state.botTimeoutId);
+  state.botTimeoutId = setTimeout(startBotMatch, delay);
+}
+
+async function startBotMatch() {
+  if (document.querySelector(".screen.active").id !== "screen-searching") return;
+  // Me reservo en la cola antes de irme: si justo alguien me estaba emparejando, gana esa partida.
+  let reserved = false;
+  try {
+    const result = await window.FB.runTransaction(queueEntryRef(state.playerId), current => {
+      if (current === null) return null;
+      if (current.status !== "waiting") return undefined;
+      return { ...current, status: "bot" };
+    });
+    reserved = result.committed && result.snapshot.exists() && result.snapshot.val().status === "bot";
+  } catch (e) { reserved = false; }
+  if (!reserved) {
+    if (document.querySelector(".screen.active").id === "screen-searching") scheduleBotMatch(4000);
+    return;
+  }
+  cleanupRandomSearch();
+
+  const botId = "bot" + uid().slice(0, 10).replace(/[^A-Za-z0-9]/g, "");
+  const botAvatars = BASE_AVATARS.filter(a => a !== getMyAvatar());
+  state.roomCode = uid().slice(0, 5);
+  state.categories = [...RANDOM_MATCH_CONFIG.categories];
+  state.duration = RANDOM_MATCH_CONFIG.duration;
+  state.totalRounds = RANDOM_MATCH_CONFIG.totalRounds;
+  state.letterPool = [...RANDOM_MATCH_CONFIG.letterPool];
+  const roomData = {
+    hostId: state.playerId,
+    status: "lobby",
+    round: 1,
+    letter: "",
+    usedLetters: getRecentLetters().filter(l => state.letterPool.includes(l)),
+    bastaBy: null,
+    bot: botId,
+    config: {
+      categories: state.categories,
+      duration: state.duration,
+      totalRounds: state.totalRounds,
+      letterPool: state.letterPool,
+      judge: true,
+    },
+    players: {
+      [state.playerId]: myPlayerLabel(),
+      [botId]: { name: t("bot_name"), score: 0, connected: true, avatar: botAvatars[Math.floor(Math.random() * botAvatars.length)] },
+    },
+  };
+  await window.FB.set(roomsRef(), roomData);
+  state.isHost = true;
+  state.room = roomData;
+  recordGameStart();
+  setupDisconnectHandling();
+  subscribeToRoom();
+  track("bot_match_start");
+  seedToast(t("bot_match_toast"));
+  hostStartGame();
+}
+
+// Nivel del bot: completa entre 55% y 85% de las categorías, distinto en cada ronda.
+function prepareBotAnswers(data) {
+  const round = data.round;
+  const categories = data.categories || (data.config && data.config.categories) || [];
+  const labels = categories.map(c => catLabel(c));
+  const promise = (async () => {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 12000);
+      const res = await fetch("/.netlify/functions/rival", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ letra: data.letter, categorias: labels, idioma: state.lang }),
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+      if (!res.ok) return {};
+      const json = await res.json();
+      const byLabel = (json && json.respuestas) || {};
+      const skill = 0.55 + Math.random() * 0.3;
+      const out = {};
+      categories.forEach((cat, i) => {
+        const v = byLabel[labels[i]];
+        if (typeof v === "string" && v && Math.random() < skill) out[cat] = v.slice(0, 40);
+      });
+      return out;
+    } catch (e) {
+      return {};
+    }
+  })();
+  state.botAnswers = { round, promise };
+}
+
+async function writeBotAnswers(round) {
+  const botId = state.room && state.room.bot;
+  if (!botId) return;
+  let answers = {};
+  if (state.botAnswers && state.botAnswers.round === round) {
+    // Si la IA todavía no contestó, espera como mucho unos segundos: el bot nunca traba la ronda.
+    answers = await Promise.race([state.botAnswers.promise, new Promise(r => setTimeout(() => r({}), 4000))]);
+  }
+  await window.FB.set(window.FB.ref(window.FB.db, `rooms/${state.roomCode}/answers/${round}/${botId}`), answers);
 }
 
 function subscribeToRoom() {
@@ -4406,6 +4710,7 @@ function handleRoomUpdate(data) {
     state.answers = {};
     rememberLetter(data.letter);
     recordRoundPlayed(data.letter);
+    if (state.isHost && data.bot) prepareBotAnswers(data);
     playOnlineRoundIntro(data);
   } else if (data.status === "voting" && lastHandledStatus !== "voting") {
     lastHandledStatus = "voting";
@@ -4495,6 +4800,28 @@ function toggleTwist(key) {
   state.twists = { ...state.twists, [key]: !state.twists[key] };
   try { localStorage.setItem(TWISTS_KEY, JSON.stringify(state.twists)); } catch (e) { /* storage unavailable */ }
   renderTwists();
+}
+
+// Juez con IA para las objeciones: se puede apagar al crear la sala. Apagado, las objeciones
+// se resuelven entre los jugadores (si la mitad o más de los demás objeta, la palabra no cuenta).
+const JUDGE_KEY = "tuttifruti_judge";
+function loadJudgeSetting() {
+  try { return localStorage.getItem(JUDGE_KEY) !== "off"; } catch (e) { return true; }
+}
+function renderJudgeToggle() {
+  const btn = document.getElementById("judgeToggle");
+  if (!btn) return;
+  btn.setAttribute("aria-pressed", String(state.judgeOn));
+  const desc = document.getElementById("judgeToggleDesc");
+  if (desc) desc.textContent = t(state.judgeOn ? "judge_on_desc" : "judge_off_desc");
+}
+function toggleJudge() {
+  state.judgeOn = !state.judgeOn;
+  try { localStorage.setItem(JUDGE_KEY, state.judgeOn ? "on" : "off"); } catch (e) { /* storage unavailable */ }
+  renderJudgeToggle();
+}
+function roomJudgeOn(data) {
+  return !(data && data.config && data.config.judge === false);
 }
 
 // Multiplicador de una categoría en una ronda: la categoría doble y la letra
@@ -4732,7 +5059,8 @@ function onRoundCollecting() {
   window.FB.set(answersRef, state.answers);
 
   if (state.isHost) {
-    setTimeout(() => hostOpenReview(round), 1000);
+    const botDone = state.room.bot ? writeBotAnswers(round).catch(() => {}) : Promise.resolve();
+    botDone.then(() => setTimeout(() => hostOpenReview(round), 1000));
   }
 }
 
@@ -4812,6 +5140,8 @@ function startReviewPhase(data) {
   const readyBtn = document.getElementById("reviewReadyBtn");
   readyBtn.disabled = false;
   readyBtn.textContent = t("review_ready_btn");
+  const lead = document.querySelector("#screen-review .lead[data-i18n]");
+  if (lead) lead.textContent = t(roomJudgeOn(data) ? "review_lead" : "review_lead_nojudge");
   renderReviewAnswers(data);
 
   // Sin reloj: el puntaje se calcula cuando todos los jugadores conectados tocan "Listo".
@@ -4821,6 +5151,8 @@ function startReviewPhase(data) {
 
   if (state.isHost) {
     state.reviewFinalizing = false;
+    // El bot no objeta: queda "listo" apenas empieza la revisión.
+    if (data.bot) window.FB.set(window.FB.ref(window.FB.db, `rooms/${state.roomCode}/reviewReady/${data.round}/${data.bot}`), true);
     checkAllReviewReady(data);
   }
 }
@@ -5010,6 +5342,7 @@ async function computeAndApplyScores(data, round) {
   const pids = Object.keys(players);
   const letter = data.letter;
   const wildcard = data.wildcard || null;
+  const judgeOn = roomJudgeOn(data);
 
   // Paso 1: clasificar cada respuesta objetada o no, sin consultar todavía
   // al juez (eso solo pasa si de verdad hace falta).
@@ -5048,6 +5381,14 @@ async function computeAndApplyScores(data, round) {
       const allOthersObjected = others.length > 0 && objectorIds.length >= 2 && others.every(p => objectorIds.includes(p));
       if (pids.length >= 3 && allOthersObjected) {
         classification[cat][pid] = { status: "shortcut", objectors: objectorIds };
+        return;
+      }
+
+      if (!judgeOn) {
+        // Sin juez: decide la mayoría. Si la mitad o más de los demás la objetó, no cuenta.
+        classification[cat][pid] = objectorIds.length * 2 >= others.length
+          ? { status: "shortcut", objectors: objectorIds, votes: true }
+          : { status: "kept", raw };
         return;
       }
 
@@ -5099,8 +5440,12 @@ async function computeAndApplyScores(data, round) {
         }
       } else if (c.status === "accepted") {
         judgeInfo[`${cat}|${pid}`] = { aceptada: true };
+      } else if (c.status === "kept") {
+        isValid = true;
+        raw = c.raw;
+        judgeInfo[`${cat}|${pid}`] = { votosInsuficientes: true };
       } else if (c.status === "shortcut") {
-        judgeInfo[`${cat}|${pid}`] = { mayoria: true };
+        judgeInfo[`${cat}|${pid}`] = c.votes ? { mayoria: true, votos: true } : { mayoria: true };
       } else if (c.status === "badLetter") {
         judgeInfo[`${cat}|${pid}`] = { letraInvalida: true };
       } else if (c.status === "tooShort") {
@@ -5173,6 +5518,9 @@ function renderMyObjectionsOutcome(data, round) {
       } else if (info && info.mayoria) {
         outcome = t("outcome_majority_invalidated");
         colorClass = "text-positive";
+      } else if (info && info.votosInsuficientes) {
+        outcome = t("outcome_votes_kept");
+        colorClass = "text-negative";
       } else if (info && typeof info.valida === "boolean") {
         if (info.valida) {
           outcome = t("outcome_judge_disagreed");
@@ -5234,9 +5582,12 @@ function renderOnlineResults(data) {
     const info = judgeInfo[`${cat}|${state.playerId}`];
     if (info && info.valida === true && !info.sinRespuesta) judgeWinCount++;
   });
+  const validCount = categories.filter(cat => (myScores[cat] || 0) > 0 && !isJoker((myAnswers[cat] || "").trim())).length;
   bumpProgress(p => {
     p.uniqueWords += uniqueCount;
     p.judgeWins += judgeWinCount;
+    addMission(p, "unique_words", uniqueCount);
+    addMission(p, "valid_words", validCount);
   }, `round:${state.roomCode}:${data.roundStartAt || ""}:${round}`);
 
   const list = document.getElementById("answerList");
@@ -5252,7 +5603,9 @@ function renderOnlineResults(data) {
       if (info.aceptada) {
         extra = `<div style="font-size:11px; color:var(--text-support);">${t("you_accepted_objection")}</div>`;
       } else if (info.mayoria) {
-        extra = `<div style="font-size:11px; color:var(--text-support);">${t("everyone_objected")}</div>`;
+        extra = `<div style="font-size:11px; color:var(--text-support);">${t(info.votos ? "majority_objected" : "everyone_objected")}</div>`;
+      } else if (info.votosInsuficientes) {
+        extra = `<div class="text-positive" style="font-size:11px;">${t("votes_kept_mine")}</div>`;
       } else if (info.letraInvalida) {
         extra = `<div style="font-size:11px; color:var(--text-support);">${t("doesnt_start_with", { letter: data.letter })}</div>`;
       } else if (info.demasiadoCorta) {
@@ -5396,7 +5749,8 @@ function renderOnlineFinal(data) {
   const iWon = !!(winner && winner.pid === state.playerId);
   state._finalShareInfo = { score: me ? me.score : 0, won: iWon };
   const tiedAtTop = sorted.length > 1 && sorted[0].score === sorted[1].score;
-  if (iWon && !tiedAtTop) bumpProgress(p => { p.wins += 1; }, `win:${state.roomCode}:${totalGames}`);
+  if (players[state.playerId]) bumpProgress(p => { addMission(p, "online_play"); }, `game:${state.roomCode}:${totalGames}`);
+  if (iWon && !tiedAtTop) bumpProgress(p => { p.wins += 1; addMission(p, "online_win"); }, `win:${state.roomCode}:${totalGames}`);
   showScreen("screen-final");
   showFinalOutcomeFor(iWon);
 }
@@ -5693,6 +6047,11 @@ async function finishStreakRound() {
     if (r.valid) roundPoints += r.joker ? JOKER_POINTS : (r.cat === state.wildcardCategory ? STREAK_POINTS_PER_CATEGORY * 2 : STREAK_POINTS_PER_CATEGORY);
   });
   state.streakScore += roundPoints;
+  const streakValid = results.filter(r => r.valid && !r.joker).length;
+  bumpProgress(p => {
+    addMission(p, "valid_words", streakValid);
+    if (streakValid > 0) addMission(p, "streak_rounds");
+  });
 
   if (state.streakTimeLeft <= 0) {
     renderStreakResult(results);
@@ -5896,7 +6255,7 @@ function formatDayLabel(key) {
 }
 
 function getProgress() {
-  const base = { lastDay: null, dayStreak: 0, bestDayStreak: 0, wins: 0, uniqueWords: 0, judgeWins: 0, bestStreakRounds: 0, dailyCount: 0, unlocked: [], counted: [] };
+  const base = { lastDay: null, dayStreak: 0, bestDayStreak: 0, wins: 0, uniqueWords: 0, judgeWins: 0, bestStreakRounds: 0, dailyCount: 0, unlocked: [], counted: [], achClaimed: [], missionsDone: 0, missions: null };
   try {
     const raw = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "null");
     if (raw && typeof raw === "object") return { ...base, ...raw };
@@ -5922,6 +6281,8 @@ function bumpProgress(mutate, onceKey) {
   mutate(p);
   saveProgress(p);
   checkAchievements();
+  renderMissionsButton();
+  renderProfileButton();
 }
 
 function markPlayedToday() {
@@ -5946,7 +6307,131 @@ const ACHIEVEMENTS = [
   { id: "streak_5", icon: () => iconSvg("stopwatch"), test: p => p.bestStreakRounds >= 5 },
   { id: "daily_1", icon: () => iconSvg("sun"), test: p => p.dailyCount >= 1 },
   { id: "daily_7", icon: () => iconSvg("rainbow"), test: p => p.dailyCount >= 7 },
+  { id: "adv_world1", icon: () => fruitSvg("🍎"), test: () => (advLoad().stars[6] || 0) > 0 },
+  { id: "adv_stars_45", icon: () => iconSvg("star"), test: () => advTotalStars(advLoad()) >= 45 },
+  { id: "missions_10", icon: () => iconSvg("calendar"), test: p => (p.missionsDone || 0) >= 10 },
 ];
+// Cada logro se cobra una vez desde Mi fruta (también los que ya estaban desbloqueados de antes).
+const ACH_REWARD = 20;
+
+function achievementsClaimable(p) {
+  return (p.unlocked || []).some(id => ACHIEVEMENTS.some(a => a.id === id) && !(p.achClaimed || []).includes(id));
+}
+
+function claimAchievement(id) {
+  const p = getProgress();
+  if (!p.unlocked.includes(id) || p.achClaimed.includes(id)) return;
+  p.achClaimed = [...p.achClaimed, id];
+  saveProgress(p);
+  addSeeds(ACH_REWARD);
+  track("achievement_claim", { id });
+  renderProfile();
+  renderProfileButton();
+}
+
+// ---------- Misiones del día ----------
+// Tres por día, iguales para todos (salen de la fecha). Cada una da semillas al cobrarla,
+// y completar las tres suma un premio extra. El avance se guarda dentro del progreso.
+const MISSION_POOL = [
+  { id: "online_play", goal: 1, reward: 20 },
+  { id: "online_win", goal: 1, reward: 30 },
+  { id: "adv_pass", goal: 2, reward: 20 },
+  { id: "adv_3stars", goal: 1, reward: 25 },
+  { id: "daily", goal: 1, reward: 15 },
+  { id: "streak_rounds", goal: 5, reward: 20 },
+  { id: "duel", goal: 1, reward: 20 },
+  { id: "valid_words", goal: 20, reward: 20 },
+  { id: "unique_words", goal: 5, reward: 25 },
+];
+const MISSION_BONUS = 30;
+
+function todayMissions() {
+  const rnd = seededRandom(hashString("misiones-" + dayKey()));
+  const pool = [...MISSION_POOL];
+  const picked = [];
+  while (picked.length < 3 && pool.length) {
+    const m = pool.splice(Math.floor(rnd() * pool.length), 1)[0];
+    // Nunca dos misiones online el mismo día.
+    if (m.id.startsWith("online_") && picked.some(x => x.id.startsWith("online_"))) continue;
+    picked.push(m);
+  }
+  return picked;
+}
+
+function missionState(p) {
+  if (!p.missions || p.missions.day !== dayKey()) p.missions = { day: dayKey(), counts: {}, claimed: [], bonus: false };
+  return p.missions;
+}
+
+// Se llama desde dentro de bumpProgress, así cada avance cuenta una sola vez.
+function addMission(p, id, n = 1) {
+  if (!(n > 0)) return;
+  const m = todayMissions().find(x => x.id === id);
+  if (!m) return;
+  const ms = missionState(p);
+  const before = ms.counts[id] || 0;
+  ms.counts[id] = Math.min(m.goal, before + n);
+  if (before < m.goal && ms.counts[id] >= m.goal) {
+    setTimeout(() => advToast(iconSvg("calendar"), t("mission_complete_toast")), 600);
+  }
+}
+
+function missionsClaimable(p) {
+  const ms = (p.missions && p.missions.day === dayKey()) ? p.missions : null;
+  if (!ms) return false;
+  return todayMissions().some(m => (ms.counts[m.id] || 0) >= m.goal && !ms.claimed.includes(m.id));
+}
+
+function claimMission(id) {
+  const p = getProgress();
+  const ms = missionState(p);
+  const m = todayMissions().find(x => x.id === id);
+  if (!m || (ms.counts[id] || 0) < m.goal || ms.claimed.includes(id)) return;
+  ms.claimed = [...ms.claimed, id];
+  p.missionsDone = (p.missionsDone || 0) + 1;
+  const allDone = todayMissions().every(x => ms.claimed.includes(x.id));
+  const giveBonus = allDone && !ms.bonus;
+  if (giveBonus) ms.bonus = true;
+  saveProgress(p);
+  addSeeds(m.reward);
+  if (giveBonus) { const w = getWallet(); w.seeds += MISSION_BONUS; saveWallet(w); }
+  if (giveBonus) setTimeout(() => seedToast(t("mission_bonus_toast", { n: MISSION_BONUS })), 700);
+  track("mission_claim", { id });
+  checkAchievements();
+  renderProfile();
+  renderMissionsButton();
+  renderProfileButton();
+}
+
+function renderMissions() {
+  const list = document.getElementById("missionsList");
+  if (!list) return;
+  const p = getProgress();
+  const ms = (p.missions && p.missions.day === dayKey()) ? p.missions : { counts: {}, claimed: [], bonus: false };
+  document.getElementById("missionsLead").innerHTML = escapeHtml(t("missions_lead", { n: MISSION_BONUS })).replace("🌱", seedIcon());
+  list.innerHTML = todayMissions().map(m => {
+    const count = Math.min(m.goal, ms.counts[m.id] || 0);
+    const done = count >= m.goal;
+    const claimed = ms.claimed.includes(m.id);
+    const btn = claimed
+      ? `<button class="claim-btn" disabled>${escapeHtml(t("mission_claimed"))}</button>`
+      : `<button class="claim-btn" ${done ? "" : "disabled"} onclick="claimMission('${m.id}')">${seedIcon()} ${m.reward}</button>`;
+    return `<div class="mission${done ? " done" : ""}">
+      <div class="mission-body">
+        <span class="mission-title">${escapeHtml(t("mission_" + m.id, { n: m.goal }))}</span>
+        <div class="mission-bar"><span style="width:${Math.round(count / m.goal * 100)}%"></span></div>
+        <span class="mission-count">${count} / ${m.goal}</span>
+      </div>${btn}</div>`;
+  }).join("") + (ms.bonus ? `<p class="mission-bonus">${escapeHtml(t("missions_all_done"))}</p>` : "");
+}
+
+function renderMissionsButton() {
+  const btn = document.getElementById("missionsBtn");
+  if (!btn) return;
+  const p = getProgress();
+  const ms = (p.missions && p.missions.day === dayKey()) ? p.missions : { claimed: [] };
+  btn.innerHTML = escapeHtml(t("missions_lobby_btn", { done: ms.claimed.length })) + (missionsClaimable(p) ? '<span class="tab-dot" style="display:inline-block"></span>' : "");
+}
 
 function checkAchievements() {
   const p = getProgress();
@@ -5974,12 +6459,19 @@ function renderAchievements() {
   const grid = document.getElementById("achievementsGrid");
   if (!grid) return;
   const p = getProgress();
+  const lead = document.getElementById("achievementsLead");
+  if (lead) lead.innerHTML = escapeHtml(t("achievements_lead", { n: ACH_REWARD })).replace("🌱", seedIcon());
   grid.innerHTML = ACHIEVEMENTS.map(a => {
     const on = p.unlocked.includes(a.id);
+    const claimed = p.achClaimed.includes(a.id);
+    const claim = !on ? "" : claimed
+      ? `<span class="ach-claimed">${escapeHtml(t("mission_claimed"))}</span>`
+      : `<button class="claim-btn" onclick="claimAchievement('${a.id}')">${seedIcon()} ${ACH_REWARD}</button>`;
     return `<div class="achievement${on ? "" : " locked"}">
       <span class="ach-icon">${a.icon()}</span>
       <span class="ach-title">${t("ach_" + a.id + "_t")}</span>
       <span class="ach-desc">${t("ach_" + a.id + "_d")}</span>
+      ${claim}
     </div>`;
   }).join("");
 }
@@ -6217,7 +6709,11 @@ async function finishDailyRound() {
     results: results.map(r => ({ cat: r.cat, val: r.val, valid: !!r.valid, joker: !!r.joker, reason: r.reason || "", motivo: r.motivo || "" })),
   };
   saveDaily(record);
-  bumpProgress(p => { p.dailyCount += 1; }, "daily:" + ch.key);
+  bumpProgress(p => {
+    p.dailyCount += 1;
+    addMission(p, "daily");
+    addMission(p, "valid_words", results.filter(r => r.valid && !r.joker).length);
+  }, "daily:" + ch.key);
   addSeeds(seedsForScore(score));
   whenFirebaseReady(() => {
     if (!window.FB.uid) {
@@ -6646,6 +7142,11 @@ async function finishAdventureRound() {
   state.advFinishing = false;
   renderAdventureResult({ L, results, letter, mixed: !!letterByCat, words, bonus, score, passed, stars, valid, secondsLeft, lives: d.lives, lostLife });
   track("adventure_level_end", { level: L.n, passed, stars });
+  bumpProgress(p => {
+    addMission(p, "valid_words", results.filter(r => r.valid && !r.joker).length);
+    if (passed) addMission(p, "adv_pass");
+    if (stars === 3) addMission(p, "adv_3stars");
+  });
   if (newStars) addSeeds(newStars * SEEDS_PER_STAR);
   if (shieldSaved) advToast(SHIELD_SVG, t("adv_shield_saved"));
   if (newWorld) advToast(fruitSvg(ADV_WORLDS[L.world + 1].fruit), t("adv_new_world", { name: advWorldName(ADV_WORLDS[L.world + 1]) }));
@@ -6975,7 +7476,7 @@ async function shareAdventureResult() {
   const info = state.advShareInfo;
   if (!info) return;
   track("share", { type: "adventure" });
-  const canvas = await buildShareCanvas(t("adv_level_title", { n: info.n }), t("share_adv_subtitle", { stars: info.stars, world: info.world }), iconSvg("star"));
+  const canvas = await buildShareCanvas(t("adv_level_title", { n: info.n }), t("share_adv_subtitle", { stars: info.stars, world: info.world }), iconSvg("star"), { stars: info.stars });
   shareCanvasImage(canvas, t("share_adv_text", { n: info.n, stars: info.stars }), "https://tuttipuntofrutti.com/jugar?aventura");
 }
 
@@ -7105,6 +7606,10 @@ async function finishDuelRound() {
     score += r.joker ? JOKER_POINTS : DAILY_POINTS_PER_CATEGORY * (r.cat === duel.wildcard ? 2 : 1);
   });
   if (valid > 0) score += secondsLeft;
+  bumpProgress(p => {
+    addMission(p, "duel");
+    addMission(p, "valid_words", results.filter(r => r.valid && !r.joker).length);
+  }, "duel:" + duel.id);
   leaveDuelGame();
   const me = {
     name: state.playerName.slice(0, 30), avatar: getMyAvatar(), score, valid, total: results.length,
@@ -7440,6 +7945,14 @@ function mergeSyncValue(key, localRaw, remoteRaw) {
       out.dayStreak = newer.dayStreak || 0;
       out.unlocked = [...new Set([...(R.unlocked || []), ...(L.unlocked || [])])];
       out.counted = [...new Set([...(R.counted || []), ...(L.counted || [])])].slice(-80);
+      out.achClaimed = [...new Set([...(R.achClaimed || []), ...(L.achClaimed || [])])];
+      out.missionsDone = Math.max(L.missionsDone || 0, R.missionsDone || 0);
+      const lm = L.missions, rm = R.missions;
+      if (lm && rm && lm.day === rm.day) {
+        out.missions = { day: lm.day, counts: maxMap(lm.counts, rm.counts), claimed: [...new Set([...(rm.claimed || []), ...(lm.claimed || [])])], bonus: !!(lm.bonus || rm.bonus) };
+      } else {
+        out.missions = (lm && (!rm || lm.day > rm.day)) ? lm : (rm || null);
+      }
       return JSON.stringify(out);
     }
     case "tuttifruti_stats": {
@@ -7594,7 +8107,10 @@ const ACCESSORY_ITEMS = [
   { id: "straw", slot: "hat", price: 100 }, { id: "tophat", slot: "hat", price: 150 }, { id: "crown", slot: "hat", price: 300 },
   { id: "roundglasses", slot: "glasses", price: 60 }, { id: "sunglasses", slot: "glasses", price: 70 },
   { id: "bowtie", slot: "neck", price: 50 }, { id: "scarf", slot: "neck", price: 70 },
+  // Edición limitada: solo se compra en temporada de Halloween; quien lo tiene lo conserva siempre.
+  { id: "witch", slot: "hat", price: 80, season: "spooky" },
 ];
+function accForSale(a) { return !a.season || isSpookySeason(); }
 const ACC_SLOTS = ["hat", "glasses", "neck"];
 function accOwnedKey(id) { return "acc:" + id; }
 
@@ -7612,7 +8128,7 @@ function myEquipped() {
 function buyAccessory(id) {
   const item = ACCESSORY_ITEMS.find(a => a.id === id);
   const w = getWallet();
-  if (!item || w.owned.includes(accOwnedKey(id)) || w.seeds < item.price) return;
+  if (!item || !accForSale(item) || w.owned.includes(accOwnedKey(id)) || w.seeds < item.price) return;
   w.seeds -= item.price;
   w.owned.push(accOwnedKey(id));
   w.equipped[item.slot] = id;
@@ -7641,13 +8157,39 @@ function refreshMyFruit() {
 function renderProfileButton() {
   const btn = document.getElementById("profileBtn");
   if (!btn) return;
-  btn.innerHTML = mascotSvg("happy", getMyAvatar(), myEquipped()) + (isGoogleUser() ? "" : '<span class="profile-dot" aria-hidden="true"></span>');
+  const p = getProgress();
+  const showDot = !isGoogleUser() || missionsClaimable(p) || achievementsClaimable(p);
+  btn.innerHTML = mascotSvg("happy", getMyAvatar(), myEquipped()) + (showDot ? '<span class="profile-dot" aria-hidden="true"></span>' : "");
 }
 
-function openProfile() {
+function openProfile(tab) {
+  if (tab) state.profileTab = tab;
   renderProfile();
   showScreen("screen-profile");
   window.scrollTo(0, 0);
+}
+
+function setProfileTab(tab) {
+  state.profileTab = tab;
+  renderProfileTabs();
+}
+
+// Mi fruta concentra todo lo personal: la fruta y sus accesorios, las misiones del día,
+// los logros y las estadísticas. Cada pestaña se dibuja recién cuando se abre.
+function renderProfileTabs() {
+  const tab = state.profileTab || "fruit";
+  document.querySelectorAll(".profile-tab").forEach(b => {
+    const on = b.dataset.tab === tab;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-selected", String(on));
+  });
+  document.querySelectorAll(".profile-panel").forEach(p => { p.style.display = p.dataset.panel === tab ? "block" : "none"; });
+  if (tab === "missions") renderMissions();
+  if (tab === "achievements") renderAchievements();
+  if (tab === "stats") renderStatsPanel();
+  const p = getProgress();
+  document.getElementById("missionsTabDot").style.display = missionsClaimable(p) ? "inline-block" : "none";
+  document.getElementById("achTabDot").style.display = achievementsClaimable(p) ? "inline-block" : "none";
 }
 
 function renderProfile() {
@@ -7675,17 +8217,19 @@ function renderProfile() {
   picker.innerHTML = myAvailableAvatars().map(a =>
     `<button type="button" class="avatar-option${a === mine ? " selected" : ""}" role="radio" aria-checked="${a === mine}" onclick="setMyAvatar('${a}')">${fruitSvg(a)}</button>`).join("");
   renderAccountBoxes();
+  renderProfileTabs();
 }
 
 function renderShopAccessories() {
   const w = getWallet();
   const eq = myEquipped();
-  document.getElementById("shopAccessories").innerHTML = ACCESSORY_ITEMS.map(a => {
+  document.getElementById("shopAccessories").innerHTML = ACCESSORY_ITEMS.filter(a => accForSale(a) || w.owned.includes(accOwnedKey(a.id))).map(a => {
     const owned = w.owned.includes(accOwnedKey(a.id));
     let btn;
     if (owned) btn = `<button class="${eq[a.slot] === a.id ? "in-use" : "owned"}" onclick="toggleAccessory('${a.id}')">${escapeHtml(t(eq[a.slot] === a.id ? "shop_take_off" : "shop_put_on"))}</button>`;
     else btn = `<button ${w.seeds < a.price ? "disabled" : ""} onclick="buyAccessory('${a.id}')">${seedIcon()} ${a.price}</button>`;
-    return `<div class="shop-item"><span class="shop-art acc-preview">${mascotSvg("happy", getMyAvatar(), { ...eq, [a.slot]: a.id })}</span><strong>${escapeHtml(t("acc_" + a.id))}</strong>${btn}</div>`;
+    const limited = a.season ? `<span class="shop-limited">${escapeHtml(t("shop_limited"))}</span>` : "";
+    return `<div class="shop-item">${limited}<span class="shop-art acc-preview">${mascotSvg("happy", getMyAvatar(), { ...eq, [a.slot]: a.id })}</span><strong>${escapeHtml(t("acc_" + a.id))}</strong>${btn}</div>`;
   }).join("");
 }
 
@@ -7812,7 +8356,7 @@ async function shareDailyResult(record) {
   // muestran dibujos en el texto), igual que el Wordle.
   const grid = (record.grid || "").split("").map(c => (c === "1" ? "🟩" : "🟥")).join("");
   const date = formatDayLabel(record.date);
-  const canvas = await buildShareCanvas(record.score + " pts", t("share_daily_subtitle", { valid: record.valid, total: record.total, date }), iconSvg("sun"));
+  const canvas = await buildShareCanvas(record.score + " pts", t("share_daily_subtitle", { valid: record.valid, total: record.total, date }), iconSvg("sun"), { grid: record.grid });
   shareCanvasImage(canvas, t("share_daily_text", { date, score: record.score, grid }));
 }
 
@@ -7932,10 +8476,14 @@ function loadSvgImage(svgMarkup, size) {
   });
 }
 
-async function buildShareCanvas(big, subtitle, badgeSvg) {
+// Tarjeta vertical (formato historia de Instagram / estado de WhatsApp) con la fruta del
+// jugador y sus accesorios. `extras` puede traer estrellas (Aventura) o la grilla de
+// aciertos (desafío del día), que se dibujan debajo del puntaje.
+async function buildShareCanvas(big, subtitle, badgeSvg, extras = {}) {
   const canvas = document.createElement("canvas");
   canvas.width = 1080;
-  canvas.height = 1080;
+  canvas.height = 1920;
+  const W = canvas.width, H = canvas.height, cx = W / 2;
   const ctx = canvas.getContext("2d");
   const styles = getComputedStyle(document.documentElement);
   const bg = (styles.getPropertyValue("--bg") || "#14101F").trim() || "#14101F";
@@ -7945,7 +8493,7 @@ async function buildShareCanvas(big, subtitle, badgeSvg) {
   const text = (styles.getPropertyValue("--text") || "#FFF3E2").trim() || "#FFF3E2";
 
   ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillRect(0, 0, W, H);
 
   // Manchas de color de fondo, la misma estética que el resto del sitio.
   function blob(x, y, r, color) {
@@ -7953,41 +8501,88 @@ async function buildShareCanvas(big, subtitle, badgeSvg) {
     grad.addColorStop(0, color + "66");
     grad.addColorStop(1, color + "00");
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, W, H);
   }
-  blob(120, 60, 480, primary);
-  blob(970, 980, 460, secondary);
-  blob(880, 160, 320, "#B6EF3C");
+  blob(140, 120, 620, primary);
+  blob(960, 1800, 640, secondary);
+  blob(900, 700, 420, "#B6EF3C");
 
   ctx.textAlign = "center";
-  drawShareLogoIcon(ctx, canvas.width / 2, 170, 130, { primary, lima: "#B6EF3C", limaOscura: "#8FD32E" });
-
+  drawShareLogoIcon(ctx, cx - 190, 190, 110, { primary, lima: "#B6EF3C", limaOscura: "#8FD32E" });
   ctx.fillStyle = text;
-  ctx.font = "800 58px 'Bricolage Grotesque', sans-serif";
-  ctx.fillText("tutti.frutti", canvas.width / 2, 400);
+  ctx.font = "800 76px 'Bricolage Grotesque', sans-serif";
+  ctx.textAlign = "left";
+  ctx.fillText("tutti.frutti", cx - 120, 216);
+  ctx.textAlign = "center";
 
+  // La fruta del jugador, grande, sobre un círculo crema (se ve con cualquier tema).
+  ctx.fillStyle = "#FFF3E2";
+  ctx.beginPath();
+  ctx.arc(cx, 650, 270, 0, Math.PI * 2);
+  ctx.fill();
+  const mascot = await loadSvgImage(mascotSvg(extras.mood || "happy", getMyAvatar(), myEquipped()), 480);
+  if (mascot) ctx.drawImage(mascot, cx - 210, 440, 420, 420);
   const badge = badgeSvg ? await loadSvgImage(badgeSvg, 200) : null;
-  if (badge) ctx.drawImage(badge, canvas.width / 2 - 55, 420, 110, 110);
+  if (badge) {
+    ctx.fillStyle = surface;
+    ctx.beginPath();
+    ctx.arc(cx + 210, 440, 78, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.drawImage(badge, cx + 160, 390, 100, 100);
+  }
+
+  const name = (state.playerName || (document.getElementById("playerName") || {}).value || "").trim().slice(0, 30);
+  let y = 1010;
+  if (name) {
+    ctx.fillStyle = text;
+    ctx.font = "700 48px 'Instrument Sans', sans-serif";
+    ctx.fillText(name, cx, y);
+    y += 40;
+  }
 
   ctx.fillStyle = primary;
-  ctx.font = "800 130px 'Bricolage Grotesque', sans-serif";
-  ctx.fillText(big, canvas.width / 2, badge ? 660 : 600);
+  ctx.font = "800 170px 'Bricolage Grotesque', sans-serif";
+  ctx.fillText(big, cx, y + 170);
+  y += 230;
+
+  if (extras.stars != null) {
+    const starImgOn = await loadSvgImage(ADV_STAR_SVG.replace("%c", "").replace("<path ", '<path fill="#FFD23F" '), 200);
+    const starImgOff = await loadSvgImage(ADV_STAR_SVG.replace("%c", "").replace("<path ", '<path fill="#FFF3E2" fill-opacity=".2" '), 200);
+    [0, 1, 2].forEach(i => {
+      const img = i < extras.stars ? starImgOn : starImgOff;
+      const size = i === 1 ? 150 : 120;
+      if (img) ctx.drawImage(img, cx - 60 - 170 + i * 170 - (size - 120) / 2, y + (i === 1 ? 0 : 20), size, size);
+    });
+    y += 190;
+  }
+  if (extras.grid) {
+    const cells = extras.grid.split("");
+    const size = 76, gap = 16;
+    const total = cells.length * size + (cells.length - 1) * gap;
+    cells.forEach((c, i) => {
+      ctx.fillStyle = c === "1" ? "#B6EF3C" : "#FF5E5B";
+      ctx.beginPath();
+      ctx.roundRect(cx - total / 2 + i * (size + gap), y + 10, size, size, 16);
+      ctx.fill();
+    });
+    y += 130;
+  }
 
   ctx.fillStyle = text;
-  ctx.font = "500 42px 'Instrument Sans', sans-serif";
-  wrapCanvasText(ctx, subtitle, canvas.width / 2, badge ? 750 : 690, 860, 54);
+  ctx.font = "500 50px 'Instrument Sans', sans-serif";
+  wrapCanvasText(ctx, subtitle, cx, y + 40, 900, 64);
 
   // Pastilla con el link, bien visible en vez de texto apagado.
-  const pillY = canvas.height - 130;
+  const pillY = H - 190;
   const pillText = "tuttipuntofrutti.com";
-  ctx.font = "700 38px 'Instrument Sans', sans-serif";
-  const pillWidth = ctx.measureText(pillText).width + 80;
+  ctx.font = "700 46px 'Instrument Sans', sans-serif";
+  const pillWidth = ctx.measureText(pillText).width + 100;
   ctx.fillStyle = surface;
   ctx.beginPath();
-  ctx.roundRect(canvas.width / 2 - pillWidth / 2, pillY - 38, pillWidth, 76, 38);
+  ctx.roundRect(cx - pillWidth / 2, pillY - 46, pillWidth, 92, 46);
   ctx.fill();
   ctx.fillStyle = primary;
-  ctx.fillText(pillText, canvas.width / 2, pillY + 14);
+  ctx.fillText(pillText, cx, pillY + 16);
 
   return canvas;
 }
@@ -8024,7 +8619,8 @@ async function shareFinalResult() {
   const canvas = await buildShareCanvas(
     info.score + " pts",
     info.won ? t("share_final_won_subtitle") : t("share_final_subtitle"),
-    mascotSvg(info.won ? "happy" : "sad", getMyAvatar(), myEquipped())
+    iconSvg(info.won ? "trophy" : "thumb"),
+    { mood: info.won ? "happy" : "neutral" }
   );
   shareCanvasImage(canvas, info.won ? t("share_final_won_text", { score: info.score }) : t("share_final_text", { score: info.score }));
 }
@@ -8143,6 +8739,10 @@ document.getElementById("dailyBannerIcon").innerHTML = iconSvg("sun");
 document.querySelectorAll("[data-icon]").forEach(el => { el.innerHTML = iconSvg(el.dataset.icon); });
 state.twists = loadTwists();
 renderTwists();
+if (isSpookySeason()) document.querySelectorAll(".pack-seasonal").forEach(b => { b.style.display = ""; });
+state.judgeOn = loadJudgeSetting();
+renderJudgeToggle();
+renderMissionsButton();
 applyDailyLinkFromUrl();
 
 // Si la pestaña quedó abierta desde antes de un deploy (muy común en la compu),
