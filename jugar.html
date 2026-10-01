@@ -805,6 +805,26 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
 .profile-tab.active .tab-dot { background: var(--tinta); }
 @media (max-width: 380px) { .profile-tab { font-size: 12px; } }
 
+/* ---------- Confirmar compra y vista previa de temas ---------- */
+.confirm-overlay { position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(10, 8, 20, .55); animation: fade-in .18s ease both; }
+.confirm-card { width: min(100%, 360px); padding: 24px 20px 20px; border-radius: 20px; background: var(--surface); color: var(--text); text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,.4); animation: menu-in .22s cubic-bezier(.2, .8, .2, 1) both; }
+.confirm-art { display: block; width: 84px; height: 84px; margin: 0 auto 10px; }
+.confirm-art svg { width: 100%; height: 100%; display: block; }
+.confirm-art .mascot-bg { inset: 0; }
+.confirm-art.stage { position: relative; padding: 8px; border-radius: 50%; background: #FFF3E2; box-sizing: border-box; }
+.confirm-art.stage > svg { position: relative; }
+.confirm-card h2 { margin: 0 0 6px; font: 800 22px/1.2 var(--font-display); }
+.confirm-card p { margin: 0 0 18px; color: var(--text-muted); font-size: 15px; }
+.confirm-card p .seed-icon { display: inline-block; width: 16px; height: 16px; vertical-align: -3px; }
+.confirm-actions { display: flex; gap: 10px; }
+.confirm-actions .btn { flex: 1; padding: 14px; }
+.theme-preview-bar { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 75; width: min(calc(100% - 32px), 460px); display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 16px; background: var(--surface); color: var(--text); box-shadow: 0 12px 34px rgba(0,0,0,.35); border: 2px solid var(--primary); animation: rise-in .25s cubic-bezier(.2, .8, .2, 1) both; }
+.theme-preview-bar span { flex: 1; font-size: 14px; line-height: 1.3; }
+.theme-preview-bar button { border: 0; border-radius: 10px; padding: 10px 12px; font: 700 13px var(--font-body); cursor: pointer; white-space: nowrap; }
+.theme-preview-bar .tp-buy { background: var(--primary); color: var(--tinta); display: inline-flex; align-items: center; gap: 4px; }
+.theme-preview-bar .tp-buy .seed-icon { width: 15px; height: 15px; }
+.theme-preview-bar .tp-close { background: var(--crema-08); color: var(--text); }
+
 /* ---------- Fondos de perfil, stickers, festejos y ayudas ---------- */
 .profile-mascot { position: relative; }
 .profile-mascot > svg { position: relative; }
@@ -1435,7 +1455,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
     <div class="results-card">
       <div class="hero-band">
         <h2><span data-i18n="adv_map_title">Aventura</span></h2>
-        <p data-i18n="adv_map_lead">30 niveles en 5 mundos. Llegá a la meta de puntos para pasar cada uno.</p>
+        <p data-i18n="adv_map_lead">42 niveles en 7 mundos. Llegá a la meta de puntos para pasar cada uno.</p>
         <div class="adv-status">
           <div class="adv-status-item adv-lives"><div class="adv-hearts" id="advMapHearts"></div><span class="adv-status-text" data-adv-countdown></span></div>
           <div class="adv-status-item"><span id="advMapStarIcon"></span><span class="adv-status-text" id="advMapStars"></span></div>
@@ -2135,9 +2155,9 @@ const I18N = {
     pack_mexico: "Cultura mexicana",
     adv_banner_title: "Aventura",
     adv_banner_sub: "Nivel {n} · {stars} estrellas",
-    adv_banner_sub_done: "¡Completaste los 30 niveles! · {stars} estrellas",
+    adv_banner_sub_done: "¡Completaste los 42 niveles! · {stars} estrellas",
     adv_map_title: "Aventura",
-    adv_map_lead: "30 niveles en 5 mundos. Llegá a la meta de puntos para pasar cada uno.",
+    adv_map_lead: "42 niveles en 7 mundos. Llegá a la meta de puntos para pasar cada uno.",
     adv_lives_full: "Vidas llenas",
     adv_next_life: "+1 vida en {time}",
     adv_world_name: "Mundo {name}",
@@ -2151,6 +2171,10 @@ const I18N = {
     adv_wdesc_uva: "Categorías difíciles",
     adv_wdesc_limon: "Letras difíciles",
     adv_wdesc_anana: "Todo junto",
+    adv_wname_sandia: "Sandía",
+    adv_wname_coco: "Coco",
+    adv_wdesc_sandia: "A toda velocidad",
+    adv_wdesc_coco: "El desafío final",
     adv_world_locked: "Se desbloquea al terminar el Mundo {name}",
     adv_boss: "Jefe",
     adv_your_turn: "¡Te toca!",
@@ -2458,6 +2482,13 @@ const I18N = {
     tool_reroll_btn: "Cambiar letra ({n})",
     tool_hint_none: "Ya completaste todas las categorías",
     tool_hint_error: "No pudimos traer la pista. Probá de nuevo.",
+    buy_question: "¿Comprar {name}?",
+    buy_price_line: "Cuesta 🌱 {price}. Te quedan 🌱 {left}.",
+    buy_cancel: "Cancelar",
+    buy_confirm: "Comprar",
+    theme_name: "el tema {name}",
+    theme_preview_text: "Así se ve el tema {name}",
+    theme_preview_back: "Volver a mi tema",
     clear_categories_btn: "Borrar todas",
     random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
     random_category_chip: "Random",
@@ -2700,9 +2731,9 @@ const I18N = {
     pack_mexico: "Mexican culture",
     adv_banner_title: "Adventure",
     adv_banner_sub: "Level {n} · {stars} stars",
-    adv_banner_sub_done: "You beat all 30 levels! · {stars} stars",
+    adv_banner_sub_done: "You beat all 42 levels! · {stars} stars",
     adv_map_title: "Adventure",
-    adv_map_lead: "30 levels across 5 worlds. Reach the target score to clear each one.",
+    adv_map_lead: "42 levels across 7 worlds. Reach the target score to clear each one.",
     adv_lives_full: "Full lives",
     adv_next_life: "+1 life in {time}",
     adv_world_name: "{name} World",
@@ -2716,6 +2747,10 @@ const I18N = {
     adv_wdesc_uva: "Hard categories",
     adv_wdesc_limon: "Hard letters",
     adv_wdesc_anana: "All of it at once",
+    adv_wname_sandia: "Watermelon",
+    adv_wname_coco: "Coconut",
+    adv_wdesc_sandia: "At full speed",
+    adv_wdesc_coco: "The final challenge",
     adv_world_locked: "Unlocks when you finish the {name} World",
     adv_boss: "Boss",
     adv_your_turn: "You're up!",
@@ -3023,6 +3058,13 @@ const I18N = {
     tool_reroll_btn: "Change letter ({n})",
     tool_hint_none: "You already filled every category",
     tool_hint_error: "We couldn't get a hint. Try again.",
+    buy_question: "Buy {name}?",
+    buy_price_line: "It costs 🌱 {price}. You'll have 🌱 {left} left.",
+    buy_cancel: "Cancel",
+    buy_confirm: "Buy",
+    theme_name: "the {name} theme",
+    theme_preview_text: "This is the {name} theme",
+    theme_preview_back: "Back to my theme",
     clear_categories_btn: "Clear all",
     random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
     random_category_chip: "Random",
@@ -3265,9 +3307,9 @@ const I18N = {
     pack_mexico: "Cultura mexicana",
     adv_banner_title: "Aventura",
     adv_banner_sub: "Nível {n} · {stars} estrelas",
-    adv_banner_sub_done: "Você completou os 30 níveis! · {stars} estrelas",
+    adv_banner_sub_done: "Você completou os 42 níveis! · {stars} estrelas",
     adv_map_title: "Aventura",
-    adv_map_lead: "30 níveis em 5 mundos. Chegue à meta de pontos para passar cada um.",
+    adv_map_lead: "42 níveis em 7 mundos. Chegue à meta de pontos para passar cada um.",
     adv_lives_full: "Vidas cheias",
     adv_next_life: "+1 vida em {time}",
     adv_world_name: "Mundo {name}",
@@ -3281,6 +3323,10 @@ const I18N = {
     adv_wdesc_uva: "Categorias difíceis",
     adv_wdesc_limon: "Letras difíceis",
     adv_wdesc_anana: "Tudo junto",
+    adv_wname_sandia: "Melancia",
+    adv_wname_coco: "Coco",
+    adv_wdesc_sandia: "A toda velocidade",
+    adv_wdesc_coco: "O desafio final",
     adv_world_locked: "Desbloqueia ao terminar o Mundo {name}",
     adv_boss: "Chefe",
     adv_your_turn: "Sua vez!",
@@ -3588,6 +3634,13 @@ const I18N = {
     tool_reroll_btn: "Trocar letra ({n})",
     tool_hint_none: "Você já preencheu todas as categorias",
     tool_hint_error: "Não conseguimos trazer a dica. Tente de novo.",
+    buy_question: "Comprar {name}?",
+    buy_price_line: "Custa 🌱 {price}. Vão sobrar 🌱 {left}.",
+    buy_cancel: "Cancelar",
+    buy_confirm: "Comprar",
+    theme_name: "o tema {name}",
+    theme_preview_text: "Assim fica o tema {name}",
+    theme_preview_back: "Voltar ao meu tema",
     clear_categories_btn: "Limpar todas",
     random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
     random_category_chip: "Random",
@@ -4303,6 +4356,7 @@ function loadPack(name) {
 }
 
 function showScreen(id) {
+  if (state.themePreview && id !== "screen-shop") endThemePreview();
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   if (id === "screen-judging") setMascot("judgingMascot", "thinking", "mascot_thinking");
@@ -7574,7 +7628,7 @@ async function finishDailyRound() {
 }
 
 // ---------- Aventura: niveles para jugar solo (/jugar?aventura abre el mapa) ----------
-// 5 mundos de 6 niveles. Cada nivel tiene categorías fijas (salen del número de nivel) y una
+// 7 mundos de 6 niveles. Cada nivel tiene categorías fijas (salen del número de nivel) y una
 // letra al azar en cada intento, así reintentar no es repetir lo mismo. Para pasar hay que
 // llegar a la meta de puntos con palabras válidas. El progreso y las vidas se guardan en
 // este dispositivo.
@@ -7601,6 +7655,9 @@ const ADV_WORLDS = [
   { fruit: "🍇", key: "uva", cats: [5, 6, 6, 6, 6, 6], time: [75, 75, 70, 70, 65, 85], letters: ["easy", "medium"], pools: ["medium", "hard"], goal: 0.6, boss: "long" },
   { fruit: "🍋", key: "limon", cats: [5, 5, 6, 6, 6, 6], time: [75, 75, 70, 70, 65, 80], letters: ["hard"], pools: ["easy", "medium"], goal: 0.5, boss: null },
   { fruit: "🍍", key: "anana", cats: [6, 7, 7, 8, 8, 7], time: [65, 65, 60, 60, 55, 70], letters: ["medium", "hard"], pools: ["easy", "medium", "hard"], goal: 0.7, boss: "long" },
+  // Sandía: a toda velocidad (poco tiempo y jefe relámpago). Coco: el desafío final.
+  { fruit: "🍉", key: "sandia", cats: [5, 6, 6, 6, 7, 6], time: [50, 50, 45, 45, 40, 40], letters: ["medium"], pools: ["medium", "hard"], goal: 0.6, boss: "flash" },
+  { fruit: "🥥", key: "coco", cats: [6, 7, 7, 8, 8, 8], time: [70, 70, 65, 65, 60, 85], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.75, boss: "long" },
 ];
 const ADV_TOTAL = ADV_WORLDS.length * 6;
 // Lo que muestra la medalla de la letra en los jefes (cada categoría tiene la suya).
@@ -8275,6 +8332,58 @@ function renderShop() {
     item(SHIELD_SVG, t("shop_shield_title"), t("shop_shield_desc", { n: w.items.shield }), SHOP_SHIELD_PRICE, false, "buyShopItem('shield')");
 }
 
+// ---------- Confirmar antes de gastar semillas ----------
+// Toda compra pasa por esta ventanita, así un toque sin querer no gasta semillas.
+let purchaseCallback = null;
+function askPurchase(name, price, artHtml, onConfirm, stage = false) {
+  const w = getWallet();
+  purchaseCallback = onConfirm;
+  const art = document.getElementById("confirmBuyArt");
+  art.className = "confirm-art" + (stage ? " stage" : "");
+  art.innerHTML = artHtml || "";
+  document.getElementById("confirmBuyTitle").textContent = t("buy_question", { name });
+  document.getElementById("confirmBuyPrice").innerHTML = escapeHtml(t("buy_price_line", { price, left: w.seeds - price })).replace(/🌱/g, seedIcon());
+  document.getElementById("confirmBuy").style.display = "flex";
+  document.getElementById("confirmBuyOk").focus();
+}
+function closePurchase(ok) {
+  document.getElementById("confirmBuy").style.display = "none";
+  const cb = purchaseCallback;
+  purchaseCallback = null;
+  if (ok && cb) cb();
+}
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && document.getElementById("confirmBuy").style.display !== "none") closePurchase(false);
+});
+
+// ---------- Vista previa de temas ----------
+// "Probar" pinta todo el juego con el tema sin guardarlo; al salir de la tienda (o tocar
+// "Volver a mi tema") vuelve el que tenías.
+function previewTheme(key) {
+  const p = PRESETS.find(x => x.key === key);
+  if (!p) return;
+  if (!state.themePreview) state.themePreview = { saved: localStorage.getItem("tuttifruti_preset") || "pomelo__crema" };
+  state.themePreview.key = key;
+  const root = document.documentElement;
+  root.setAttribute("data-theme", p.theme);
+  root.setAttribute("data-bg", p.bg);
+  if (LIGHT_BACKGROUNDS.includes(p.bg)) root.setAttribute("data-light", ""); else root.removeAttribute("data-light");
+  const bar = document.getElementById("themePreviewBar");
+  const owned = presetOwned(p);
+  bar.innerHTML = `<span>${escapeHtml(t("theme_preview_text", { name: p.label }))}</span>` +
+    (owned ? "" : `<button type="button" class="tp-buy" onclick="buyExtra('theme','${key}')">${seedIcon()} ${p.price}</button>`) +
+    `<button type="button" class="tp-close" onclick="endThemePreview()">${escapeHtml(t("theme_preview_back"))}</button>`;
+  bar.style.display = "flex";
+  track("theme_preview", { theme: key });
+}
+function endThemePreview() {
+  const tp = state.themePreview;
+  if (!tp) return;
+  state.themePreview = null;
+  document.getElementById("themePreviewBar").style.display = "none";
+  setPreset(tp.saved);
+}
+
 // Fondos, stickers, festejos, sonidos y temas: se compran una vez y quedan para siempre.
 function renderShopExtras(w) {
   const eq = w.equipped;
@@ -8310,11 +8419,12 @@ function renderShopExtras(w) {
     const btn = !owned
       ? `<button ${w.seeds < p.price ? "disabled" : ""} onclick="buyExtra('theme','${p.key}')">${seedIcon()} ${p.price}</button>`
       : `<button class="${inUse ? "in-use" : "owned"}" ${inUse ? "disabled" : ""} onclick="setPreset('${p.key}'); renderShop();">${escapeHtml(t(inUse ? "shop_in_use" : "shop_use"))}</button>`;
-    return `<div class="shop-item"><span class="shop-art theme-preview" style="background:${BG_COLOR[p.bg]}"><span style="background:${p.color}"></span></span><strong>${escapeHtml(p.label)}</strong>${btn}</div>`;
+    const tryBtn = owned ? "" : `<button type="button" class="owned try-btn" onclick="previewTheme('${p.key}')">${escapeHtml(t("shop_try"))}</button>`;
+    return `<div class="shop-item"><span class="shop-art theme-preview" style="background:${BG_COLOR[p.bg]}"><span style="background:${p.color}"></span></span><strong>${escapeHtml(p.label)}</strong>${tryBtn}${btn}</div>`;
   }).join("");
 }
 
-function buyExtra(kind, id) {
+function buyExtra(kind, id, opts = {}) {
   const price = kind === "bg" ? (PROFILE_BGS.find(x => x.id === id) || {}).price
     : kind === "stk" ? (STICKER_PACKS.find(x => x.id === id) || {}).price
     : kind === "fx" ? (WIN_FX.find(x => x.id === id) || {}).price
@@ -8323,6 +8433,16 @@ function buyExtra(kind, id) {
   const w = getWallet();
   const key = kind + ":" + id;
   if (!price || w.owned.includes(key) || w.seeds < price) return;
+  if (!opts.confirmed) {
+    const preset = kind === "theme" ? PRESETS.find(x => x.key === id) : null;
+    const name = kind === "bg" ? t("bg_" + id) : kind === "stk" ? t("stk_" + id) : kind === "fx" ? t("fx_" + id) : kind === "snd" ? t("snd_" + id) : t("theme_name", { name: preset.label });
+    const art = kind === "bg" ? mascotStageHtml("happy", getMyAvatar(), myEquipped(), id)
+      : kind === "fx" ? fxPieceSvg(id) : kind === "snd" ? SPEAKER_ON_SVG
+      : kind === "stk" ? iconSvg("thumb")
+      : `<span class="shop-art theme-preview" style="background:${BG_COLOR[preset.bg]};width:84px;height:84px"><span style="background:${preset.color}"></span></span>`;
+    askPurchase(name, price, art, () => buyExtra(kind, id, { confirmed: true }), kind === "bg");
+    return;
+  }
   w.seeds -= price;
   w.owned.push(key);
   if (kind === "bg" || kind === "fx" || kind === "snd") w.equipped[kind] = id;
@@ -8330,7 +8450,11 @@ function buyExtra(kind, id) {
   track("shop_buy", { item: key });
   launchConfetti();
   if (kind === "snd") playBastaSound(id);
-  if (kind === "theme") { setPreset(id); renderPresetGrid(); }
+  if (kind === "theme") {
+    if (state.themePreview) { state.themePreview = null; document.getElementById("themePreviewBar").style.display = "none"; }
+    setPreset(id);
+    renderPresetGrid();
+  }
   refreshMyFruit();
   renderShop();
 }
@@ -8344,10 +8468,19 @@ function toggleExtra(kind, id) {
   if (document.getElementById("screen-shop").classList.contains("active")) renderShop();
 }
 
-function buyShopItem(kind) {
+function buyShopItem(kind, opts = {}) {
   const w = getWallet();
   const price = { full: SHOP_FULL_LIVES_PRICE, clock: SHOP_CLOCK_PRICE, shield: SHOP_SHIELD_PRICE, joker: SHOP_JOKER_PRICE, hint: SHOP_HINT_PRICE, reroll: SHOP_REROLL_PRICE }[kind];
   if (!price || w.seeds < price) return;
+  if (!opts.confirmed) {
+    const info = {
+      full: [t("shop_full_lives_title"), advHeart(true)], clock: [t("shop_clock_title"), iconSvg("stopwatch")],
+      shield: [t("shop_shield_title"), SHIELD_SVG], joker: [t("shop_joker_title"), `<span class="shop-joker">${JOKER_MARK}</span>`],
+      hint: [t("shop_hint_title"), iconSvg("sun")], reroll: [t("shop_reroll_title"), iconSvg("dice")],
+    }[kind];
+    askPurchase(info[0], price, info[1], () => buyShopItem(kind, { confirmed: true }));
+    return;
+  }
   if (kind === "full") {
     const d = advLoad();
     if (d.lives >= ADV_MAX_LIVES) return;
@@ -8363,10 +8496,11 @@ function buyShopItem(kind) {
   renderShop();
 }
 
-function buyFruit(emoji) {
+function buyFruit(emoji, opts = {}) {
   const f = SHOP_FRUITS.find(x => x.emoji === emoji);
   const w = getWallet();
   if (!f || w.owned.includes(emoji) || w.seeds < f.price) return;
+  if (!opts.confirmed) { askPurchase(t(f.name), f.price, fruitSvg(emoji), () => buyFruit(emoji, { confirmed: true })); return; }
   w.seeds -= f.price;
   w.owned.push(emoji);
   saveWallet(w);
@@ -8376,10 +8510,14 @@ function buyFruit(emoji) {
   renderShop();
 }
 
-function buyLife() {
+function buyLife(opts = {}) {
   const w = getWallet();
   const d = advLoad();
   if (w.seeds < SHOP_LIFE_PRICE || d.lives >= ADV_MAX_LIVES) return false;
+  if (!opts.confirmed) {
+    askPurchase(t("shop_life_title"), SHOP_LIFE_PRICE, advHeart(true), () => { if (buyLife({ confirmed: true }) && opts.start) startAdventureLevel(); });
+    return false;
+  }
   w.seeds -= SHOP_LIFE_PRICE;
   saveWallet(w);
   d.lives += 1;
@@ -8393,7 +8531,7 @@ function buyLife() {
 function advBuyLifeButtonHtml() {
   const w = getWallet();
   if (w.seeds < SHOP_LIFE_PRICE) return "";
-  return `<button class="btn btn-secondary btn-block adv-extra-btn" onclick="if (buyLife()) startAdventureLevel()">${seedIcon()} ${escapeHtml(t("adv_buy_life_btn", { price: SHOP_LIFE_PRICE }))}</button>`;
+  return `<button class="btn btn-secondary btn-block adv-extra-btn" onclick="buyLife({ start: true })">${seedIcon()} ${escapeHtml(t("adv_buy_life_btn", { price: SHOP_LIFE_PRICE }))}</button>`;
 }
 
 // ---------- Compartir un nivel de la Aventura ----------
@@ -9144,10 +9282,14 @@ function myEquipped() {
   return out;
 }
 
-function buyAccessory(id) {
+function buyAccessory(id, opts = {}) {
   const item = ACCESSORY_ITEMS.find(a => a.id === id);
   const w = getWallet();
   if (!item || !accForSale(item) || w.owned.includes(accOwnedKey(id)) || w.seeds < item.price) return;
+  if (!opts.confirmed) {
+    askPurchase(t("acc_" + id), item.price, mascotSvg("happy", getMyAvatar(), { ...myEquipped(), [item.slot]: id }), () => buyAccessory(id, { confirmed: true }));
+    return;
+  }
   w.seeds -= item.price;
   w.owned.push(accOwnedKey(id));
   w.equipped[item.slot] = id;
@@ -9846,6 +9988,18 @@ checkAchievements();
 </script>
 <div class="confetti-container" id="confettiContainer"></div>
 <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+<div class="confirm-overlay" id="confirmBuy" role="dialog" aria-modal="true" aria-labelledby="confirmBuyTitle" style="display:none;" onclick="if (event.target === this) closePurchase(false)">
+  <div class="confirm-card">
+    <span class="confirm-art" id="confirmBuyArt"></span>
+    <h2 id="confirmBuyTitle"></h2>
+    <p id="confirmBuyPrice"></p>
+    <div class="confirm-actions">
+      <button type="button" class="btn btn-secondary" onclick="closePurchase(false)" data-i18n="buy_cancel">Cancelar</button>
+      <button type="button" class="btn btn-primary" id="confirmBuyOk" onclick="closePurchase(true)" data-i18n="buy_confirm">Comprar</button>
+    </div>
+  </div>
+</div>
+<div class="theme-preview-bar" id="themePreviewBar" style="display:none;"></div>
 
 <script src="pwa.js"></script>
 </body>
