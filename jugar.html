@@ -4694,6 +4694,7 @@ function setMode(mode) {
   document.getElementById("roundsField").style.display = mode === "streak" ? "none" : "block";
   document.getElementById("joinConfigNote").style.display = mode === "join" ? "block" : "none";
   document.getElementById("twistsField").style.display = mode === "create" ? "block" : "none";
+  document.getElementById("judgeField").style.display = mode === "create" ? "block" : "none";
   const labelKeys = { create: "play_btn_create", join: "play_btn_join", random: "play_btn_random", streak: "play_btn_streak" };
   document.getElementById("playBtn").textContent = t(labelKeys[mode]);
   checkCanPlay();
