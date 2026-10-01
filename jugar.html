@@ -1141,6 +1141,20 @@ html[data-light] .shop-balance { color: #FFF3E2; }
 
 /* ---------- Duelo ---------- */
 .duel-banner { border-color: var(--secondary); background: var(--crema-08); }
+.online-banner { border-color: var(--cielo); background: var(--crema-08); }
+.streak-banner { border-color: var(--lima); background: var(--crema-08); }
+html[data-light] .streak-banner { border-color: var(--lima-dark); }
+.online-banner .daily-icon, .streak-banner .daily-icon { animation: none; }
+.online-banner .daily-arrow, .streak-banner .daily-arrow { color: var(--text); }
+.lobby.view-hub .mode-only, .lobby:not(.view-online) .online-only, .lobby:not(.view-hub) .hub-only { display: none !important; }
+.lobby-mode-head { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; animation: fade-in .25s ease both; }
+.lobby-back {
+  border: 2px solid var(--borde); background: var(--surface); color: var(--text);
+  font: 700 15px var(--font-body); padding: 10px 14px; border-radius: 999px; cursor: pointer; flex-shrink: 0;
+}
+.lobby-back:hover { border-color: var(--primary); }
+.screen-back-row { margin: 0 0 14px; }
+.lobby-mode-title { font: 800 26px var(--font-display); letter-spacing: -.01em; margin: 0; }
 .duel-banner .daily-icon { animation: none; }
 .duel-banner.has-news { background: rgba(255,166,43,.14); }
 .duel-banner.has-news .daily-sub { color: var(--text); font-weight: 700; }
@@ -1260,7 +1274,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
 
 <!-- LOBBY -->
 <div class="screen active" id="screen-lobby">
-  <div class="wrap lobby">
+  <div class="wrap lobby view-hub" id="lobbyWrap">
     <div class="lobby-hero">
       <a href="/" class="wordmark-link" aria-label="Ir a la página de inicio" data-i18n-aria="brand_home_aria">
         <h1 class="wordmark">tutti<span class="apple-dot" aria-hidden="true"><svg viewBox="10 4 80 88"><path d="M50 36 C41 27 26 28 19 42 C12 56 15 71 25 80 C34 88 44 90 50 90 C56 90 66 88 75 80 C85 71 88 56 81 42 C74 28 59 27 50 36 Z" fill="var(--primary)"/><path d="M51 35 C57 19 73 9 85 7 C84 22 71 34 51 35 Z" fill="#B6EF3C"/><path d="M48 35 C43 22 32 14 22 12 C23 26 33 34 48 35 Z" fill="#8FD32E"/></svg></span><span class="sr-only">.</span>frutti</h1>
@@ -1268,7 +1282,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <p class="lead" data-i18n="lobby_lead">Tutti frutti online. Elegí categorías, invitá a tus amigos y que empiece la ronda.</p>
     </div>
 
-    <button type="button" class="daily-banner" id="dailyBanner" onclick="openDaily()">
+    <button type="button" class="daily-banner hub-only" id="dailyBanner" onclick="openDaily()">
       <span class="daily-icon" aria-hidden="true" id="dailyBannerIcon"></span>
       <span class="daily-text">
         <strong data-i18n="daily_banner_title">Desafío del día</strong>
@@ -1276,7 +1290,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       </span>
       <span class="daily-arrow" aria-hidden="true">→</span>
     </button>
-    <button type="button" class="daily-banner adventure-banner" id="adventureBanner" onclick="openAdventure()">
+    <button type="button" class="daily-banner adventure-banner hub-only" id="adventureBanner" onclick="openAdventure()">
       <span class="daily-icon" aria-hidden="true" id="adventureBannerIcon"></span>
       <span class="daily-text">
         <strong><span data-i18n="adv_banner_title">Aventura</span></strong>
@@ -1284,7 +1298,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       </span>
       <span class="daily-arrow" aria-hidden="true">→</span>
     </button>
-    <button type="button" class="daily-banner duel-banner" id="duelBanner" onclick="openMyDuels()">
+    <button type="button" class="daily-banner duel-banner hub-only" id="duelBanner" onclick="openMyDuels()">
       <span class="daily-icon" aria-hidden="true" id="duelBannerIcon"></span>
       <span class="daily-text">
         <strong data-i18n="duel_banner_title">Duelo con amigos</strong>
@@ -1293,26 +1307,47 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <span class="daily-arrow" aria-hidden="true">→</span>
     </button>
 
-    <div class="mode-tabs">
+    <button type="button" class="daily-banner online-banner hub-only" id="onlineBanner" onclick="openOnline()">
+      <span class="daily-icon" aria-hidden="true" data-icon="globe"></span>
+      <span class="daily-text">
+        <strong data-i18n="online_banner_title">Online</strong>
+        <span class="daily-sub" data-i18n="online_banner_sub">Creá una sala, unite con un código o jugá contra alguien al azar</span>
+      </span>
+      <span class="daily-arrow" aria-hidden="true">→</span>
+    </button>
+    <button type="button" class="daily-banner streak-banner hub-only" id="streakBanner" onclick="openStreak()">
+      <span class="daily-icon" aria-hidden="true" data-icon="stopwatch"></span>
+      <span class="daily-text">
+        <strong data-i18n="tab_streak">Contrarreloj</strong>
+        <span class="daily-sub" data-i18n="streak_banner_sub">2 minutos para sumar todos los puntos que puedas</span>
+      </span>
+      <span class="daily-arrow" aria-hidden="true">→</span>
+    </button>
+
+    <div class="lobby-mode-head mode-only">
+      <button type="button" class="lobby-back" onclick="openLobbyHub()"><span aria-hidden="true">←</span> <span data-i18n="lobby_back_modes">Modos</span></button>
+      <h2 class="lobby-mode-title" id="lobbyModeTitle"></h2>
+    </div>
+
+    <div class="mode-tabs online-only">
       <button type="button" class="mode-tab active" id="tabCreate" onclick="setMode('create')" data-i18n="tab_create">Crear sala</button>
       <button type="button" class="mode-tab" id="tabJoin" onclick="setMode('join')" data-i18n="tab_join">Unirme</button>
       <button type="button" class="mode-tab" id="tabRandom" onclick="setMode('random')" data-i18n="tab_random">Al azar</button>
-      <button type="button" class="mode-tab" id="tabStreak" onclick="setMode('streak')" data-i18n="tab_streak">Contrarreloj</button>
     </div>
 
-    <p class="online-note" id="mainNote" data-i18n-html="online_note_main_html">
+    <p class="online-note mode-only" id="mainNote" data-i18n-html="online_note_main_html">
       Se sortea una letra, todos completan las categorías al mismo tiempo y cualquiera puede tocar <strong>¡Basta!</strong> para cortar la ronda. Después de cada ronda pueden revisar y objetar respuestas antes de que se calcule el puntaje.
     </p>
 
-    <p class="online-note" id="joinNote" style="display:none;" data-i18n="join_note">
+    <p class="online-note mode-only" id="joinNote" style="display:none;" data-i18n="join_note">
       Pedile el código de sala a quien la creó y entrás directo a jugar con ella.
     </p>
 
-    <p class="online-note" id="randomNote" style="display:none;" data-i18n="random_note">
+    <p class="online-note mode-only" id="randomNote" style="display:none;" data-i18n="random_note">
       Te busca un rival real entre quienes estén buscando partida en este momento, sin código que compartir. Se juega con categorías y reglas fijas, ya que no hay forma de ponerse de acuerdo con un desconocido antes de arrancar. Si nadie aparece en unos segundos, podés seguir esperando o cancelar la búsqueda.
     </p>
 
-    <p class="online-note" id="streakNote" style="display:none;" data-i18n="streak_note">
+    <p class="online-note mode-only" id="streakNote" style="display:none;" data-i18n="streak_note">
       Jugás solo, contra un reloj de 2 minutos. En cada ronda completá lo que puedas y tocá ¡Basta!: cada palabra válida suma puntos y pasás a la letra siguiente, aunque alguna esté mal o vacía. Cuando se acaba el tiempo, termina la partida. ¡Juntá la mayor cantidad de puntos!
     </p>
 
@@ -1326,7 +1361,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <div class="avatar-picker" id="avatarPicker" role="radiogroup" aria-labelledby="avatarLabel"></div>
     </div>
 
-    <div class="field" id="roomFieldCreate">
+    <div class="field mode-only" id="roomFieldCreate">
       <label class="label" for="roomCode" data-i18n="label_room_create">Sala (compartí este código con tus amigos)</label>
       <div class="room-row">
         <input type="text" id="roomCode" readonly class="input-code room-code-value" />
@@ -1336,13 +1371,13 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <p class="hint" data-i18n="hint_room_link">El link entra directo a la sala; solo falta poner el nombre.</p>
     </div>
 
-    <div class="field" id="roomFieldJoin" style="display:none;">
+    <div class="field mode-only" id="roomFieldJoin" style="display:none;">
       <label class="label" for="joinCodeInput" data-i18n="label_room_join">Código de sala</label>
       <input type="text" id="joinCodeInput" class="input-code" placeholder="Ingresá el código que te pasaron"
         oninput="this.value=this.value.toUpperCase(); checkCanPlay();" autocomplete="off" data-i18n-placeholder="join_code_placeholder" />
     </div>
 
-    <div id="hostConfigFields">
+    <div id="hostConfigFields" class="mode-only">
       <div class="field" id="categoriesField">
         <span class="label" data-i18n="categories_label">Categorías (tocá las que quieras agregar)</span>
         <div class="pack-row">
@@ -1434,11 +1469,11 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       </div>
     </div>
 
-    <p class="online-note" id="joinConfigNote" style="display:none;" data-i18n="join_config_note">La persona que creó la sala ya eligió las categorías, el tiempo por ronda y las letras — vas a jugar con esa configuración.</p>
+    <p class="online-note mode-only" id="joinConfigNote" style="display:none;" data-i18n="join_config_note">La persona que creó la sala ya eligió las categorías, el tiempo por ronda y las letras — vas a jugar con esa configuración.</p>
 
     <div class="lobby-footer">
-      <p class="create-cost" id="createCostNote" style="display:none;"></p>
-      <button class="btn btn-primary btn-block" id="playBtn" disabled onclick="beginGame()">Empezar a jugar</button>
+      <p class="create-cost mode-only" id="createCostNote" style="display:none;"></p>
+      <button class="btn btn-primary btn-block mode-only" id="playBtn" disabled onclick="beginGame()">Empezar a jugar</button>
       <div class="lobby-links">
         <button type="button" class="btn btn-ghost" onclick="openProfile('missions')" id="missionsBtn"></button>
         <button type="button" class="btn btn-ghost" onclick="openShop()" id="shopBtn"><span data-i18n="shop_heading">Tienda</span></button>
@@ -1453,6 +1488,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
 <div class="screen" id="screen-adventure">
   <div class="results">
     <div class="results-card">
+      <div class="screen-back-row"><button type="button" class="lobby-back" onclick="backToModes()"><span aria-hidden="true">←</span> <span data-i18n="lobby_back_modes">Modos</span></button></div>
       <div class="hero-band">
         <h2><span data-i18n="adv_map_title">Aventura</span></h2>
         <p data-i18n="adv_map_lead">42 niveles en 7 mundos. Llegá a la meta de puntos para pasar cada uno.</p>
@@ -1647,6 +1683,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
 <div class="screen" id="screen-duels">
   <div class="results">
     <div class="results-card">
+      <div class="screen-back-row"><button type="button" class="lobby-back" onclick="backToModes()"><span aria-hidden="true">←</span> <span data-i18n="lobby_back_modes">Modos</span></button></div>
       <div class="hero-band">
         <h2 data-i18n="duel_banner_title">Duelo con amigos</h2>
         <p data-i18n="duels_lead">Jugá una ronda, mandale el link a quien quieras y volvé acá para ver quién ganó.</p>
@@ -1807,6 +1844,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
 <div class="screen" id="screen-results">
   <div class="results">
     <div class="results-card">
+      <div class="screen-back-row" id="resultsBackRow" style="display:none;"><button type="button" class="lobby-back" onclick="backToModes()"><span aria-hidden="true">←</span> <span data-i18n="lobby_back_modes">Modos</span></button></div>
       <div class="hero-band">
         <h2 id="resultsTitle">Resultados de la ronda</h2>
         <p id="resultsSummary"></p>
@@ -2489,6 +2527,10 @@ const I18N = {
     theme_name: "el tema {name}",
     theme_preview_text: "Así se ve el tema {name}",
     theme_preview_back: "Volver a mi tema",
+    online_banner_title: "Online",
+    online_banner_sub: "Creá una sala, unite con un código o jugá contra alguien al azar",
+    streak_banner_sub: "2 minutos para sumar todos los puntos que puedas",
+    lobby_back_modes: "Modos",
     clear_categories_btn: "Borrar todas",
     random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
     random_category_chip: "Random",
@@ -3065,6 +3107,10 @@ const I18N = {
     theme_name: "the {name} theme",
     theme_preview_text: "This is the {name} theme",
     theme_preview_back: "Back to my theme",
+    online_banner_title: "Online",
+    online_banner_sub: "Create a room, join with a code or play someone at random",
+    streak_banner_sub: "2 minutes to score as many points as you can",
+    lobby_back_modes: "Modes",
     clear_categories_btn: "Clear all",
     random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
     random_category_chip: "Random",
@@ -3641,6 +3687,10 @@ const I18N = {
     theme_name: "o tema {name}",
     theme_preview_text: "Assim fica o tema {name}",
     theme_preview_back: "Voltar ao meu tema",
+    online_banner_title: "Online",
+    online_banner_sub: "Crie uma sala, entre com um código ou jogue contra alguém aleatório",
+    streak_banner_sub: "2 minutos para somar o máximo de pontos que puder",
+    lobby_back_modes: "Modos",
     clear_categories_btn: "Limpar todas",
     random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
     random_category_chip: "Random",
@@ -4445,7 +4495,7 @@ function applyRoomLinkFromUrl() {
   const params = new URLSearchParams(location.search);
   const roomFromLink = params.get("room");
   if (!roomFromLink) return;
-  setMode("join");
+  openOnline("join");
   const input = document.getElementById("joinCodeInput");
   input.value = roomFromLink.toUpperCase();
   checkCanPlay();
@@ -4460,6 +4510,7 @@ function applyPackLinkFromUrl() {
   history.replaceState(null, "", location.pathname);
   state.mode = "create";
   if (activePackName() !== pack) loadPack(pack);
+  setLobbyView("online");
 }
 
 // /jugar?desafio (desde la página /desafio-del-dia): abre el desafío del día.
@@ -4592,12 +4643,45 @@ function addCategory() {
   input.value = "";
 }
 
+// El lobby tiene dos niveles: la lista de modos y, adentro, Online (crear, unirme, al azar) o Contrarreloj.
+let lastOnlineMode = "create";
+function setLobbyView(view) {
+  const wrap = document.getElementById("lobbyWrap");
+  if (!wrap) return;
+  wrap.classList.remove("view-hub", "view-online", "view-streak");
+  wrap.classList.add("view-" + view);
+}
+
+// "← Modos" desde la Aventura, los duelos o el resultado de una partida individual.
+function backToModes() {
+  goToLobby();
+  openLobbyHub();
+}
+
+function openLobbyHub() {
+  setLobbyView("hub");
+  window.scrollTo(0, 0);
+}
+
+function openOnline(mode) {
+  setMode(mode || lastOnlineMode);
+  setLobbyView("online");
+  window.scrollTo(0, 0);
+}
+
+function openStreak() {
+  setMode("streak");
+  setLobbyView("streak");
+  window.scrollTo(0, 0);
+}
+
 function setMode(mode) {
+  if (mode !== "streak") lastOnlineMode = mode;
+  document.getElementById("lobbyModeTitle").textContent = mode === "streak" ? t("tab_streak") : t("online_banner_title");
   state.mode = mode;
   document.getElementById("tabCreate").classList.toggle("active", mode === "create");
   document.getElementById("tabJoin").classList.toggle("active", mode === "join");
   document.getElementById("tabRandom").classList.toggle("active", mode === "random");
-  document.getElementById("tabStreak").classList.toggle("active", mode === "streak");
   document.getElementById("roomFieldCreate").style.display = mode === "create" ? "block" : "none";
   document.getElementById("roomFieldJoin").style.display = mode === "join" ? "block" : "none";
   document.getElementById("mainNote").style.display = (mode === "create" || mode === "join") ? "block" : "none";
@@ -6656,6 +6740,7 @@ async function finishStreakRound() {
 
   if (state.streakTimeLeft <= 0) {
     renderStreakResult(results);
+    document.getElementById("resultsBackRow").style.display = "";
     showScreen("screen-results");
     return;
   }
@@ -8189,7 +8274,7 @@ function renderAdventureNoLives(L, d) {
 
 function advGoToStreak() {
   goToLobby();
-  setMode("streak");
+  openStreak();
   window.scrollTo(0, 0);
 }
 
@@ -9523,6 +9608,7 @@ function showDailyResult(record, fresh) {
   const shareBtn = document.getElementById("shareResultBtn");
   shareBtn.style.display = record.unfinished ? "none" : "block";
   shareBtn.onclick = () => shareDailyResult(record);
+  document.getElementById("resultsBackRow").style.display = "";
 
   // Recién terminado, el ranking se muestra después de guardar el puntaje
   // (ver finishDailyRound); si se vuelve a abrir, se carga directo.
@@ -9865,6 +9951,7 @@ function goToLobby() {
   document.getElementById("roundMascot").innerHTML = "";
   document.getElementById("waitingMascot").dataset.mood = "";
   document.getElementById("nextRoundBtn").style.display = "";
+  document.getElementById("resultsBackRow").style.display = "none";
   renderDailyBanner();
   renderAdventureBanner();
   if (state.online) {

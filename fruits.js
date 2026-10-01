@@ -251,6 +251,10 @@
       '<path d="M66 56 H94 C94 66 88 72 80 72 C72 72 66 66 66 56 Z" fill="' + C.mandarina + '"/>' +
       '<circle cx="50" cy="14" r="6" fill="' + C.uva + '"/>'
     ),
+    globe: svg(
+      '<circle cx="50" cy="50" r="42" fill="' + C.cielo + '"/>' +
+      '<path d="M30 22 C40 26 44 34 38 40 C32 46 22 44 18 52 C14 44 18 30 30 22 Z M56 30 C66 28 78 34 82 46 C76 50 70 46 64 50 C58 54 62 64 56 70 C50 64 48 56 52 48 C56 42 50 36 56 30 Z M40 66 C48 68 52 76 48 88 C40 86 34 80 32 72 C34 68 36 66 40 66 Z" fill="' + C.lima + '"/>'
+    ),
     stopwatch: svg(
       '<rect x="42" y="6" width="16" height="10" rx="3" fill="' + C.cielo + '"/>' +
       '<rect x="72" y="18" width="10" height="8" rx="3" fill="' + C.cielo + '" transform="rotate(40 77 22)"/>' +
