@@ -214,6 +214,13 @@ strong { font-weight: 700; }
 .brand-mini .simbolo { width: 30px; height: 30px; flex-shrink: 0; }
 .brand-mini .wordmark { font-size: 26px; }
 body:has(#screen-lobby.active) .brand-mini { visibility: hidden; }
+/* Celulares angostos: los 4 botones de arriba no entran junto al logo completo. */
+@media (max-width: 420px) {
+  .brand-mini .wordmark { display: none; }
+  body:has(#screen-lobby.active) .brand-mini { display: none; }
+  .top-actions { gap: 6px; }
+  .icon-btn { width: 44px; height: 44px; }
+}
 .top-actions { display: flex; gap: 8px; margin-left: auto; }
 
 .icon-btn {
@@ -789,7 +796,7 @@ html[data-light] .wor-label { color: var(--tinta); }
 .daily-banner .daily-sub { font-size: 14px; color: var(--crema-72); }
 .daily-banner .daily-arrow { font: 800 22px var(--font-display); color: var(--mandarina); }
 html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
-.daily-banner.done { border-style: dashed; background: var(--surface); }
+.daily-banner.done { background: var(--surface); }
 
 /* ---------- Rankings globales ---------- */
 .global-board { margin-top: 26px; }
@@ -817,6 +824,15 @@ html[data-light] .daily-banner .daily-arrow { color: var(--tinta); }
 .confirm-card p { margin: 0 0 18px; color: var(--text-muted); font-size: 15px; }
 .confirm-card p .seed-icon { display: inline-block; width: 16px; height: 16px; vertical-align: -3px; }
 .confirm-actions { display: flex; gap: 10px; }
+.howto-card { position: relative; width: min(100%, 420px); max-height: calc(100dvh - 40px); overflow-y: auto; }
+.howto-card .confirm-art { width: 64px; height: 64px; }
+.howto-close { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--crema-08); color: var(--text); font: 700 22px/1 var(--font-body); cursor: pointer; }
+.howto-steps { list-style: none; counter-reset: howto; margin: 14px 0 20px; padding: 0; text-align: left; display: flex; flex-direction: column; gap: 12px; }
+.howto-steps li { counter-increment: howto; position: relative; padding-left: 40px; font-size: 15px; line-height: 1.45; color: var(--crema-72); }
+.howto-steps li strong { color: var(--text); }
+.howto-steps li::before { content: counter(howto); position: absolute; left: 0; top: -2px; width: 28px; height: 28px; border-radius: 50%; background: var(--primary); color: var(--tinta); font: 800 15px/28px var(--font-display); text-align: center; }
+.howto-link { margin-left: auto; border: 0; background: none; color: var(--text); font: 700 14px var(--font-body); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 8px 4px; }
+.screen-back-row { display: flex; align-items: center; }
 .confirm-actions .btn { flex: 1; padding: 14px; }
 .theme-preview-bar { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 75; width: min(calc(100% - 32px), 460px); display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 16px; background: var(--surface); color: var(--text); box-shadow: 0 12px 34px rgba(0,0,0,.35); border: 2px solid var(--primary); animation: rise-in .25s cubic-bezier(.2, .8, .2, 1) both; }
 .theme-preview-bar span { flex: 1; font-size: 14px; line-height: 1.3; }
@@ -952,7 +968,7 @@ html[data-light] .twist-note { color: var(--tinta); }
 
 /* ---------- Aventura (niveles para jugar solo) ---------- */
 .adventure-banner { border-color: var(--primary); background: var(--crema-08); }
-.adventure-banner .daily-icon { animation: none; }
+.adventure-banner .daily-icon { animation: icon-twinkle 2.6s ease-in-out infinite; }
 .adventure-banner .daily-arrow { color: var(--primary); }
 html[data-light] .adventure-banner .daily-arrow { color: var(--tinta); }
 
@@ -1144,18 +1160,71 @@ html[data-light] .shop-balance { color: #FFF3E2; }
 .online-banner { border-color: var(--cielo); background: var(--crema-08); }
 .streak-banner { border-color: var(--lima); background: var(--crema-08); }
 html[data-light] .streak-banner { border-color: var(--lima-dark); }
-.online-banner .daily-icon, .streak-banner .daily-icon { animation: none; }
+.online-banner .daily-icon { animation: sun-spin 16s linear infinite; }
+.streak-banner .daily-icon { animation: icon-tick 2s ease-in-out infinite; }
+/* Cada modo tiene su ícono animado, como el sol del desafío del día. */
+@keyframes icon-twinkle { 0%, 100% { transform: scale(1) rotate(0); } 50% { transform: scale(1.12) rotate(12deg); } }
+@keyframes icon-wobble { 0%, 60%, 100% { transform: rotate(0); } 70% { transform: rotate(-10deg); } 80% { transform: rotate(8deg); } 90% { transform: rotate(-4deg); } }
+@keyframes icon-tick { 0%, 100% { transform: rotate(0) scale(1); } 10% { transform: rotate(-8deg) scale(1.06); } 20% { transform: rotate(8deg) scale(1.06); } 30% { transform: rotate(0) scale(1); } }
 .online-banner .daily-arrow, .streak-banner .daily-arrow { color: var(--text); }
 .lobby.view-hub .mode-only, .lobby:not(.view-online) .online-only, .lobby:not(.view-hub) .hub-only { display: none !important; }
-.lobby-mode-head { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; animation: fade-in .25s ease both; }
+.lobby.view-anim > *:not(.lobby-hero):not(.lobby-footer) { animation: rise-in .28s cubic-bezier(.2, .8, .2, 1) backwards; }
+@media (prefers-reduced-motion: reduce) { .lobby.view-anim > * { animation: none; } }
+.lobby-mode-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 0 18px; animation: fade-in .25s ease both; }
 .lobby-back {
   border: 2px solid var(--borde); background: var(--surface); color: var(--text);
   font: 700 15px var(--font-body); padding: 10px 14px; border-radius: 999px; cursor: pointer; flex-shrink: 0;
 }
 .lobby-back:hover { border-color: var(--primary); }
-.screen-back-row { margin: 0 0 14px; }
+.screen-back-row { margin: 0 0 14px; gap: 10px; }
+.duel-link-field { margin: 16px 0 0; }
+.duel-link-input { flex: 1; min-width: 0; font-size: 14px !important; font-family: var(--font-mono); text-transform: none; }
+.streak-round { margin: 0 0 10px; border-radius: var(--radius-card); background: var(--crema-08); overflow: hidden; }
+.streak-round summary { display: flex; align-items: center; gap: 12px; padding: 12px 14px; cursor: pointer; list-style: none; }
+.streak-round summary::-webkit-details-marker { display: none; }
+.streak-round summary::after { content: "▾"; color: var(--text-muted); transition: transform .2s; }
+.streak-round[open] summary::after { transform: rotate(180deg); }
+.streak-round-letter { width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; background: var(--primary); color: var(--tinta); font: 800 20px/36px var(--font-display); text-align: center; }
+.streak-round-info { flex: 1; display: flex; flex-direction: column; min-width: 0; font-size: 13px; color: var(--text-muted); }
+.streak-round-info strong { font-size: 15px; color: var(--text); }
+.streak-round-pts { font: 800 18px var(--font-mono); color: var(--lima); }
+html[data-light] .streak-round-pts { color: var(--tinta); }
+.streak-round-answers { padding: 0 10px 10px; }
+.streak-round-answers .answer-row { margin-bottom: 6px; }
+@media (min-width: 900px) {
+  .mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 26px; }
+  .mode-grid .daily-banner { margin: 0; min-height: 96px; }
+  .mode-grid #dailyBanner { grid-column: 1 / -1; }
+}
+.full-badge { color: var(--lima); font-weight: 800; }
+html[data-light] .full-badge { color: var(--tinta); }
+#finalPlayAgainBtn.pulse { animation: rematch-pulse 1.2s ease-in-out infinite; }
+@keyframes rematch-pulse { 50% { transform: scale(1.04); box-shadow: 0 0 0 6px color-mix(in srgb, var(--primary) 30%, transparent); } }
+.duel-inbox-avatar { background: var(--crema-08); padding: 4px; }
+.duel-inbox-avatar svg { width: 100%; height: 100%; display: block; }
+#catGrid .card.rv-hidden { opacity: .5; }
+#catGrid .card.rv-hidden .joker-btn, #catGrid .card.rv-done .joker-btn:not([aria-pressed="true"]) { display: none; }
+#catGrid .card.rv-done { opacity: .8; }
+#catGrid .card.rv-appear { animation: rise-in .3s cubic-bezier(.2, .8, .2, 1) both; }
+#catGrid .card.rv-shake { animation: rv-shake .35s ease; }
+@keyframes rv-shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+.rv-lock { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; margin-right: 6px; border-radius: 50%; background: var(--crema-08); font-weight: 800; }
+.reveal-actions { display: flex; gap: 8px; margin-top: 10px; }
+.reveal-actions button { flex: 1; border: 0; border-radius: 10px; padding: 10px; font: 700 14px var(--font-body); cursor: pointer; }
+.reveal-actions .rv-skip { flex: 0 0 auto; padding: 10px 12px; background: var(--crema-08); color: var(--text); }
+.reveal-actions .rv-next { white-space: nowrap; }
+.reveal-actions .rv-next { background: var(--primary); color: var(--tinta); }
+.adv-rule-line { display: flex; align-items: flex-start; gap: 4px; }
+.adv-rule-line .inline-icon { flex-shrink: 0; width: 1.3em; height: 1.3em; margin: 1px 4px 0 0; }
+.adv-rule-line + .adv-rule-line { margin-top: 8px; }
+#catGrid .card.mem-hidden .card-label { color: var(--text-muted); }
+#catGrid .card.mem-hidden .wildcard-badge { display: none; }
+#catGrid input.rule-bad { border-color: var(--pomelo) !important; background: color-mix(in srgb, var(--pomelo) 16%, var(--surface)) !important; }
+.reveal-actions.ticking { align-items: center; }
+.rv-clock { flex: 0 0 auto; min-width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--crema-08); color: var(--text); font: 800 15px var(--font-mono); }
+.rv-clock.low { background: var(--pomelo); color: #fff; }
 .lobby-mode-title { font: 800 26px var(--font-display); letter-spacing: -.01em; margin: 0; }
-.duel-banner .daily-icon { animation: none; }
+.duel-banner .daily-icon { animation: icon-wobble 3s ease-in-out infinite; transform-origin: 50% 90%; }
 .duel-banner.has-news { background: rgba(255,166,43,.14); }
 .duel-banner.has-news .daily-sub { color: var(--text); font-weight: 700; }
 .duel-banner .daily-arrow { color: var(--secondary); }
@@ -1283,6 +1352,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <p class="lead" data-i18n="lobby_lead">Tutti frutti online. Elegí categorías, invitá a tus amigos y que empiece la ronda.</p>
     </div>
 
+    <div class="mode-grid hub-only">
     <button type="button" class="daily-banner hub-only" id="dailyBanner" onclick="openDaily()">
       <span class="daily-icon" aria-hidden="true" id="dailyBannerIcon"></span>
       <span class="daily-text">
@@ -1324,10 +1394,12 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       </span>
       <span class="daily-arrow" aria-hidden="true">→</span>
     </button>
+    </div>
 
     <div class="lobby-mode-head mode-only">
       <button type="button" class="lobby-back" onclick="openLobbyHub()"><span aria-hidden="true">←</span> <span data-i18n="lobby_back_modes">Modos</span></button>
       <h2 class="lobby-mode-title" id="lobbyModeTitle"></h2>
+      <button type="button" class="howto-link" onclick="showHowTo(lobbyHowToMode())" data-i18n="howto_help">¿Cómo se juega?</button>
     </div>
 
     <div class="mode-tabs online-only">
@@ -1489,10 +1561,10 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
 <div class="screen" id="screen-adventure">
   <div class="results">
     <div class="results-card">
-      <div class="screen-back-row"><button type="button" class="lobby-back" onclick="backToModes()"><span aria-hidden="true">←</span> <span data-i18n="lobby_back_modes">Modos</span></button></div>
+      <div class="screen-back-row"><button type="button" class="lobby-back" onclick="backToModes()"><span aria-hidden="true">←</span> <span data-i18n="lobby_back_modes">Modos</span></button><button type="button" class="howto-link" onclick="showHowTo('adventure')" data-i18n="howto_help">¿Cómo se juega?</button></div>
       <div class="hero-band">
         <h2><span data-i18n="adv_map_title">Aventura</span></h2>
-        <p data-i18n="adv_map_lead">42 niveles en 7 mundos. Llegá a la meta de puntos para pasar cada uno.</p>
+        <p data-i18n="adv_map_lead">102 niveles en 17 mundos. Llegá a la meta de puntos para pasar cada uno.</p>
         <div class="adv-status">
           <div class="adv-status-item adv-lives"><div class="adv-hearts" id="advMapHearts"></div><span class="adv-status-text" data-adv-countdown></span></div>
           <div class="adv-status-item"><span id="advMapStarIcon"></span><span class="adv-status-text" id="advMapStars"></span></div>
@@ -1528,6 +1600,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <h2 class="section-title" data-i18n="adv_stars_heading">Estrellas</h2>
       <div id="advLevelTiers"></div>
       <p class="adv-rule" id="advLevelBoss" style="display:none;"></p>
+      <p class="adv-rule" id="advLevelReveal" style="display:none;"></p>
       <p class="adv-rule" id="advLevelLife"></p>
       <div id="advLevelItems"></div>
       <div class="actions-row">
@@ -1632,7 +1705,8 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
         <p id="friendSub"></p>
       </div>
       <div class="stats-grid" id="friendStats"></div>
-      <button type="button" class="btn btn-primary btn-block" onclick="openDuelCreate()" data-i18n="friend_duel_btn">Desafiar a un duelo</button>
+      <button type="button" class="btn btn-primary btn-block" onclick="challengeFriend()" data-i18n="friend_duel_btn">Desafiar a un duelo</button>
+      <p class="hint" style="text-align:center;" id="friendDuelHint"></p>
       <div class="actions-row">
         <button class="secondary" onclick="openProfile('friends')" data-i18n="friend_back_btn">Volver a mis amigos</button>
         <button class="secondary danger-link" id="friendRemoveBtn" data-i18n="friend_remove_btn">Eliminar amigo</button>
@@ -1684,13 +1758,13 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
 <div class="screen" id="screen-duels">
   <div class="results">
     <div class="results-card">
-      <div class="screen-back-row"><button type="button" class="lobby-back" onclick="backToModes()"><span aria-hidden="true">←</span> <span data-i18n="lobby_back_modes">Modos</span></button></div>
+      <div class="screen-back-row"><button type="button" class="lobby-back" onclick="backToModes()"><span aria-hidden="true">←</span> <span data-i18n="lobby_back_modes">Modos</span></button><button type="button" class="howto-link" onclick="showHowTo('duel')" data-i18n="howto_help">¿Cómo se juega?</button></div>
       <div class="hero-band">
         <h2 data-i18n="duel_banner_title">Duelo con amigos</h2>
         <p data-i18n="duels_lead">Jugá una ronda, mandale el link a quien quieras y volvé acá para ver quién ganó.</p>
       </div>
       <button type="button" class="btn btn-primary btn-block" onclick="openDuelCreate()" data-i18n="duels_new_btn">Nuevo duelo</button>
-      <h2 class="section-title" style="margin-top:28px;" data-i18n="duels_mine_heading">Tus duelos</h2>
+      <h2 class="section-title" style="margin-top:28px;" id="duelsMineHeading" data-i18n="duels_mine_heading">Tus duelos</h2>
       <div id="myDuelsList"></div>
       <div class="actions-row">
         <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
@@ -1740,6 +1814,13 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
         <div id="duelBoard"></div>
       </div>
       <button type="button" class="btn btn-primary btn-block" id="duelShareBtn" style="margin-top:18px;" onclick="shareDuel()" data-i18n="duel_share_btn">Enviar el desafío</button>
+      <div class="field duel-link-field">
+        <label class="label" for="duelLinkInput" data-i18n="duel_link_label">O copiá el link y mandalo a mano</label>
+        <div class="room-row">
+          <input type="text" id="duelLinkInput" class="duel-link-input" readonly onclick="this.select()" />
+          <button type="button" onclick="copyDuelLink()" data-i18n="copy_btn">Copiar</button>
+        </div>
+      </div>
       <div class="actions-row">
         <button class="secondary" onclick="openMyDuels()" data-i18n="duels_my_btn">Mis duelos</button>
         <button class="primary" id="duelNewBtn" onclick="openDuelCreate()" data-i18n="duel_new_btn">Crear mi propio duelo</button>
@@ -1916,6 +1997,30 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
   </div>
 </div>
 
+<div class="confetti-container" id="confettiContainer"></div>
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+<div class="confirm-overlay" id="confirmBuy" role="dialog" aria-modal="true" aria-labelledby="confirmBuyTitle" style="display:none;" onclick="if (event.target === this) closePurchase(false)">
+  <div class="confirm-card">
+    <span class="confirm-art" id="confirmBuyArt"></span>
+    <h2 id="confirmBuyTitle"></h2>
+    <p id="confirmBuyPrice"></p>
+    <div class="confirm-actions">
+      <button type="button" class="btn btn-secondary" onclick="closePurchase(false)" data-i18n="buy_cancel">Cancelar</button>
+      <button type="button" class="btn btn-primary" id="confirmBuyOk" onclick="closePurchase(true)" data-i18n="buy_confirm">Comprar</button>
+    </div>
+  </div>
+</div>
+<div class="theme-preview-bar" id="themePreviewBar" style="display:none;"></div>
+<!-- Cómo se juega: va antes de los scripts porque se puede abrir mientras carga la página (/jugar?aventura). -->
+<div class="confirm-overlay" id="howTo" role="dialog" aria-modal="true" aria-labelledby="howToTitle" style="display:none;" onclick="if (event.target === this) closeHowTo(false)">
+  <div class="confirm-card howto-card">
+    <button type="button" class="howto-close" onclick="closeHowTo(false)" aria-label="Cerrar" data-i18n-aria="howto_close">×</button>
+    <span class="confirm-art" id="howToArt"></span>
+    <h2 id="howToTitle"></h2>
+    <ol class="howto-steps" id="howToSteps"></ol>
+    <button type="button" class="btn btn-primary btn-block" id="howToOk" onclick="closeHowTo(true)"></button>
+  </div>
+</div>
 <script src="fruits.js"></script>
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
@@ -2194,9 +2299,9 @@ const I18N = {
     pack_mexico: "Cultura mexicana",
     adv_banner_title: "Aventura",
     adv_banner_sub: "Nivel {n} · {stars} estrellas",
-    adv_banner_sub_done: "¡Completaste los 42 niveles! · {stars} estrellas",
+    adv_banner_sub_done: "¡Completaste los 102 niveles! · {stars} estrellas",
     adv_map_title: "Aventura",
-    adv_map_lead: "42 niveles en 7 mundos. Llegá a la meta de puntos para pasar cada uno.",
+    adv_map_lead: "102 niveles en 17 mundos. Llegá a la meta de puntos para pasar cada uno.",
     adv_lives_full: "Vidas llenas",
     adv_next_life: "+1 vida en {time}",
     adv_world_name: "Mundo {name}",
@@ -2213,7 +2318,7 @@ const I18N = {
     adv_wname_sandia: "Sandía",
     adv_wname_coco: "Coco",
     adv_wdesc_sandia: "A toda velocidad",
-    adv_wdesc_coco: "El desafío final",
+    adv_wdesc_coco: "Solo para expertos",
     adv_world_locked: "Se desbloquea al terminar el Mundo {name}",
     adv_boss: "Jefe",
     adv_your_turn: "¡Te toca!",
@@ -2532,6 +2637,67 @@ const I18N = {
     online_banner_sub: "Creá una sala, unite con un código o jugá contra alguien al azar",
     streak_banner_sub: "2 minutos para sumar todos los puntos que puedas",
     lobby_back_modes: "Modos",
+    duel_link_label: "O copiá el link y mandalo a mano",
+    duel_link_copied: "Link del duelo copiado",
+    howto_go: "¡A jugar!",
+    howto_ok: "Entendido",
+    howto_help: "¿Cómo se juega?",
+    howto_close: "Cerrar",
+    full_round_label: "¡Pleno! +{n}",
+    daily_full_bonus: "¡Pleno! Completaste todas: +{n} pts extra.",
+    rematch_ask_btn: "¡Quiero la revancha!",
+    rematch_asked_btn: "Revancha pedida ✓",
+    rematch_asked_note: "Le avisamos a {name} que querés la revancha.",
+    rematch_wanted: "{names} quiere la revancha. ¡Tocá Revancha para arrancar!",
+    friend_duel_hint: "Jugás una ronda y a {name} le aparece el duelo en su sección de duelos.",
+    duel_sent_to_friend: "Ya se lo mandamos a {name}: le aparece en sus duelos.",
+    duels_inbox_heading: "Te desafiaron",
+    duels_inbox_row: "{name} te desafió",
+    duels_inbox_sub: "Sacó {score} pts. ¿Le ganás?",
+    duels_inbox_play: "Jugar",
+    duels_banner_inbox_one: "¡{name} te desafió a un duelo!",
+    duels_banner_inbox_many: "Tenés {n} duelos de amigos para jugar",
+    adv_wname_frutilla: "Frutilla",
+    adv_wname_kiwi: "Kiwi",
+    adv_wname_arandano: "Arándano",
+    adv_wdesc_frutilla: "Paso a paso",
+    adv_wdesc_kiwi: "A ciegas",
+    adv_wdesc_arandano: "Cuesta arriba",
+    adv_reveal_hidden: "Categoría oculta",
+    adv_reveal_skip: "Pasar",
+    adv_reveal_next: "Siguiente →",
+    adv_reveal_finish: "Terminar ✓",
+    adv_reveal_bad: "Tiene que empezar con {letter}. Corregila o tocá Pasar.",
+    adv_reveal_empty: "Escribí una palabra con {letter} o tocá Pasar.",
+    wildcard_note_hidden: "Una de las categorías ocultas vale el doble",
+    rematch_wanted_many: "{names} y {last} quieren la revancha. ¡Tocá Revancha para arrancar!",
+    adv_wname_banana: "Banana",
+    adv_wname_cereza: "Cereza",
+    adv_wname_durazno: "Durazno",
+    adv_wname_mango: "Mango",
+    adv_wname_tomate: "Tomate",
+    adv_wname_palta: "Palta",
+    adv_wname_melon: "Melón",
+    adv_wdesc_banana: "Palabras cortas",
+    adv_wdesc_cereza: "Letra prohibida",
+    adv_wdesc_durazno: "Memoria de elefante",
+    adv_wdesc_mango: "Tic-tac",
+    adv_wdesc_tomate: "Un poco de todo",
+    adv_wdesc_palta: "Combos",
+    adv_wdesc_melon: "El desafío final",
+    adv_rule_reveal: "Categorías ocultas: se descubren de a una. Para ver la siguiente, completá o pasá la actual (no se puede volver atrás).",
+    adv_rule_short: "Palabras cortas: cada palabra puede tener {n} letras como máximo.",
+    adv_rule_banned: "Letra prohibida: al empezar te toca una letra que no puede aparecer en ninguna palabra.",
+    adv_rule_memory: "Memoria: las categorías se ven {s} segundos y después se esconden. ¡Acordate dónde iba cada una!",
+    adv_rule_ticking: "Tic-tac: las categorías salen de a una y cada una tiene {s} segundos. Si se acaba, pasa a la siguiente.",
+    adv_note_reveal: "Categorías de a una",
+    adv_note_short: "Máximo {n} letras",
+    adv_note_banned: "Prohibida la {x}",
+    adv_note_memory: "Memoria: {s} s para mirar",
+    adv_note_ticking: "{s} s por categoría",
+    adv_memory_hidden: "¿Te acordás?",
+    adv_reason_short: "Tiene más de {n} letras",
+    adv_reason_banned: "Tiene la letra prohibida ({x})",
     clear_categories_btn: "Borrar todas",
     random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
     random_category_chip: "Random",
@@ -2639,6 +2805,7 @@ const I18N = {
     streak_note: "Jugás solo, contra un reloj de 2 minutos. En cada ronda completá lo que puedas y tocá ¡Basta!: cada palabra válida suma puntos y pasás a la letra siguiente, aunque alguna esté mal o vacía. Cuando se acaba el tiempo, termina la partida. ¡Juntá la mayor cantidad de puntos!",
     play_btn_streak: "Jugar contrarreloj",
     streak_round_label: "Contrarreloj · Ronda {n}",
+    streak_round_short: "Ronda {n}",
     streak_result_title: "¡Se acabó el tiempo!",
     streak_result_rounds: "Rondas jugadas: {n}",
     streak_result_score: "Puntaje: {score}",
@@ -2774,9 +2941,9 @@ const I18N = {
     pack_mexico: "Mexican culture",
     adv_banner_title: "Adventure",
     adv_banner_sub: "Level {n} · {stars} stars",
-    adv_banner_sub_done: "You beat all 42 levels! · {stars} stars",
+    adv_banner_sub_done: "You beat all 102 levels! · {stars} stars",
     adv_map_title: "Adventure",
-    adv_map_lead: "42 levels across 7 worlds. Reach the target score to clear each one.",
+    adv_map_lead: "102 levels across 17 worlds. Reach the target score to clear each one.",
     adv_lives_full: "Full lives",
     adv_next_life: "+1 life in {time}",
     adv_world_name: "{name} World",
@@ -2793,7 +2960,7 @@ const I18N = {
     adv_wname_sandia: "Watermelon",
     adv_wname_coco: "Coconut",
     adv_wdesc_sandia: "At full speed",
-    adv_wdesc_coco: "The final challenge",
+    adv_wdesc_coco: "Experts only",
     adv_world_locked: "Unlocks when you finish the {name} World",
     adv_boss: "Boss",
     adv_your_turn: "You're up!",
@@ -3112,6 +3279,67 @@ const I18N = {
     online_banner_sub: "Create a room, join with a code or play someone at random",
     streak_banner_sub: "2 minutes to score as many points as you can",
     lobby_back_modes: "Modes",
+    duel_link_label: "Or copy the link and send it yourself",
+    duel_link_copied: "Duel link copied",
+    howto_go: "Let's play!",
+    howto_ok: "Got it",
+    howto_help: "How to play",
+    howto_close: "Close",
+    full_round_label: "Clean sweep! +{n}",
+    daily_full_bonus: "Clean sweep! You got them all: +{n} extra points.",
+    rematch_ask_btn: "I want a rematch!",
+    rematch_asked_btn: "Rematch requested ✓",
+    rematch_asked_note: "We let {name} know you want a rematch.",
+    rematch_wanted: "{names} wants a rematch. Tap Rematch to start!",
+    friend_duel_hint: "You play a round and the duel shows up in {name}'s duels.",
+    duel_sent_to_friend: "We sent it to {name}: it shows up in their duels.",
+    duels_inbox_heading: "You've been challenged",
+    duels_inbox_row: "{name} challenged you",
+    duels_inbox_sub: "Scored {score} pts. Can you win?",
+    duels_inbox_play: "Play",
+    duels_banner_inbox_one: "{name} challenged you to a duel!",
+    duels_banner_inbox_many: "You have {n} duels from friends to play",
+    adv_wname_frutilla: "Strawberry",
+    adv_wname_kiwi: "Kiwi",
+    adv_wname_arandano: "Blueberry",
+    adv_wdesc_frutilla: "Step by step",
+    adv_wdesc_kiwi: "Blindfolded",
+    adv_wdesc_arandano: "Uphill",
+    adv_reveal_hidden: "Hidden category",
+    adv_reveal_skip: "Skip",
+    adv_reveal_next: "Next →",
+    adv_reveal_finish: "Finish ✓",
+    adv_reveal_bad: "It has to start with {letter}. Fix it or tap Skip.",
+    adv_reveal_empty: "Write a word with {letter} or tap Skip.",
+    wildcard_note_hidden: "One of the hidden categories counts double",
+    rematch_wanted_many: "{names} and {last} want a rematch. Tap Rematch to start!",
+    adv_wname_banana: "Banana",
+    adv_wname_cereza: "Cherry",
+    adv_wname_durazno: "Peach",
+    adv_wname_mango: "Mango",
+    adv_wname_tomate: "Tomato",
+    adv_wname_palta: "Avocado",
+    adv_wname_melon: "Melon",
+    adv_wdesc_banana: "Short words",
+    adv_wdesc_cereza: "Banned letter",
+    adv_wdesc_durazno: "Elephant memory",
+    adv_wdesc_mango: "Tick-tock",
+    adv_wdesc_tomate: "A bit of everything",
+    adv_wdesc_palta: "Combos",
+    adv_wdesc_melon: "The final challenge",
+    adv_rule_reveal: "Hidden categories: they appear one at a time. To see the next one, fill in or skip the current one (no going back).",
+    adv_rule_short: "Short words: each word can have at most {n} letters.",
+    adv_rule_banned: "Banned letter: when you start you get a letter that can't appear in any word.",
+    adv_rule_memory: "Memory: categories are shown for {s} seconds and then hidden. Remember where each one was!",
+    adv_rule_ticking: "Tick-tock: categories appear one at a time and each has {s} seconds. When it runs out, you move to the next.",
+    adv_note_reveal: "One category at a time",
+    adv_note_short: "{n} letters max",
+    adv_note_banned: "No {x} allowed",
+    adv_note_memory: "Memory: {s} s to look",
+    adv_note_ticking: "{s} s per category",
+    adv_memory_hidden: "Remember?",
+    adv_reason_short: "More than {n} letters",
+    adv_reason_banned: "Has the banned letter ({x})",
     clear_categories_btn: "Clear all",
     random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
     random_category_chip: "Random",
@@ -3219,6 +3447,7 @@ const I18N = {
     streak_note: "You play solo against a 2-minute clock. Each round, fill in what you can and tap Stop!: every valid word scores points and you move on to the next letter, even if some are wrong or empty. When time runs out, the game ends. Score as many points as you can!",
     play_btn_streak: "Play time attack",
     streak_round_label: "Time attack · Round {n}",
+    streak_round_short: "Round {n}",
     streak_result_title: "Time's up!",
     streak_result_rounds: "Rounds played: {n}",
     streak_result_score: "Score: {score}",
@@ -3354,9 +3583,9 @@ const I18N = {
     pack_mexico: "Cultura mexicana",
     adv_banner_title: "Aventura",
     adv_banner_sub: "Nível {n} · {stars} estrelas",
-    adv_banner_sub_done: "Você completou os 42 níveis! · {stars} estrelas",
+    adv_banner_sub_done: "Você completou os 102 níveis! · {stars} estrelas",
     adv_map_title: "Aventura",
-    adv_map_lead: "42 níveis em 7 mundos. Chegue à meta de pontos para passar cada um.",
+    adv_map_lead: "102 níveis em 17 mundos. Chegue à meta de pontos para passar cada um.",
     adv_lives_full: "Vidas cheias",
     adv_next_life: "+1 vida em {time}",
     adv_world_name: "Mundo {name}",
@@ -3373,7 +3602,7 @@ const I18N = {
     adv_wname_sandia: "Melancia",
     adv_wname_coco: "Coco",
     adv_wdesc_sandia: "A toda velocidade",
-    adv_wdesc_coco: "O desafio final",
+    adv_wdesc_coco: "Só para experts",
     adv_world_locked: "Desbloqueia ao terminar o Mundo {name}",
     adv_boss: "Chefe",
     adv_your_turn: "Sua vez!",
@@ -3692,6 +3921,67 @@ const I18N = {
     online_banner_sub: "Crie uma sala, entre com um código ou jogue contra alguém aleatório",
     streak_banner_sub: "2 minutos para somar o máximo de pontos que puder",
     lobby_back_modes: "Modos",
+    duel_link_label: "Ou copie o link e envie você mesmo",
+    duel_link_copied: "Link do duelo copiado",
+    howto_go: "Bora jogar!",
+    howto_ok: "Entendi",
+    howto_help: "Como se joga?",
+    howto_close: "Fechar",
+    full_round_label: "Gabaritou! +{n}",
+    daily_full_bonus: "Gabaritou! Acertou todas: +{n} pts extras.",
+    rematch_ask_btn: "Quero a revanche!",
+    rematch_asked_btn: "Revanche pedida ✓",
+    rematch_asked_note: "Avisamos {name} que você quer a revanche.",
+    rematch_wanted: "{names} quer a revanche. Toque em Revanche para começar!",
+    friend_duel_hint: "Você joga uma rodada e o duelo aparece nos duelos de {name}.",
+    duel_sent_to_friend: "Já enviamos para {name}: aparece nos duelos da pessoa.",
+    duels_inbox_heading: "Te desafiaram",
+    duels_inbox_row: "{name} te desafiou",
+    duels_inbox_sub: "Fez {score} pts. Você ganha?",
+    duels_inbox_play: "Jogar",
+    duels_banner_inbox_one: "{name} te desafiou para um duelo!",
+    duels_banner_inbox_many: "Você tem {n} duelos de amigos para jogar",
+    adv_wname_frutilla: "Morango",
+    adv_wname_kiwi: "Kiwi",
+    adv_wname_arandano: "Mirtilo",
+    adv_wdesc_frutilla: "Passo a passo",
+    adv_wdesc_kiwi: "Às cegas",
+    adv_wdesc_arandano: "Ladeira acima",
+    adv_reveal_hidden: "Categoria oculta",
+    adv_reveal_skip: "Pular",
+    adv_reveal_next: "Próxima →",
+    adv_reveal_finish: "Terminar ✓",
+    adv_reveal_bad: "Tem que começar com {letter}. Corrija ou toque em Pular.",
+    adv_reveal_empty: "Escreva uma palavra com {letter} ou toque em Pular.",
+    wildcard_note_hidden: "Uma das categorias ocultas vale o dobro",
+    rematch_wanted_many: "{names} e {last} querem a revanche. Toque em Revanche para começar!",
+    adv_wname_banana: "Banana",
+    adv_wname_cereza: "Cereja",
+    adv_wname_durazno: "Pêssego",
+    adv_wname_mango: "Manga",
+    adv_wname_tomate: "Tomate",
+    adv_wname_palta: "Abacate",
+    adv_wname_melon: "Melão",
+    adv_wdesc_banana: "Palavras curtas",
+    adv_wdesc_cereza: "Letra proibida",
+    adv_wdesc_durazno: "Memória de elefante",
+    adv_wdesc_mango: "Tique-taque",
+    adv_wdesc_tomate: "Um pouco de tudo",
+    adv_wdesc_palta: "Combos",
+    adv_wdesc_melon: "O desafio final",
+    adv_rule_reveal: "Categorias ocultas: aparecem uma por vez. Para ver a próxima, preencha ou pule a atual (não dá para voltar).",
+    adv_rule_short: "Palavras curtas: cada palavra pode ter no máximo {n} letras.",
+    adv_rule_banned: "Letra proibida: ao começar você recebe uma letra que não pode aparecer em nenhuma palavra.",
+    adv_rule_memory: "Memória: as categorias aparecem por {s} segundos e depois se escondem. Lembre onde estava cada uma!",
+    adv_rule_ticking: "Tique-taque: as categorias aparecem uma por vez e cada uma tem {s} segundos. Quando acaba, passa para a próxima.",
+    adv_note_reveal: "Uma categoria por vez",
+    adv_note_short: "Máximo {n} letras",
+    adv_note_banned: "Proibida a {x}",
+    adv_note_memory: "Memória: {s} s para olhar",
+    adv_note_ticking: "{s} s por categoria",
+    adv_memory_hidden: "Lembra?",
+    adv_reason_short: "Tem mais de {n} letras",
+    adv_reason_banned: "Tem a letra proibida ({x})",
     clear_categories_btn: "Limpar todas",
     random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
     random_category_chip: "Random",
@@ -3799,6 +4089,7 @@ const I18N = {
     streak_note: "Você joga sozinho contra um relógio de 2 minutos. Em cada rodada, preencha o que puder e toque em Stop!: cada palavra válida soma pontos e você passa para a próxima letra, mesmo que alguma esteja errada ou vazia. Quando o tempo acaba, a partida termina. Some o máximo de pontos!",
     play_btn_streak: "Jogar contrarrelógio",
     streak_round_label: "Contrarrelógio · Rodada {n}",
+    streak_round_short: "Rodada {n}",
     streak_result_title: "O tempo acabou!",
     streak_result_rounds: "Rodadas jogadas: {n}",
     streak_result_score: "Pontuação: {score}",
@@ -3946,6 +4237,8 @@ function setLanguage(lang) {
   if (fpanel) fpanel.innerHTML = ""; // se vuelve a armar en el idioma nuevo
   renderMissionsButton();
   renderDailyBanner();
+  renderShopButton();
+  renderAdventureBanner();
   if (document.getElementById("tabCreate")) setMode(state.mode);
 
   // Best-effort: si hay una pantalla dinámica visible con datos ya conocidos,
@@ -3957,6 +4250,8 @@ function setLanguage(lang) {
   if (activeId === "screen-results") {
     if (state.online && state.room) renderOnlineResults(state.room);
   }
+  if (activeId === "screen-adventure") renderAdventureMap();
+  if (activeId === "screen-duels") renderMyDuels(state.myDuelsCache || []);
 }
 
 function toggleLangMenu() {
@@ -4649,8 +4944,14 @@ let lastOnlineMode = "create";
 function setLobbyView(view) {
   const wrap = document.getElementById("lobbyWrap");
   if (!wrap) return;
+  const changed = !wrap.classList.contains("view-" + view);
   wrap.classList.remove("view-hub", "view-online", "view-streak");
   wrap.classList.add("view-" + view);
+  if (changed) {
+    wrap.classList.remove("view-anim");
+    void wrap.offsetWidth;
+    wrap.classList.add("view-anim");
+  }
 }
 
 // "← Modos" desde la Aventura, los duelos o el resultado de una partida individual.
@@ -4842,7 +5143,9 @@ function renderWildcardNote() {
   if (!note) return;
   if (state.wildcardCategory) {
     note.style.display = "flex";
-    note.innerHTML = inlineIcon("star") + escapeHtml(t("wildcard_note", { cat: catLabel(state.wildcardCategory) }));
+    // Con categorías ocultas no se dice cuál es la doble: se ve el ×2 cuando aparece.
+    const hidden = state.adventureMode && state.advLevel && (advReveal(state.advLevel) || advHas(state.advLevel, "memory"));
+    note.innerHTML = inlineIcon("star") + escapeHtml(hidden ? t("wildcard_note_hidden") : t("wildcard_note", { cat: catLabel(state.wildcardCategory) }));
   } else {
     note.style.display = "none";
   }
@@ -5301,6 +5604,8 @@ function handleRoomUpdate(data) {
   } else if (data.status === "final" && lastHandledStatus !== "final") {
     lastHandledStatus = "final";
     renderOnlineFinal(data);
+  } else if (data.status === "final") {
+    renderRematchState(data);
   }
 }
 
@@ -5668,7 +5973,8 @@ async function hostOpenReview(round) {
 }
 
 const OBJECTION_PENALTY = 5;
-const JUDGE_TIMEOUT_MS = 5000;
+// El juez puede hacer una segunda consulta (apelación de lo que rechaza): hasta ~10 s.
+const JUDGE_TIMEOUT_MS = 10500;
 
 function stripAccents(s) {
   return s
@@ -6321,23 +6627,7 @@ function renderOnlineFinal(data) {
     `;
     list.appendChild(row);
   });
-  const playAgainBtn = document.getElementById("finalPlayAgainBtn");
-  const waitingNote = document.getElementById("waitingFinalNote");
-  if (playAgainBtn) {
-    if (state.isHost) {
-      playAgainBtn.style.display = "block";
-      playAgainBtn.textContent = t("rematch_btn");
-      playAgainBtn.onclick = hostRematch;
-      if (waitingNote) waitingNote.style.display = "none";
-    } else {
-      playAgainBtn.style.display = "none";
-      if (waitingNote) {
-        const hostName = (players[data.hostId] && players[data.hostId].name) || t("the_host_fallback");
-        waitingNote.textContent = t("waiting_host_rematch", { name: hostName });
-        waitingNote.style.display = "block";
-      }
-    }
-  }
+  renderRematchState(data);
   const wins = data.wins || {};
   const totalGames = Object.values(wins).reduce((a, b) => a + (Number(b) || 0), 0);
   const seriesEl = document.getElementById("finalSeries");
@@ -6360,11 +6650,52 @@ function renderOnlineFinal(data) {
   showFinalOutcomeFor(iWon);
 }
 
+// Revancha: quien creó la sala la arranca; el resto puede pedirla y a quien la arranca
+// le aparece quiénes quieren jugar otra.
+function renderRematchState(data) {
+  const playAgainBtn = document.getElementById("finalPlayAgainBtn");
+  const waitingNote = document.getElementById("waitingFinalNote");
+  if (!playAgainBtn || !waitingNote) return;
+  const players = data.players || {};
+  const askers = Object.keys(players).filter(pid => pid !== data.hostId && players[pid].rematch && players[pid].connected !== false)
+    .map(pid => players[pid].name || "?");
+  playAgainBtn.style.display = "block";
+  playAgainBtn.disabled = false;
+  if (state.isHost) {
+    playAgainBtn.textContent = t("rematch_btn");
+    playAgainBtn.onclick = hostRematch;
+    playAgainBtn.classList.toggle("pulse", askers.length > 0);
+    waitingNote.textContent = askers.length === 1 ? t("rematch_wanted", { names: askers[0] })
+      : (askers.length ? t("rematch_wanted_many", { names: askers.slice(0, -1).join(", "), last: askers[askers.length - 1] }) : "");
+    waitingNote.style.display = askers.length ? "block" : "none";
+  } else {
+    const hostName = (players[data.hostId] && players[data.hostId].name) || t("the_host_fallback");
+    const asked = !!(players[state.playerId] && players[state.playerId].rematch);
+    playAgainBtn.classList.remove("pulse");
+    playAgainBtn.textContent = t(asked ? "rematch_asked_btn" : "rematch_ask_btn");
+    playAgainBtn.disabled = asked;
+    playAgainBtn.onclick = askRematch;
+    waitingNote.textContent = t(asked ? "rematch_asked_note" : "waiting_host_rematch", { name: hostName });
+    waitingNote.style.display = "block";
+  }
+}
+
+function askRematch() {
+  if (state.isHost || !state.roomCode) return;
+  const btn = document.getElementById("finalPlayAgainBtn");
+  if (btn) btn.disabled = true;
+  window.FB.set(window.FB.ref(window.FB.db, `rooms/${state.roomCode}/players/${state.playerId}/rematch`), true)
+    .catch(() => { if (btn) btn.disabled = false; });
+}
+
 function hostRematch() {
   if (!state.isHost || !state.room) return;
   const players = state.room.players || {};
   const resetPlayers = {};
-  Object.keys(players).forEach(pid => { resetPlayers[pid] = { ...players[pid], score: 0 }; });
+  Object.keys(players).forEach(pid => {
+    const { rematch, ...rest } = players[pid];
+    resetPlayers[pid] = { ...rest, score: 0 };
+  });
   const pool = (state.room.config && state.room.config.letterPool && state.room.config.letterPool.length)
     ? state.room.config.letterPool
     : DEFAULT_LETTERS;
@@ -6403,7 +6734,11 @@ function leaveRoom() {
   goToLobby();
 }
 
-function beginGame() {
+function beginGame(opts = {}) {
+  if (!opts.howtoDone && !howToSeen(lobbyHowToMode())) {
+    showHowTo(lobbyHowToMode(), () => beginGame({ howtoDone: true }));
+    return;
+  }
   state.playerName = document.getElementById("playerName").value.trim().slice(0, 30);
   try { localStorage.setItem("tuttifruti_playerName", state.playerName); } catch (e) { /* storage unavailable */ }
   state.playerId = state.playerId || getPlayerId();
@@ -6484,7 +6819,119 @@ function renderCatGrid() {
     `;
     grid.appendChild(card);
   });
+  state.revealIdx = null;
+  clearTimeout(state.memoryTimer);
+  if (state.adventureMode && state.advLevel && advReveal(state.advLevel)) {
+    state.revealIdx = 0;
+    state.cardSecondsLeft = state.advLevel.cardTime || 0;
+    updateRevealCards();
+  } else if (state.adventureMode && advHas(state.advLevel, "memory")) {
+    // Memoria: las categorías se ven unos segundos y después se esconden.
+    state.memoryTimer = setTimeout(() => {
+      if (!state.adventureMode) return;
+      document.querySelectorAll("#catGrid .card").forEach(card => {
+        const label = card.querySelector(".card-label");
+        if (!label) return;
+        card.classList.add("mem-hidden");
+        label.innerHTML = `<span class="rv-lock">?</span>${escapeHtml(t("adv_memory_hidden"))}`;
+      });
+    }, ADV_MEMORY_SECONDS * 1000);
+  }
   renderSoloTools();
+}
+
+// ---------- Categorías ocultas (mundos Frutilla, Kiwi y Arándano) ----------
+// Se ve una categoría por vez: para descubrir la siguiente hay que completar la actual
+// (que empiece con la letra) o pasarla. Las anteriores quedan fijas.
+function revealMode() { return state.revealIdx != null; }
+
+function updateRevealCards() {
+  const cards = Array.from(document.querySelectorAll("#catGrid .card"));
+  cards.forEach((card, i) => {
+    const input = card.querySelector("input");
+    const label = card.querySelector(".card-label");
+    if (!card.dataset.label) card.dataset.label = label.innerHTML;
+    card.querySelectorAll(".reveal-actions").forEach(el => el.remove());
+    card.classList.toggle("rv-done", i < state.revealIdx);
+    card.classList.toggle("rv-current", i === state.revealIdx);
+    card.classList.toggle("rv-hidden", i > state.revealIdx);
+    if (i > state.revealIdx) {
+      label.innerHTML = `<span class="rv-lock">?</span>${escapeHtml(t("adv_reveal_hidden"))}`;
+      input.disabled = true;
+      input.placeholder = "";
+    } else {
+      label.innerHTML = card.dataset.label;
+      input.placeholder = ((state.letterByCat && state.letterByCat[input.dataset.cat]) || state.letter || "") + "...";
+      if (i < state.revealIdx) { input.readOnly = true; input.disabled = !!isJoker(input.dataset.cat && state.answers[input.dataset.cat]); }
+      else {
+        input.readOnly = false;
+        input.disabled = state.jokerCat === input.dataset.cat;
+        const actions = document.createElement("div");
+        actions.className = "reveal-actions";
+        if (state.advLevel && state.advLevel.cardTime) {
+          actions.classList.add("ticking");
+          actions.insertAdjacentHTML("beforeend", `<span class="rv-clock" id="rvClock">${state.cardSecondsLeft}</span>`);
+        }
+        actions.innerHTML += `<button type="button" class="rv-skip" onclick="advanceReveal(true)">${escapeHtml(t("adv_reveal_skip"))}</button>` +
+          `<button type="button" class="rv-next" onclick="advanceReveal(false)">${escapeHtml(t(i === cards.length - 1 ? "adv_reveal_finish" : "adv_reveal_next"))}</button>`;
+        card.appendChild(actions);
+      }
+    }
+  });
+}
+
+function advRuleReasonText(reason) {
+  if (reason === "adv_short") return t("adv_reason_short", { n: ADV_SHORT_MAX });
+  if (reason === "adv_banned") return t("adv_reason_banned", { x: state.advBanned || "?" });
+  return "";
+}
+
+// Reloj por categoría ("ticking"): si se acaba, la categoría se da por terminada
+// (vale si lo escrito ya es válido; si no, se pasa).
+function tickRevealCard() {
+  if (!revealMode() || !state.advLevel || !state.advLevel.cardTime) return;
+  state.cardSecondsLeft--;
+  const clock = document.getElementById("rvClock");
+  if (clock) { clock.textContent = Math.max(0, state.cardSecondsLeft); clock.classList.toggle("low", state.cardSecondsLeft <= 3); }
+  if (state.cardSecondsLeft > 0) return;
+  const card = document.querySelectorAll("#catGrid .card")[state.revealIdx];
+  if (!card) return;
+  const cat = card.querySelector("input").dataset.cat;
+  const val = (state.answers[cat] || "").trim();
+  const letter = (state.letterByCat && state.letterByCat[cat]) || state.letter;
+  const ok = isJoker(val) || (val && answerMatchesLetter(val, letter) && !isTrivialAnswer(val) && !advRuleBreak(state.advLevel, val));
+  advanceReveal(!ok);
+}
+
+function advanceReveal(skip) {
+  if (!revealMode() || !state.adventureMode) return;
+  const cards = Array.from(document.querySelectorAll("#catGrid .card"));
+  const card = cards[state.revealIdx];
+  if (!card) return;
+  const input = card.querySelector("input");
+  const cat = input.dataset.cat;
+  const val = (state.answers[cat] || "").trim();
+  const letter = (state.letterByCat && state.letterByCat[cat]) || state.letter;
+  if (!skip && !isJoker(val)) {
+    const broken = advRuleBreak(state.advLevel, val);
+    if (!val || !answerMatchesLetter(val, letter) || isTrivialAnswer(val) || broken) {
+      card.classList.remove("rv-shake");
+      void card.offsetWidth;
+      card.classList.add("rv-shake");
+      seedToast(broken ? advRuleReasonText(broken) : t(val ? "adv_reveal_bad" : "adv_reveal_empty", { letter }));
+      input.focus();
+      return;
+    }
+  }
+  if (skip && !isJoker(val)) { state.answers[cat] = ""; input.value = ""; input.classList.remove("filled", "rule-bad"); }
+  state.revealIdx++;
+  state.cardSecondsLeft = (state.advLevel && state.advLevel.cardTime) || 0;
+  updateRevealCards();
+  if (state.revealIdx >= cards.length) { onBastaTap(); return; }
+  const next = cards[state.revealIdx];
+  next.classList.add("rv-appear");
+  const nextInput = next.querySelector("input");
+  if (nextInput) nextInput.focus();
 }
 
 // Pista y Cambiar letra: solo en la Aventura y el contrarreloj.
@@ -6494,7 +6941,7 @@ function renderSoloTools() {
   if (!bar) return;
   const w = getWallet();
   if (!soloToolsAllowed() || (!w.items.hint && !w.items.reroll)) { bar.style.display = "none"; bar.innerHTML = ""; return; }
-  const canReroll = w.items.reroll > 0 && !state.rerollUsed && !state.letterByCat;
+  const canReroll = w.items.reroll > 0 && !state.rerollUsed && !state.letterByCat && state.revealIdx == null;
   bar.innerHTML =
     (w.items.hint > 0 ? `<button type="button" class="solo-tool" onclick="useHint()" ${state.hintBusy ? "disabled" : ""}>${iconSvgInline("sun")}${escapeHtml(t("tool_hint_btn", { n: w.items.hint }))}</button>` : "") +
     (canReroll ? `<button type="button" class="solo-tool" onclick="useReroll()">${iconSvgInline("dice")}${escapeHtml(t("tool_reroll_btn", { n: w.items.reroll }))}</button>` : "");
@@ -6507,8 +6954,9 @@ async function useHint() {
   const w = getWallet();
   if (!soloToolsAllowed() || w.items.hint <= 0 || state.hintBusy) return;
   const inputs = Array.from(document.querySelectorAll("#catGrid input"));
-  const focused = inputs.find(i => i === document.activeElement && !i.value.trim() && !state.hintedCats.includes(i.dataset.cat));
-  const target = focused || inputs.find(i => !i.value.trim() && !state.hintedCats.includes(i.dataset.cat));
+  const open = i => !i.disabled && !i.readOnly && !i.value.trim() && !state.hintedCats.includes(i.dataset.cat);
+  const focused = inputs.find(i => i === document.activeElement && open(i));
+  const target = focused || inputs.find(open);
   if (!target) { seedToast(t("tool_hint_none")); return; }
   const cat = target.dataset.cat;
   const letter = (state.letterByCat && state.letterByCat[cat]) || state.letter;
@@ -6569,6 +7017,7 @@ function useReroll() {
 function onAnswerKeydown(e, el) {
   if (e.key !== "Enter") return;
   e.preventDefault();
+  if (revealMode()) { advanceReveal(false); return; }
   const inputs = Array.from(document.querySelectorAll("#catGrid input"));
   const idx = inputs.indexOf(el);
   if (idx > -1 && idx < inputs.length - 1) {
@@ -6580,6 +7029,7 @@ function onAnswerKeydown(e, el) {
 
 function onAnswerInput(el) {
   state.answers[el.dataset.cat] = el.value;
+  if (state.adventureMode) el.classList.toggle("rule-bad", !!advRuleBreak(state.advLevel, el.value.trim()));
   const isFilled = el.value.trim().length > 0;
   const wasFilled = el.classList.contains("filled");
   el.classList.toggle("filled", isFilled);
@@ -6601,6 +7051,8 @@ function pickWildcard(categories) {
 
 // ---------- Modo Contrarreloj (solo, contra el reloj, categorías al azar) ----------
 const STREAK_POINTS_PER_CATEGORY = 10;
+// "Pleno": si todas las categorías de la ronda valen, suma un extra (contrarreloj y desafío del día).
+const FULL_ROUND_BONUS = 20;
 // Reloj total de la partida: se juegan rondas hasta que se acaba.
 const STREAK_TOTAL_SECONDS = 120;
 const STREAK_CATEGORY_COUNT = 6;
@@ -6651,6 +7103,7 @@ function startStreakMode() {
   state.online = false;
   state.streakRound = 1;
   state.streakScore = 0;
+  state.streakLog = [];
   state.streakTimeLeft = STREAK_TOTAL_SECONDS;
   state.usedLetters = getRecentLetters().filter(l => state.letterPool.includes(l));
   recordGameStart();
@@ -6733,7 +7186,13 @@ async function finishStreakRound() {
   results.forEach(r => {
     if (r.valid) roundPoints += r.joker ? JOKER_POINTS : (r.cat === state.wildcardCategory ? STREAK_POINTS_PER_CATEGORY * 2 : STREAK_POINTS_PER_CATEGORY);
   });
+  const fullRound = results.length > 0 && results.every(r => r.valid);
+  if (fullRound) roundPoints += FULL_ROUND_BONUS;
   state.streakScore += roundPoints;
+  (state.streakLog = state.streakLog || []).push({
+    n: state.streakRound, letter: state.letter, wildcard: state.wildcardCategory, points: roundPoints, full: fullRound,
+    valid: results.filter(r => r.valid).length, total: results.length, results,
+  });
   const streakValid = results.filter(r => r.valid && !r.joker).length;
   bumpProgress(p => {
     addMission(p, "valid_words", streakValid);
@@ -6746,18 +7205,18 @@ async function finishStreakRound() {
     showScreen("screen-results");
     return;
   }
-  showStreakRoundToast(roundPoints, results.filter(r => r.valid).length, results.length);
+  showStreakRoundToast(roundPoints, results.filter(r => r.valid).length, results.length, fullRound);
   state.streakRound++;
   startStreakRound();
 }
 
-function showStreakRoundToast(points, valid, total) {
+function showStreakRoundToast(points, valid, total, full = false) {
   const stack = document.getElementById("toastStack");
   if (!stack) return;
   const el = document.createElement("div");
   el.className = "toast";
   el.innerHTML = `<span class="toast-icon">${mascotSvg(valid === total ? "happy" : (valid ? "neutral" : "sad"), getMyAvatar(), myEquipped())}</span>` +
-    `<span><strong>+${points} pts</strong><br>${escapeHtml(t("streak_round_toast", { valid, total }))}</span>`;
+    `<span><strong>+${points} pts</strong>${full ? ` · ${escapeHtml(t("full_round_label", { n: FULL_ROUND_BONUS }))}` : ""}<br>${escapeHtml(t("streak_round_toast", { valid, total }))}</span>`;
   stack.appendChild(el);
   setTimeout(() => el.classList.add("out"), 2200);
   setTimeout(() => el.remove(), 2700);
@@ -6789,24 +7248,36 @@ function renderStreakResult(results) {
   const scoreKey = document.querySelector("#screen-results .score-key");
   if (scoreKey) scoreKey.style.display = "none";
 
+  // Todas las rondas de la partida, no solo la última: cada una con su letra, sus puntos y
+  // (al abrirla) las respuestas y por qué alguna no valió.
   const list = document.getElementById("answerList");
   list.innerHTML = "";
-  results.forEach((r, i) => {
-    const isWild = r.cat === state.wildcardCategory;
+  const log = (state.streakLog && state.streakLog.length) ? state.streakLog
+    : [{ n: roundsCleared, letter: state.letter, wildcard: state.wildcardCategory, points: 0, valid: 0, total: results.length, results }];
+  const rowHtml = (r, round) => {
+    const isWild = r.cat === round.wildcard;
     const basePts = r.valid ? STREAK_POINTS_PER_CATEGORY : 0;
     const pts = r.joker ? JOKER_POINTS : (isWild ? basePts * 2 : basePts);
-    const reason = soloReasonText(r, state.letter);
-    const row = document.createElement("div");
-    row.className = "answer-row";
-    row.style.flexWrap = "wrap";
-    row.innerHTML = `
+    const reason = soloReasonText(r, round.letter);
+    return `<div class="answer-row" style="flex-wrap:wrap;">
       <span class="answer-cat">${escapeHtml(catLabel(r.cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
       <span class="answer-val ${r.val ? "" : "empty"}">${r.val ? escapeHtml(answerText(r.val)) : t("no_answer")}</span>
       <span class="points points-${basePts}" title="${t(basePts ? "score_label_20" : "score_label_0")}">+${pts}</span>
       ${reason ? `<div style="flex-basis:100%; font-size:11px; color:var(--text-support);">${reason}</div>` : ""}
-    `;
-    revealRow(row, i);
-    list.appendChild(row);
+    </div>`;
+  };
+  log.forEach((round, i) => {
+    const block = document.createElement("details");
+    block.className = "streak-round";
+    if (i === log.length - 1) block.open = true;
+    block.innerHTML = `<summary>
+        <span class="streak-round-letter">${escapeHtml(round.letter)}</span>
+        <span class="streak-round-info"><strong>${escapeHtml(t("streak_round_short", { n: round.n }))}</strong><span>${escapeHtml(t("streak_round_toast", { valid: round.valid, total: round.total }))}${round.full ? ` · <span class="full-badge">${escapeHtml(t("full_round_label", { n: FULL_ROUND_BONUS }))}</span>` : ""}</span></span>
+        <span class="streak-round-pts">+${round.points}</span>
+      </summary>
+      <div class="streak-round-answers">${round.results.map(r => rowHtml(r, round)).join("")}</div>`;
+    revealRow(block, i);
+    list.appendChild(block);
   });
 
   const recordNote = document.createElement("p");
@@ -7223,6 +7694,8 @@ function openFriend(fid) {
     cell(st.stars, "friend_stat_stars") + cell(st.ach, "friend_stat_ach") + cell(st.wins, "stats_wins") +
     cell(st.best, "stats_streak_best") + cell(st.days, "stats_day_streak") + cell(st.games, "stats_games");
   document.getElementById("friendRemoveBtn").onclick = () => removeFriend(fid, fp.name);
+  state.viewingFriend = { uid: fid, name: fp.name || "?" };
+  document.getElementById("friendDuelHint").textContent = t("friend_duel_hint", { name: fp.name || "?" });
   showScreen("screen-friend");
   window.scrollTo(0, 0);
 }
@@ -7609,7 +8082,7 @@ function openDaily() {
   state.playerName = name;
   try { localStorage.setItem("tuttifruti_playerName", name); } catch (e) { /* storage unavailable */ }
   getAudioCtx();
-  startDaily();
+  withHowTo("daily", startDaily);
 }
 
 function startDaily() {
@@ -7686,9 +8159,10 @@ async function finishDailyRound() {
     score += r.joker ? JOKER_POINTS : DAILY_POINTS_PER_CATEGORY * (r.cat === ch.wildcard ? 2 : 1);
   });
   const bonus = valid > 0 ? secondsLeft : 0;
-  score += bonus;
+  const full = results.length > 0 && valid === results.length;
+  score += bonus + (full ? FULL_ROUND_BONUS : 0);
   const record = {
-    date: ch.key, letter: ch.letter, wildcard: ch.wildcard, score, bonus, valid, total: results.length,
+    date: ch.key, letter: ch.letter, wildcard: ch.wildcard, score, bonus, full, valid, total: results.length,
     grid: results.map(r => (r.valid ? "1" : "0")).join(""),
     results: results.map(r => ({ cat: r.cat, val: r.val, valid: !!r.valid, joker: !!r.joker, reason: r.reason || "", motivo: r.motivo || "" })),
   };
@@ -7715,7 +8189,7 @@ async function finishDailyRound() {
 }
 
 // ---------- Aventura: niveles para jugar solo (/jugar?aventura abre el mapa) ----------
-// 7 mundos de 6 niveles. Cada nivel tiene categorías fijas (salen del número de nivel) y una
+// 17 mundos de 6 niveles. Cada nivel tiene categorías fijas (salen del número de nivel) y una
 // letra al azar en cada intento, así reintentar no es repetir lo mismo. Para pasar hay que
 // llegar a la meta de puntos con palabras válidas. El progreso y las vidas se guardan en
 // este dispositivo.
@@ -7745,7 +8219,29 @@ const ADV_WORLDS = [
   // Sandía: a toda velocidad (poco tiempo y jefe relámpago). Coco: el desafío final.
   { fruit: "🍉", key: "sandia", cats: [5, 6, 6, 6, 7, 6], time: [50, 50, 45, 45, 40, 40], letters: ["medium"], pools: ["medium", "hard"], goal: 0.6, boss: "flash" },
   { fruit: "🥥", key: "coco", cats: [6, 7, 7, 8, 8, 8], time: [70, 70, 65, 65, 60, 85], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.75, boss: "long" },
+  // reveal: las categorías se descubren de a una (hay que completar o pasar la actual para ver
+  // la siguiente, sin volver atrás). "late" = desde el nivel 4 del mundo; "all" = en todos.
+  { fruit: "🍓", key: "frutilla", cats: [5, 5, 6, 5, 6, 6], time: [70, 70, 65, 70, 65, 80], letters: ["easy", "medium"], pools: ["easy", "medium"], goal: 0.6, boss: null, reveal: "late" },
+  { fruit: "🥝", key: "kiwi", cats: [6, 6, 6, 7, 7, 6], time: [65, 60, 60, 60, 55, 55], letters: ["medium"], pools: ["easy", "medium", "hard"], goal: 0.65, boss: "flash", reveal: "all" },
+  { fruit: "🫐", key: "arandano", cats: [6, 7, 7, 8, 8, 8], time: [75, 70, 70, 65, 65, 90], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.75, boss: "long", reveal: "all" },
+  // Reglas especiales (rules: en todos los niveles del mundo; levelRules: una lista por nivel).
+  //   short: palabras de 6 letras o menos · banned: una letra prohibida en todas las palabras
+  //   memory: las categorías se ven unos segundos y se esconden · ticking: de a una, con reloj por categoría
+  // En los niveles con "ticking", time es el tiempo de cada categoría.
+  { fruit: "🍌", key: "banana", cats: [5, 5, 6, 6, 6, 6], time: [75, 70, 70, 65, 65, 80], letters: ["easy", "medium"], pools: ["easy", "medium"], goal: 0.55, boss: "flash", rules: ["short"] },
+  { fruit: "🍒", key: "cereza", cats: [5, 6, 6, 6, 7, 6], time: [75, 75, 70, 70, 65, 85], letters: ["easy", "medium"], pools: ["easy", "medium"], goal: 0.55, boss: null, rules: ["banned"] },
+  { fruit: "🍑", key: "durazno", cats: [5, 6, 6, 7, 7, 6], time: [75, 70, 70, 70, 65, 85], letters: ["easy", "medium"], pools: ["medium", "hard"], goal: 0.6, boss: "long", rules: ["memory"] },
+  { fruit: "🥭", key: "mango", cats: [5, 5, 6, 6, 6, 6], time: [16, 15, 15, 14, 13, 16], letters: ["medium"], pools: ["easy", "medium", "hard"], goal: 0.6, boss: null, rules: ["ticking"] },
+  { fruit: "🍅", key: "tomate", cats: [6, 6, 6, 6, 6, 6], time: [70, 70, 70, 14, 70, 85], letters: ["medium", "hard"], pools: ["medium", "hard"], goal: 0.6, boss: "flash",
+    levelRules: [["short"], ["banned"], ["memory"], ["ticking"], ["short", "memory"], ["banned", "reveal"]] },
+  { fruit: "🥑", key: "palta", cats: [6, 6, 6, 7, 7, 7], time: [70, 70, 14, 70, 70, 14], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.6, boss: null,
+    levelRules: [["memory", "banned"], ["reveal", "short"], ["ticking", "banned"], ["memory", "short"], ["reveal", "banned"], ["ticking", "short"]] },
+  { fruit: "🍈", key: "melon", cats: [6, 7, 7, 7, 8, 8], time: [13, 75, 75, 13, 80, 14], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.65, boss: null,
+    levelRules: [["ticking", "banned"], ["memory", "short"], ["reveal", "banned"], ["ticking", "short"], ["memory", "banned"], ["ticking", "banned"]] },
 ];
+const ADV_SHORT_MAX = 6;
+const ADV_MEMORY_SECONDS = 6;
+const ADV_BANNED_CANDIDATES = ["O", "R", "S", "L", "I", "U", "T", "C"];
 const ADV_TOTAL = ADV_WORLDS.length * 6;
 // Lo que muestra la medalla de la letra en los jefes (cada categoría tiene la suya).
 const ADV_MIXED_SYMBOL = "★";
@@ -7779,10 +8275,43 @@ function advLevel(n) {
   const target2 = Math.min(maxWords - ADV_POINTS, target + 2 * ADV_POINTS);
   const letterKinds = W.letters;
   const lettersLabel = letterKinds.length > 1 ? "adv_letters_mixed" : "adv_letters_" + letterKinds[0];
+  const rules = advLevelRules(W, i);
+  // Con reloj por categoría, el tiempo total del nivel es la suma de los de cada categoría.
+  const cardTime = rules.includes("ticking") ? W.time[i] : 0;
   return {
-    n, world: w, index: i, W, categories, wildcard, target, target2, time: W.time[i],
+    n, world: w, index: i, W, categories, wildcard, target, target2, time: cardTime ? cardTime * categories.length : W.time[i], cardTime,
     letters: letterKinds.flatMap(k => ADV_LETTERS[k]), lettersLabel, boss: i === 5 ? W.boss : null, mixed: i === 5,
+    rules,
   };
+}
+
+const ADV_RULE_ICONS = { reveal: "dice", ticking: "stopwatch", short: "bolt", banned: "flame", memory: "books" };
+
+// Las reglas especiales del nivel, para la ficha (texto largo) o para la partida (texto corto).
+function advRuleLines(L, short = false) {
+  return (L.rules || []).filter(r => ADV_RULE_ICONS[r]).map(r => {
+    const vars = { n: ADV_SHORT_MAX, s: r === "memory" ? ADV_MEMORY_SECONDS : L.cardTime, x: state.advBanned || "?" };
+    return [ADV_RULE_ICONS[r], t((short ? "adv_note_" : "adv_rule_") + r, vars)];
+  });
+}
+
+// ¿La palabra rompe una regla del nivel? Devuelve el motivo o "".
+function advRuleBreak(L, val) {
+  if (!L || !val || isJoker(val)) return "";
+  const letters = normalizeAnswer(val).replace(/[^a-zñ]/g, "");
+  if (advHas(L, "short") && letters.length > ADV_SHORT_MAX) return "adv_short";
+  if (advHas(L, "banned") && state.advBanned && letters.includes(state.advBanned.toLowerCase())) return "adv_banned";
+  return "";
+}
+
+function advHas(L, rule) { return !!(L && L.rules && L.rules.includes(rule)); }
+// Las categorías se muestran de a una con "reveal" y con "ticking".
+function advReveal(L) { return advHas(L, "reveal") || advHas(L, "ticking"); }
+
+function advLevelRules(W, i) {
+  const rules = W.levelRules ? [...(W.levelRules[i] || [])] : [...(W.rules || [])];
+  if (W.reveal === "all" || (W.reveal === "late" && i >= 3)) rules.push("reveal");
+  return rules;
 }
 
 function advRegen(d) {
@@ -7856,6 +8385,7 @@ function openAdventure() {
   renderAdventureMap();
   showScreen("screen-adventure");
   advStartTicker();
+  if (!howToSeen("adventure")) showHowTo("adventure");
   window.scrollTo(0, 0);
 }
 
@@ -7932,6 +8462,10 @@ function openAdventureLevel(n) {
   } else {
     bossEl.style.display = "none";
   }
+  const revealEl = document.getElementById("advLevelReveal");
+  const ruleLines = advRuleLines(L);
+  revealEl.style.display = ruleLines.length ? "block" : "none";
+  revealEl.innerHTML = ruleLines.map(([icon, text]) => `<span class="adv-rule-line">${inlineIcon(icon)}${escapeHtml(text)}</span>`).join("");
   document.getElementById("advLevelLife").innerHTML = passed
     ? advStar(true).replace('class="adv-star"', 'class="adv-star" style="width:18px;height:18px"') + escapeHtml(t("adv_replay_free"))
     : advHeart(true) + escapeHtml(t("adv_life_warning"));
@@ -7955,10 +8489,16 @@ function renderAdventureLevelItems(passed) {
   box.innerHTML = html;
 }
 
-function startAdventureLevel(n = state.advLevelN) {
+function startAdventureLevel(n = state.advLevelN, opts = {}) {
   const d = advLoad();
   if (!advUnlocked(d, n)) return;
   const L = advLevel(n);
+  // La primera vez que aparece una regla especial, se explica antes de arrancar.
+  const newRule = !opts.rulesExplained && (L.rules || []).find(r => ADV_RULE_ICONS[r] && !howToSeen("rule_" + r));
+  if (newRule) {
+    showHowTo("rule_" + newRule, () => startAdventureLevel(n, {}));
+    return;
+  }
   const passed = (d.stars[n] || 0) > 0;
   if (!passed && d.lives <= 0) {
     renderAdventureNoLives(L, d);
@@ -7982,6 +8522,13 @@ function startAdventureLevel(n = state.advLevelN) {
     letterByCat = {};
     L.categories.forEach((cat, k) => { letterByCat[cat] = pool[k]; });
     letter = ADV_MIXED_SYMBOL;
+  }
+  // Letra prohibida: una que no sea la de la ronda (ni la de ninguna categoría en los jefes).
+  state.advBanned = null;
+  if (advHas(L, "banned")) {
+    const inUse = letterByCat ? Object.values(letterByCat) : [letter];
+    const options = ADV_BANNED_CANDIDATES.filter(x => !inUse.includes(x));
+    state.advBanned = options[Math.floor(Math.random() * options.length)] || "O";
   }
   clearInterval(state.advTickId);
   cleanupRandomSearch();
@@ -8044,6 +8591,12 @@ function startAdventureLevel(n = state.advLevelN) {
       note.innerHTML = parts.join(" · ");
       note.style.display = "flex";
     }
+    const ruleNotes = advRuleLines(L, true);
+    if (ruleNotes.length) {
+      const note = document.getElementById("twistNote");
+      note.innerHTML = (note.style.display === "flex" && note.innerHTML ? note.innerHTML + " · " : "") + ruleNotes.map(([icon, text]) => inlineIcon(icon) + escapeHtml(text)).join(" · ");
+      note.style.display = "flex";
+    }
     document.getElementById("timerWrap").style.display = "block";
     renderCatGrid();
     document.getElementById("catGrid").style.display = "grid";
@@ -8058,6 +8611,8 @@ function startAdventureLevel(n = state.advLevelN) {
 function tickAdventure() {
   state.secondsLeft--;
   updateTimerDisplay();
+  tickRevealCard();
+  if (!state.adventureMode || state.advFinishing) return;
   if (state.secondsLeft > 0 && state.secondsLeft <= 5) {
     playTic();
     vibrate(50);
@@ -8081,6 +8636,10 @@ async function finishAdventureRound() {
   const results = await judgeSoloAnswers(state.categories, state.answers, letter, 1, "AVENTURA", letterByCat);
   if (!state.adventureMode) return;
   if (letterByCat) results.forEach(r => { r.letter = letterByCat[r.cat]; });
+  results.forEach(r => {
+    const broken = r.valid && !r.joker ? advRuleBreak(L, r.val) : "";
+    if (broken) { r.valid = false; r.reason = broken; }
+  });
   if (L.boss === "long") {
     results.forEach(r => {
       if (r.valid && !r.joker && normalizeAnswer(r.val).replace(/[^a-zñ]/g, "").length < 5) { r.valid = false; r.reason = "adv_long"; }
@@ -8156,6 +8715,7 @@ function leaveAdventureGame() {
   clearTimeout(state.spinId);
   state.adventureMode = false;
   state.letterByCat = null;
+  clearTimeout(state.memoryTimer);
   if (state.categoriesBeforeAdventure) {
     state.categories = state.categoriesBeforeAdventure;
     state.categoriesBeforeAdventure = null;
@@ -8191,7 +8751,8 @@ function renderAdventureResult(r) {
   r.results.forEach((res, i) => {
     const isWild = res.cat === L.wildcard;
     const pts = !res.valid ? 0 : (res.joker ? JOKER_POINTS : ADV_POINTS * (isWild ? 2 : 1));
-    const reason = res.reason === "adv_long" && res.val ? t("adv_reason_long") : soloReasonText(res, res.letter || r.letter);
+    const reason = res.reason === "adv_long" && res.val ? t("adv_reason_long")
+      : ((res.reason === "adv_short" || res.reason === "adv_banned") && res.val ? advRuleReasonText(res.reason) : soloReasonText(res, res.letter || r.letter));
     const row = document.createElement("div");
     row.className = "answer-row";
     row.style.flexWrap = "wrap";
@@ -8443,6 +9004,349 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape" && document.getElementById("confirmBuy").style.display !== "none") closePurchase(false);
 });
 
+// ---------- Cómo se juega: una ventanita antes de jugar cada modo por primera vez ----------
+// Se muestra sola la primera vez que se juega cada modo; después se puede abrir con "¿Cómo se juega?".
+const HOWTO_KEY = "tuttifruti_howto";
+const HOWTO_ICONS = { online: "globe", random: "dice", streak: "stopwatch", daily: "sun", adventure: "star", duel: "trophy",
+  rule_reveal: "dice", rule_short: "bolt", rule_banned: "flame", rule_memory: "books", rule_ticking: "stopwatch" };
+const HOWTO_TEXTS = {
+ "es": {
+  "online": [
+   "Cómo se juega en una sala",
+   [
+    "Se sortea una letra y todos completan las categorías con palabras que empiecen con esa letra.",
+    "Cuando terminás, tocá <strong>¡Basta!</strong>: la ronda se corta para todos. Si nadie lo toca, se corta cuando se acaba el tiempo.",
+    "Después revisan las respuestas. Si una palabra no te convence, objetala: decide el juez con IA (o la mayoría, si la sala lo apagó).",
+    "Puntos: <strong>10</strong> si nadie más la puso, <strong>5</strong> si está repetida y <strong>20</strong> si sos el único que completó la categoría."
+   ]
+  ],
+  "random": [
+   "Cómo se juega al azar",
+   [
+    "Te buscamos un rival que esté esperando partida. Si nadie aparece en unos segundos, jugás contra <strong>Frutibot</strong>.",
+    "Se sortea una letra: completá cada categoría con una palabra que empiece con ella.",
+    "El primero que termina toca <strong>¡Basta!</strong> y la ronda se corta para los dos.",
+    "Revisan las respuestas, pueden objetar las dudosas y gana quien junte más puntos."
+   ]
+  ],
+  "streak": [
+   "Cómo se juega el contrarreloj",
+   [
+    "Jugás solo y tenés <strong>2 minutos</strong> en total.",
+    "Se sortea una letra: completá lo que puedas y tocá <strong>¡Basta!</strong>",
+    "Cada palabra válida suma <strong>10 puntos</strong>, y si valen todas, <strong>20 extra</strong>. Después pasás enseguida a una letra nueva.",
+    "Cuando se acaba el reloj, termina la partida. ¡Juntá la mayor cantidad de puntos!"
+   ]
+  ],
+  "daily": [
+   "Cómo se juega el desafío del día",
+   [
+    "Todos los jugadores reciben la misma letra y las mismas 6 categorías.",
+    "Tenés <strong>60 segundos</strong> y una sola oportunidad por día.",
+    "Cada palabra válida suma 10 puntos y la categoría marcada vale el doble. Si valen todas, sumás 20 extra, y los segundos que te sobren también suman.",
+    "Los 3 mejores del día ganan semillas: 100, 60 y 40."
+   ]
+  ],
+  "adventure": [
+   "Cómo se juega la Aventura",
+   [
+    "Son 102 niveles en 17 mundos. Cada nivel tiene su letra, sus categorías y su tiempo.",
+    "Llegá a la <strong>meta de puntos</strong> para pasarlo. Según cuántos hagas, ganás hasta 3 estrellas.",
+    "Si no llegás a la meta, perdés una vida. Las vidas se recargan solas con el tiempo.",
+    "Al final de cada mundo te espera un <strong>jefe</strong> con una regla especial. En los últimos mundos aparecen reglas especiales: categorías ocultas, palabras cortas, letra prohibida, memoria y reloj por categoría."
+   ]
+  ],
+  "duel": [
+   "Cómo se juega un duelo",
+   [
+    "Es una sola ronda de <strong>60 segundos</strong>: una letra y 6 categorías, una de ellas vale el doble.",
+    "Completá lo que puedas y tocá <strong>¡Basta!</strong> Los segundos que te sobren suman puntos extra.",
+    "Después mandale el link a quien quieras: juega exactamente la misma ronda cuando pueda.",
+    "En <strong>Mis duelos</strong> ves quién jugó y quién sacó más puntos."
+   ]
+  ],
+  "rule_reveal": [
+   "Nueva regla: categorías ocultas",
+   [
+    "Solo ves una categoría a la vez; las demás están ocultas.",
+    "Completala con una palabra que empiece con la letra y tocá <strong>Siguiente</strong>, o tocá <strong>Pasar</strong>.",
+    "Las que ya pasaste quedan fijas: no se puede volver atrás."
+   ]
+  ],
+  "rule_short": [
+   "Nueva regla: palabras cortas",
+   [
+    "Cada palabra puede tener <strong>6 letras como máximo</strong>.",
+    "Si te pasás, el casillero se pone rojo y esa palabra no vale.",
+    "Pensá en palabras simples: «Lima», «Perú», «Oso»."
+   ]
+  ],
+  "rule_banned": [
+   "Nueva regla: letra prohibida",
+   [
+    "Al empezar te toca una <strong>letra prohibida</strong>, aparte de la letra de la ronda.",
+    "Ninguna palabra puede tenerla, en ningún lugar.",
+    "Si una palabra la tiene, el casillero se pone rojo y no vale."
+   ]
+  ],
+  "rule_memory": [
+   "Nueva regla: memoria",
+   [
+    "Las categorías se ven solo <strong>6 segundos</strong> al principio.",
+    "Después se esconden: tenés que acordarte qué iba en cada casillero.",
+    "Mirá bien antes de empezar a escribir."
+   ]
+  ],
+  "rule_ticking": [
+   "Nueva regla: tic-tac",
+   [
+    "Las categorías salen <strong>de a una</strong> y cada una tiene su propio reloj.",
+    "Si se acaba el tiempo de una, pasa sola a la siguiente (si lo que escribiste vale, se guarda).",
+    "Si terminás antes, tocá <strong>Siguiente</strong> y ganás tiempo."
+   ]
+  ]
+ },
+ "en": {
+  "online": [
+   "How to play in a room",
+   [
+    "A letter is drawn and everyone fills in the categories with words starting with that letter.",
+    "When you're done, tap <strong>Stop!</strong> and the round ends for everyone. If nobody does, it ends when time runs out.",
+    "Then you review the answers. If a word looks wrong, object: the AI judge decides (or the majority, if the room turned it off).",
+    "Points: <strong>10</strong> if nobody else wrote it, <strong>5</strong> if repeated and <strong>20</strong> if you're the only one who filled the category."
+   ]
+  ],
+  "random": [
+   "How random matches work",
+   [
+    "We look for an opponent who is waiting for a match. If nobody shows up in a few seconds, you play against <strong>Frutibot</strong>.",
+    "A letter is drawn: fill each category with a word starting with it.",
+    "The first one to finish taps <strong>Stop!</strong> and the round ends for both.",
+    "You review the answers, can object to doubtful ones, and whoever scores more wins."
+   ]
+  ],
+  "streak": [
+   "How Time attack works",
+   [
+    "You play solo and have <strong>2 minutes</strong> in total.",
+    "A letter is drawn: fill in what you can and tap <strong>Stop!</strong>",
+    "Each valid word is worth <strong>10 points</strong>, plus <strong>20 extra</strong> if they all count. Then you jump straight to a new letter.",
+    "When the clock runs out, the game ends. Score as many points as you can!"
+   ]
+  ],
+  "daily": [
+   "How the Daily challenge works",
+   [
+    "Every player gets the same letter and the same 6 categories.",
+    "You have <strong>60 seconds</strong> and only one try per day.",
+    "Each valid word is worth 10 points and the marked category counts double. If they all count you get 20 extra, and leftover seconds add up too.",
+    "The top 3 of the day win seeds: 100, 60 and 40."
+   ]
+  ],
+  "adventure": [
+   "How Adventure works",
+   [
+    "There are 102 levels in 17 worlds. Each level has its own letter, categories and time.",
+    "Reach the <strong>points goal</strong> to pass it. Depending on your score, you earn up to 3 stars.",
+    "If you miss the goal, you lose a life. Lives refill on their own over time.",
+    "At the end of each world there's a <strong>boss</strong> with a special rule. In the last worlds special rules show up: hidden categories, short words, a banned letter, memory and a clock per category."
+   ]
+  ],
+  "duel": [
+   "How a duel works",
+   [
+    "It's a single <strong>60-second</strong> round: one letter and 6 categories, one of them counts double.",
+    "Fill in what you can and tap <strong>Stop!</strong> Leftover seconds add extra points.",
+    "Then send the link to anyone you want: they play the exact same round whenever they can.",
+    "In <strong>My duels</strong> you see who played and who scored more."
+   ]
+  ],
+  "rule_reveal": [
+   "New rule: hidden categories",
+   [
+    "You only see one category at a time; the rest are hidden.",
+    "Fill it with a word starting with the letter and tap <strong>Next</strong>, or tap <strong>Skip</strong>.",
+    "The ones you passed are locked: no going back."
+   ]
+  ],
+  "rule_short": [
+   "New rule: short words",
+   [
+    "Each word can have <strong>6 letters at most</strong>.",
+    "If you go over, the box turns red and that word doesn't count.",
+    "Think of simple words: «Lime», «Peru», «Owl»."
+   ]
+  ],
+  "rule_banned": [
+   "New rule: banned letter",
+   [
+    "When you start you get a <strong>banned letter</strong>, besides the round's letter.",
+    "No word can contain it, anywhere.",
+    "If a word has it, the box turns red and it doesn't count."
+   ]
+  ],
+  "rule_memory": [
+   "New rule: memory",
+   [
+    "Categories are shown for only <strong>6 seconds</strong> at the start.",
+    "Then they hide: you have to remember what went in each box.",
+    "Take a good look before you start typing."
+   ]
+  ],
+  "rule_ticking": [
+   "New rule: tick-tock",
+   [
+    "Categories appear <strong>one at a time</strong> and each has its own clock.",
+    "If one runs out, it moves on by itself (if what you wrote is valid, it's kept).",
+    "If you finish early, tap <strong>Next</strong> and save time."
+   ]
+  ]
+ },
+ "pt": {
+  "online": [
+   "Como se joga numa sala",
+   [
+    "Uma letra é sorteada e todos preenchem as categorias com palavras que começam com essa letra.",
+    "Quando terminar, toque em <strong>Stop!</strong>: a rodada acaba para todos. Se ninguém tocar, acaba quando o tempo termina.",
+    "Depois vocês revisam as respostas. Se uma palavra não convencer, conteste: o juiz com IA decide (ou a maioria, se a sala o desligou).",
+    "Pontos: <strong>10</strong> se ninguém mais escreveu, <strong>5</strong> se repetida e <strong>20</strong> se só você preencheu a categoria."
+   ]
+  ],
+  "random": [
+   "Como funciona o aleatório",
+   [
+    "Procuramos um adversário que esteja esperando partida. Se ninguém aparecer em alguns segundos, você joga contra o <strong>Frutibot</strong>.",
+    "Uma letra é sorteada: preencha cada categoria com uma palavra que comece com ela.",
+    "Quem terminar primeiro toca em <strong>Stop!</strong> e a rodada acaba para os dois.",
+    "Vocês revisam as respostas, podem contestar as duvidosas e ganha quem fizer mais pontos."
+   ]
+  ],
+  "streak": [
+   "Como funciona o contrarrelógio",
+   [
+    "Você joga sozinho e tem <strong>2 minutos</strong> no total.",
+    "Uma letra é sorteada: preencha o que puder e toque em <strong>Stop!</strong>",
+    "Cada palavra válida vale <strong>10 pontos</strong>, e se todas valerem, <strong>20 extras</strong>. Depois você passa direto para uma letra nova.",
+    "Quando o relógio acaba, a partida termina. Faça o máximo de pontos!"
+   ]
+  ],
+  "daily": [
+   "Como funciona o desafio do dia",
+   [
+    "Todos os jogadores recebem a mesma letra e as mesmas 6 categorias.",
+    "Você tem <strong>60 segundos</strong> e uma única chance por dia.",
+    "Cada palavra válida vale 10 pontos e a categoria marcada vale o dobro. Se todas valerem, ganha 20 extras, e os segundos que sobrarem também somam.",
+    "Os 3 melhores do dia ganham sementes: 100, 60 e 40."
+   ]
+  ],
+  "adventure": [
+   "Como funciona a Aventura",
+   [
+    "São 102 níveis em 17 mundos. Cada nível tem sua letra, suas categorias e seu tempo.",
+    "Alcance a <strong>meta de pontos</strong> para passar. Dependendo de quanto fizer, ganha até 3 estrelas.",
+    "Se não alcançar a meta, perde uma vida. As vidas recarregam sozinhas com o tempo.",
+    "No fim de cada mundo há um <strong>chefe</strong> com uma regra especial. Nos últimos mundos aparecem regras especiais: categorias ocultas, palavras curtas, letra proibida, memória e relógio por categoria."
+   ]
+  ],
+  "duel": [
+   "Como funciona um duelo",
+   [
+    "É uma única rodada de <strong>60 segundos</strong>: uma letra e 6 categorias, uma delas vale o dobro.",
+    "Preencha o que puder e toque em <strong>Stop!</strong> Os segundos que sobrarem somam pontos extra.",
+    "Depois envie o link para quem quiser: a pessoa joga exatamente a mesma rodada quando puder.",
+    "Em <strong>Meus duelos</strong> você vê quem jogou e quem fez mais pontos."
+   ]
+  ],
+  "rule_reveal": [
+   "Nova regra: categorias ocultas",
+   [
+    "Você só vê uma categoria por vez; as outras ficam ocultas.",
+    "Preencha com uma palavra que comece com a letra e toque em <strong>Próxima</strong>, ou toque em <strong>Pular</strong>.",
+    "As que você já passou ficam fixas: não dá para voltar."
+   ]
+  ],
+  "rule_short": [
+   "Nova regra: palavras curtas",
+   [
+    "Cada palavra pode ter <strong>no máximo 6 letras</strong>.",
+    "Se passar disso, a caixa fica vermelha e a palavra não vale.",
+    "Pense em palavras simples: «Lima», «Peru», «Urso»."
+   ]
+  ],
+  "rule_banned": [
+   "Nova regra: letra proibida",
+   [
+    "Ao começar você recebe uma <strong>letra proibida</strong>, além da letra da rodada.",
+    "Nenhuma palavra pode ter essa letra, em lugar nenhum.",
+    "Se uma palavra tiver, a caixa fica vermelha e não vale."
+   ]
+  ],
+  "rule_memory": [
+   "Nova regra: memória",
+   [
+    "As categorias aparecem só por <strong>6 segundos</strong> no começo.",
+    "Depois se escondem: você precisa lembrar o que ia em cada caixa.",
+    "Olhe bem antes de começar a escrever."
+   ]
+  ],
+  "rule_ticking": [
+   "Nova regra: tique-taque",
+   [
+    "As categorias aparecem <strong>uma por vez</strong> e cada uma tem seu próprio relógio.",
+    "Se o tempo de uma acabar, passa sozinha para a próxima (se o que escreveu vale, fica guardado).",
+    "Se terminar antes, toque em <strong>Próxima</strong> e ganhe tempo."
+   ]
+  ]
+ }
+};
+let howToCallback = null;
+
+function howToSeen(mode) {
+  try { return (JSON.parse(localStorage.getItem(HOWTO_KEY) || "[]")).includes(mode); } catch (e) { return false; }
+}
+function markHowToSeen(mode) {
+  try {
+    const seen = JSON.parse(localStorage.getItem(HOWTO_KEY) || "[]");
+    if (!seen.includes(mode)) { seen.push(mode); localStorage.setItem(HOWTO_KEY, JSON.stringify(seen)); }
+  } catch (e) { /* storage unavailable */ }
+}
+
+// Muestra cómo se juega. Con onGo, el botón dice "¡A jugar!" y arranca el modo al tocarlo.
+function showHowTo(mode, onGo) {
+  const texts = (HOWTO_TEXTS[state.lang] || HOWTO_TEXTS.es)[mode];
+  if (!texts) { if (onGo) onGo(); return; }
+  markHowToSeen(mode);
+  howToCallback = onGo || null;
+  document.getElementById("howToArt").innerHTML = iconSvg(HOWTO_ICONS[mode] || "star");
+  document.getElementById("howToTitle").textContent = texts[0];
+  document.getElementById("howToSteps").innerHTML = texts[1].map(step => `<li>${step}</li>`).join("");
+  const ok = document.getElementById("howToOk");
+  ok.textContent = t(onGo ? "howto_go" : "howto_ok");
+  document.getElementById("howTo").style.display = "flex";
+  ok.focus();
+}
+
+function closeHowTo(go) {
+  document.getElementById("howTo").style.display = "none";
+  const cb = howToCallback;
+  howToCallback = null;
+  if (go && cb) cb();
+}
+
+// Corre fn directo si ya vio cómo se juega ese modo; si no, primero muestra la explicación.
+function withHowTo(mode, fn) {
+  if (howToSeen(mode)) { fn(); return; }
+  showHowTo(mode, fn);
+}
+
+function lobbyHowToMode() {
+  return state.mode === "streak" ? "streak" : (state.mode === "random" ? "random" : "online");
+}
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && document.getElementById("howTo").style.display !== "none") closeHowTo(false);
+});
+
 // ---------- Vista previa de temas ----------
 // "Probar" pinta todo el juego con el tema sin guardarlo; al salir de la tienda (o tocar
 // "Volver a mi tema") vuelve el que tenías.
@@ -8646,7 +9550,14 @@ function newDuelId() {
 
 function duelUrl(id) { return "https://tuttipuntofrutti.com/jugar?duelo=" + id; }
 
-function openDuelCreate() {
+// Desafío directo a un amigo: además del link, el duelo le aparece en "Mis duelos".
+function challengeFriend() {
+  if (!state.viewingFriend) return;
+  openDuelCreate(state.viewingFriend);
+}
+
+function openDuelCreate(target = null) {
+  state.duelTarget = target && target.uid ? target : null;
   const name = document.getElementById("playerName").value.trim();
   if (!name) {
     goToLobby();
@@ -8663,7 +9574,7 @@ function openDuelCreate() {
     wildcard: categories[Math.floor(Math.random() * categories.length)],
     duration: DUEL_DURATION,
   };
-  startDuelRound(duel, "creator", name);
+  withHowTo("duel", () => startDuelRound(duel, "creator", name));
 }
 
 function startDuelRound(duel, role, name) {
@@ -8770,13 +9681,28 @@ async function finishDuelRound() {
     const uid = window.FB.uid;
     if (!uid) throw new Error("sin identidad");
     const ref = window.FB.ref(window.FB.db, "duels/" + duel.id);
+    state.duelSentTo = null;
     if (role === "creator") {
       await window.FB.set(ref, {
         letter: duel.letter, categories: duel.categories, wildcard: duel.wildcard, duration: duel.duration,
         createdAt: window.FB.serverTimestamp(), creator: { uid, ...me },
       });
+      const target = state.duelTarget;
+      state.duelTarget = null;
+      if (target) {
+        try {
+          await window.FB.set(window.FB.ref(window.FB.db, `duelInbox/${target.uid}/${duel.id}`), {
+            from: uid, name: me.name, avatar: me.avatar, score, at: window.FB.serverTimestamp(),
+          });
+          state.duelSentTo = target.name;
+          track("duel_friend_sent");
+        } catch (e) {
+          console.error("No se pudo mandar el duelo al amigo", e);
+        }
+      }
     } else {
       await window.FB.set(window.FB.ref(window.FB.db, `duels/${duel.id}/rivals/${uid}`), me);
+      window.FB.remove(window.FB.ref(window.FB.db, `duelInbox/${uid}/${duel.id}`)).catch(() => {});
     }
     const snap = await window.FB.get(ref);
     showDuelResult(duel.id, snap.val(), true);
@@ -8799,7 +9725,7 @@ function openDuelLink(id) {
     const snap = await window.FB.get(window.FB.ref(window.FB.db, "duels/" + id));
     if (!snap.exists()) { alert(t("duel_not_found")); return; }
     const data = snap.val();
-    const uid = window.FB.uid;
+    const uid = myDuelUid(id, data);
     if ((data.creator && data.creator.uid === uid) || (data.rivals && data.rivals[uid])) {
       showDuelResult(id, data, false);
       return;
@@ -8822,7 +9748,8 @@ function acceptDuel() {
   const name = input.value.trim();
   if (!name) { input.focus(); return; }
   if (!state.pendingDuel) return;
-  startDuelRound(state.pendingDuel, "rival", name);
+  const duel = state.pendingDuel;
+  withHowTo("duel", () => startDuelRound(duel, "rival", name));
 }
 
 // ---------- Mis duelos: los duelos que creaste o jugaste, para volver a verlos ----------
@@ -8844,11 +9771,11 @@ function saveMyDuels(list) {
 }
 function duelPlayersCount(data) { return 1 + Object.keys((data && data.rivals) || {}).length; }
 
-function rememberDuel(id, role, seen) {
+function rememberDuel(id, role, seen, uid) {
   const list = getMyDuels();
   const existing = list.find(d => d.id === id);
-  if (existing) { existing.seen = seen; existing.role = role; }
-  else list.unshift({ id, role, at: Date.now(), seen });
+  if (existing) { existing.seen = seen; existing.role = role; if (uid) existing.uid = uid; }
+  else list.unshift({ id, role, at: Date.now(), seen, uid });
   saveMyDuels(list);
 }
 
@@ -8857,6 +9784,41 @@ async function fetchMyDuels(limit = MY_DUELS_MAX) {
   const datas = await Promise.all(list.map(d =>
     window.FB.get(window.FB.ref(window.FB.db, "duels/" + d.id)).then(snap => (snap.exists() ? snap.val() : null)).catch(() => null)));
   return list.map((d, i) => ({ ...d, data: datas[i] })).filter(d => d.data);
+}
+
+// Duelos que te mandaron tus amigos (duelInbox/{tuUid}). Los que ya jugaste se borran solos.
+async function fetchDuelInbox() {
+  const F = window.FB;
+  if (!F || !F.uid || !isGoogleUser()) return [];
+  try {
+    const snap = await F.get(F.ref(F.db, `duelInbox/${F.uid}`));
+    if (!snap.exists()) return [];
+    const entries = Object.entries(snap.val()).filter(([id]) => /^[A-Za-z0-9]{10}$/.test(id));
+    const checked = await Promise.all(entries.map(async ([id, v]) => {
+      const local = getMyDuels().find(d => d.id === id);
+      let played = !!(local && local.role === "rival");
+      if (!played) {
+        const ds = await F.get(F.ref(F.db, `duels/${id}`)).catch(() => null);
+        if (!ds || !ds.exists()) played = true; // el duelo ya no existe
+        else if ((ds.val().rivals || {})[F.uid]) played = true;
+      }
+      if (played) { F.remove(F.ref(F.db, `duelInbox/${F.uid}/${id}`)).catch(() => {}); return null; }
+      return { id, ...v };
+    }));
+    return checked.filter(Boolean).sort((a, b) => (b.at || 0) - (a.at || 0));
+  } catch (e) {
+    return [];
+  }
+}
+
+function duelInboxHtml(inbox) {
+  if (!inbox.length) return "";
+  return `<h2 class="section-title" style="margin-top:22px;">${escapeHtml(t("duels_inbox_heading"))}</h2>` + inbox.map(d => `
+    <button type="button" class="duel-row has-news" onclick="openDuelLink('${d.id}')">
+      <span class="duel-letter duel-inbox-avatar">${fruitSvg(AVATARS.includes(d.avatar) ? d.avatar : "🍏")}</span>
+      <span class="duel-info"><strong>${escapeHtml(t("duels_inbox_row", { name: d.name || "?" }))}</strong><span>${escapeHtml(t("duels_inbox_sub", { score: d.score || 0 }))}</span></span>
+      <span class="duel-news">${escapeHtml(t("duels_inbox_play"))}</span>
+    </button>`).join("");
 }
 
 // Cómo va el duelo para mí: título, texto y si es bueno o malo.
@@ -8883,13 +9845,15 @@ function duelStatus(data, uid) {
 }
 
 function openMyDuels() {
-  if (!getMyDuels().length) {
+  state.duelInbox = [];
+  if (!getMyDuels().length && !isGoogleUser()) {
     renderMyDuels([]);
   } else {
     document.getElementById("myDuelsList").innerHTML = `<p class="streak-history-empty">${escapeHtml(t("duels_loading"))}</p>`;
     whenFirebaseReady(async () => {
-      const duels = await fetchMyDuels();
+      const [duels, inbox] = await Promise.all([fetchMyDuels(), fetchDuelInbox()]);
       state.myDuelsCache = duels;
+      state.duelInbox = inbox;
       renderMyDuels(duels);
     });
   }
@@ -8900,12 +9864,15 @@ function openMyDuels() {
 function renderMyDuels(duels) {
   const uid = window.FB && window.FB.uid;
   const list = document.getElementById("myDuelsList");
+  const inboxHtml = duelInboxHtml(state.duelInbox || []);
+  // Con desafíos pendientes, van primero y el título "Tus duelos" pasa abajo de ellos.
+  document.getElementById("duelsMineHeading").style.display = inboxHtml ? "none" : "";
   if (!duels.length) {
-    list.innerHTML = `<p class="streak-history-empty">${escapeHtml(t("duels_empty"))}</p>`;
+    list.innerHTML = (inboxHtml ? inboxHtml + `<h2 class="section-title" style="margin-top:22px;">${escapeHtml(t("duels_mine_heading"))}</h2>` : "") + `<p class="streak-history-empty">${escapeHtml(t("duels_empty"))}</p>`;
     return;
   }
-  list.innerHTML = duels.map(d => {
-    const st = duelStatus(d.data, uid);
+  list.innerHTML = (inboxHtml ? inboxHtml + `<h2 class="section-title" style="margin-top:22px;">${escapeHtml(t("duels_mine_heading"))}</h2>` : "") + duels.map(d => {
+    const st = duelStatus(d.data, myDuelUid(d.id, d.data));
     const news = duelPlayersCount(d.data) > (d.seen || 0);
     return `<button type="button" class="duel-row${news ? " has-news" : ""}" onclick="openDuelFromList('${d.id}')">
       <span class="duel-letter">${escapeHtml(d.data.letter || "?")}</span>
@@ -8926,16 +9893,22 @@ function openDuelFromList(id) {
 // Es silencioso: si no hay conexión, simplemente no muestra el aviso.
 function refreshDuelBanner() {
   const sub = document.getElementById("duelBannerSub");
-  if (!sub || !getMyDuels().length) return;
+  if (!sub) return;
   const run = async () => {
     if (!window.FB || !window.FB.uid) return;
+    if (!getMyDuels().length && !isGoogleUser()) return;
     try {
-      const duels = await fetchMyDuels(10);
+      const [duels, inbox] = await Promise.all([fetchMyDuels(10), fetchDuelInbox()]);
       state.myDuelsCache = duels;
+      state.duelInbox = inbox;
       const withNews = duels.filter(d => duelPlayersCount(d.data) > (d.seen || 0)).length;
-      sub.textContent = withNews === 0 ? t("duel_banner_sub")
-        : (withNews === 1 ? t("duels_banner_news_one") : t("duels_banner_news_many", { n: withNews }));
-      document.getElementById("duelBanner").classList.toggle("has-news", withNews > 0);
+      if (inbox.length) {
+        sub.textContent = inbox.length === 1 ? t("duels_banner_inbox_one", { name: inbox[0].name || "?" }) : t("duels_banner_inbox_many", { n: inbox.length });
+      } else {
+        sub.textContent = withNews === 0 ? t("duel_banner_sub")
+          : (withNews === 1 ? t("duels_banner_news_one") : t("duels_banner_news_many", { n: withNews }));
+      }
+      document.getElementById("duelBanner").classList.toggle("has-news", withNews > 0 || inbox.length > 0);
     } catch (e) { /* sin aviso */ }
   };
   if (window.FB) run();
@@ -8943,7 +9916,7 @@ function refreshDuelBanner() {
 }
 
 function showDuelResult(id, data, fresh) {
-  const uid = window.FB.uid;
+  const uid = myDuelUid(id, data);
   const creator = data.creator || {};
   const rivals = Object.entries(data.rivals || {}).map(([k, v]) => ({ uid: k, ...v }));
   const everyone = [{ ...creator }, ...rivals].sort((a, b) => (b.score || 0) - (a.score || 0));
@@ -8953,7 +9926,7 @@ function showDuelResult(id, data, fresh) {
   if (!mineEntry) { openDuelLink(id); return; }
   state.duelShare = { id, score: mineEntry ? mineEntry.score : 0 };
   if (mineEntry) {
-    rememberDuel(id, isCreator ? "creator" : "rival", duelPlayersCount(data));
+    rememberDuel(id, isCreator ? "creator" : "rival", duelPlayersCount(data), uid);
     const cached = (state.myDuelsCache || []).find(d => d.id === id);
     if (cached) { cached.data = data; cached.seen = duelPlayersCount(data); }
   }
@@ -8963,6 +9936,7 @@ function showDuelResult(id, data, fresh) {
   if (isCreator) {
     title.textContent = t(fresh ? "duel_created_title" : "duel_yours_title");
     lead.textContent = rivals.length ? t("duel_created_lead", { score: creator.score || 0 }) : t("duel_created_lead", { score: creator.score || 0 }) + " " + t("duel_waiting_rivals");
+    if (fresh && state.duelSentTo) lead.textContent += " " + t("duel_sent_to_friend", { name: state.duelSentTo });
   } else {
     const mine = mineEntry.score || 0, theirs = creator.score || 0;
     const key = mine > theirs ? "duel_win" : (mine < theirs ? "duel_lose" : "duel_tie");
@@ -8998,17 +9972,55 @@ function showDuelResult(id, data, fresh) {
       <span class="rank-score">${p.score || 0} pts</span>
     </div>`).join("");
   document.getElementById("duelShareBtn").textContent = t(isCreator ? "duel_share_btn" : "duel_share_more_btn");
+  document.getElementById("duelLinkInput").value = duelUrl(id);
   document.getElementById("duelNewBtn").style.display = isCreator ? "none" : "";
   showScreen("screen-duel-result");
   window.scrollTo(0, 0);
 }
 
-async function shareDuel() {
+// La invitación se comparte como texto con el link, sin imagen: con una imagen adjunta,
+// WhatsApp (sobre todo en iPhone) manda solo la foto y el link se pierde. En la compu se copia.
+function shareDuel() {
   const info = state.duelShare;
   if (!info) return;
   track("share", { type: "duel" });
-  const canvas = await buildShareCanvas(info.score + " pts", t("duel_share_subtitle"), iconSvg("trophy"));
-  shareCanvasImage(canvas, t("duel_share_text", { score: info.score }), duelUrl(info.id));
+  const text = t("duel_share_text", { score: info.score });
+  if (isMobileDevice() && navigator.share) {
+    navigator.share({ title: "tutti.frutti", text, url: duelUrl(info.id) }).catch(() => {});
+    return;
+  }
+  copyDuelLink();
+}
+
+function copyDuelLink() {
+  const info = state.duelShare;
+  if (!info) return;
+  const full = t("duel_share_text", { score: info.score }) + " " + duelUrl(info.id);
+  const done = () => seedToast(t("duel_link_copied"));
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(full).then(done).catch(() => selectDuelLink());
+  } else {
+    selectDuelLink();
+  }
+}
+
+function selectDuelLink() {
+  const input = document.getElementById("duelLinkInput");
+  if (input) { input.focus(); input.select(); }
+}
+
+// Con qué identidad jugué este duelo. Al iniciar sesión con Google puede cambiar la identidad
+// del dispositivo; los duelos que ya tenías siguen siendo tuyos (se recuerda con cuál los jugaste).
+function myDuelUid(id, data) {
+  const uid = window.FB && window.FB.uid;
+  const creator = (data && data.creator) || {};
+  const rivals = (data && data.rivals) || {};
+  if (creator.uid === uid || rivals[uid]) return uid;
+  const local = getMyDuels().find(d => d.id === id);
+  if (!local) return uid;
+  if (local.uid && (creator.uid === local.uid || rivals[local.uid])) return local.uid;
+  if (local.role === "creator" && creator.uid) return creator.uid;
+  return uid;
 }
 
 // ---------- Cuenta de Google: el progreso se guarda también en Firebase ----------
@@ -9597,7 +10609,7 @@ function showDailyResult(record, fresh) {
   note.className = "hint";
   note.style.textAlign = "center";
   note.style.marginTop = "14px";
-  note.textContent = (record.bonus ? t("daily_time_bonus", { bonus: record.bonus }) + " " : "") + t("daily_come_back") + " " + t("daily_prize_info");
+  note.textContent = (record.full ? t("daily_full_bonus", { n: FULL_ROUND_BONUS }) + " " : "") + (record.bonus ? t("daily_time_bonus", { bonus: record.bonus }) + " " : "") + t("daily_come_back") + " " + t("daily_prize_info");
   list.appendChild(note);
 
   const objContainer = document.getElementById("myObjectionsOutcome");
@@ -10075,21 +11087,6 @@ applyFriendLinkFromUrl();
 })();
 checkAchievements();
 </script>
-<div class="confetti-container" id="confettiContainer"></div>
-<div class="toast-stack" id="toastStack" aria-live="polite"></div>
-<div class="confirm-overlay" id="confirmBuy" role="dialog" aria-modal="true" aria-labelledby="confirmBuyTitle" style="display:none;" onclick="if (event.target === this) closePurchase(false)">
-  <div class="confirm-card">
-    <span class="confirm-art" id="confirmBuyArt"></span>
-    <h2 id="confirmBuyTitle"></h2>
-    <p id="confirmBuyPrice"></p>
-    <div class="confirm-actions">
-      <button type="button" class="btn btn-secondary" onclick="closePurchase(false)" data-i18n="buy_cancel">Cancelar</button>
-      <button type="button" class="btn btn-primary" id="confirmBuyOk" onclick="closePurchase(true)" data-i18n="buy_confirm">Comprar</button>
-    </div>
-  </div>
-</div>
-<div class="theme-preview-bar" id="themePreviewBar" style="display:none;"></div>
-
 <script src="pwa.js"></script>
 </body>
 </html>
