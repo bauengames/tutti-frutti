@@ -20,7 +20,7 @@ const TPL = path.join(__dirname, "templates");
 const STRINGS = require("./strings.cjs");
 
 const SITE = "https://tuttipuntofrutti.com";
-const TODAY = "2026-09-30";
+const TODAY = "2026-10-01";
 const YEAR = "2026";
 const THEME_COLOR = "#14101F";
 const LANGS = ["es", "en", "pt"];
@@ -38,7 +38,7 @@ const I18N_PAGES = {
 };
 
 // Fechas de "Última actualización" de las páginas legales.
-const UPDATED = { privacidad: [2026, 9, 30], terminos: [2026, 9, 22] };
+const UPDATED = { privacidad: [2026, 10, 1], terminos: [2026, 9, 22] };
 
 // Guías de contenido. Plantillas en scripts/templates/guias/<idioma>/<key>.html.
 // Una guía puede existir solo en algunos idiomas: se generan los que tengan URL en "urls".
@@ -369,12 +369,13 @@ function head(page) {
   // elección guardada o muestra el banner fuera de Europa. El código de AdSense va escrito directo
   // en el <head>, como lo pide Google, para que su revisión lo encuentre en todas las páginas.
   // (Una vez aprobada la cuenta se puede volver a la carga demorada con /ads-loader.js.)
+  // Las páginas sin contenido propio (la 404) no llevan anuncios: solo la meta de verificación.
   lines.push(
     '<meta name="google-adsense-account" content="ca-pub-9897296561814312" />',
     '<script src="/analytics.js" defer></script>',
     '<script src="/cookie-consent.js" defer></script>',
-    '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9897296561814312" crossorigin="anonymous"></script>',
   );
+  if (!page.noAds) lines.push('<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9897296561814312" crossorigin="anonymous"></script>');
   if (page.jsonld) for (const block of [].concat(page.jsonld)) lines.push(jsonLd(block));
   lines.push("</head>");
   return lines.join("\n");
@@ -696,6 +697,7 @@ function build404() {
     title: t("es", "notfound_title"),
     description: t("es", "notfound_description"),
     noindex: "noindex",
+    noAds: true,
   };
   const other = (l) => `<p lang="${l}">${esc(t(l, "notfound_h1"))}. <a href="${I18N_PAGES.home[l]}">${esc(t(l, "notfound_home"))}</a></p>`;
   const main = `<main>
