@@ -241,6 +241,17 @@ const GUIDES = [
       ogTitle: "A história do Stop",
     },
   },
+  // Índice de las páginas de respuestas por letra (las páginas de cada letra las genera buildLetterPages).
+  {
+    key: "respuestas",
+    urls: { es: "/respuestas-tutti-frutti" },
+    es: {
+      nav: "Respuestas por letra",
+      title: "Respuestas para tutti frutti por letra | tutti.frutti",
+      description: "Ideas de respuestas para tutti frutti con cada letra, de la A a la Z: nombres, animales, países, ciudades, colores, comidas, objetos, profesiones y más.",
+      ogTitle: "Respuestas para tutti frutti por letra",
+    },
+  },
   // Páginas para quienes buscan el juego con el nombre que tiene en su país. Solo en español.
   {
     key: "stop",
@@ -779,7 +790,7 @@ function buildGuide(g, lang) {
 
 // Sección "Guías" del inicio: enlaza las guías de contenido del idioma.
 const HOME_GUIDES_HEADING = { es: "Guías y recursos", en: "Guides and resources", pt: "Guias e recursos" };
-const HOME_GUIDE_KEYS = ["categorias", "consejos", "letras", "variantes", "imprimir", "videollamada", "aula", "historia"];
+const HOME_GUIDE_KEYS = ["respuestas", "categorias", "consejos", "letras", "variantes", "imprimir", "videollamada", "aula", "historia"];
 function homeGuides(lang) {
   const links = HOME_GUIDE_KEYS.map((k) => GUIDE[k]).filter((g) => g && g.urls[lang] && !g.hidden)
     .map((g) => `<li><a href="${g.urls[lang]}">${esc(g[lang].nav)}</a></li>`);
@@ -790,6 +801,112 @@ function homeGuides(lang) {
       ${links.join("\n      ")}
     </ul>
   </section>`;
+}
+
+/* ---------------------------------------------------------------- respuestas por letra */
+
+// Una página por letra con respuestas por categoría y consejos (datos en scripts/data/letras-tutti-frutti.cjs).
+// No van en el menú (son muchas): se llega desde el índice /respuestas-tutti-frutti y entre ellas.
+const LETTERS = require("./data/letras-tutti-frutti.cjs");
+const HARD_LETTERS = ["K", "Ñ", "Q", "W", "X", "Y", "Z"];
+function letterUrl(letter) { return "/tutti-frutti-con-la-letra-" + letter.toLowerCase(); }
+function letterLinks(current) {
+  const all = [...LETTERS.map((l) => l.letter), ...HARD_LETTERS].sort((a, b) => a.localeCompare(b, "es"));
+  return all.map((L) => {
+    if (L === current) return `<span aria-current="page">${L}</span>`;
+    const href = HARD_LETTERS.includes(L) ? GUIDE.letras.urls.es : letterUrl(L);
+    return `<a href="${href}">${L}</a>`;
+  }).join("");
+}
+// "Lo que pone todo el mundo": la primera idea de cada lista es la más común y la última, la menos pensada.
+// Qué tan difícil es la letra y en qué categorías casi no hay opciones (sale de los mismos datos).
+const ALL_LETTER_CATS = ["Nombre", "Apellido", "Animal", "País", "Ciudad", "Color", "Fruta o verdura", "Comida", "Objeto", "Profesión", "Deporte", "Parte del cuerpo", "Instrumento musical", "Bebida", "Marca"];
+function difficultyNote(entry) {
+  const count = (c) => { const f = entry.cats.find(([cat]) => cat === c); return f ? f[1].length : 0; };
+  const missing = ALL_LETTER_CATS.filter((c) => count(c) === 0);
+  const scarce = ALL_LETTER_CATS.filter((c) => count(c) > 0 && count(c) <= 2);
+  const level = missing.length >= 4 ? "difícil" : missing.length >= 1 ? "intermedia" : "fácil";
+  const lc = (list) => list.map((c) => c.toLowerCase()).join(", ").replace(/, ([^,]*)$/, " y $1");
+  let text = `<strong>Dificultad: ${level}.</strong> `;
+  if (missing.length) text += `Con la ${entry.letter} casi no hay opciones conocidas para ${lc(missing)}. `;
+  if (scarce.length) text += `En ${lc(scarce)} hay pocas, así que cualquier respuesta válida tiene muy buenas chances de sumar 10 o 20 puntos.`;
+  if (!missing.length && !scarce.length) text += `Hay respuestas para todas las categorías, así que la clave es evitar las más obvias.`;
+  return `<p class="letter-difficulty">${text.trim()}</p>`;
+}
+
+function obviousSection(entry) {
+  const pick = ["Nombre", "Animal", "País", "Fruta o verdura", "Comida", "Objeto", "Color"];
+  const rows = pick.map((c) => entry.cats.find(([cat]) => cat === c)).filter((x) => x && x[1].length >= 3).slice(0, 5)
+    .map(([cat, words]) => `<tr><td><strong>${esc(cat)}</strong></td><td>${esc(words[0])}</td><td>${esc(words[words.length - 1])}</td></tr>`);
+  if (rows.length < 2) return "";
+  return `<section>
+      <h2>Lo que pone todo el mundo y alternativas</h2>
+      <p>Las primeras respuestas que se le ocurren a casi todos suelen repetirse y valer 5 puntos. Estas alternativas con la letra ${entry.letter} tienen más chances de que nadie más las ponga y valgan 10:</p>
+      <div style="overflow-x:auto">
+        <table class="score-table answers-table">
+          <thead><tr><th>Categoría</th><th>La más repetida</th><th>Una alternativa</th></tr></thead>
+          <tbody>
+            ${rows.join("\n            ")}
+          </tbody>
+        </table>
+      </div>
+    </section>`;
+}
+
+function buildLetterPages() {
+  return LETTERS.map((entry, i) => {
+    const L = entry.letter, url = letterUrl(L);
+    const page = {
+      lang: "es", url,
+      title: `Tutti frutti con la letra ${L}: respuestas | tutti.frutti`,
+      description: `Ideas de respuestas para tutti frutti con la letra ${L}: nombres, animales, países, ciudades, colores, comidas, objetos, profesiones, deportes y marcas.`,
+      ogTitle: `Tutti frutti con la letra ${L}: respuestas por categoría`,
+      alternates: null,
+      jsonld: breadcrumbJsonLd([["Inicio", "/"], ["Respuestas por letra", GUIDE.respuestas.urls.es], [`Letra ${L}`, url]]),
+    };
+    const rows = entry.cats.map(([cat, words]) => `<tr><td><strong>${esc(cat)}</strong></td><td>${words.map(esc).join(", ")}</td></tr>`).join("\n            ");
+    const prev = LETTERS[i - 1], next = LETTERS[i + 1];
+    const main = `<main>
+  <div class="wrap">
+    <p class="breadcrumb"><a href="/">Inicio</a> › <a href="${GUIDE.respuestas.urls.es}">Respuestas por letra</a> › Letra ${L}</p>
+    <h1>Tutti frutti con la letra ${L}: respuestas por categoría</h1>
+    <p class="lead">${esc(entry.intro)} Acá tienes ideas para cada categoría y algunos consejos para sumar más puntos.</p>
+    ${difficultyNote(entry)}
+
+    <section>
+      <h2>Respuestas con ${L} por categoría</h2>
+      <div style="overflow-x:auto">
+        <table class="score-table answers-table">
+          <thead><tr><th>Categoría</th><th>Ideas</th></tr></thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    ${obviousSection(entry)}
+
+    <section>
+      <h2>Consejos para la letra ${L}</h2>
+      <ul>
+        ${entry.tips.map((tip) => `<li>${esc(tip)}</li>`).join("\n        ")}
+      </ul>
+      <p>Más estrategias en <a href="${GUIDE.consejos.urls.es}">cómo ganar al tutti frutti</a> y más categorías en <a href="${GUIDE.categorias.urls.es}">categorías para tutti frutti</a>.</p>
+    </section>
+
+    <section>
+      <h2>Otras letras</h2>
+      <nav class="letter-links" aria-label="Respuestas por letra">${letterLinks(L)}</nav>
+      <p class="letter-prevnext">${prev ? `<a href="${letterUrl(prev.letter)}">← Letra ${prev.letter}</a>` : "<span></span>"}${next ? `<a href="${letterUrl(next.letter)}">Letra ${next.letter} →</a>` : `<a href="${GUIDE.letras.urls.es}">Letras difíciles →</a>`}</p>
+    </section>
+
+    ${ctaBox("es", `¿Te tocó la ${L}? Ponlo en práctica en una partida con tus amigos.`)}
+  </div>
+</main>`;
+    write(url, contentPage(page, main));
+    return page;
+  });
 }
 
 /* ---------------------------------------------------------------- 404 */
@@ -844,6 +961,7 @@ for (const lang of LANGS) {
 }
 for (const lang of LANGS) {
   for (const g of GUIDES) if (g.urls[lang]) built.push(buildGuide(g, lang));
+  if (lang === "es") built.push(...buildLetterPages());
 }
 build404();
 buildSitemap(built.filter((p) => p.url && !p.noindex));

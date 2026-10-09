@@ -330,3 +330,13 @@ a.site-lang-option:hover { text-decoration: none; }
 .lang-menu.open, .theme-menu.open { animation: menu-in .16s cubic-bezier(.2, .8, .2, 1) both; transform-origin: top right; }
 .side-menu-overlay.open { animation: fade-in .2s ease both; }
 .side-menu { transition: transform .28s cubic-bezier(.2, .8, .2, 1); }
+
+/* Respuestas por letra */
+.letter-links { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.letter-links a, .letter-links span { width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; border: 1px solid var(--borde); background: var(--surface); font-family: var(--font-display, inherit); font-weight: 800; font-size: 18px; text-decoration: none; color: var(--text); }
+.letter-links a:hover { border-color: var(--primary); }
+.letter-links span[aria-current] { background: var(--primary); color: var(--tinta); border-color: var(--primary); }
+.letter-links-big a { width: 52px; height: 52px; font-size: 22px; }
+.letter-prevnext { display: flex; justify-content: space-between; gap: 12px; font-weight: 600; }
+.answers-table td:first-child { white-space: nowrap; width: 1%; }
+.letter-difficulty { padding: 14px 16px; border-radius: 12px; background: var(--surface); border: 1px solid var(--borde); }
