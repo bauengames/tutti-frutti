@@ -435,6 +435,11 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
 .side-menu-overlay.open { animation: fade-in .2s ease both; }
 .side-menu { transition: transform .28s cubic-bezier(.2, .8, .2, 1); }
 [data-home-mascot] > svg { animation: fade-in .3s ease both; }
+
+/* ---------- Guías del inicio ---------- */
+.guide-links { list-style: none; padding: 0; margin: 16px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.guide-links a { display: block; padding: 14px 16px; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--borde); color: var(--text); font-weight: 600; text-decoration: none; transition: border-color .15s, transform .15s; }
+.guide-links a:hover { border-color: var(--primary); transform: translateY(-1px); }
 </style>
 <script>
 (function () {
@@ -580,6 +585,10 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
     <a href="/pt/stop-para-imprimir">Folhas para imprimir</a>
     <a href="/pt/stop-por-videochamada">Jogar por videochamada</a>
     <a href="/pt/stop-na-sala-de-aula">Stop na sala de aula</a>
+    <a href="/pt/como-ganhar-no-stop">Como ganhar no Stop</a>
+    <a href="/pt/stop-letras-dificeis">Letras difíceis</a>
+    <a href="/pt/variacoes-do-stop">Variações do Stop</a>
+    <a href="/pt/historia-do-stop">História do Stop</a>
     <a href="/pt/quem-somos">Quem somos</a>
   </nav>
 </div>
@@ -676,6 +685,20 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
   </section>
 
   
+
+  <section class="info guides">
+    <h2>Guias e recursos</h2>
+    <ul class="guide-links">
+      <li><a href="/pt/categorias-de-stop">Categorias de Stop</a></li>
+      <li><a href="/pt/como-ganhar-no-stop">Como ganhar no Stop</a></li>
+      <li><a href="/pt/stop-letras-dificeis">Letras difíceis</a></li>
+      <li><a href="/pt/variacoes-do-stop">Variações do Stop</a></li>
+      <li><a href="/pt/stop-para-imprimir">Folhas para imprimir</a></li>
+      <li><a href="/pt/stop-por-videochamada">Jogar por videochamada</a></li>
+      <li><a href="/pt/stop-na-sala-de-aula">Stop na sala de aula</a></li>
+      <li><a href="/pt/historia-do-stop">História do Stop</a></li>
+    </ul>
+  </section>
 
 </main>
 

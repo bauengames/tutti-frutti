@@ -436,6 +436,11 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
 .side-menu-overlay.open { animation: fade-in .2s ease both; }
 .side-menu { transition: transform .28s cubic-bezier(.2, .8, .2, 1); }
 [data-home-mascot] > svg { animation: fade-in .3s ease both; }
+
+/* ---------- Guías del inicio ---------- */
+.guide-links { list-style: none; padding: 0; margin: 16px 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.guide-links a { display: block; padding: 14px 16px; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--borde); color: var(--text); font-weight: 600; text-decoration: none; transition: border-color .15s, transform .15s; }
+.guide-links a:hover { border-color: var(--primary); transform: translateY(-1px); }
 </style>
 <script>
 (function () {
@@ -581,6 +586,10 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
     <a href="/tutti-frutti-para-imprimir">Planillas para imprimir</a>
     <a href="/tutti-frutti-por-videollamada">Jugar por videollamada</a>
     <a href="/tutti-frutti-en-el-aula">Tutti frutti en el aula</a>
+    <a href="/como-ganar-al-tutti-frutti">Cómo ganar al tutti frutti</a>
+    <a href="/tutti-frutti-letras-dificiles">Letras difíciles</a>
+    <a href="/variantes-del-tutti-frutti">Variantes del tutti frutti</a>
+    <a href="/historia-del-tutti-frutti">Historia del tutti frutti</a>
     <a href="/stop-online">Stop online</a>
     <a href="/basta-online">Basta online</a>
     <a href="/quienes-somos">Quiénes somos</a>
@@ -689,6 +698,20 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
       <li><strong>Brasil:</strong> <a href="/pt/">Stop o Adedonha</a></li>
     </ul>
     <p>Además del paquete Clásico, al crear una sala puedes cargar categorías de <a href="/jugar?pack=argento">Argentina</a>, <a href="/jugar?pack=peru">Perú</a> o <a href="/jugar?pack=mexico">México</a>.</p>
+  </section>
+
+  <section class="info guides">
+    <h2>Guías y recursos</h2>
+    <ul class="guide-links">
+      <li><a href="/categorias-tutti-frutti">Categorías para tutti frutti</a></li>
+      <li><a href="/como-ganar-al-tutti-frutti">Cómo ganar al tutti frutti</a></li>
+      <li><a href="/tutti-frutti-letras-dificiles">Letras difíciles</a></li>
+      <li><a href="/variantes-del-tutti-frutti">Variantes del tutti frutti</a></li>
+      <li><a href="/tutti-frutti-para-imprimir">Planillas para imprimir</a></li>
+      <li><a href="/tutti-frutti-por-videollamada">Jugar por videollamada</a></li>
+      <li><a href="/tutti-frutti-en-el-aula">Tutti frutti en el aula</a></li>
+      <li><a href="/historia-del-tutti-frutti">Historia del tutti frutti</a></li>
+    </ul>
   </section>
 
 </main>

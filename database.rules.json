@@ -155,7 +155,7 @@
         ".read": "auth != null && $date.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && query.orderByChild === 'score' && query.limitToLast <= 10",
         ".indexOn": "score",
         "$uid": {
-          ".write": "auth != null && auth.uid === $uid && !data.exists() && $date.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
+          ".write": "auth != null && auth.uid === $uid && $date.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/) && (!data.exists() || (newData.child('name').val() === '—' && newData.child('score').val() === data.child('score').val() && newData.child('valid').val() === data.child('valid').val() && newData.child('total').val() === data.child('total').val() && newData.child('grid').val() === data.child('grid').val()))",
           ".validate": "newData.hasChildren(['name', 'score', 'valid', 'total'])",
           "name": {
             ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
@@ -185,7 +185,7 @@
     "duels": {
       "$duelId": {
         ".read": "auth != null && $duelId.matches(/^[A-Za-z0-9]{10}$/)",
-        ".write": "auth != null && $duelId.matches(/^[A-Za-z0-9]{10}$/) && !data.exists() && newData.child('creator').child('uid').val() === auth.uid",
+        ".write": "auth != null && $duelId.matches(/^[A-Za-z0-9]{10}$/) && ((!data.exists() && newData.child('creator').child('uid').val() === auth.uid) || (data.exists() && !newData.exists() && data.child('creator').child('uid').val() === auth.uid))",
         ".validate": "newData.hasChildren(['letter', 'categories', 'wildcard', 'duration', 'createdAt', 'creator'])",
         "letter": {
           ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 2"
@@ -244,7 +244,7 @@
         },
         "rivals": {
           "$uid": {
-            ".write": "auth != null && auth.uid === $uid && !data.exists() && data.parent().parent().exists()",
+            ".write": "auth != null && auth.uid === $uid && ((!data.exists() && data.parent().parent().exists()) || (data.exists() && !newData.exists()))",
             ".validate": "newData.hasChildren(['name', 'avatar', 'score', 'valid', 'total', 'results'])",
             "name": {
               ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
@@ -397,7 +397,7 @@
     "friendCodes": {
       "$code": {
         ".read": "auth != null",
-        ".write": "auth != null && auth.token.email != null && !data.exists() && newData.val() === auth.uid && $code.matches(/^[A-Z0-9]{6,12}$/)"
+        ".write": "auth != null && ((auth.token.email != null && !data.exists() && newData.val() === auth.uid && $code.matches(/^[A-Z0-9]{6,12}$/)) || (data.val() === auth.uid && !newData.exists()))"
       }
     },
     "friends": {
@@ -415,6 +415,87 @@
         "$invitee": {
           ".write": "auth != null && auth.uid === $invitee && auth.token.email != null && $invitee !== $inviter && !data.exists() && !root.child('users').child($invitee).exists()",
           ".validate": "newData.isString() && root.child('friendCodes').child(newData.val()).val() === $inviter"
+        }
+      }
+    },
+    "ligas": {
+      "$semana": {
+        "$div": {
+          "$grupo": {
+            ".read": "auth != null",
+            "$uid": {
+              ".write": "auth != null && auth.uid === $uid && $semana.matches(/^[0-9]{4}-W[0-9]{2}$/) && $div.matches(/^[0-4]$/) && $grupo.matches(/^[0-9]{1,5}$/)",
+              ".validate": "newData.hasChildren(['name', 'xp']) && (!data.exists() || newData.child('xp').val() >= data.child('xp').val())",
+              "name": {
+                ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
+              },
+              "avatar": {
+                ".validate": "newData.isString() && newData.val().length <= 8"
+              },
+              "xp": {
+                ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 50000"
+              },
+              "$other": {
+                ".validate": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "ligaCupos": {
+      "$semana": {
+        "$div": {
+          ".read": "auth != null",
+          ".write": "auth != null && $semana.matches(/^[0-9]{4}-W[0-9]{2}$/) && $div.matches(/^[0-4]$/)",
+          ".validate": "newData.isNumber() && newData.val() === (data.exists() ? data.val() : 0) + 1"
+        }
+      }
+    },
+    "hoy": {
+      "$dia": {
+        "$uid": {
+          ".read": "auth != null",
+          ".write": "auth != null && auth.uid === $uid && $dia.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
+          ".validate": "newData.hasChildren(['name', 'xp'])",
+          "name": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
+          },
+          "avatar": {
+            ".validate": "newData.isString() && newData.val().length <= 8"
+          },
+          "xp": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 50000"
+          },
+          "daily": {
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 200"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
+    "reportes": {
+      "$uid": {
+        "$from": {
+          ".write": "auth != null && auth.uid === $from && $uid !== $from && $uid.matches(/^[A-Za-z0-9]{20,40}$/)",
+          ".validate": "newData.hasChildren(['motivo', 'at'])",
+          "motivo": {
+            ".validate": "newData.isString() && newData.val().matches(/^(nombre|respuestas|trampa|otro)$/)"
+          },
+          "nombre": {
+            ".validate": "newData.isString() && newData.val().length <= 30"
+          },
+          "donde": {
+            ".validate": "newData.isString() && newData.val().length <= 20"
+          },
+          "at": {
+            ".validate": "newData.val() === now"
+          },
+          "$other": {
+            ".validate": false
+          }
         }
       }
     }

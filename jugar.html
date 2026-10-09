@@ -1223,6 +1223,67 @@ html[data-light] .full-badge { color: var(--tinta); }
 .reveal-actions.ticking { align-items: center; }
 .rv-clock { flex: 0 0 auto; min-width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background: var(--crema-08); color: var(--text); font: 800 15px var(--font-mono); }
 .rv-clock.low { background: var(--pomelo); color: #fff; }
+/* Nivel, racha y liga */
+.player-strip { display: flex; gap: 10px; margin: -6px 0 18px; flex-wrap: wrap; }
+.player-strip:empty { display: none; }
+.level-chip, .streak-chip { display: inline-flex; align-items: center; gap: 10px; border: 2px solid var(--borde); background: var(--surface); color: var(--text); border-radius: 999px; padding: 8px 14px; font: 700 14px var(--font-body); cursor: pointer; }
+.level-chip { flex: 1 1 220px; min-width: 0; }
+.level-chip:hover, .streak-chip:hover { border-color: var(--primary); }
+.level-num { flex-shrink: 0; }
+.level-bar { flex: 1; height: 8px; border-radius: 6px; background: var(--crema-08); overflow: hidden; min-width: 60px; }
+.level-bar span { display: block; height: 100%; background: var(--primary); border-radius: 6px; }
+.streak-chip .flame { width: 20px; height: 20px; display: inline-flex; }
+.streak-chip .flame svg { width: 100%; height: 100%; }
+.streak-chip.off { opacity: .6; }
+.streak-chip.risk { border-color: var(--mandarina); }
+.league-banner { border-color: var(--uva); background: var(--crema-08); }
+.league-banner .daily-icon { animation: icon-twinkle 3s ease-in-out infinite; font-size: 30px; line-height: 38px; text-align: center; }
+.league-banner .daily-arrow { color: var(--uva); }
+html[data-light] .league-banner .daily-arrow { color: var(--tinta); }
+@media (min-width: 900px) { .mode-grid #leagueBanner { grid-column: 1 / -1; } }
+.lg-head { display: flex; align-items: center; gap: 14px; margin: 4px 0 10px; }
+.lg-head .lg-medal { font-size: 44px; line-height: 1; }
+.lg-head strong { display: block; font: 800 24px var(--font-display); }
+.lg-head small { color: var(--text-muted); font-size: 14px; }
+.lg-list { display: grid; gap: 6px; margin: 12px 0 20px; }
+.lg-row { display: grid; grid-template-columns: 28px 36px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 12px; border-radius: 12px; background: var(--crema-08); border: 2px solid transparent; }
+.lg-row.up { box-shadow: inset 4px 0 0 var(--lima); }
+.lg-row.down { box-shadow: inset 4px 0 0 var(--pomelo); }
+.lg-row.me { border-color: var(--primary); }
+.lg-pos { font: 700 14px var(--font-mono); color: var(--text-muted); text-align: center; }
+.lg-fruit { width: 36px; height: 36px; display: block; }
+.lg-fruit svg { width: 100%; height: 100%; }
+.lg-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.lg-name small { display: block; color: var(--text-muted); font-weight: 400; font-size: 12px; }
+.lg-row strong { font: 700 14px var(--font-mono); }
+.lg-empty { padding: 16px; border-radius: 12px; background: var(--crema-08); color: var(--text-muted); text-align: center; margin: 12px 0 20px; }
+.lg-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--text-muted); }
+.lg-legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.lg-legend .up::before { background: var(--lima); }
+.lg-legend .down::before { background: var(--pomelo); }
+.info-card { position: relative; width: min(100%, 400px); max-height: calc(100dvh - 40px); overflow-y: auto; }
+.info-card .big-medal { font-size: 64px; line-height: 1; margin-bottom: 8px; }
+.level-medal { width: 84px; height: 84px; margin: 0 auto 10px; border-radius: 50%; background: var(--primary); color: var(--tinta); display: flex; align-items: center; justify-content: center; font: 800 36px var(--font-display); box-shadow: 0 0 0 6px color-mix(in srgb, var(--primary) 30%, transparent); }
+.info-card .info-mascot { width: 90px; height: 90px; margin: 0 auto 6px; }
+.info-card .info-mascot svg { width: 100%; height: 100%; }
+.info-card .btn { margin-top: 6px; }
+.streak-flame { width: 64px; height: 64px; margin: 0 auto 6px; }
+.streak-flame svg { width: 100%; height: 100%; }
+.streak-flame.off { filter: grayscale(1); opacity: .5; }
+.streak-next { display: grid; gap: 6px; margin: 4px 0 14px; font-size: 14px; color: var(--text-muted); }
+.streak-goals { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 8px 0 14px; }
+.streak-goal { border-radius: 12px; background: var(--crema-08); padding: 8px 4px; display: grid; gap: 2px; font-size: 13px; }
+.streak-goal b { font: 800 18px var(--font-display); }
+.streak-goal.done { background: color-mix(in srgb, var(--lima) 22%, transparent); }
+.streak-goal small { display: inline-flex; align-items: center; justify-content: center; gap: 3px; color: var(--text-muted); }
+.streak-goal .seed-icon, .streak-freeze .seed-icon { width: 14px; height: 14px; }
+.streak-freeze { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: center; text-align: left; padding: 12px; border-radius: 12px; background: var(--crema-08); margin-bottom: 10px; }
+.streak-freeze .ice { font-size: 26px; letter-spacing: 2px; }
+.streak-freeze .ice .empty { opacity: .25; }
+.streak-freeze small { display: block; color: var(--text-muted); font-size: 13px; }
+.xp-chip { display: inline-flex; align-items: center; justify-content: center; width: 100%; height: 100%; border-radius: 50%; background: var(--primary); color: var(--tinta); font: 800 12px var(--font-display); }
+.info-section-title { font: 700 13px var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin: 6px 0 0; }
+.xp-list { text-align: left; font-size: 14px; color: var(--text-muted); display: grid; gap: 4px; margin: 6px 0 12px; padding-left: 18px; }
 .lobby-mode-title { font: 800 26px var(--font-display); letter-spacing: -.01em; margin: 0; }
 .duel-banner .daily-icon { animation: icon-wobble 3s ease-in-out infinite; transform-origin: 50% 90%; }
 .duel-banner.has-news { background: rgba(255,166,43,.14); }
@@ -1352,6 +1413,8 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <p class="lead" data-i18n="lobby_lead">Tutti frutti online. Elegí categorías, invitá a tus amigos y que empiece la ronda.</p>
     </div>
 
+    <div class="player-strip hub-only" id="playerStrip"></div>
+
     <div class="mode-grid hub-only">
     <button type="button" class="daily-banner hub-only" id="dailyBanner" onclick="openDaily()">
       <span class="daily-icon" aria-hidden="true" id="dailyBannerIcon"></span>
@@ -1391,6 +1454,14 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <span class="daily-text">
         <strong data-i18n="tab_streak">Contrarreloj</strong>
         <span class="daily-sub" data-i18n="streak_banner_sub">2 minutos para sumar todos los puntos que puedas</span>
+      </span>
+      <span class="daily-arrow" aria-hidden="true">→</span>
+    </button>
+    <button type="button" class="daily-banner league-banner hub-only" id="leagueBanner" onclick="openLeague()">
+      <span class="daily-icon league-medal" aria-hidden="true" id="leagueBannerIcon">🥉</span>
+      <span class="daily-text">
+        <strong id="leagueBannerTitle" data-i18n="lg_title">Liga de la semana</strong>
+        <span class="daily-sub" id="leagueBannerSub"></span>
       </span>
       <span class="daily-arrow" aria-hidden="true">→</span>
     </button>
@@ -1755,6 +1826,16 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
 </div>
 
 <!-- DUELO: mis duelos -->
+<!-- LIGA DE LA SEMANA -->
+<div class="screen" id="screen-league">
+  <div class="results">
+    <div class="results-card">
+      <div class="screen-back-row"><button type="button" class="lobby-back" onclick="backToModes()"><span aria-hidden="true">←</span> <span data-i18n="lobby_back_modes">Modos</span></button></div>
+      <div id="leagueContent"></div>
+    </div>
+  </div>
+</div>
+
 <div class="screen" id="screen-duels">
   <div class="results">
     <div class="results-card">
@@ -2012,6 +2093,9 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
 </div>
 <div class="theme-preview-bar" id="themePreviewBar" style="display:none;"></div>
 <!-- Cómo se juega: va antes de los scripts porque se puede abrir mientras carga la página (/jugar?aventura). -->
+<div class="confirm-overlay" id="infoModal" role="dialog" aria-modal="true" style="display:none;" onclick="if (event.target === this) closeInfoModal()">
+  <div class="confirm-card info-card" id="infoModalCard"></div>
+</div>
 <div class="confirm-overlay" id="howTo" role="dialog" aria-modal="true" aria-labelledby="howToTitle" style="display:none;" onclick="if (event.target === this) closeHowTo(false)">
   <div class="confirm-card howto-card">
     <button type="button" class="howto-close" onclick="closeHowTo(false)" aria-label="Cerrar" data-i18n-aria="howto_close">×</button>
@@ -2384,7 +2468,7 @@ const I18N = {
     shop_fruits_heading: "Frutas para tu avatar",
     shop_adv_heading: "Aventura",
     shop_how_heading: "Cómo ganar semillas",
-    shop_how_text: "1 semilla por cada 10 puntos en el desafío del día, el contrarreloj, los duelos y las salas online. En la Aventura, 10 semillas por cada estrella nueva. Además de la tienda, las semillas sirven para crear salas con categorías propias (5 cada una) y vueltas de tuerca (10 cada una).",
+    shop_how_text: "Con las misiones del día, los logros, las estrellas nuevas de la Aventura (10 por estrella), los premios del desafío del día, la racha de días, subiendo de nivel, en la Liga de la semana e invitando amigos. Además de la tienda, las semillas sirven para crear salas con categorías propias (5 cada una) y vueltas de tuerca (10 cada una).",
     shop_use: "Usar",
     shop_in_use: "En uso",
     shop_life_title: "Una vida extra",
@@ -2698,6 +2782,60 @@ const I18N = {
     adv_memory_hidden: "¿Te acordás?",
     adv_reason_short: "Tiene más de {n} letras",
     adv_reason_banned: "Tiene la letra prohibida ({x})",
+    xp_gained: "+{n} XP",
+    level_label: "Nivel {n}",
+    level_to_next: "Te faltan {n} XP para el nivel {next}",
+    level_up_title: "¡Subiste al nivel {n}!",
+    level_up_seeds: "+{s} semillas",
+    level_up_big: "¡Nivel redondo! +{s} semillas",
+    level_up_ok: "¡Seguí así!",
+    level_how_title: "Cómo se suma XP",
+    level_how_words: "Cada palabra válida suma XP, y más si nadie más la puso.",
+    level_how_modes: "También suman el desafío del día, ganar online, pasar niveles de la Aventura, los duelos y las rondas de Contrarreloj.",
+    level_how_rewards: "Cada nivel nuevo da 20 semillas, y cada 5 niveles, 60. La XP también suma para la Liga de la semana.",
+    streak_label: "Racha",
+    streak_days: "{n} días",
+    streak_one_day: "1 día",
+    streak_status_today: "¡Hoy ya sumaste! Volvé mañana para seguirla.",
+    streak_status_risk: "Jugá cualquier partida hoy para no perderla.",
+    streak_status_zero: "Jugá cualquier partida para empezar una racha.",
+    streak_next: "A los {n} días: +{s} semillas",
+    streak_goals_title: "Premios de la racha",
+    streak_best: "Tu mejor racha: {n}",
+    streak_goal_toast: "¡Racha de {n} días! +{s} semillas",
+    freeze_title: "Congelador de racha",
+    freeze_desc: "Si un día no jugás, se usa solo y tu racha sigue. Podés tener hasta {max}. Tenés {n}.",
+    freeze_full: "Ya tenés el máximo de congeladores",
+    freeze_buy: "Comprar congelador",
+    freeze_used_one: "Un congelador salvó tu racha de {n} días",
+    freeze_used_many: "{c} congeladores salvaron tu racha de {n} días",
+    lg_title: "Liga de la semana",
+    lg_div0: "Liga Bronce",
+    lg_div1: "Liga Plata",
+    lg_div2: "Liga Oro",
+    lg_div3: "Liga Diamante",
+    lg_div4: "Liga Sandía",
+    lg_explain: "Sumás XP jugando cualquier modo. Los 5 primeros suben de liga y los 5 últimos bajan. Del 1.º al 3.º ganan semillas: 100, 60 y 40.",
+    lg_ends: "Termina en {t}",
+    lg_banner_join: "Jugá una partida para entrar a la liga de esta semana",
+    lg_banner_sub: "{xp} XP esta semana · termina en {t}",
+    lg_no_group: "Jugá una partida para entrar a la liga de esta semana.",
+    lg_inactive: "La liga todavía no está disponible. Probá de nuevo en un rato.",
+    lg_up: "Suben",
+    lg_down: "Bajan",
+    lg_you: "(vos)",
+    lg_xp: "{n} XP",
+    lg_friends: "Tus amigos hoy",
+    lg_friends_login: "Iniciá sesión con Google para ver qué hacen tus amigos.",
+    lg_friends_none: "Todavía no tenés amigos. Agregalos desde Mi fruta → Amigos.",
+    lg_friends_idle: "no jugó todavía",
+    lg_friends_daily: "Desafío: {n} pts",
+    lg_close_up: "¡Subiste a la {liga}!",
+    lg_close_down: "Bajaste a la {liga}",
+    lg_close_same: "Seguís en la {liga}",
+    lg_close_pos: "Terminaste {p}.º de {n} la semana pasada.",
+    lg_close_prize: "+{s} semillas",
+    lg_close_ok: "¡Vamos!",
     clear_categories_btn: "Borrar todas",
     random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
     random_category_chip: "Random",
@@ -3026,7 +3164,7 @@ const I18N = {
     shop_fruits_heading: "Fruits for your avatar",
     shop_adv_heading: "Adventure",
     shop_how_heading: "How to earn seeds",
-    shop_how_text: "1 seed for every 10 points in the daily challenge, time attack, duels and online rooms. In the Adventure, 10 seeds for every new star. Besides the shop, seeds let you create rooms with your own categories (5 each) and twists (10 each).",
+    shop_how_text: "From daily missions, achievements, new Adventure stars (10 per star), daily challenge prizes, your day streak, leveling up, the weekly League and inviting friends. Besides the shop, seeds let you create rooms with your own categories (5 each) and twists (10 each).",
     shop_use: "Use",
     shop_in_use: "In use",
     shop_life_title: "An extra life",
@@ -3340,6 +3478,60 @@ const I18N = {
     adv_memory_hidden: "Remember?",
     adv_reason_short: "More than {n} letters",
     adv_reason_banned: "Has the banned letter ({x})",
+    xp_gained: "+{n} XP",
+    level_label: "Level {n}",
+    level_to_next: "{n} XP to level {next}",
+    level_up_title: "You reached level {n}!",
+    level_up_seeds: "+{s} seeds",
+    level_up_big: "Milestone level! +{s} seeds",
+    level_up_ok: "Keep it up!",
+    level_how_title: "How to earn XP",
+    level_how_words: "Every valid word earns XP, and more if nobody else wrote it.",
+    level_how_modes: "The daily challenge, winning online, clearing Adventure levels, duels and Time attack rounds also count.",
+    level_how_rewards: "Each new level gives 20 seeds, and every 5 levels, 60. XP also counts for the weekly League.",
+    streak_label: "Streak",
+    streak_days: "{n} days",
+    streak_one_day: "1 day",
+    streak_status_today: "You already played today! Come back tomorrow to keep it going.",
+    streak_status_risk: "Play any game today so you don't lose it.",
+    streak_status_zero: "Play any game to start a streak.",
+    streak_next: "At {n} days: +{s} seeds",
+    streak_goals_title: "Streak rewards",
+    streak_best: "Your best streak: {n}",
+    streak_goal_toast: "{n}-day streak! +{s} seeds",
+    freeze_title: "Streak freeze",
+    freeze_desc: "If you skip a day, it's used automatically and your streak goes on. You can have up to {max}. You have {n}.",
+    freeze_full: "You have the maximum freezes",
+    freeze_buy: "Buy a freeze",
+    freeze_used_one: "A streak freeze saved your {n}-day streak",
+    freeze_used_many: "{c} streak freezes saved your {n}-day streak",
+    lg_title: "This week's league",
+    lg_div0: "Bronze League",
+    lg_div1: "Silver League",
+    lg_div2: "Gold League",
+    lg_div3: "Diamond League",
+    lg_div4: "Watermelon League",
+    lg_explain: "Earn XP playing any mode. The top 5 move up and the bottom 5 move down. 1st to 3rd win seeds: 100, 60 and 40.",
+    lg_ends: "Ends in {t}",
+    lg_banner_join: "Play a game to join this week's league",
+    lg_banner_sub: "{xp} XP this week · ends in {t}",
+    lg_no_group: "Play a game to join this week's league.",
+    lg_inactive: "The league isn't available yet. Try again in a while.",
+    lg_up: "Move up",
+    lg_down: "Move down",
+    lg_you: "(you)",
+    lg_xp: "{n} XP",
+    lg_friends: "Your friends today",
+    lg_friends_login: "Sign in with Google to see what your friends are up to.",
+    lg_friends_none: "No friends yet. Add them from My fruit → Friends.",
+    lg_friends_idle: "hasn't played yet",
+    lg_friends_daily: "Challenge: {n} pts",
+    lg_close_up: "You moved up to the {liga}!",
+    lg_close_down: "You moved down to the {liga}",
+    lg_close_same: "You stay in the {liga}",
+    lg_close_pos: "You finished #{p} of {n} last week.",
+    lg_close_prize: "+{s} seeds",
+    lg_close_ok: "Let's go!",
     clear_categories_btn: "Clear all",
     random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
     random_category_chip: "Random",
@@ -3668,7 +3860,7 @@ const I18N = {
     shop_fruits_heading: "Frutas para o seu avatar",
     shop_adv_heading: "Aventura",
     shop_how_heading: "Como ganhar sementes",
-    shop_how_text: "1 semente a cada 10 pontos no desafio do dia, no contra o relógio, nos duelos e nas salas online. Na Aventura, 10 sementes por estrela nova. Além da loja, as sementes servem para criar salas com categorias próprias (5 cada) e reviravoltas (10 cada).",
+    shop_how_text: "Com as missões do dia, as conquistas, as estrelas novas da Aventura (10 por estrela), os prêmios do desafio do dia, a sequência de dias, subindo de nível, na Liga da semana e convidando amigos. Além da loja, as sementes servem para criar salas com categorias próprias (5 cada) e reviravoltas (10 cada).",
     shop_use: "Usar",
     shop_in_use: "Em uso",
     shop_life_title: "Uma vida extra",
@@ -3982,6 +4174,60 @@ const I18N = {
     adv_memory_hidden: "Lembra?",
     adv_reason_short: "Tem mais de {n} letras",
     adv_reason_banned: "Tem a letra proibida ({x})",
+    xp_gained: "+{n} XP",
+    level_label: "Nível {n}",
+    level_to_next: "Faltam {n} XP para o nível {next}",
+    level_up_title: "Você chegou ao nível {n}!",
+    level_up_seeds: "+{s} sementes",
+    level_up_big: "Nível redondo! +{s} sementes",
+    level_up_ok: "Continue assim!",
+    level_how_title: "Como ganhar XP",
+    level_how_words: "Cada palavra válida dá XP, e mais se ninguém mais a escreveu.",
+    level_how_modes: "O desafio do dia, ganhar online, passar níveis da Aventura, os duelos e as rodadas do Contrarrelógio também contam.",
+    level_how_rewards: "Cada nível novo dá 20 sementes, e a cada 5 níveis, 60. A XP também conta para a Liga da semana.",
+    streak_label: "Sequência",
+    streak_days: "{n} dias",
+    streak_one_day: "1 dia",
+    streak_status_today: "Você já jogou hoje! Volte amanhã para continuar.",
+    streak_status_risk: "Jogue qualquer partida hoje para não perder.",
+    streak_status_zero: "Jogue qualquer partida para começar uma sequência.",
+    streak_next: "Com {n} dias: +{s} sementes",
+    streak_goals_title: "Prêmios da sequência",
+    streak_best: "Sua melhor sequência: {n}",
+    streak_goal_toast: "Sequência de {n} dias! +{s} sementes",
+    freeze_title: "Congelador de sequência",
+    freeze_desc: "Se você não jogar um dia, ele é usado sozinho e sua sequência continua. Você pode ter até {max}. Você tem {n}.",
+    freeze_full: "Você já tem o máximo de congeladores",
+    freeze_buy: "Comprar congelador",
+    freeze_used_one: "Um congelador salvou sua sequência de {n} dias",
+    freeze_used_many: "{c} congeladores salvaram sua sequência de {n} dias",
+    lg_title: "Liga da semana",
+    lg_div0: "Liga Bronze",
+    lg_div1: "Liga Prata",
+    lg_div2: "Liga Ouro",
+    lg_div3: "Liga Diamante",
+    lg_div4: "Liga Melancia",
+    lg_explain: "Você soma XP jogando qualquer modo. Os 5 primeiros sobem e os 5 últimos descem. Do 1.º ao 3.º ganham sementes: 100, 60 e 40.",
+    lg_ends: "Termina em {t}",
+    lg_banner_join: "Jogue uma partida para entrar na liga desta semana",
+    lg_banner_sub: "{xp} XP nesta semana · termina em {t}",
+    lg_no_group: "Jogue uma partida para entrar na liga desta semana.",
+    lg_inactive: "A liga ainda não está disponível. Tente de novo daqui a pouco.",
+    lg_up: "Sobem",
+    lg_down: "Descem",
+    lg_you: "(você)",
+    lg_xp: "{n} XP",
+    lg_friends: "Seus amigos hoje",
+    lg_friends_login: "Entre com o Google para ver o que seus amigos fazem.",
+    lg_friends_none: "Você ainda não tem amigos. Adicione em Minha fruta → Amigos.",
+    lg_friends_idle: "ainda não jogou",
+    lg_friends_daily: "Desafio: {n} pts",
+    lg_close_up: "Você subiu para a {liga}!",
+    lg_close_down: "Você desceu para a {liga}",
+    lg_close_same: "Você continua na {liga}",
+    lg_close_pos: "Você terminou em {p}.º de {n} na semana passada.",
+    lg_close_prize: "+{s} sementes",
+    lg_close_ok: "Vamos!",
     clear_categories_btn: "Limpar todas",
     random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
     random_category_chip: "Random",
@@ -4239,6 +4485,8 @@ function setLanguage(lang) {
   renderDailyBanner();
   renderShopButton();
   renderAdventureBanner();
+  renderPlayerStrip();
+  renderLeagueBanner();
   if (document.getElementById("tabCreate")) setMode(state.mode);
 
   // Best-effort: si hay una pantalla dinámica visible con datos ya conocidos,
@@ -4252,6 +4500,7 @@ function setLanguage(lang) {
   }
   if (activeId === "screen-adventure") renderAdventureMap();
   if (activeId === "screen-duels") renderMyDuels(state.myDuelsCache || []);
+  if (activeId === "screen-league") renderLeague();
 }
 
 function toggleLangMenu() {
@@ -7445,6 +7694,7 @@ function bumpProgress(mutate, onceKey) {
 }
 
 function markPlayedToday() {
+  useStreakFreezes();
   bumpProgress(p => {
     const today = dayKey();
     if (p.lastDay === today) return;
@@ -7452,6 +7702,8 @@ function markPlayedToday() {
     p.lastDay = today;
     p.bestDayStreak = Math.max(p.bestDayStreak, p.dayStreak);
   });
+  checkStreakMilestones();
+  renderPlayerStrip();
 }
 
 const ACHIEVEMENTS = [
@@ -7823,6 +8075,7 @@ function missionState(p) {
 // Se llama desde dentro de bumpProgress, así cada avance cuenta una sola vez.
 function addMission(p, id, n = 1) {
   if (!(n > 0)) return;
+  addXp(p, id, n);
   const m = todayMissions().find(x => x.id === id);
   if (!m) return;
   const ms = missionState(p);
@@ -7888,6 +8141,348 @@ function renderMissionsButton() {
   const p = getProgress();
   const ms = (p.missions && p.missions.day === dayKey()) ? p.missions : { claimed: [] };
   btn.innerHTML = escapeHtml(t("missions_lobby_btn", { done: ms.claimed.length })) + (missionsClaimable(p) ? '<span class="tab-dot" style="display:inline-block"></span>' : "");
+}
+
+
+// ---------- Ventanita de avisos (nivel, liga, racha) ----------
+// Si ya hay una abierta, la nueva espera su turno.
+const infoQueue = [];
+let infoOpen = false;
+function showInfoModal(html) {
+  infoQueue.push(html);
+  if (!infoOpen) nextInfoModal();
+}
+function nextInfoModal() {
+  const html = infoQueue.shift();
+  if (html == null) { infoOpen = false; return; }
+  infoOpen = true;
+  document.getElementById("infoModalCard").innerHTML = html;
+  document.getElementById("infoModal").style.display = "flex";
+  const ok = document.querySelector("#infoModalCard [data-ok]");
+  if (ok) ok.focus();
+}
+function closeInfoModal() {
+  document.getElementById("infoModal").style.display = "none";
+  setTimeout(nextInfoModal, 250);
+}
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && document.getElementById("infoModal").style.display !== "none") closeInfoModal();
+});
+
+// ---------- Niveles por experiencia (XP), igual que en la app ----------
+// Cada partida suma XP según lo que hiciste. La XP vive en progress.xp (se guarda en la cuenta
+// y la comparte con la app). Subir de nivel da semillas: 20, o 60 cada 5 niveles.
+const XP_PER = { valid_words: 3, unique_words: 2, online_play: 15, online_win: 25, streak_rounds: 2, daily: 15, adv_pass: 15, adv_3stars: 10, duel: 10 };
+function xpCost(n) { return 100 + 40 * (n - 1); }
+function levelReward(n) { return n % 5 === 0 ? 60 : 20; }
+function levelInfo(xp) {
+  xp = Math.max(0, Math.floor(xp || 0));
+  let n = 1, rest = xp;
+  while (rest >= xpCost(n)) { rest -= xpCost(n); n++; }
+  return { level: n, inLevel: rest, toNext: xpCost(n), xp };
+}
+let xpThisGame = 0, xpToastId = null;
+function addXp(p, id, n) {
+  const gain = Math.round((XP_PER[id] || 0) * n);
+  if (!(gain > 0)) return;
+  const before = levelInfo(p.xp || 0).level;
+  p.xp = (p.xp || 0) + gain;
+  const after = levelInfo(p.xp).level;
+  xpThisGame += gain;
+  setTimeout(() => leagueGainXp(gain), 0);
+  clearTimeout(xpToastId);
+  xpToastId = setTimeout(showXpToast, 900);
+  for (let lv = before + 1; lv <= after; lv++) levelUp(lv);
+}
+function showXpToast() {
+  if (!xpThisGame) return;
+  advToast('<span class="xp-chip">XP</span>', t("xp_gained", { n: xpThisGame }));
+  xpThisGame = 0;
+  renderPlayerStrip();
+}
+function levelUp(n) {
+  setTimeout(() => {
+    addSeeds(levelReward(n));
+    launchConfetti();
+    track("level_up", { level: n });
+    showInfoModal(`<div class="level-medal">${n}</div>
+      <div class="info-mascot">${mascotSvg("happy", getMyAvatar(), myEquipped())}</div>
+      <h2>${escapeHtml(t("level_up_title", { n }))}</h2>
+      <p>${seedIcon()} ${escapeHtml(t(n % 5 === 0 ? "level_up_big" : "level_up_seeds", { s: levelReward(n) }))}</p>
+      <button type="button" class="btn btn-primary btn-block" data-ok onclick="closeInfoModal()">${escapeHtml(t("level_up_ok"))}</button>`);
+    renderPlayerStrip();
+  }, 1200);
+}
+function openLevelInfo() {
+  const info = levelInfo(getProgress().xp || 0);
+  const pct = Math.round(100 * info.inLevel / info.toNext);
+  showInfoModal(`<div class="level-medal">${info.level}</div>
+    <h2>${escapeHtml(t("level_label", { n: info.level }))}</h2>
+    <div class="level-bar" style="margin:6px 0 6px"><span style="width:${pct}%"></span></div>
+    <p>${escapeHtml(t("level_to_next", { n: info.toNext - info.inLevel, next: info.level + 1 }))}</p>
+    <p class="info-section-title">${escapeHtml(t("level_how_title"))}</p>
+    <ul class="xp-list">
+      <li>${escapeHtml(t("level_how_words"))}</li>
+      <li>${escapeHtml(t("level_how_modes"))}</li>
+      <li>${escapeHtml(t("level_how_rewards"))}</li>
+    </ul>
+    <button type="button" class="btn btn-primary btn-block" data-ok onclick="closeInfoModal()">${escapeHtml(t("howto_ok"))}</button>`);
+}
+
+// ---------- Racha de días con premios y congelador, igual que en la app ----------
+const STREAK_GOALS = [[3, 20], [7, 50], [14, 80], [30, 150], [50, 200], [100, 400]];
+const FREEZE_PRICE = 60, FREEZE_MAX = 2;
+function daysBetween(a, b) {
+  const date = k => { const [y, m, d] = k.split("-").map(Number); return new Date(y, m - 1, d); };
+  return Math.round((date(b) - date(a)) / 86400000);
+}
+// Si pasaron días sin jugar y alcanzan los congeladores, se usan y la racha sigue.
+function useStreakFreezes() {
+  const p = getProgress();
+  if (!p.lastDay || !(p.dayStreak > 0)) return;
+  const missed = daysBetween(p.lastDay, dayKey()) - 1;
+  if (missed < 1) return;
+  const w = getWallet();
+  const have = w.items.freeze || 0;
+  if (have < missed) return;
+  w.items.freeze = have - missed;
+  saveWallet(w);
+  p.lastDay = dayKey(-1);
+  saveProgress(p);
+  setTimeout(() => advToast("🧊", missed === 1 ? t("freeze_used_one", { n: p.dayStreak }) : t("freeze_used_many", { c: missed, n: p.dayStreak })), 300);
+}
+// Premio al llegar a 3, 7, 14... días (una vez por racha).
+function checkStreakMilestones() {
+  const p = getProgress();
+  if (p.lastDay !== dayKey()) return;
+  const n = p.dayStreak;
+  const goal = STREAK_GOALS.find(g => g[0] === n);
+  if (!goal) return;
+  const key = "racha:" + dayKey(-(n - 1)) + ":" + n;
+  if ((p.counted || []).includes(key)) return;
+  bumpProgress(() => {}, key);
+  addSeeds(goal[1]);
+  setTimeout(() => { launchConfetti(); advToast(iconSvg("flame"), t("streak_goal_toast", { n, s: goal[1] })); }, 600);
+}
+function streakDaysText(n) { return n === 1 ? t("streak_one_day") : t("streak_days", { n }); }
+function openStreakPanel() {
+  const p = getProgress();
+  const n = currentDayStreak(p);
+  const status = n === 0 ? "zero" : (p.lastDay === dayKey() ? "today" : "risk");
+  const next = STREAK_GOALS.find(g => g[0] > n);
+  const prev = [...STREAK_GOALS].reverse().find(g => g[0] <= n);
+  const from = prev ? prev[0] : 0;
+  const pct = next ? Math.round(100 * (n - from) / (next[0] - from)) : 100;
+  const w = getWallet();
+  const ice = w.items.freeze || 0;
+  const goals = STREAK_GOALS.map(g => `<span class="streak-goal${n >= g[0] ? " done" : ""}"><b>${g[0]}</b><small>${seedIcon()}${g[1]}</small></span>`).join("");
+  const buy = ice >= FREEZE_MAX
+    ? `<button type="button" class="btn btn-secondary btn-block" disabled>${escapeHtml(t("freeze_full"))}</button>`
+    : `<button type="button" class="btn btn-secondary btn-block" ${w.seeds < FREEZE_PRICE ? "disabled" : ""} onclick="closeInfoModal(); buyShopItem('freeze')">${escapeHtml(t("freeze_buy"))} · ${seedIcon()} ${FREEZE_PRICE}</button>`;
+  showInfoModal(`<div class="streak-flame${n ? "" : " off"}">${iconSvg("flame")}</div>
+    <h2>${escapeHtml(streakDaysText(n))}</h2>
+    <p>${escapeHtml(t("streak_status_" + status))}</p>
+    ${next ? `<div class="streak-next"><span>${escapeHtml(t("streak_next", { n: next[0], s: next[1] }))}</span><span class="level-bar"><span style="width:${pct}%"></span></span></div>` : ""}
+    <p class="info-section-title">${escapeHtml(t("streak_goals_title"))}</p>
+    <div class="streak-goals">${goals}</div>
+    <div class="streak-freeze"><span class="ice">${"🧊".repeat(ice)}<span class="empty">${"🧊".repeat(Math.max(0, FREEZE_MAX - ice))}</span></span>
+      <span><strong>${escapeHtml(t("freeze_title"))}</strong><small>${escapeHtml(t("freeze_desc", { max: FREEZE_MAX, n: ice }))}</small></span></div>
+    ${buy}
+    <p class="hint">${escapeHtml(t("streak_best", { n: streakDaysText(Math.max(p.bestDayStreak || 0, n)) }))}</p>
+    <button type="button" class="btn btn-primary btn-block" data-ok onclick="closeInfoModal()">${escapeHtml(t("howto_ok"))}</button>`);
+}
+
+// Nivel y racha arriba de los modos.
+function renderPlayerStrip() {
+  const box = document.getElementById("playerStrip");
+  if (!box) return;
+  const info = levelInfo(getProgress().xp || 0);
+  const pct = Math.round(100 * info.inLevel / info.toNext);
+  const p = getProgress();
+  const n = currentDayStreak(p);
+  const cls = n === 0 ? " off" : (p.lastDay === dayKey() ? "" : " risk");
+  box.innerHTML = `<button type="button" class="level-chip" onclick="openLevelInfo()" aria-label="${escapeHtml(t("level_label", { n: info.level }) + " · " + t("level_to_next", { n: info.toNext - info.inLevel, next: info.level + 1 }))}">
+      <span class="level-num">${escapeHtml(t("level_label", { n: info.level }))}</span><span class="level-bar"><span style="width:${pct}%"></span></span></button>
+    <button type="button" class="streak-chip${cls}" onclick="openStreakPanel()" aria-label="${escapeHtml(t("streak_label") + ": " + streakDaysText(n))}"><span class="flame">${iconSvg("flame")}</span>${n}</button>`;
+}
+
+// ---------- Liga de la semana (compartida con la app) ----------
+// Cada semana (la misma del ranking de Contrarreloj) te toca un grupo de hasta 20 personas de tu
+// división. Se suma con la XP. Al cerrar, los 5 primeros suben, los 5 últimos bajan (si el grupo
+// tiene 10 o más) y del 1.º al 3.º ganan semillas. Datos en Firebase: ligas/{semana}/{div}/{grupo}/{uid},
+// ligaCupos/{semana}/{div} y hoy/{día}/{uid} (los usa también la app).
+const LEAGUE_MEDALS = ["🥉", "🥈", "🥇", "💎", "🍉"];
+const LEAGUE_GROUP = 20, LEAGUE_UP = 5, LEAGUE_DOWN = 5, LEAGUE_PRIZES = [100, 60, 40];
+const LEAGUE_KEY = "tuttifruti_liga";
+let leagueActive = true, leagueClosing = false, leaguePublishId = null;
+function leagueRead() { try { return JSON.parse(localStorage.getItem(LEAGUE_KEY) || "null"); } catch (e) { return null; } }
+function leagueSave(l) { try { localStorage.setItem(LEAGUE_KEY, JSON.stringify(l)); } catch (e) { /* storage unavailable */ } }
+function leagueDivision() { return Math.max(0, Math.min(4, getProgress().ligaDiv || 0)); }
+// La semana anterior queda en "previa" hasta cerrarla, así un cierre que no terminó se reintenta.
+function leagueData() {
+  let l = leagueRead();
+  if (!l || l.semana !== weekKey()) {
+    const previa = l && l.semana && l.grupo != null ? { semana: l.semana, div: l.div, grupo: l.grupo } : (l && l.previa) || null;
+    l = { semana: weekKey(), div: leagueDivision(), grupo: null, xp: 0, previa };
+    // Si otro dispositivo con la misma cuenta ya entró a un grupo esta semana, se usa el mismo.
+    const shared = getProgress().liga;
+    if (shared && shared.semana === l.semana && shared.div === l.div) l.grupo = shared.grupo;
+    leagueSave(l);
+  }
+  return l;
+}
+function leagueReady(fn) {
+  if (window.FB && window.FB.uid) fn();
+  else window.addEventListener("firebase-ready", () => { if (window.FB && window.FB.uid) fn(); }, { once: true });
+}
+function leagueName() {
+  return ((document.getElementById("playerName").value || localStorage.getItem("tuttifruti_playerName") || "?").trim() || "?").slice(0, 30);
+}
+function leagueNoPermission(e) { return /permission/i.test(String((e && (e.message || e.code)) || e)); }
+// Entrar a un grupo: se toma un lugar con un contador y cada 20 se abre un grupo nuevo.
+function leagueEnter(l) {
+  const F = window.FB;
+  return F.runTransaction(F.ref(F.db, `ligaCupos/${l.semana}/${l.div}`), n => (n || 0) + 1).then(r => {
+    if (!r.committed) throw new Error("sin lugar");
+    l.grupo = Math.floor((r.snapshot.val() - 1) / LEAGUE_GROUP);
+    leagueSave(l);
+    bumpProgress(p => { p.liga = { semana: l.semana, div: l.div, grupo: l.grupo }; });
+    return l;
+  });
+}
+function leaguePublish() {
+  clearTimeout(leaguePublishId);
+  leaguePublishId = setTimeout(() => leagueReady(() => {
+    const F = window.FB, l = leagueData();
+    const step = l.grupo == null ? leagueEnter(l) : Promise.resolve(l);
+    step.then(l2 => {
+      const r = F.ref(F.db, `ligas/${l2.semana}/${l2.div}/${l2.grupo}/${F.uid}`);
+      // La XP nunca baja: si otro dispositivo de la misma cuenta ya subió más, se toma ese valor.
+      return F.get(r).then(snap => {
+        const remote = (snap.val() && snap.val().xp) || 0;
+        if (remote > l2.xp) { l2.xp = remote; leagueSave(l2); }
+        return F.set(r, { name: leagueName(), avatar: getMyAvatar(), xp: Math.min(50000, l2.xp) });
+      });
+    }).then(() => { leagueActive = true; renderLeagueBanner(); })
+      .catch(e => { if (leagueNoPermission(e) && leagueData().grupo == null) leagueActive = false; console.error("liga", e && (e.message || e.code)); });
+    const today = getTodayDaily();
+    const entry = { name: leagueName(), avatar: getMyAvatar(), xp: Math.min(50000, leagueData().xp) };
+    if (today && !today.unfinished) entry.daily = Math.min(200, today.score || 0);
+    F.set(F.ref(F.db, `hoy/${dayKey()}/${F.uid}`), entry).catch(() => {});
+  }), 3000);
+}
+function leagueGainXp(n) {
+  if (!(n > 0)) return;
+  const l = leagueData();
+  l.xp += n;
+  leagueSave(l);
+  leaguePublish();
+  renderLeagueBanner();
+}
+// Cierre de la semana anterior: puesto, cambio de división y premio (una sola vez por semana).
+function leagueCheckClose() {
+  const l = leagueData().previa;
+  if (!l || leagueClosing) return;
+  leagueClosing = true;
+  leagueReady(() => {
+    const F = window.FB;
+    F.get(F.ref(F.db, `ligas/${l.semana}/${l.div}/${l.grupo}`)).then(snap => {
+      const list = Object.entries(snap.val() || {}).map(([uid, v]) => ({ uid, xp: (v && v.xp) || 0 })).sort((a, b) => b.xp - a.xp);
+      const pos = list.findIndex(x => x.uid === F.uid) + 1;
+      const clear = () => { const a = leagueData(); a.previa = null; leagueSave(a); leagueClosing = false; };
+      if (!pos || (getProgress().counted || []).includes("liga:" + l.semana)) { clear(); return; }
+      let div = l.div;
+      if (pos <= LEAGUE_UP && list[pos - 1].xp > 0 && div < 4) div++;
+      else if (list.length >= 10 && pos > list.length - LEAGUE_DOWN && div > 0) div--;
+      const prize = LEAGUE_PRIZES[pos - 1] || 0;
+      bumpProgress(p => { p.ligaDiv = div; }, "liga:" + l.semana);
+      if (prize) addSeeds(prize);
+      track("liga_cierre", { puesto: pos, de: list.length, division: div });
+      const now = leagueData(); now.previa = null; if (now.grupo == null) now.div = div; leagueSave(now);
+      leagueClosing = false;
+      renderLeagueBanner();
+      const name = t("lg_div" + div);
+      if (div > l.div) launchConfetti();
+      showInfoModal(`<div class="big-medal">${LEAGUE_MEDALS[div]}</div>
+        <h2>${escapeHtml(div > l.div ? t("lg_close_up", { liga: name }) : div < l.div ? t("lg_close_down", { liga: name }) : t("lg_close_same", { liga: name }))}</h2>
+        <p>${escapeHtml(t("lg_close_pos", { p: pos, n: list.length }))}${prize ? "<br>" + seedIcon() + " " + escapeHtml(t("lg_close_prize", { s: prize })) : ""}</p>
+        <button type="button" class="btn btn-primary btn-block" data-ok onclick="closeInfoModal()">${escapeHtml(t("lg_close_ok"))}</button>`);
+    }).catch(e => { leagueClosing = false; console.error("cierre liga", e); });
+  });
+}
+function leagueEndsIn() {
+  // Termina el lunes a las 3 de la mañana (hora de Argentina), igual que el ranking semanal.
+  const now = new Date(), end = new Date(now);
+  const days = (8 - (now.getDay() || 7)) % 7;
+  end.setDate(now.getDate() + (days === 0 && now.getHours() >= 3 ? 7 : days));
+  end.setHours(3, 0, 0, 0);
+  const min = Math.max(1, Math.round((end - now) / 60000));
+  const d = Math.floor(min / 1440), h = Math.floor((min % 1440) / 60);
+  return d > 0 ? `${d} d ${h} h` : `${h} h ${min % 60} min`;
+}
+function renderLeagueBanner() {
+  const l = leagueData();
+  const icon = document.getElementById("leagueBannerIcon");
+  if (!icon) return;
+  icon.textContent = LEAGUE_MEDALS[l.div];
+  document.getElementById("leagueBannerTitle").textContent = t("lg_div" + l.div);
+  document.getElementById("leagueBannerSub").textContent = l.grupo == null
+    ? t("lg_banner_join")
+    : t("lg_banner_sub", { xp: l.xp, t: leagueEndsIn() });
+}
+let leagueView = { group: null, friends: null };
+function renderLeague() {
+  const l = leagueData();
+  const { group, friends } = leagueView;
+  const uid = window.FB && window.FB.uid;
+  let html = `<div class="hero-band"><h2>${escapeHtml(t("lg_title"))}</h2><p>${escapeHtml(t("lg_explain"))}</p></div>
+    <div class="lg-head"><span class="lg-medal">${LEAGUE_MEDALS[l.div]}</span><span><strong>${escapeHtml(t("lg_div" + l.div))}</strong><small>${escapeHtml(t("lg_ends", { t: leagueEndsIn() }))}</small></span></div>`;
+  if (!leagueActive) html += `<div class="lg-empty">${escapeHtml(t("lg_inactive"))}</div>`;
+  else if (l.grupo == null) html += `<div class="lg-empty">${escapeHtml(t("lg_no_group"))}</div>`;
+  else if (!group) html += `<p class="hint">${escapeHtml(t("board_loading"))}</p>`;
+  else {
+    const n = group.length;
+    html += `<div class="lg-legend"><span class="up">${escapeHtml(t("lg_up"))}</span><span class="down">${escapeHtml(t("lg_down"))}</span></div>
+      <div class="lg-list">${group.map((x, i) => {
+        const me = x.uid === uid;
+        const zone = i < LEAGUE_UP && x.xp > 0 && l.div < 4 ? " up" : (n >= 10 && i >= n - LEAGUE_DOWN && l.div > 0 ? " down" : "");
+        return `<div class="lg-row${zone}${me ? " me" : ""}"><span class="lg-pos">${i + 1}</span><span class="lg-fruit">${mascotSvg("happy", avatarOf(x))}</span>
+          <span class="lg-name">${escapeHtml(x.name || "?")}${me ? ` <small>${escapeHtml(t("lg_you"))}</small>` : ""}</span><strong>${escapeHtml(t("lg_xp", { n: x.xp }))}</strong></div>`;
+      }).join("")}</div>`;
+  }
+  html += `<h2 class="section-title">${escapeHtml(t("lg_friends"))}</h2>`;
+  if (!isGoogleUser()) html += `<div class="lg-empty">${escapeHtml(t("lg_friends_login"))}</div>`;
+  else if (!friends) html += `<p class="hint">${escapeHtml(t("board_loading"))}</p>`;
+  else if (!friends.length) html += `<div class="lg-empty">${escapeHtml(t("lg_friends_none"))}</div>`;
+  else html += `<div class="lg-list">${friends.map(a => `<div class="lg-row"><span class="lg-pos"></span><span class="lg-fruit">${mascotSvg(a.today ? "happy" : "sleepy", avatarOf(a), cleanAccessories(a.acc))}</span>
+      <span class="lg-name">${escapeHtml(a.name || "?")}<small>${escapeHtml(a.today ? (a.today.daily != null ? t("lg_friends_daily", { n: a.today.daily }) : "") : t("lg_friends_idle"))}</small></span>
+      ${a.today ? `<strong>${escapeHtml(t("lg_xp", { n: a.today.xp || 0 }))}</strong>` : "<span></span>"}</div>`).join("")}</div>`;
+  document.getElementById("leagueContent").innerHTML = html;
+}
+function openLeague() {
+  leagueView = { group: null, friends: null };
+  renderLeague();
+  showScreen("screen-league");
+  window.scrollTo(0, 0);
+  leagueReady(() => {
+    const F = window.FB, l = leagueData();
+    if (l.grupo != null) {
+      F.get(F.ref(F.db, `ligas/${l.semana}/${l.div}/${l.grupo}`)).then(snap => {
+        leagueView.group = Object.entries(snap.val() || {}).map(([uid, v]) => ({ uid, name: v && v.name, avatar: v && v.avatar, xp: (v && v.xp) || 0 })).sort((a, b) => b.xp - a.xp);
+        leagueActive = true;
+        renderLeague();
+      }).catch(e => { if (leagueNoPermission(e)) leagueActive = false; leagueView.group = []; renderLeague(); });
+    }
+    if (isGoogleUser()) {
+      loadFriends().then(list => Promise.all(list.map(a => F.get(F.ref(F.db, `hoy/${dayKey()}/${a.uid}`))
+        .then(snap => { a.today = snap.val(); return a; }).catch(() => a))))
+        .then(list => {
+          list.sort((a, b) => ((b.today && b.today.xp) || -1) - ((a.today && a.today.xp) || -1));
+          leagueView.friends = list;
+          renderLeague();
+        }).catch(() => { leagueView.friends = []; renderLeague(); });
+    }
+  });
 }
 
 function checkAchievements() {
@@ -8930,7 +9525,9 @@ function seedToast(text) {
   setTimeout(() => el.classList.add("out"), 2600);
   setTimeout(() => el.remove(), 3100);
 }
-function seedsForScore(score) { return Math.floor((score || 0) / 10); }
+// Las partidas ya no dan semillas (igual que en la app): se ganan con misiones, logros, estrellas
+// nuevas, premios del desafío, la racha, subir de nivel, la liga e invitaciones.
+function seedsForScore(score) { return 0; }
 
 function renderShopButton() {
   const btn = document.getElementById("shopBtn");
@@ -8968,7 +9565,8 @@ function renderShop() {
     <button ${disabled || w.seeds < price ? "disabled" : ""} onclick="${action}">${seedIcon()} ${price}</button>
   </div>`;
   document.getElementById("shopItems").innerHTML =
-    item(`<span class="shop-joker">${JOKER_MARK}</span>`, t("shop_joker_title"), t("shop_joker_desc", { pts: JOKER_POINTS, n: w.items.joker }), SHOP_JOKER_PRICE, false, "buyShopItem('joker')");
+    item(`<span class="shop-joker">${JOKER_MARK}</span>`, t("shop_joker_title"), t("shop_joker_desc", { pts: JOKER_POINTS, n: w.items.joker }), SHOP_JOKER_PRICE, false, "buyShopItem('joker')") +
+    item('<span class="shop-joker">🧊</span>', t("freeze_title"), (w.items.freeze || 0) >= FREEZE_MAX ? t("freeze_full") : t("freeze_desc", { max: FREEZE_MAX, n: w.items.freeze || 0 }), FREEZE_PRICE, (w.items.freeze || 0) >= FREEZE_MAX, "buyShopItem('freeze')");
   document.getElementById("shopSolo").innerHTML =
     item(iconSvg("sun"), t("shop_hint_title"), t("shop_hint_desc", { n: w.items.hint }), SHOP_HINT_PRICE, false, "buyShopItem('hint')") +
     item(iconSvg("dice"), t("shop_reroll_title"), t("shop_reroll_desc", { n: w.items.reroll }), SHOP_REROLL_PRICE, false, "buyShopItem('reroll')");
@@ -9461,13 +10059,15 @@ function toggleExtra(kind, id) {
 
 function buyShopItem(kind, opts = {}) {
   const w = getWallet();
-  const price = { full: SHOP_FULL_LIVES_PRICE, clock: SHOP_CLOCK_PRICE, shield: SHOP_SHIELD_PRICE, joker: SHOP_JOKER_PRICE, hint: SHOP_HINT_PRICE, reroll: SHOP_REROLL_PRICE }[kind];
+  const price = { full: SHOP_FULL_LIVES_PRICE, clock: SHOP_CLOCK_PRICE, shield: SHOP_SHIELD_PRICE, joker: SHOP_JOKER_PRICE, hint: SHOP_HINT_PRICE, reroll: SHOP_REROLL_PRICE, freeze: FREEZE_PRICE }[kind];
   if (!price || w.seeds < price) return;
+  if (kind === "freeze" && (w.items.freeze || 0) >= FREEZE_MAX) return;
   if (!opts.confirmed) {
     const info = {
       full: [t("shop_full_lives_title"), advHeart(true)], clock: [t("shop_clock_title"), iconSvg("stopwatch")],
       shield: [t("shop_shield_title"), SHIELD_SVG], joker: [t("shop_joker_title"), `<span class="shop-joker">${JOKER_MARK}</span>`],
       hint: [t("shop_hint_title"), iconSvg("sun")], reroll: [t("shop_reroll_title"), iconSvg("dice")],
+      freeze: [t("freeze_title"), '<span class="shop-joker">🧊</span>'],
     }[kind];
     askPurchase(info[0], price, info[1], () => buyShopItem(kind, { confirmed: true }));
     return;
@@ -9479,12 +10079,13 @@ function buyShopItem(kind, opts = {}) {
     d.livesAt = Date.now();
     advSave(d);
   } else {
-    w.items[kind] += 1;
+    w.items[kind] = (w.items[kind] || 0) + 1;
   }
   w.seeds -= price;
   saveWallet(w);
   track("shop_buy", { item: kind });
   renderShop();
+  renderPlayerStrip();
 }
 
 function buyFruit(emoji, opts = {}) {
@@ -10105,7 +10706,7 @@ function mergeSyncValue(key, localRaw, remoteRaw) {
       if (!L || !R) return remoteRaw;
       const newer = (L.lastDay || "") > (R.lastDay || "") ? L : R;
       const out = { ...R };
-      ["wins", "uniqueWords", "judgeWins", "bestStreakRounds", "dailyCount", "bestDayStreak"].forEach(k => { out[k] = Math.max(L[k] || 0, R[k] || 0); });
+      ["wins", "uniqueWords", "judgeWins", "bestStreakRounds", "dailyCount", "bestDayStreak", "xp"].forEach(k => { out[k] = Math.max(L[k] || 0, R[k] || 0); });
       out.lastDay = newer.lastDay || null;
       out.dayStreak = newer.dayStreak || 0;
       out.unlocked = [...new Set([...(R.unlocked || []), ...(L.unlocked || [])])];
@@ -10968,6 +11569,8 @@ function goToLobby() {
   document.getElementById("resultsBackRow").style.display = "none";
   renderDailyBanner();
   renderAdventureBanner();
+  renderPlayerStrip();
+  renderLeagueBanner();
   if (state.online) {
     // Deja el código cargado en "Unirme" por si salió sin querer y quiere volver.
     if (state.roomCode) document.getElementById("joinCodeInput").value = state.roomCode;
@@ -11070,6 +11673,10 @@ if (openAdventureFromLink) openAdventure();
 document.getElementById("duelBannerIcon").innerHTML = iconSvg("trophy");
 refreshDuelBanner();
 renderShopButton();
+renderPlayerStrip();
+renderLeagueBanner();
+leagueReady(leagueCheckClose);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") leagueReady(leagueCheckClose); });
 applyDuelLinkFromUrl();
 giveWelcomeGift();
 renderAccountBoxes();

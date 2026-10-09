@@ -20,7 +20,7 @@ const TPL = path.join(__dirname, "templates");
 const STRINGS = require("./strings.cjs");
 
 const SITE = "https://tuttipuntofrutti.com";
-const TODAY = "2026-10-01";
+const TODAY = "2026-10-08";
 const YEAR = "2026";
 const THEME_COLOR = "#14101F";
 const LANGS = ["es", "en", "pt"];
@@ -38,7 +38,7 @@ const I18N_PAGES = {
 };
 
 // Fechas de "Última actualización" de las páginas legales.
-const UPDATED = { privacidad: [2026, 10, 1], terminos: [2026, 9, 22] };
+const UPDATED = { privacidad: [2026, 10, 8], terminos: [2026, 9, 22] };
 
 // Guías de contenido. Plantillas en scripts/templates/guias/<idioma>/<key>.html.
 // Una guía puede existir solo en algunos idiomas: se generan los que tengan URL en "urls".
@@ -151,6 +151,94 @@ const GUIDES = [
       title: "Stop na sala de aula: guia para professores | tutti.frutti",
       description: "Ideias para usar o Stop com alunos: categorias por disciplina, variações por idade e como criar uma sala online para a turma toda.",
       ogTitle: "Stop na sala de aula: como usar com os alunos",
+    },
+  },
+  {
+    key: "consejos",
+    urls: { es: "/como-ganar-al-tutti-frutti", en: "/en/how-to-win-at-stop", pt: "/pt/como-ganhar-no-stop" },
+    es: {
+      nav: "Cómo ganar al tutti frutti",
+      title: "Cómo ganar al tutti frutti: 12 consejos | tutti.frutti",
+      description: "Estrategias para ganar al tutti frutti o Stop: cómo funciona el puntaje, qué respuestas evitar, cuándo tocar ¡Basta! y cómo practicar las letras difíciles.",
+      ogTitle: "Cómo ganar al tutti frutti: consejos y estrategias",
+    },
+    en: {
+      nav: "How to win at Stop",
+      title: "How to win at Stop: 12 tips and strategies | tutti.frutti",
+      description: "Strategies to win the Stop game: how scoring works, which answers to avoid, when to call Stop and how to practice the hardest letters.",
+      ogTitle: "How to win at Stop: tips and strategies",
+    },
+    pt: {
+      nav: "Como ganhar no Stop",
+      title: "Como ganhar no Stop: 12 dicas | tutti.frutti",
+      description: "Estratégias para ganhar no Stop (Adedonha): como funciona a pontuação, quais respostas evitar, quando dizer Stop e como treinar as letras difíceis.",
+      ogTitle: "Como ganhar no Stop: dicas e estratégias",
+    },
+  },
+  {
+    key: "letras",
+    urls: { es: "/tutti-frutti-letras-dificiles", en: "/en/stop-game-hard-letters", pt: "/pt/stop-letras-dificeis" },
+    es: {
+      nav: "Letras difíciles",
+      title: "Tutti frutti con letras difíciles | tutti.frutti",
+      description: "Respuestas para el tutti frutti con las letras más difíciles: ideas de nombres, animales, países, ciudades, comidas y objetos con K, Ñ, Q, W, X, Y y Z.",
+      ogTitle: "Respuestas para tutti frutti con letras difíciles",
+    },
+    en: {
+      nav: "Hard letters",
+      title: "Stop game answers for hard letters | tutti.frutti",
+      description: "Answers for the hardest letters in the Stop game: names, animals, countries, cities, foods and objects starting with K, Q, X, Y and Z.",
+      ogTitle: "Stop game answers for hard letters",
+    },
+    pt: {
+      nav: "Letras difíceis",
+      title: "Stop com letras difíceis: K, Q, W, X, Y, Z | tutti.frutti",
+      description: "Respostas para o Stop (Adedonha) com as letras mais difíceis: nomes, animais, países, cidades, comidas e objetos com K, Q, W, X, Y e Z.",
+      ogTitle: "Respostas de Stop para letras difíceis",
+    },
+  },
+  {
+    key: "variantes",
+    urls: { es: "/variantes-del-tutti-frutti", en: "/en/stop-game-variations", pt: "/pt/variacoes-do-stop" },
+    es: {
+      nav: "Variantes del tutti frutti",
+      title: "10 variantes del tutti frutti | tutti.frutti",
+      description: "Formas distintas de jugar al tutti frutti o Stop: ronda relámpago, letras difíciles, categorías sorpresa, letra prohibida, por equipos y más.",
+      ogTitle: "10 variantes del tutti frutti",
+    },
+    en: {
+      nav: "Stop game variations",
+      title: "10 Stop game variations to play differently | tutti.frutti",
+      description: "New ways to play the Stop game: lightning rounds, hard letters, surprise categories, a banned letter, teams and more.",
+      ogTitle: "10 Stop game variations",
+    },
+    pt: {
+      nav: "Variações do Stop",
+      title: "10 variações do Stop para jogar diferente | tutti.frutti",
+      description: "Jeitos diferentes de jogar Stop (Adedonha): rodada relâmpago, letras difíceis, categorias surpresa, letra proibida, em equipes e mais.",
+      ogTitle: "10 variações do Stop",
+    },
+  },
+  {
+    key: "historia",
+    urls: { es: "/historia-del-tutti-frutti", en: "/en/history-of-the-stop-game", pt: "/pt/historia-do-stop" },
+    es: {
+      nav: "Historia del tutti frutti",
+      title: "Historia del tutti frutti y sus nombres | tutti.frutti",
+      description: "De dónde viene el tutti frutti y cómo se lo llama en cada país: Stop, Basta, Bachillerato, Adedonha, Scattergories y más. Su historia y formas de jugarlo.",
+      ogTitle: "Historia del tutti frutti y sus nombres en cada país",
+    },
+    en: {
+      nav: "History of the Stop game",
+      title: "History of the Stop game and its names | tutti.frutti",
+      description: "Where the Stop game comes from and what it's called around the world: Scattergories, Tutti frutti, Basta, Adedonha, Petit Bac and more.",
+      ogTitle: "The history of the Stop game",
+    },
+    pt: {
+      nav: "História do Stop",
+      title: "História do Stop (Adedonha) e seus nomes | tutti.frutti",
+      description: "De onde vem o Stop e como ele é chamado em cada país: Adedonha, Tutti frutti, Basta, Scattergories, Petit Bac e mais. Sua história e jeitos de jogar.",
+      ogTitle: "A história do Stop",
     },
   },
   // Páginas para quienes buscan el juego con el nombre que tiene en su país. Solo en español.
@@ -609,7 +697,8 @@ function buildHome(lang) {
   };
   const main = fixLinks(translate(readTpl("home.html"), lang), lang)
     .replace("{{DESAFIO_URL}}", GUIDE.desafio.urls[lang])
-    .replace("{{NOMBRES}}", lang === "es" ? readTpl("home-nombres.html").trim() : "");
+    .replace("{{NOMBRES}}", lang === "es" ? readTpl("home-nombres.html").trim() : "")
+    .replace("{{GUIAS}}", homeGuides(lang));
 
 
   const html = `${head(page)}
@@ -686,6 +775,21 @@ function buildGuide(g, lang) {
   main = main.replace(/\{\{CTA:([^}]+)\}\}/g, (m, text) => ctaBox(lang, text));
   write(url, contentPage(page, main));
   return page;
+}
+
+// Sección "Guías" del inicio: enlaza las guías de contenido del idioma.
+const HOME_GUIDES_HEADING = { es: "Guías y recursos", en: "Guides and resources", pt: "Guias e recursos" };
+const HOME_GUIDE_KEYS = ["categorias", "consejos", "letras", "variantes", "imprimir", "videollamada", "aula", "historia"];
+function homeGuides(lang) {
+  const links = HOME_GUIDE_KEYS.map((k) => GUIDE[k]).filter((g) => g && g.urls[lang] && !g.hidden)
+    .map((g) => `<li><a href="${g.urls[lang]}">${esc(g[lang].nav)}</a></li>`);
+  if (!links.length) return "";
+  return `<section class="info guides">
+    <h2>${esc(HOME_GUIDES_HEADING[lang])}</h2>
+    <ul class="guide-links">
+      ${links.join("\n      ")}
+    </ul>
+  </section>`;
 }
 
 /* ---------------------------------------------------------------- 404 */
