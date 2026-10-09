@@ -2836,6 +2836,7 @@ const I18N = {
     lg_close_pos: "Terminaste {p}.º de {n} la semana pasada.",
     lg_close_prize: "+{s} semillas",
     lg_close_ok: "¡Vamos!",
+    lg_need_name: "Escribí tu nombre en la pantalla principal para entrar a la liga",
     clear_categories_btn: "Borrar todas",
     random_categories_note: "Las categorías se sortean de nuevo en cada ronda — ¡son sorpresa para todos!",
     random_category_chip: "Random",
@@ -3532,6 +3533,7 @@ const I18N = {
     lg_close_pos: "You finished #{p} of {n} last week.",
     lg_close_prize: "+{s} seeds",
     lg_close_ok: "Let's go!",
+    lg_need_name: "Type your name on the main screen to join the league",
     clear_categories_btn: "Clear all",
     random_categories_note: "Categories are drawn fresh every round — a surprise for everyone!",
     random_category_chip: "Random",
@@ -4228,6 +4230,7 @@ const I18N = {
     lg_close_pos: "Você terminou em {p}.º de {n} na semana passada.",
     lg_close_prize: "+{s} sementes",
     lg_close_ok: "Vamos!",
+    lg_need_name: "Escreva seu nome na tela principal para entrar na liga",
     clear_categories_btn: "Limpar todas",
     random_categories_note: "As categorias são sorteadas de novo em cada rodada — surpresa para todos!",
     random_category_chip: "Random",
@@ -6984,6 +6987,7 @@ function leaveRoom() {
 }
 
 function beginGame(opts = {}) {
+  if (leagueData().xp > 0 && leagueData().grupo == null) setTimeout(leaguePublish, 0);
   if (!opts.howtoDone && !howToSeen(lobbyHowToMode())) {
     showHowTo(lobbyHowToMode(), () => beginGame({ howtoDone: true }));
     return;
@@ -8335,8 +8339,10 @@ function leagueReady(fn) {
   if (window.FB && window.FB.uid) fn();
   else window.addEventListener("firebase-ready", () => { if (window.FB && window.FB.uid) fn(); }, { once: true });
 }
+// Sin nombre no se entra a la liga (si no, aparece como "?"): la XP se sigue juntando y entra
+// con todo lo acumulado apenas haya un nombre.
 function leagueName() {
-  return ((document.getElementById("playerName").value || localStorage.getItem("tuttifruti_playerName") || "?").trim() || "?").slice(0, 30);
+  return (document.getElementById("playerName").value || localStorage.getItem("tuttifruti_playerName") || "").trim().slice(0, 30);
 }
 function leagueNoPermission(e) { return /permission/i.test(String((e && (e.message || e.code)) || e)); }
 // Entrar a un grupo: se toma un lugar con un contador y cada 20 se abre un grupo nuevo.
@@ -8353,6 +8359,7 @@ function leagueEnter(l) {
 function leaguePublish() {
   clearTimeout(leaguePublishId);
   leaguePublishId = setTimeout(() => leagueReady(() => {
+    if (!leagueName()) { renderLeagueBanner(); return; }
     const F = window.FB, l = leagueData();
     const step = l.grupo == null ? leagueEnter(l) : Promise.resolve(l);
     step.then(l2 => {
@@ -8390,12 +8397,14 @@ function leagueCheckClose() {
       const list = Object.entries(snap.val() || {}).map(([uid, v]) => ({ uid, xp: (v && v.xp) || 0 })).sort((a, b) => b.xp - a.xp);
       const pos = list.findIndex(x => x.uid === F.uid) + 1;
       const clear = () => { const a = leagueData(); a.previa = null; leagueSave(a); leagueClosing = false; };
-      if (!pos || (getProgress().counted || []).includes("liga:" + l.semana)) { clear(); return; }
+      // La marca "ya cerrada" va también en ligaClosed, porque la lista counted solo guarda las últimas 80 cosas.
+      const pr = getProgress();
+      if (!pos || (pr.counted || []).includes("liga:" + l.semana) || (pr.ligaClosed || "") >= l.semana) { clear(); return; }
       let div = l.div;
       if (pos <= LEAGUE_UP && list[pos - 1].xp > 0 && div < 4) div++;
       else if (list.length >= 10 && pos > list.length - LEAGUE_DOWN && div > 0) div--;
       const prize = LEAGUE_PRIZES[pos - 1] || 0;
-      bumpProgress(p => { p.ligaDiv = div; }, "liga:" + l.semana);
+      bumpProgress(p => { p.ligaDiv = div; p.ligaClosed = l.semana; }, "liga:" + l.semana);
       if (prize) addSeeds(prize);
       track("liga_cierre", { puesto: pos, de: list.length, division: div });
       const now = leagueData(); now.previa = null; if (now.grupo == null) now.div = div; leagueSave(now);
@@ -8427,7 +8436,7 @@ function renderLeagueBanner() {
   icon.textContent = LEAGUE_MEDALS[l.div];
   document.getElementById("leagueBannerTitle").textContent = t("lg_div" + l.div);
   document.getElementById("leagueBannerSub").textContent = l.grupo == null
-    ? t("lg_banner_join")
+    ? t(leagueName() ? "lg_banner_join" : "lg_need_name")
     : t("lg_banner_sub", { xp: l.xp, t: leagueEndsIn() });
 }
 let leagueView = { group: null, friends: null };
@@ -8438,7 +8447,7 @@ function renderLeague() {
   let html = `<div class="hero-band"><h2>${escapeHtml(t("lg_title"))}</h2><p>${escapeHtml(t("lg_explain"))}</p></div>
     <div class="lg-head"><span class="lg-medal">${LEAGUE_MEDALS[l.div]}</span><span><strong>${escapeHtml(t("lg_div" + l.div))}</strong><small>${escapeHtml(t("lg_ends", { t: leagueEndsIn() }))}</small></span></div>`;
   if (!leagueActive) html += `<div class="lg-empty">${escapeHtml(t("lg_inactive"))}</div>`;
-  else if (l.grupo == null) html += `<div class="lg-empty">${escapeHtml(t("lg_no_group"))}</div>`;
+  else if (l.grupo == null) html += `<div class="lg-empty">${escapeHtml(t(leagueName() ? "lg_no_group" : "lg_need_name"))}</div>`;
   else if (!group) html += `<p class="hint">${escapeHtml(t("board_loading"))}</p>`;
   else {
     const n = group.length;
@@ -10709,6 +10718,7 @@ function mergeSyncValue(key, localRaw, remoteRaw) {
       ["wins", "uniqueWords", "judgeWins", "bestStreakRounds", "dailyCount", "bestDayStreak", "xp"].forEach(k => { out[k] = Math.max(L[k] || 0, R[k] || 0); });
       out.lastDay = newer.lastDay || null;
       out.dayStreak = newer.dayStreak || 0;
+      out.ligaClosed = [L.ligaClosed || "", R.ligaClosed || ""].sort().pop() || undefined;
       out.unlocked = [...new Set([...(R.unlocked || []), ...(L.unlocked || [])])];
       out.counted = [...new Set([...(R.counted || []), ...(L.counted || [])])].slice(-80);
       out.achClaimed = [...new Set([...(R.achClaimed || []), ...(L.achClaimed || [])])];
