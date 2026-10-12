@@ -38,7 +38,7 @@ const I18N_PAGES = {
 };
 
 // Fechas de "Última actualización" de las páginas legales.
-const UPDATED = { privacidad: [2026, 10, 8], terminos: [2026, 9, 22] };
+const UPDATED = { privacidad: [2026, 10, 12], terminos: [2026, 9, 22] };
 
 // Guías de contenido. Plantillas en scripts/templates/guias/<idioma>/<key>.html.
 // Una guía puede existir solo en algunos idiomas: se generan los que tengan URL en "urls".

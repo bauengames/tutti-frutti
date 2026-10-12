@@ -16,7 +16,7 @@ const crypto = require("crypto");
 
 const PROYECTO = "tuttipuntofrutti";
 const BASE = "https://tuttipuntofrutti-default-rtdb.firebaseio.com";
-const ESPERA_MS = { duelo: 2 * 60 * 1000, duelo_ganado: 2 * 60 * 1000, liga: 6 * 60 * 60 * 1000, amigo: 60 * 1000, record: 6 * 60 * 60 * 1000, prueba: 60 * 1000 };
+const ESPERA_MS = { duelo: 2 * 60 * 1000, duelo_ganado: 2 * 60 * 1000, liga: 6 * 60 * 60 * 1000, amigo: 24 * 60 * 60 * 1000, record: 6 * 60 * 60 * 1000, prueba: 60 * 1000 };
 
 const TEXTOS = {
   es: {
@@ -169,9 +169,11 @@ exports.handler = async (event) => {
     }
 
     // Límite: un aviso de cada tipo cada tanto, por destino.
-    const ultimo = await leer(`avisos/${destino}/${tipo}`);
+    // "amigo" se limita por cada par (un aviso por día de la misma persona); el resto, por destino.
+    const limite = tipo === "amigo" ? `avisos/${destino}/amigo_${quien}` : `avisos/${destino}/${tipo}`;
+    const ultimo = await leer(limite);
     if (ultimo && Date.now() - ultimo < ESPERA_MS[tipo]) return responder(200, { ok: true, salteado: true });
-    await escribir(`avisos/${destino}/${tipo}`, Date.now());
+    await escribir(limite, Date.now());
 
     const datos = await leer(`tokens/${destino}`);
     if (!datos || !datos.t) return responder(200, { ok: true, sinTelefono: true });
