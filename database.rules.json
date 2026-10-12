@@ -24,6 +24,15 @@
             "rematch": {
               ".validate": "newData.isBoolean()"
             },
+            "marco": {
+              ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+            },
+            "titulo": {
+              ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+            },
+            "festejo": {
+              ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+            },
             "$other": {
               ".validate": false
             }
@@ -137,6 +146,12 @@
           "avatar": {
             ".validate": "newData.isString() && newData.val().length <= 8"
           },
+          "marco": {
+            ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+          },
+          "titulo": {
+            ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+          },
           "$other": {
             ".validate": false
           },
@@ -144,7 +159,7 @@
             ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= 100000"
           },
           "rounds": {
-            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000 && newData.parent().child('score').val() <= (newData.val() + 1) * 140"
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 40 && newData.parent().child('score').val() <= (newData.val() + 1) * 90"
           },
           ".read": "auth != null && auth.uid === $uid"
         }
@@ -163,11 +178,17 @@
           "avatar": {
             ".validate": "newData.isString() && newData.val().length <= 8"
           },
+          "marco": {
+            ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+          },
+          "titulo": {
+            ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+          },
           "$other": {
             ".validate": false
           },
           "score": {
-            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 200"
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 200 && newData.val() <= newData.parent().child('valid').val() * 10 + 70 + (newData.parent().child('valid').val() === newData.parent().child('total').val() ? 20 : 0)"
           },
           "valid": {
             ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= newData.parent().child('total').val()"
@@ -318,7 +339,7 @@
         ".write": "auth != null && auth.uid === $uid && auth.token.email != null",
         "data": {
           "$key": {
-            ".validate": "$key.matches(/^tuttifruti_(adventure|wallet|progress|stats|streak_history|duels|daily|avatar|playerName|preset)$/) && newData.isString() && newData.val().length <= 30000"
+            ".validate": "$key.matches(/^tuttifruti_(adventure|wallet|progress|stats|streak_history|duels|daily|avatar|playerName|preset|app_diccionario|app_logros)$/) && newData.isString() && (newData.val().length <= 30000 || ($key === 'tuttifruti_app_diccionario' && newData.val().length <= 100000))"
           }
         },
         "$other": {
@@ -425,7 +446,7 @@
             ".read": "auth != null",
             "$uid": {
               ".write": "auth != null && auth.uid === $uid && $semana.matches(/^[0-9]{4}-W[0-9]{2}$/) && $div.matches(/^[0-4]$/) && $grupo.matches(/^[0-9]{1,5}$/)",
-              ".validate": "newData.hasChildren(['name', 'xp']) && (!data.exists() || newData.child('xp').val() >= data.child('xp').val())",
+              ".validate": "newData.hasChildren(['name', 'xp', 'at']) && (data.exists() ? (newData.child('xp').val() >= data.child('xp').val() && newData.child('xp').val() - data.child('xp').val() <= 300 && (!data.child('at').exists() || newData.child('xp').val() - data.child('xp').val() <= (now - data.child('at').val()) / 250)) : newData.child('xp').val() <= 300)",
               "name": {
                 ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
               },
@@ -434,6 +455,15 @@
               },
               "xp": {
                 ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 50000"
+              },
+              "at": {
+                ".validate": "newData.val() === now"
+              },
+              "marco": {
+                ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+              },
+              "titulo": {
+                ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
               },
               "$other": {
                 ".validate": false
@@ -470,6 +500,12 @@
           "daily": {
             ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 200"
           },
+          "marco": {
+            ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+          },
+          "titulo": {
+            ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+          },
           "$other": {
             ".validate": false
           }
@@ -496,6 +532,24 @@
           "$other": {
             ".validate": false
           }
+        }
+      }
+    },
+    "tokens": {
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.hasChildren(['t'])",
+        "t": {
+          ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 500"
+        },
+        "lang": {
+          ".validate": "newData.isString() && newData.val().matches(/^(es|en|pt)$/)"
+        },
+        "at": {
+          ".validate": "newData.val() === now"
+        },
+        "$other": {
+          ".validate": false
         }
       }
     }

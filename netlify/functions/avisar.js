@@ -7,6 +7,8 @@
 //   duelo         → el que pide creó el duelo, el destino es su amigo y el duelo está en su bandeja.
 //   duelo_ganado  → el destino creó el duelo y el que pide lo jugó con más puntos.
 //   liga          → los dos están en el mismo grupo de la liga de esta semana y el que pide tiene más XP.
+//   amigo         → el que pide y el destino ya son amigos (los dos lados de la lista).
+//   record        → son amigos y el mejor Contrarreloj del que pide es mayor que el del destino.
 //   prueba        → un aviso a uno mismo, para probar que las notificaciones llegan (solo a tu propio teléfono).
 // Límite: cada destino recibe como mucho un aviso de cada tipo cada cierto tiempo (avisos/{uid}/{tipo}).
 
@@ -14,22 +16,28 @@ const crypto = require("crypto");
 
 const PROYECTO = "tuttipuntofrutti";
 const BASE = "https://tuttipuntofrutti-default-rtdb.firebaseio.com";
-const ESPERA_MS = { duelo: 2 * 60 * 1000, duelo_ganado: 2 * 60 * 1000, liga: 6 * 60 * 60 * 1000, prueba: 60 * 1000 };
+const ESPERA_MS = { duelo: 2 * 60 * 1000, duelo_ganado: 2 * 60 * 1000, liga: 6 * 60 * 60 * 1000, amigo: 60 * 1000, record: 6 * 60 * 60 * 1000, prueba: 60 * 1000 };
 
 const TEXTOS = {
   es: {
+    amigo: ["¡Tenés un amigo nuevo!", "{n} te agregó como amigo. ¿Le mandás un duelo?"],
+    record: ["¡Te superaron en Contrarreloj!", "{n} superó tu mejor puntaje. ¿Lo recuperás?"],
     prueba: ["¡Funciona!", "Las notificaciones de tutti.frutti te llegan bien."],
     duelo: ["¡Te desafiaron!", "{n} te mandó un duelo. ¿Te animás?"],
     duelo_ganado: ["¡Te ganaron el duelo!", "{n} hizo más puntos que vos. ¿Revancha?"],
     liga: ["¡Te pasaron en la liga!", "{n} te pasó en la liga de esta semana. Jugá y recuperá tu lugar."],
   },
   en: {
+    amigo: ["You have a new friend!", "{n} added you as a friend. Send them a duel?"],
+    record: ["Your record was beaten!", "{n} beat your best Time Attack score. Win it back?"],
     prueba: ["It works!", "tutti.frutti notifications are reaching you."],
     duelo: ["You've been challenged!", "{n} sent you a duel. Up for it?"],
     duelo_ganado: ["You lost the duel!", "{n} scored more than you. Rematch?"],
     liga: ["You were overtaken!", "{n} passed you in this week's league. Play and take your spot back."],
   },
   pt: {
+    amigo: ["Você tem um amigo novo!", "{n} te adicionou como amigo. Que tal mandar um duelo?"],
+    record: ["Te superaram no Contrarrelógio!", "{n} superou sua melhor pontuação. Vai recuperar?"],
     prueba: ["Funciona!", "As notificações do tutti.frutti estão chegando."],
     duelo: ["Você foi desafiado!", "{n} te mandou um duelo. Topa?"],
     duelo_ganado: ["Você perdeu o duelo!", "{n} fez mais pontos que você. Revanche?"],
@@ -139,6 +147,17 @@ exports.handler = async (event) => {
         nombre = mio.name;
       }
       link = "tuttifrutti://jugar?duelo=" + pedido.duelo;
+    } else if (tipo === "amigo" || tipo === "record") {
+      const ida = await leer(`friends/${quien}/${destino}`), vuelta = await leer(`friends/${destino}/${quien}`);
+      if (!ida || !vuelta) return responder(403, { error: "no corresponde" });
+      const yo = await leer(`profiles/${quien}`);
+      if (!yo) return responder(403, { error: "no corresponde" });
+      if (tipo === "record") {
+        const otro = await leer(`profiles/${destino}/stats/best`);
+        if (!((yo.stats && yo.stats.best || 0) > (otro || 0))) return responder(403, { error: "no corresponde" });
+      }
+      nombre = yo.name;
+      link = "tuttifrutti://jugar?amigos";
     } else if (tipo === "liga") {
       const semana = semanaActual();
       if (pedido.semana !== semana || !/^[0-4]$/.test(String(pedido.div)) || !/^[0-9]{1,5}$/.test(String(pedido.grupo))) return responder(400, { error: "pedido" });

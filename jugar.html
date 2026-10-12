@@ -8318,7 +8318,7 @@ function renderPlayerStrip() {
 const LEAGUE_MEDALS = ["🥉", "🥈", "🥇", "💎", "🍉"];
 const LEAGUE_GROUP = 20, LEAGUE_UP = 5, LEAGUE_DOWN = 5, LEAGUE_PRIZES = [100, 60, 40];
 const LEAGUE_KEY = "tuttifruti_liga";
-let leagueActive = true, leagueClosing = false, leaguePublishId = null;
+let leagueActive = true, leagueClosing = false, leaguePublishId = null, leagueRetryId = null;
 function leagueRead() { try { return JSON.parse(localStorage.getItem(LEAGUE_KEY) || "null"); } catch (e) { return null; } }
 function leagueSave(l) { try { localStorage.setItem(LEAGUE_KEY, JSON.stringify(l)); } catch (e) { /* storage unavailable */ } }
 function leagueDivision() { return Math.max(0, Math.min(4, getProgress().ligaDiv || 0)); }
@@ -8366,9 +8366,17 @@ function leaguePublish() {
       const r = F.ref(F.db, `ligas/${l2.semana}/${l2.div}/${l2.grupo}/${F.uid}`);
       // La XP nunca baja: si otro dispositivo de la misma cuenta ya subió más, se toma ese valor.
       return F.get(r).then(snap => {
-        const remote = (snap.val() && snap.val().xp) || 0;
+        const v = snap.val() || {};
+        const remote = v.xp || 0;
         if (remote > l2.xp) { l2.xp = remote; leagueSave(l2); }
-        return F.set(r, { name: leagueName(), avatar: getMyAvatar(), xp: Math.min(50000, l2.xp) });
+        // Límite de velocidad (lo controlan las reglas, igual que en la app): en cada guardado se
+        // pueden sumar hasta 4 XP por segundo desde el anterior y nunca más de 300 de una vez.
+        // Jugando normal no se llega; si se pasa, se manda lo permitido y el resto en un rato.
+        const now = Date.now() + (F.serverOffset || 0);
+        const margin = v.at ? Math.min(290, Math.max(0, Math.floor((now - v.at) / 260))) : 290;
+        const send = Math.min(50000, l2.xp, remote + margin);
+        if (send < l2.xp) { clearTimeout(leagueRetryId); leagueRetryId = setTimeout(leaguePublish, 90000); }
+        return F.set(r, { name: leagueName(), avatar: getMyAvatar(), xp: send, at: F.serverTimestamp() });
       });
     }).then(() => { leagueActive = true; renderLeagueBanner(); })
       .catch(e => { if (leagueNoPermission(e) && leagueData().grupo == null) leagueActive = false; console.error("liga", e && (e.message || e.code)); });
