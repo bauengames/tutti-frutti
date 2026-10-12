@@ -129,3 +129,9 @@
   for = "/descargas/*"
   [headers.values]
     X-Robots-Tag = "noindex"
+
+# Universal Links de la app de iPhone: Apple lee este archivo (sin extensión) y lo necesita como JSON.
+[[headers]]
+  for = "/.well-known/apple-app-site-association"
+  [headers.values]
+    Content-Type = "application/json"

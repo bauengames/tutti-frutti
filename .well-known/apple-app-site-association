@@ -1,0 +1,13 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["6BT4URD7CV.com.tuttipuntofrutti.app"],
+        "components": [
+          { "/": "/jugar", "comment": "Links de salas, duelos, amigos, desafío, aventura y paquetes" },
+          { "/": "/jugar/*" }
+        ]
+      }
+    ]
+  }
+}
