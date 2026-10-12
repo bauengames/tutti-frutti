@@ -7,26 +7,30 @@
 //   duelo         → el que pide creó el duelo, el destino es su amigo y el duelo está en su bandeja.
 //   duelo_ganado  → el destino creó el duelo y el que pide lo jugó con más puntos.
 //   liga          → los dos están en el mismo grupo de la liga de esta semana y el que pide tiene más XP.
+//   prueba        → un aviso a uno mismo, para probar que las notificaciones llegan (solo a tu propio teléfono).
 // Límite: cada destino recibe como mucho un aviso de cada tipo cada cierto tiempo (avisos/{uid}/{tipo}).
 
 const crypto = require("crypto");
 
 const PROYECTO = "tuttipuntofrutti";
 const BASE = "https://tuttipuntofrutti-default-rtdb.firebaseio.com";
-const ESPERA_MS = { duelo: 2 * 60 * 1000, duelo_ganado: 2 * 60 * 1000, liga: 6 * 60 * 60 * 1000 };
+const ESPERA_MS = { duelo: 2 * 60 * 1000, duelo_ganado: 2 * 60 * 1000, liga: 6 * 60 * 60 * 1000, prueba: 60 * 1000 };
 
 const TEXTOS = {
   es: {
+    prueba: ["¡Funciona!", "Las notificaciones de tutti.frutti te llegan bien."],
     duelo: ["¡Te desafiaron!", "{n} te mandó un duelo. ¿Te animás?"],
     duelo_ganado: ["¡Te ganaron el duelo!", "{n} hizo más puntos que vos. ¿Revancha?"],
     liga: ["¡Te pasaron en la liga!", "{n} te pasó en la liga de esta semana. Jugá y recuperá tu lugar."],
   },
   en: {
+    prueba: ["It works!", "tutti.frutti notifications are reaching you."],
     duelo: ["You've been challenged!", "{n} sent you a duel. Up for it?"],
     duelo_ganado: ["You lost the duel!", "{n} scored more than you. Rematch?"],
     liga: ["You were overtaken!", "{n} passed you in this week's league. Play and take your spot back."],
   },
   pt: {
+    prueba: ["Funciona!", "As notificações do tutti.frutti estão chegando."],
     duelo: ["Você foi desafiado!", "{n} te mandou um duelo. Topa?"],
     duelo_ganado: ["Você perdeu o duelo!", "{n} fez mais pontos que você. Revanche?"],
     liga: ["Te passaram na liga!", "{n} te passou na liga desta semana. Jogue e recupere seu lugar."],
@@ -114,7 +118,8 @@ exports.handler = async (event) => {
 
   let quien;
   try { quien = await verificarJugador(pedido.idToken); } catch (e) { return responder(401, { error: "credencial" }); }
-  if (quien === destino) return responder(400, { error: "pedido" });
+  // A uno mismo solo se puede mandar la prueba (y la prueba, solo a uno mismo).
+  if ((quien === destino) !== (tipo === "prueba")) return responder(400, { error: "pedido" });
 
   try {
     // ¿Es cierto lo que dice? (y de paso, el nombre del que pide, sacado de la base, no del pedido)
@@ -167,9 +172,10 @@ exports.handler = async (event) => {
       const err = await r.json().catch(() => ({}));
       if (JSON.stringify(err).includes("UNREGISTERED")) await escribir(`tokens/${destino}`, null);
     }
+    if (tipo === "prueba" && !r.ok) return responder(200, { ok: false, fcm: r.status, detalle: (await r.text().catch(() => "")).slice(0, 300) });
     return responder(200, { ok: r.ok });
   } catch (e) {
     console.error("avisar", e && e.message);
-    return responder(500, { error: "servidor" });
+    return responder(500, { error: "servidor", detalle: tipo === "prueba" ? String(e && e.message).slice(0, 200) : undefined });
   }
 };
