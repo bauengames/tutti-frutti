@@ -1817,7 +1817,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <h2 class="section-title" data-i18n="shop_adv_heading">Aventura</h2>
       <div class="shop-grid" id="shopAdventure"></div>
       <h2 class="section-title" data-i18n="shop_how_heading">Cómo ganar semillas</h2>
-      <p class="lead" data-i18n="shop_how_text">1 semilla por cada 10 puntos en el desafío del día, el contrarreloj, los duelos y las salas online. En la Aventura, 10 semillas por cada estrella nueva.</p>
+      <p class="lead" data-i18n="shop_how_text">Con las misiones del día, los logros, las estrellas nuevas de la Aventura (5 por estrella), los premios del desafío del día, la racha de días, subiendo de nivel, en la Liga de la semana e invitando amigos. Además de la tienda, las semillas sirven para crear salas con categorías propias (5 cada una) y vueltas de tuerca (10 cada una).</p>
       <div class="actions-row">
         <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
       </div>
@@ -2468,7 +2468,7 @@ const I18N = {
     shop_fruits_heading: "Frutas para tu avatar",
     shop_adv_heading: "Aventura",
     shop_how_heading: "Cómo ganar semillas",
-    shop_how_text: "Con las misiones del día, los logros, las estrellas nuevas de la Aventura (10 por estrella), los premios del desafío del día, la racha de días, subiendo de nivel, en la Liga de la semana e invitando amigos. Además de la tienda, las semillas sirven para crear salas con categorías propias (5 cada una) y vueltas de tuerca (10 cada una).",
+    shop_how_text: "Con las misiones del día, los logros, las estrellas nuevas de la Aventura (5 por estrella), los premios del desafío del día, la racha de días, subiendo de nivel, en la Liga de la semana e invitando amigos. Además de la tienda, las semillas sirven para crear salas con categorías propias (5 cada una) y vueltas de tuerca (10 cada una).",
     shop_use: "Usar",
     shop_in_use: "En uso",
     shop_life_title: "Una vida extra",
@@ -2792,7 +2792,7 @@ const I18N = {
     level_how_title: "Cómo se suma XP",
     level_how_words: "Cada palabra válida suma XP, y más si nadie más la puso.",
     level_how_modes: "También suman el desafío del día, ganar online, pasar niveles de la Aventura, los duelos y las rondas de Contrarreloj.",
-    level_how_rewards: "Cada nivel nuevo da 20 semillas, y cada 5 niveles, 60. La XP también suma para la Liga de la semana.",
+    level_how_rewards: "Cada nivel nuevo da 10 semillas, y cada 5 niveles, 40. La XP también suma para la Liga de la semana.",
     streak_label: "Racha",
     streak_days: "{n} días",
     streak_one_day: "1 día",
@@ -3165,7 +3165,7 @@ const I18N = {
     shop_fruits_heading: "Fruits for your avatar",
     shop_adv_heading: "Adventure",
     shop_how_heading: "How to earn seeds",
-    shop_how_text: "From daily missions, achievements, new Adventure stars (10 per star), daily challenge prizes, your day streak, leveling up, the weekly League and inviting friends. Besides the shop, seeds let you create rooms with your own categories (5 each) and twists (10 each).",
+    shop_how_text: "From daily missions, achievements, new Adventure stars (5 per star), daily challenge prizes, your day streak, leveling up, the weekly League and inviting friends. Besides the shop, seeds let you create rooms with your own categories (5 each) and twists (10 each).",
     shop_use: "Use",
     shop_in_use: "In use",
     shop_life_title: "An extra life",
@@ -3489,7 +3489,7 @@ const I18N = {
     level_how_title: "How to earn XP",
     level_how_words: "Every valid word earns XP, and more if nobody else wrote it.",
     level_how_modes: "The daily challenge, winning online, clearing Adventure levels, duels and Time attack rounds also count.",
-    level_how_rewards: "Each new level gives 20 seeds, and every 5 levels, 60. XP also counts for the weekly League.",
+    level_how_rewards: "Each new level gives 10 seeds, and every 5 levels, 40. XP also counts for the weekly League.",
     streak_label: "Streak",
     streak_days: "{n} days",
     streak_one_day: "1 day",
@@ -3862,7 +3862,7 @@ const I18N = {
     shop_fruits_heading: "Frutas para o seu avatar",
     shop_adv_heading: "Aventura",
     shop_how_heading: "Como ganhar sementes",
-    shop_how_text: "Com as missões do dia, as conquistas, as estrelas novas da Aventura (10 por estrela), os prêmios do desafio do dia, a sequência de dias, subindo de nível, na Liga da semana e convidando amigos. Além da loja, as sementes servem para criar salas com categorias próprias (5 cada) e reviravoltas (10 cada).",
+    shop_how_text: "Com as missões do dia, as conquistas, as estrelas novas da Aventura (5 por estrela), os prêmios do desafio do dia, a sequência de dias, subindo de nível, na Liga da semana e convidando amigos. Além da loja, as sementes servem para criar salas com categorias próprias (5 cada) e reviravoltas (10 cada).",
     shop_use: "Usar",
     shop_in_use: "Em uso",
     shop_life_title: "Uma vida extra",
@@ -4186,7 +4186,7 @@ const I18N = {
     level_how_title: "Como ganhar XP",
     level_how_words: "Cada palavra válida dá XP, e mais se ninguém mais a escreveu.",
     level_how_modes: "O desafio do dia, ganhar online, passar níveis da Aventura, os duelos e as rodadas do Contrarrelógio também contam.",
-    level_how_rewards: "Cada nível novo dá 20 sementes, e a cada 5 níveis, 60. A XP também conta para a Liga da semana.",
+    level_how_rewards: "Cada nível novo dá 10 sementes, e a cada 5 níveis, 40. A XP também conta para a Liga da semana.",
     streak_label: "Sequência",
     streak_days: "{n} dias",
     streak_one_day: "1 dia",
@@ -8175,10 +8175,10 @@ document.addEventListener("keydown", e => {
 
 // ---------- Niveles por experiencia (XP), igual que en la app ----------
 // Cada partida suma XP según lo que hiciste. La XP vive en progress.xp (se guarda en la cuenta
-// y la comparte con la app). Subir de nivel da semillas: 20, o 60 cada 5 niveles.
+// y la comparte con la app). Subir de nivel da semillas: 10, o 40 cada 5 niveles.
 const XP_PER = { valid_words: 3, unique_words: 2, online_play: 15, online_win: 25, streak_rounds: 2, daily: 15, adv_pass: 15, adv_3stars: 10, duel: 10 };
 function xpCost(n) { return 100 + 40 * (n - 1); }
-function levelReward(n) { return n % 5 === 0 ? 60 : 20; }
+function levelReward(n) { return n % 5 === 0 ? 40 : 10; }
 function levelInfo(xp) {
   xp = Math.max(0, Math.floor(xp || 0));
   let n = 1, rest = xp;
@@ -9461,7 +9461,7 @@ function track(name, params) {
 
 // ---------- Semillas y tienda (guardadas en este dispositivo) ----------
 const WALLET_KEY = "tuttifruti_wallet";
-const SEEDS_PER_STAR = 10;
+const SEEDS_PER_STAR = 5;
 const SHOP_LIFE_PRICE = 40;
 const SHOP_FRUITS = [
   { emoji: "🍏", price: 60, name: "fruit_green_apple" },
@@ -9471,7 +9471,7 @@ const SHOP_FRUITS = [
   { emoji: "🍅", price: 80, name: "fruit_tomato" },
   { emoji: "🥑", price: 120, name: "fruit_avocado" },
   { emoji: "🍈", price: 150, name: "fruit_melon" },
-  { emoji: "🍎✨", price: 400, name: "fruit_golden_apple" },
+  { emoji: "🍎✨", price: 700, name: "fruit_golden_apple" },
 ];
 // Objetos para la Aventura: se acumulan en la billetera y se usan cuando hace falta.
 const SHOP_FULL_LIVES_PRICE = 120;
@@ -10887,7 +10887,7 @@ function giveWelcomeGift() {
 // ---------- Accesorios para la fruta (gorros, anteojos, cuello) ----------
 const ACCESSORY_ITEMS = [
   { id: "party", slot: "hat", price: 60 }, { id: "cap", slot: "hat", price: 80 }, { id: "beanie", slot: "hat", price: 90 },
-  { id: "straw", slot: "hat", price: 100 }, { id: "tophat", slot: "hat", price: 150 }, { id: "crown", slot: "hat", price: 300 },
+  { id: "straw", slot: "hat", price: 100 }, { id: "tophat", slot: "hat", price: 150 }, { id: "crown", slot: "hat", price: 500 },
   { id: "roundglasses", slot: "glasses", price: 60 }, { id: "sunglasses", slot: "glasses", price: 70 },
   { id: "bowtie", slot: "neck", price: 50 }, { id: "scarf", slot: "neck", price: 70 },
   // Edición limitada: solo se compra en temporada de Halloween; quien lo tiene lo conserva siempre.
@@ -10896,7 +10896,7 @@ const ACCESSORY_ITEMS = [
   { id: "mustache", slot: "face", price: 50 }, { id: "facepaint", slot: "face", price: 60 },
   { id: "bandaid", slot: "face", price: 40 }, { id: "sparkles", slot: "face", price: 90 },
   { id: "balloon", slot: "hand", price: 70 }, { id: "icecream", slot: "hand", price: 80 },
-  { id: "mic", slot: "hand", price: 100 }, { id: "mate", slot: "hand", price: 110 }, { id: "trophy", slot: "hand", price: 250 },
+  { id: "mic", slot: "hand", price: 100 }, { id: "mate", slot: "hand", price: 110 }, { id: "trophy", slot: "hand", price: 400 },
 ];
 // Navidad: del 1 de diciembre al 6 de enero.
 function isXmasSeason(date = new Date()) {
