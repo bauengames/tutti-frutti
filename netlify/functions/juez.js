@@ -1,6 +1,18 @@
 // Juez con IA para objeciones de TuttiPuntoFrutti.
 // Corre en el servidor de Netlify, nunca en el navegador de los jugadores:
 // es el único lugar donde puede vivir la clave secreta de la API de Anthropic.
+//
+// Memoria del juez: lo que ya se decidió se guarda en Firebase (juezMemoria/{idioma}/{categoría}/{palabra})
+// y la próxima vez se responde sin preguntarle a la IA (más rápido y más barato).
+// - Válidas: se guardan siempre (las aceptó el juez o la apelación).
+// - Rechazadas: solo si las confirmó la apelación (el modelo más capaz), para no "aprender" errores del rápido.
+// Usa la cuenta de servicio (variable FIREBASE_SERVICE_ACCOUNT, la misma de avisar.js). El nodo no se puede
+// leer ni escribir desde los teléfonos (las reglas niegan todo lo que no está listado). Si la variable falta
+// o Firebase no contesta a tiempo, el juez funciona igual que antes, sin memoria.
+
+const crypto = require("crypto");
+const BASE_DATOS = "https://tuttipuntofrutti-default-rtdb.firebaseio.com";
+const TIMEOUT_MEMORIA_MS = 1200;
 
 const MAX_DISPUTAS = 30;
 const MAX_LARGO_PALABRA = 40;
@@ -200,6 +212,88 @@ function conMayusculaInicial(palabra) {
   return palabra.trim().toLowerCase().replace(/(^|[\s-])(\S)/g, (m, sep, c) => sep + c.toUpperCase());
 }
 
+// ---------- Memoria (Firebase con la cuenta de servicio) ----------
+function b64url(x) { return Buffer.from(x).toString("base64").replace(/=/g, "").replace(/\+/g, "-").replace(/\//g, "_"); }
+let acceso = null, accesoHasta = 0;
+async function tokenDeAcceso() {
+  if (acceso && Date.now() < accesoHasta) return acceso;
+  const cuenta = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT || "{}");
+  if (!cuenta.client_email || !cuenta.private_key) throw new Error("sin cuenta de servicio");
+  const ahora = Math.floor(Date.now() / 1000);
+  const cabecera = b64url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  const cuerpo = b64url(JSON.stringify({
+    iss: cuenta.client_email, aud: "https://oauth2.googleapis.com/token", iat: ahora, exp: ahora + 3600,
+    scope: "https://www.googleapis.com/auth/firebase.database https://www.googleapis.com/auth/userinfo.email",
+  }));
+  const firma = b64url(crypto.createSign("RSA-SHA256").update(cabecera + "." + cuerpo).sign(cuenta.private_key));
+  const r = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: "grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=" + cabecera + "." + cuerpo + "." + firma,
+  });
+  const datos = await r.json();
+  if (!datos.access_token) throw new Error("sin acceso");
+  acceso = datos.access_token;
+  accesoHasta = Date.now() + 50 * 60 * 1000;
+  return acceso;
+}
+// Promesa con tiempo límite: si Firebase tarda, se sigue sin memoria.
+function conLimite(promesa, ms) {
+  return Promise.race([promesa, new Promise(resolver => setTimeout(() => resolver(null), ms))]);
+}
+// Clave segura para Firebase: sin tildes, en minúscula, espacios simples y sin . $ # [ ] /
+function clave(texto) {
+  return sinTildes(String(texto || "")).trim().replace(/\s+/g, " ").replace(/[.$#[\]\/\u0000-\u001f\u007f]/g, "_").slice(0, 60);
+}
+function rutaMemoria(idioma, categoria, palabra) {
+  const c = clave(categoria), p = clave(palabra);
+  if (!c || !p) return null;
+  return "juezMemoria/" + idioma + "/" + encodeURIComponent(c) + "/" + encodeURIComponent(p);
+}
+// Devuelve id -> { id, valida, motivo } con lo que ya se sabía.
+async function recordar(idioma, disputas) {
+  const sabidas = new Map();
+  if (!process.env.FIREBASE_SERVICE_ACCOUNT) return sabidas;
+  try {
+    const token = await conLimite(tokenDeAcceso(), TIMEOUT_MEMORIA_MS);
+    if (!token) return sabidas;
+    const resultados = await conLimite(Promise.all(disputas.map(async d => {
+      const ruta = rutaMemoria(idioma, d.categoria, d.palabra);
+      if (!ruta) return null;
+      const r = await fetch(`${BASE_DATOS}/${ruta}.json`, { headers: { Authorization: "Bearer " + token } });
+      const v = r.ok ? await r.json() : null;
+      if (v === 1) return { id: d.id, valida: true, motivo: "" };
+      if (v && v.v === 0) return { id: d.id, valida: false, motivo: String(v.m || "").slice(0, 200) };
+      return null;
+    })), TIMEOUT_MEMORIA_MS);
+    (resultados || []).forEach(x => { if (x) sabidas.set(x.id, x); });
+  } catch (e) {
+    console.error("Memoria del juez (leer)", e && e.message);
+  }
+  return sabidas;
+}
+// Guarda lo decidido. Las rechazadas solo si las confirmó la apelación.
+async function aprender(idioma, disputas, veredictos, confirmadasPorApelacion) {
+  if (!process.env.FIREBASE_SERVICE_ACCOUNT) return;
+  try {
+    const token = await conLimite(tokenDeAcceso(), TIMEOUT_MEMORIA_MS);
+    if (!token) return;
+    const escrituras = disputas.map(d => {
+      const v = veredictos.get(d.id);
+      if (!v) return null;
+      const ruta = rutaMemoria(idioma, d.categoria, d.palabra);
+      if (!ruta) return null;
+      let valor = null;
+      if (v.valida) valor = 1;
+      else if (confirmadasPorApelacion.has(d.id)) valor = { v: 0, m: String(v.motivo || "").slice(0, 120) };
+      if (valor === null) return null;
+      return fetch(`${BASE_DATOS}/${ruta}.json`, { method: "PUT", headers: { Authorization: "Bearer " + token }, body: JSON.stringify(valor) });
+    }).filter(Boolean);
+    await conLimite(Promise.all(escrituras), TIMEOUT_MEMORIA_MS);
+  } catch (e) {
+    console.error("Memoria del juez (guardar)", e && e.message);
+  }
+}
+
 const MOTIVO_LETRA = {
   es: "No empieza con la letra de la ronda",
   en: "Doesn't start with the round's letter",
@@ -298,7 +392,15 @@ exports.handler = async (event) => {
 
   // La letra ya se verificó acá arriba: al juez solo le llegan categoría y palabra, así no la confunde.
   const inicio = Date.now();
-  const disputasJuez = paraElJuez.map(d => ({ id: d.id, categoria: d.categoria, palabra: conMayusculaInicial(d.palabra) }));
+  const todas = paraElJuez.map(d => ({ id: d.id, categoria: d.categoria, palabra: conMayusculaInicial(d.palabra) }));
+
+  // Primero la memoria: lo que ya se decidió antes no se le vuelve a preguntar a la IA.
+  const sabidas = await recordar(idioma2, todas);
+  const disputasJuez = todas.filter(d => !sabidas.has(d.id));
+  if (disputasJuez.length === 0) {
+    return jsonResponse(200, { veredictos: todas.map(d => sabidas.get(d.id)).concat(veredictosLetra) });
+  }
+
   const primera = await pedirVeredictos(apiKey, MODELO_JUEZ, promptSistema, disputasJuez, TIMEOUT_JUEZ_MS);
   if (!primera) {
     return jsonResponse(502, { error: "El juez no pudo resolver esta ronda" });
@@ -307,18 +409,22 @@ exports.handler = async (event) => {
   // Apelación: las rechazadas las revisa un modelo más capaz. Si no llega a tiempo,
   // queda lo que dijo el primer juez.
   const rechazadas = disputasJuez.filter(d => primera.has(d.id) && !primera.get(d.id).valida);
-  const restante = PRESUPUESTO_TOTAL_MS - (Date.now() - inicio);
+  // Se guarda tiempo para escribir en la memoria al final.
+  const restante = PRESUPUESTO_TOTAL_MS - TIMEOUT_MEMORIA_MS - (Date.now() - inicio);
+  const confirmadas = new Set();
   if (rechazadas.length > 0 && restante >= TIMEOUT_MIN_APELACION_MS) {
     const apelacion = await pedirVeredictos(apiKey, MODELO_APELACION, PROMPTS_APELACION[idioma2],
       rechazadas.map(d => ({ ...d, motivoDelPrimerJuez: primera.get(d.id).motivo })), restante);
     if (apelacion) {
-      apelacion.forEach((v, id) => { primera.set(id, v); });
+      apelacion.forEach((v, id) => { primera.set(id, v); if (!v.valida) confirmadas.add(id); });
     }
   }
 
+  await aprender(idioma2, disputasJuez, primera, confirmadas);
+
   // Si al primer juez le faltó algún id, esa palabra cuenta como válida:
   // el juego nunca se traba por una respuesta incompleta.
-  const veredictos = disputasJuez.map(d => primera.get(d.id) || { id: d.id, valida: true, motivo: "" });
+  const veredictos = todas.map(d => sabidas.get(d.id) || primera.get(d.id) || { id: d.id, valida: true, motivo: "" });
 
   return jsonResponse(200, { veredictos: veredictos.concat(veredictosLetra) });
 };
