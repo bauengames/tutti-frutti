@@ -339,7 +339,7 @@
         ".write": "auth != null && auth.uid === $uid && auth.token.email != null",
         "data": {
           "$key": {
-            ".validate": "$key.matches(/^tuttifruti_(adventure|wallet|progress|stats|streak_history|duels|daily|avatar|playerName|preset|app_diccionario|app_logros)$/) && newData.isString() && (newData.val().length <= 30000 || ($key === 'tuttifruti_app_diccionario' && newData.val().length <= 100000))"
+            ".validate": "$key.matches(/^tuttifruti_(adventure|wallet|progress|stats|streak_history|duels|daily|avatar|playerName|preset|app_diccionario|app_logros|app_aventura|app_frutigrama|app_copa)$/) && newData.isString() && (newData.val().length <= 30000 || ($key === 'tuttifruti_app_diccionario' && newData.val().length <= 100000))"
           }
         },
         "$other": {
@@ -505,6 +505,9 @@
           },
           "titulo": {
             ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+          },
+          "fg": {
+            ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 7"
           },
           "$other": {
             ".validate": false

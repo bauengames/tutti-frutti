@@ -24,6 +24,9 @@
     "mandarina__lavanda": { theme: "mandarina", bg: "lavanda" },
     "sandia__noche": { theme: "sandia", bg: "noche" },
     "estrella__noche": { theme: "estrella", bg: "noche" },
+    "lima__lavanda": { theme: "lima", bg: "lavanda" },
+    "mandarina__noche": { theme: "mandarina", bg: "noche" },
+    "sandia__lavanda": { theme: "sandia", bg: "lavanda" },
   };
   var root = document.documentElement;
   var preset;
@@ -1240,7 +1243,6 @@ html[data-light] .full-badge { color: var(--tinta); }
 .league-banner .daily-icon { animation: icon-twinkle 3s ease-in-out infinite; font-size: 30px; line-height: 38px; text-align: center; }
 .league-banner .daily-arrow { color: var(--uva); }
 html[data-light] .league-banner .daily-arrow { color: var(--tinta); }
-@media (min-width: 900px) { .mode-grid #leagueBanner { grid-column: 1 / -1; } }
 .lg-head { display: flex; align-items: center; gap: 14px; margin: 4px 0 10px; }
 .lg-head .lg-medal { font-size: 44px; line-height: 1; }
 .lg-head strong { display: block; font: 800 24px var(--font-display); }
@@ -1368,6 +1370,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
 <meta name="google-adsense-account" content="ca-pub-9897296561814312" />
 <script src="/analytics.js" defer></script>
 <script src="/cookie-consent.js" defer></script>
+<link rel="stylesheet" href="/juego/juego.css" />
 </head>
 <body>
 
@@ -1817,7 +1820,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       <h2 class="section-title" data-i18n="shop_adv_heading">Aventura</h2>
       <div class="shop-grid" id="shopAdventure"></div>
       <h2 class="section-title" data-i18n="shop_how_heading">Cómo ganar semillas</h2>
-      <p class="lead" data-i18n="shop_how_text">Con las misiones del día, los logros, las estrellas nuevas de la Aventura (5 por estrella), los premios del desafío del día, la racha de días, subiendo de nivel, en la Liga de la semana e invitando amigos. Además de la tienda, las semillas sirven para crear salas con categorías propias (5 cada una) y vueltas de tuerca (10 cada una).</p>
+      <p class="lead" data-i18n="shop_how_text">Con las misiones del día, los logros, las estrellas nuevas de la Aventura (2 por estrella), los premios del desafío del día, la racha de días, subiendo de nivel, en la Liga de la semana e invitando amigos. Además de la tienda, las semillas sirven para crear salas con categorías propias (5 cada una) y vueltas de tuerca (10 cada una).</p>
       <div class="actions-row">
         <button class="secondary" onclick="goToLobby()" data-i18n="lobby_btn">Volver al lobby</button>
       </div>
@@ -2348,6 +2351,8 @@ function isMysterySlot(cat) {
 
 function catLabel(cat) {
   if (isMysterySlot(cat)) return t("mystery_category_label");
+  // Lluvia de ideas de la Aventura: "Animal#3" se muestra como "Animal".
+  if (/#\d+$/.test(cat)) return catLabel(cat.replace(/#\d+$/, ""));
   const entry = CATEGORY_LABELS[cat];
   return (entry && entry[state.lang]) || cat;
 }
@@ -2468,7 +2473,7 @@ const I18N = {
     shop_fruits_heading: "Frutas para tu avatar",
     shop_adv_heading: "Aventura",
     shop_how_heading: "Cómo ganar semillas",
-    shop_how_text: "Con las misiones del día, los logros, las estrellas nuevas de la Aventura (5 por estrella), los premios del desafío del día, la racha de días, subiendo de nivel, en la Liga de la semana e invitando amigos. Además de la tienda, las semillas sirven para crear salas con categorías propias (5 cada una) y vueltas de tuerca (10 cada una).",
+    shop_how_text: "Con las misiones del día, los logros, las estrellas nuevas de la Aventura (2 por estrella), los premios del desafío del día, la racha de días, subiendo de nivel, en la Liga de la semana e invitando amigos. Además de la tienda, las semillas sirven para crear salas con categorías propias (5 cada una) y vueltas de tuerca (10 cada una).",
     shop_use: "Usar",
     shop_in_use: "En uso",
     shop_life_title: "Una vida extra",
@@ -2792,7 +2797,7 @@ const I18N = {
     level_how_title: "Cómo se suma XP",
     level_how_words: "Cada palabra válida suma XP, y más si nadie más la puso.",
     level_how_modes: "También suman el desafío del día, ganar online, pasar niveles de la Aventura, los duelos y las rondas de Contrarreloj.",
-    level_how_rewards: "Cada nivel nuevo da 10 semillas, y cada 5 niveles, 40. La XP también suma para la Liga de la semana.",
+    level_how_rewards: "Cada nivel nuevo da 5 semillas, y cada 5 niveles, 20. La XP también suma para la Liga de la semana.",
     streak_label: "Racha",
     streak_days: "{n} días",
     streak_one_day: "1 día",
@@ -2815,7 +2820,7 @@ const I18N = {
     lg_div2: "Liga Oro",
     lg_div3: "Liga Diamante",
     lg_div4: "Liga Sandía",
-    lg_explain: "Sumás XP jugando cualquier modo. Los 5 primeros suben de liga y los 5 últimos bajan. Del 1.º al 3.º ganan semillas: 100, 60 y 40.",
+    lg_explain: "Sumás XP jugando cualquier modo. Los 5 primeros suben de liga y los 5 últimos bajan. Del 1.º al 3.º ganan semillas: 60, 35 y 20.",
     lg_ends: "Termina en {t}",
     lg_banner_join: "Jugá una partida para entrar a la liga de esta semana",
     lg_banner_sub: "{xp} XP esta semana · termina en {t}",
@@ -3165,7 +3170,7 @@ const I18N = {
     shop_fruits_heading: "Fruits for your avatar",
     shop_adv_heading: "Adventure",
     shop_how_heading: "How to earn seeds",
-    shop_how_text: "From daily missions, achievements, new Adventure stars (5 per star), daily challenge prizes, your day streak, leveling up, the weekly League and inviting friends. Besides the shop, seeds let you create rooms with your own categories (5 each) and twists (10 each).",
+    shop_how_text: "From daily missions, achievements, new Adventure stars (2 per star), daily challenge prizes, your day streak, leveling up, the weekly League and inviting friends. Besides the shop, seeds let you create rooms with your own categories (5 each) and twists (10 each).",
     shop_use: "Use",
     shop_in_use: "In use",
     shop_life_title: "An extra life",
@@ -3489,7 +3494,7 @@ const I18N = {
     level_how_title: "How to earn XP",
     level_how_words: "Every valid word earns XP, and more if nobody else wrote it.",
     level_how_modes: "The daily challenge, winning online, clearing Adventure levels, duels and Time attack rounds also count.",
-    level_how_rewards: "Each new level gives 10 seeds, and every 5 levels, 40. XP also counts for the weekly League.",
+    level_how_rewards: "Each new level gives 5 seeds, and every 5 levels, 20. XP also counts for the weekly League.",
     streak_label: "Streak",
     streak_days: "{n} days",
     streak_one_day: "1 day",
@@ -3512,7 +3517,7 @@ const I18N = {
     lg_div2: "Gold League",
     lg_div3: "Diamond League",
     lg_div4: "Watermelon League",
-    lg_explain: "Earn XP playing any mode. The top 5 move up and the bottom 5 move down. 1st to 3rd win seeds: 100, 60 and 40.",
+    lg_explain: "Earn XP playing any mode. The top 5 move up and the bottom 5 move down. 1st to 3rd win seeds: 60, 35 and 20.",
     lg_ends: "Ends in {t}",
     lg_banner_join: "Play a game to join this week's league",
     lg_banner_sub: "{xp} XP this week · ends in {t}",
@@ -3862,7 +3867,7 @@ const I18N = {
     shop_fruits_heading: "Frutas para o seu avatar",
     shop_adv_heading: "Aventura",
     shop_how_heading: "Como ganhar sementes",
-    shop_how_text: "Com as missões do dia, as conquistas, as estrelas novas da Aventura (5 por estrela), os prêmios do desafio do dia, a sequência de dias, subindo de nível, na Liga da semana e convidando amigos. Além da loja, as sementes servem para criar salas com categorias próprias (5 cada) e reviravoltas (10 cada).",
+    shop_how_text: "Com as missões do dia, as conquistas, as estrelas novas da Aventura (2 por estrela), os prêmios do desafio do dia, a sequência de dias, subindo de nível, na Liga da semana e convidando amigos. Além da loja, as sementes servem para criar salas com categorias próprias (5 cada) e reviravoltas (10 cada).",
     shop_use: "Usar",
     shop_in_use: "Em uso",
     shop_life_title: "Uma vida extra",
@@ -4186,7 +4191,7 @@ const I18N = {
     level_how_title: "Como ganhar XP",
     level_how_words: "Cada palavra válida dá XP, e mais se ninguém mais a escreveu.",
     level_how_modes: "O desafio do dia, ganhar online, passar níveis da Aventura, os duelos e as rodadas do Contrarrelógio também contam.",
-    level_how_rewards: "Cada nível novo dá 10 sementes, e a cada 5 níveis, 40. A XP também conta para a Liga da semana.",
+    level_how_rewards: "Cada nível novo dá 5 sementes, e a cada 5 níveis, 20. A XP também conta para a Liga da semana.",
     streak_label: "Sequência",
     streak_days: "{n} dias",
     streak_one_day: "1 dia",
@@ -4209,7 +4214,7 @@ const I18N = {
     lg_div2: "Liga Ouro",
     lg_div3: "Liga Diamante",
     lg_div4: "Liga Melancia",
-    lg_explain: "Você soma XP jogando qualquer modo. Os 5 primeiros sobem e os 5 últimos descem. Do 1.º ao 3.º ganham sementes: 100, 60 e 40.",
+    lg_explain: "Você soma XP jogando qualquer modo. Os 5 primeiros sobem e os 5 últimos descem. Do 1.º ao 3.º ganham sementes: 60, 35 e 20.",
     lg_ends: "Termina em {t}",
     lg_banner_join: "Jogue uma partida para entrar na liga desta semana",
     lg_banner_sub: "{xp} XP nesta semana · termina em {t}",
@@ -4887,15 +4892,20 @@ const PRESETS = [
   { key: "lima__petroleo", theme: "lima", bg: "petroleo", label: "Lima", color: "#B6EF3C" },
   { key: "mandarina__lavanda", theme: "mandarina", bg: "lavanda", label: "Mandarina", color: "#FFA62B" },
   // Se compran en la tienda (el precio en semillas los marca como bloqueados hasta comprarlos).
-  { key: "sandia__noche", theme: "sandia", bg: "noche", label: "Sandía", color: "#FF5C7A", price: 150 },
-  { key: "estrella__noche", theme: "estrella", bg: "noche", label: "Noche", color: "#FFD23F", price: 150 },
+  { key: "sandia__noche", theme: "sandia", bg: "noche", label: "Sandía", color: "#FF5C7A", price: 195 },
+  { key: "estrella__noche", theme: "estrella", bg: "noche", label: "Noche", color: "#FFD23F", price: 195 },
+  // Exclusivos del pase de temporada (igual que en la app): no se venden, se ganan en el pase ("pase" dice de qué temporada).
+  { key: "lima__lavanda", theme: "lima", bg: "lavanda", label: "Primavera", color: "#B6EF3C", price: 1, pase: "t1" },
+  { key: "mandarina__noche", theme: "mandarina", bg: "noche", label: "Verano", color: "#FFA62B", price: 1, pase: "t2" },
+  { key: "sandia__lavanda", theme: "sandia", bg: "lavanda", label: "Carnaval", color: "#FF5C7A", price: 1, pase: "t3" },
 ];
 function presetOwned(p) { return !p.price || getWallet().owned.includes("theme:" + p.key); }
 
 function renderPresetGrid() {
   const grid = document.getElementById("presetGrid");
   if (!grid) return;
-  grid.innerHTML = PRESETS.map(p => {
+  // Los del pase de temporada se ven solo si ya los ganaste (no se venden).
+  grid.innerHTML = PRESETS.filter(p => !p.pase || presetOwned(p)).map(p => {
     const locked = !presetOwned(p);
     return `
     <button type="button" class="theme-option${locked ? " locked" : ""}" data-preset="${p.key}" onclick="${locked ? "openShop('themes')" : `setPreset('${p.key}')`}">
@@ -6478,7 +6488,7 @@ async function callJudge(roomCode, round, letter, disputas) {
     const res = await fetch("/.netlify/functions/juez", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ salaId: roomCode, ronda: round, letra: letter, disputas, idioma: state.lang }),
+      body: JSON.stringify({ salaId: roomCode, ronda: round, letra: letter, disputas: disputas.map(d => (/#\d+$/.test(d.categoria) ? { ...d, categoria: d.categoria.replace(/#\d+$/, "") } : d)), idioma: state.lang }),
       signal: controller.signal,
     });
     clearTimeout(timeoutId);
@@ -7136,6 +7146,8 @@ function updateRevealCards() {
 function advRuleReasonText(reason) {
   if (reason === "adv_short") return t("adv_reason_short", { n: ADV_SHORT_MAX });
   if (reason === "adv_banned") return t("adv_reason_banned", { x: state.advBanned || "?" });
+  if (reason === "adv_largas") return t("adv_reason_largas", { m: ADV_LONG_MIN });
+  if (reason === "adv_termina") return t("adv_reason_termina", { e: (state.advLevel && state.advLevel.end) || "?" });
   return "";
 }
 
@@ -7177,6 +7189,35 @@ function advanceReveal(skip) {
     }
   }
   if (skip && !isJoker(val)) { state.answers[cat] = ""; input.value = ""; input.classList.remove("filled", "rule-bad"); }
+  const L = state.advLevel;
+  // Cadena: la próxima categoría empieza con la última letra de esta palabra (si la pasaste, con una letra nueva).
+  if (advHas(L, "cadena") && cards[state.revealIdx + 1]) {
+    const nextCard = cards[state.revealIdx + 1];
+    const nextCat = nextCard.querySelector("input").dataset.cat;
+    let nextLetter = !skip && val && !isJoker(val) ? normalizeAnswer(val).replace(/[^a-zñ]/g, "").slice(-1).toUpperCase() : "";
+    if (!nextLetter || ["K", "Q", "W", "X"].includes(nextLetter)) {
+      const opts = L.letters.filter(x => x !== letter);
+      nextLetter = opts[Math.floor(Math.random() * opts.length)] || "A";
+    }
+    state.letterByCat[nextCat] = nextLetter;
+    const isWild = nextCat === state.wildcardCategory;
+    nextCard.classList.add("has-letter");
+    nextCard.dataset.label = `<span class="cat-letter">${escapeHtml(nextLetter)}</span>${escapeHtml(catLabel(nextCat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}`;
+  }
+  // Suma: cada palabra completada suma segundos al reloj.
+  if (!skip && advHas(L, "suma")) {
+    state.secondsLeft += ADV_BONUS_SECONDS;
+    state.duration = Math.max(state.duration, state.secondsLeft);
+    updateTimerDisplay();
+    const wrap = document.getElementById("timerWrap");
+    if (wrap) {
+      const pop = document.createElement("span");
+      pop.className = "adv-bonus-pop";
+      pop.textContent = "+" + ADV_BONUS_SECONDS;
+      wrap.appendChild(pop);
+      setTimeout(() => pop.remove(), 1200);
+    }
+  }
   state.revealIdx++;
   state.cardSecondsLeft = (state.advLevel && state.advLevel.cardTime) || 0;
   updateRevealCards();
@@ -7722,12 +7763,12 @@ const ACHIEVEMENTS = [
   { id: "streak_5", icon: () => iconSvg("stopwatch"), test: p => p.bestStreakRounds >= 5 },
   { id: "daily_1", icon: () => iconSvg("sun"), test: p => p.dailyCount >= 1 },
   { id: "daily_7", icon: () => iconSvg("rainbow"), test: p => p.dailyCount >= 7 },
-  { id: "adv_world1", icon: () => fruitSvg("🍎"), test: () => (advLoad().stars[6] || 0) > 0 },
+  { id: "adv_world1", icon: () => fruitSvg("🍎"), test: () => (advLoad().stars[ADV_PER_WORLD] || 0) > 0 },
   { id: "adv_stars_45", icon: () => iconSvg("star"), test: () => advTotalStars(advLoad()) >= 45 },
   { id: "missions_10", icon: () => iconSvg("calendar"), test: p => (p.missionsDone || 0) >= 10 },
 ];
 // Cada logro se cobra una vez desde Mi fruta (también los que ya estaban desbloqueados de antes).
-const ACH_REWARD = 20;
+const ACH_REWARD = 10;
 
 function achievementsClaimable(p) {
   return (p.unlocked || []).some(id => ACHIEVEMENTS.some(a => a.id === id) && !(p.achClaimed || []).includes(id));
@@ -8046,17 +8087,17 @@ function processPendingFriend() {
 // Tres por día, iguales para todos (salen de la fecha). Cada una da semillas al cobrarla,
 // y completar las tres suma un premio extra. El avance se guarda dentro del progreso.
 const MISSION_POOL = [
-  { id: "online_play", goal: 1, reward: 20 },
-  { id: "online_win", goal: 1, reward: 30 },
-  { id: "adv_pass", goal: 2, reward: 20 },
-  { id: "adv_3stars", goal: 1, reward: 25 },
-  { id: "daily", goal: 1, reward: 15 },
-  { id: "streak_rounds", goal: 5, reward: 20 },
-  { id: "duel", goal: 1, reward: 20 },
-  { id: "valid_words", goal: 20, reward: 20 },
-  { id: "unique_words", goal: 5, reward: 25 },
+  { id: "online_play", goal: 1, reward: 10 },
+  { id: "online_win", goal: 1, reward: 15 },
+  { id: "adv_pass", goal: 2, reward: 10 },
+  { id: "adv_3stars", goal: 1, reward: 12 },
+  { id: "daily", goal: 1, reward: 8 },
+  { id: "streak_rounds", goal: 5, reward: 10 },
+  { id: "duel", goal: 1, reward: 10 },
+  { id: "valid_words", goal: 20, reward: 10 },
+  { id: "unique_words", goal: 5, reward: 12 },
 ];
-const MISSION_BONUS = 30;
+const MISSION_BONUS = 15;
 
 function todayMissions() {
   const rnd = seededRandom(hashString("misiones-" + dayKey()));
@@ -8175,10 +8216,10 @@ document.addEventListener("keydown", e => {
 
 // ---------- Niveles por experiencia (XP), igual que en la app ----------
 // Cada partida suma XP según lo que hiciste. La XP vive en progress.xp (se guarda en la cuenta
-// y la comparte con la app). Subir de nivel da semillas: 10, o 40 cada 5 niveles.
+// y la comparte con la app). Subir de nivel da semillas: 5, o 20 cada 5 niveles.
 const XP_PER = { valid_words: 3, unique_words: 2, online_play: 15, online_win: 25, streak_rounds: 2, daily: 15, adv_pass: 15, adv_3stars: 10, duel: 10 };
 function xpCost(n) { return 100 + 40 * (n - 1); }
-function levelReward(n) { return n % 5 === 0 ? 40 : 10; }
+function levelReward(n) { return n % 5 === 0 ? 20 : 5; }
 function levelInfo(xp) {
   xp = Math.max(0, Math.floor(xp || 0));
   let n = 1, rest = xp;
@@ -8193,7 +8234,7 @@ function addXp(p, id, n) {
   p.xp = (p.xp || 0) + gain;
   const after = levelInfo(p.xp).level;
   xpThisGame += gain;
-  setTimeout(() => leagueGainXp(gain), 0);
+  setTimeout(() => { leagueGainXp(gain); if (window.appXpGanada) appXpGanada(gain); }, 0);
   clearTimeout(xpToastId);
   xpToastId = setTimeout(showXpToast, 900);
   for (let lv = before + 1; lv <= after; lv++) levelUp(lv);
@@ -8234,8 +8275,8 @@ function openLevelInfo() {
 }
 
 // ---------- Racha de días con premios y congelador, igual que en la app ----------
-const STREAK_GOALS = [[3, 20], [7, 50], [14, 80], [30, 150], [50, 200], [100, 400]];
-const FREEZE_PRICE = 60, FREEZE_MAX = 2;
+const STREAK_GOALS = [[3, 10], [7, 25], [14, 40], [30, 80], [50, 100], [100, 200]];
+const FREEZE_PRICE = 80, FREEZE_MAX = 2;
 function daysBetween(a, b) {
   const date = k => { const [y, m, d] = k.split("-").map(Number); return new Date(y, m - 1, d); };
   return Math.round((date(b) - date(a)) / 86400000);
@@ -8316,7 +8357,7 @@ function renderPlayerStrip() {
 // tiene 10 o más) y del 1.º al 3.º ganan semillas. Datos en Firebase: ligas/{semana}/{div}/{grupo}/{uid},
 // ligaCupos/{semana}/{div} y hoy/{día}/{uid} (los usa también la app).
 const LEAGUE_MEDALS = ["🥉", "🥈", "🥇", "💎", "🍉"];
-const LEAGUE_GROUP = 20, LEAGUE_UP = 5, LEAGUE_DOWN = 5, LEAGUE_PRIZES = [100, 60, 40];
+const LEAGUE_GROUP = 20, LEAGUE_UP = 5, LEAGUE_DOWN = 5, LEAGUE_PRIZES = [60, 35, 20];
 const LEAGUE_KEY = "tuttifruti_liga";
 let leagueActive = true, leagueClosing = false, leaguePublishId = null, leagueRetryId = null;
 function leagueRead() { try { return JSON.parse(localStorage.getItem(LEAGUE_KEY) || "null"); } catch (e) { return null; } }
@@ -8376,12 +8417,15 @@ function leaguePublish() {
         const margin = v.at ? Math.min(290, Math.max(0, Math.floor((now - v.at) / 260))) : 290;
         const send = Math.min(50000, l2.xp, remote + margin);
         if (send < l2.xp) { clearTimeout(leagueRetryId); leagueRetryId = setTimeout(leaguePublish, 90000); }
-        return F.set(r, { name: leagueName(), avatar: getMyAvatar(), xp: send, at: F.serverTimestamp() });
+        return F.set(r, Object.assign({ name: leagueName(), avatar: getMyAvatar(), xp: send, at: F.serverTimestamp() }, (window.APP && APP.miEstilo ? APP.miEstilo() : {})));
       });
     }).then(() => { leagueActive = true; renderLeagueBanner(); })
       .catch(e => { if (leagueNoPermission(e) && leagueData().grupo == null) leagueActive = false; console.error("liga", e && (e.message || e.code)); });
     const today = getTodayDaily();
-    const entry = { name: leagueName(), avatar: getMyAvatar(), xp: Math.min(50000, leagueData().xp) };
+    const entry = Object.assign({ name: leagueName(), avatar: getMyAvatar(), xp: Math.min(50000, leagueData().xp) }, (window.APP && APP.miEstilo ? APP.miEstilo() : {}));
+    // Frutigrama: con cuántos intentos lo sacaste hoy (1-6, 7 si no), para "Tus amigos hoy".
+    const fg = window.APP && APP.frutigrama ? APP.frutigrama.resultado() : 0;
+    if (fg) entry.fg = fg;
     if (today && !today.unfinished) entry.daily = Math.min(200, today.score || 0);
     F.set(F.ref(F.db, `hoy/${dayKey()}/${F.uid}`), entry).catch(() => {});
   }), 3000);
@@ -8463,8 +8507,8 @@ function renderLeague() {
       <div class="lg-list">${group.map((x, i) => {
         const me = x.uid === uid;
         const zone = i < LEAGUE_UP && x.xp > 0 && l.div < 4 ? " up" : (n >= 10 && i >= n - LEAGUE_DOWN && l.div > 0 ? " down" : "");
-        return `<div class="lg-row${zone}${me ? " me" : ""}"><span class="lg-pos">${i + 1}</span><span class="lg-fruit">${mascotSvg("happy", avatarOf(x))}</span>
-          <span class="lg-name">${escapeHtml(x.name || "?")}${me ? ` <small>${escapeHtml(t("lg_you"))}</small>` : ""}</span><strong>${escapeHtml(t("lg_xp", { n: x.xp }))}</strong></div>`;
+        return `<div class="lg-row${zone}${me ? " me" : ""}"><span class="lg-pos">${i + 1}</span><span class="lg-fruit${window.APP && APP.claseMarco ? APP.claseMarco(me ? APP.miEstilo().marco : x.marco) : ""}">${mascotSvg("happy", avatarOf(x))}</span>
+          <span class="lg-name">${escapeHtml(x.name || "?")}${me ? ` <small>${escapeHtml(t("lg_you"))}</small>` : ""}${window.APP && APP.htmlTitulo ? APP.htmlTitulo(me ? APP.miEstilo().titulo : x.titulo) : ""}</span><strong>${escapeHtml(t("lg_xp", { n: x.xp }))}</strong></div>`;
       }).join("")}</div>`;
   }
   html += `<h2 class="section-title">${escapeHtml(t("lg_friends"))}</h2>`;
@@ -8605,7 +8649,7 @@ function submitWeeklyScore(score, rounds) {
         const snap = await window.FB.get(ref);
         const prev = snap.exists() ? Number(snap.val().score) || 0 : -1;
         if (score > prev) {
-          await window.FB.set(ref, { name: state.playerName.slice(0, 30), avatar: getMyAvatar(), score, rounds });
+          await window.FB.set(ref, Object.assign({ name: state.playerName.slice(0, 30), avatar: getMyAvatar(), score, rounds }, (window.APP && APP.miEstilo ? APP.miEstilo() : {})));
         }
       } catch (e) {
         console.error("No se pudo guardar el puntaje semanal", e);
@@ -8792,6 +8836,7 @@ async function finishDailyRound() {
     }
     window.FB.set(window.FB.ref(window.FB.db, `daily/${ch.key}/${window.FB.uid}`), {
       name: state.playerName.slice(0, 30), avatar: getMyAvatar(), score, valid, total: results.length, grid: record.grid,
+      ...(window.APP && APP.miEstilo ? APP.miEstilo() : {}),
     }).catch(e => console.error("No se pudo guardar el desafío del día", e)).finally(() => {
       showGlobalBoard("daily_board_heading", `daily/${ch.key}`, "daily_board_empty");
     });
@@ -8801,11 +8846,16 @@ async function finishDailyRound() {
 }
 
 // ---------- Aventura: niveles para jugar solo (/jugar?aventura abre el mapa) ----------
-// 17 mundos de 6 niveles. Cada nivel tiene categorías fijas (salen del número de nivel) y una
+// 25 mundos de 10 niveles (el 10.º es el jefe) + mundos de temporada, que se abren en su fecha (igual que en la app).
+// Cada nivel tiene categorías fijas (salen del número de nivel) y una
 // letra al azar en cada intento, así reintentar no es repetir lo mismo. Para pasar hay que
-// llegar a la meta de puntos con palabras válidas. El progreso y las vidas se guardan en
-// este dispositivo.
-const ADV_KEY = "tuttifruti_adventure";
+// llegar a la meta de puntos con palabras válidas. El progreso, las vidas, los cofres y las
+// estrellas doradas se guardan en tuttifruti_app_aventura (y en la cuenta). La numeración vieja
+// de la web (6 niveles por mundo, tuttifruti_adventure) se convierte al cargar (advImportOld).
+const ADV_KEY = "tuttifruti_app_aventura";
+const ADV_OLD_KEY = "tuttifruti_adventure";
+const ADV_PER_WORLD = 10;
+const ADV_BOSS_INDEX = ADV_PER_WORLD - 1;
 const ADV_MAX_LIVES = 5;
 const ADV_REGEN_MS = 30 * 60 * 1000;
 const ADV_POINTS = 10;
@@ -8819,42 +8869,73 @@ const ADV_CATS = {
   easy: ["Nombre", "Animal", "Color", "Fruta", "Comida", "País", "Objeto", "Ciudad", "Parte del cuerpo"],
   medium: ["Apellido", "Verdura", "Deporte", "Profesión", "Bebida", "Marca", "Película"],
   hard: ["Instrumento musical", "Personaje ficticio", "Programa de TV", "Cantante o banda", "Personaje histórico", "Equipo de fútbol"],
+  // Mundos temáticos (los traduce CATEGORY_LABELS, que completa app-aventura.js).
+  cocina: ["Utensilio de cocina", "Ingrediente", "Postre", "Algo de la heladera", "Especia o condimento", "Golosina"],
+  viaje: ["Medio de transporte", "Algo para la valija", "Lugar turístico", "Idioma", "Capital"],
+  casa: ["Mueble", "Algo del baño", "Herramienta", "Electrodoméstico", "Prenda de ropa", "Planta o flor"],
+  fiesta: ["Juego", "Canción", "Disfraz", "Baile", "Algo de un cumpleaños", "Juguete"],
+  naturaleza: ["Insecto", "Animal marino", "Ave", "Árbol", "Planta o flor", "Accidente geográfico"],
+  ocio: ["Superhéroe", "Dibujo animado", "Videojuego", "Libro", "Serie", "Juguete"],
+  carnaval: ["Disfraz", "Instrumento musical", "Baile", "Algo que brilla", "Algo de carnaval", "Color"],
+  // Lluvia de ideas: una sola categoría bien amplia, muchas palabras.
+  lluvia: ["Animal", "Comida", "Objeto", "Nombre", "País", "Fruta", "Profesión", "Marca", "Prenda de ropa", "Ciudad"],
 };
-// cats y time: uno por nivel del mundo (el 6.º es el jefe). goal: parte de las categorías que hay que acertar.
+// cats y time: uno por nivel del mundo (el 10.º es el jefe). goal: parte de las categorías que hay que acertar.
 // Los jefes juegan con una letra distinta en cada categoría; boss es la regla extra de cada mundo.
+// rules: en todos los niveles del mundo · levelRules: una lista por nivel · extra: reglas sumadas a un nivel.
+// reveal: "late" = categorías de a una desde el nivel 4 del mundo; "all" = en todos.
+//   short: palabras de 6 letras o menos · banned: una letra prohibida en todas las palabras
+//   memory: las categorías se ven unos segundos y se esconden · ticking: de a una, con reloj por categoría
+//   largas: palabras de 7 letras o más · termina: todas terminan con una letra · lluvia: una categoría, muchas palabras
+//   suma: de a una, cada palabra suma segundos · cadena: de a una, cada palabra empieza con la última letra de la anterior
+// En los niveles con "ticking", time es el tiempo de cada categoría. season: fecha en que se abre un mundo de temporada.
 const ADV_WORLDS = [
-  { fruit: "🍎", key: "manzana", cats: [4, 4, 5, 5, 5, 5], time: [90, 90, 80, 80, 75, 75], letters: ["easy"], pools: ["easy"], goal: 0.5, boss: null },
-  { fruit: "🍊", key: "naranja", cats: [5, 5, 5, 6, 6, 5], time: [60, 60, 55, 55, 50, 45], letters: ["easy"], pools: ["easy", "medium"], goal: 0.6, boss: "flash" },
-  { fruit: "🍇", key: "uva", cats: [5, 6, 6, 6, 6, 6], time: [75, 75, 70, 70, 65, 85], letters: ["easy", "medium"], pools: ["medium", "hard"], goal: 0.6, boss: "long" },
-  { fruit: "🍋", key: "limon", cats: [5, 5, 6, 6, 6, 6], time: [75, 75, 70, 70, 65, 80], letters: ["hard"], pools: ["easy", "medium"], goal: 0.5, boss: null },
-  { fruit: "🍍", key: "anana", cats: [6, 7, 7, 8, 8, 7], time: [65, 65, 60, 60, 55, 70], letters: ["medium", "hard"], pools: ["easy", "medium", "hard"], goal: 0.7, boss: "long" },
-  // Sandía: a toda velocidad (poco tiempo y jefe relámpago). Coco: el desafío final.
-  { fruit: "🍉", key: "sandia", cats: [5, 6, 6, 6, 7, 6], time: [50, 50, 45, 45, 40, 40], letters: ["medium"], pools: ["medium", "hard"], goal: 0.6, boss: "flash" },
-  { fruit: "🥥", key: "coco", cats: [6, 7, 7, 8, 8, 8], time: [70, 70, 65, 65, 60, 85], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.75, boss: "long" },
-  // reveal: las categorías se descubren de a una (hay que completar o pasar la actual para ver
-  // la siguiente, sin volver atrás). "late" = desde el nivel 4 del mundo; "all" = en todos.
-  { fruit: "🍓", key: "frutilla", cats: [5, 5, 6, 5, 6, 6], time: [70, 70, 65, 70, 65, 80], letters: ["easy", "medium"], pools: ["easy", "medium"], goal: 0.6, boss: null, reveal: "late" },
-  { fruit: "🥝", key: "kiwi", cats: [6, 6, 6, 7, 7, 6], time: [65, 60, 60, 60, 55, 55], letters: ["medium"], pools: ["easy", "medium", "hard"], goal: 0.65, boss: "flash", reveal: "all" },
-  { fruit: "🫐", key: "arandano", cats: [6, 7, 7, 8, 8, 8], time: [75, 70, 70, 65, 65, 90], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.75, boss: "long", reveal: "all" },
-  // Reglas especiales (rules: en todos los niveles del mundo; levelRules: una lista por nivel).
-  //   short: palabras de 6 letras o menos · banned: una letra prohibida en todas las palabras
-  //   memory: las categorías se ven unos segundos y se esconden · ticking: de a una, con reloj por categoría
-  // En los niveles con "ticking", time es el tiempo de cada categoría.
-  { fruit: "🍌", key: "banana", cats: [5, 5, 6, 6, 6, 6], time: [75, 70, 70, 65, 65, 80], letters: ["easy", "medium"], pools: ["easy", "medium"], goal: 0.55, boss: "flash", rules: ["short"] },
-  { fruit: "🍒", key: "cereza", cats: [5, 6, 6, 6, 7, 6], time: [75, 75, 70, 70, 65, 85], letters: ["easy", "medium"], pools: ["easy", "medium"], goal: 0.55, boss: null, rules: ["banned"] },
-  { fruit: "🍑", key: "durazno", cats: [5, 6, 6, 7, 7, 6], time: [75, 70, 70, 70, 65, 85], letters: ["easy", "medium"], pools: ["medium", "hard"], goal: 0.6, boss: "long", rules: ["memory"] },
-  { fruit: "🥭", key: "mango", cats: [5, 5, 6, 6, 6, 6], time: [16, 15, 15, 14, 13, 16], letters: ["medium"], pools: ["easy", "medium", "hard"], goal: 0.6, boss: null, rules: ["ticking"] },
-  { fruit: "🍅", key: "tomate", cats: [6, 6, 6, 6, 6, 6], time: [70, 70, 70, 14, 70, 85], letters: ["medium", "hard"], pools: ["medium", "hard"], goal: 0.6, boss: "flash",
-    levelRules: [["short"], ["banned"], ["memory"], ["ticking"], ["short", "memory"], ["banned", "reveal"]] },
-  { fruit: "🥑", key: "palta", cats: [6, 6, 6, 7, 7, 7], time: [70, 70, 14, 70, 70, 14], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.6, boss: null,
-    levelRules: [["memory", "banned"], ["reveal", "short"], ["ticking", "banned"], ["memory", "short"], ["reveal", "banned"], ["ticking", "short"]] },
-  { fruit: "🍈", key: "melon", cats: [6, 7, 7, 7, 8, 8], time: [13, 75, 75, 13, 80, 14], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.65, boss: null,
-    levelRules: [["ticking", "banned"], ["memory", "short"], ["reveal", "banned"], ["ticking", "short"], ["memory", "banned"], ["ticking", "banned"]] },
+  { fruit: "🍎", key: "manzana", cats: [4, 4, 5, 5, 5, 5, 5, 6, 6, 5], time: [90, 90, 80, 80, 75, 75, 70, 75, 70, 75], letters: ["easy"], pools: ["easy"], goal: 0.5, boss: null },
+  { fruit: "🍊", key: "naranja", cats: [5, 5, 5, 6, 6, 6, 6, 6, 6, 5], time: [60, 60, 55, 55, 50, 50, 50, 60, 45, 45], letters: ["easy"], pools: ["easy", "medium"], goal: 0.6, boss: "flash", extra: { 7: ["lluvia"] } },
+  { fruit: "🍇", key: "uva", cats: [5, 6, 6, 6, 6, 6, 7, 7, 7, 6], time: [75, 75, 70, 70, 65, 65, 70, 65, 65, 85], letters: ["easy", "medium"], pools: ["medium", "hard"], goal: 0.6, boss: "long" },
+  { fruit: "🍋", key: "limon", cats: [5, 5, 6, 6, 6, 6, 7, 7, 7, 6], time: [75, 75, 70, 70, 65, 65, 65, 70, 65, 80], letters: ["hard"], pools: ["easy", "medium"], goal: 0.5, boss: null, extra: { 6: ["lluvia"] } },
+  { fruit: "🍍", key: "anana", cats: [6, 7, 7, 8, 8, 7, 8, 8, 8, 7], time: [65, 65, 60, 60, 55, 60, 55, 55, 50, 70], letters: ["medium", "hard"], pools: ["easy", "medium", "hard"], goal: 0.7, boss: "long" },
+  // Sandía: a toda velocidad (poco tiempo y jefe relámpago). Coco: el desafío del primer tramo.
+  { fruit: "🍉", key: "sandia", cats: [5, 6, 6, 6, 7, 6, 6, 7, 7, 6], time: [50, 50, 45, 45, 40, 45, 40, 40, 38, 40], letters: ["medium"], pools: ["medium", "hard"], goal: 0.6, boss: "flash" },
+  { fruit: "🥥", key: "coco", cats: [6, 7, 7, 8, 8, 7, 8, 8, 8, 8], time: [70, 70, 65, 65, 60, 65, 60, 60, 58, 85], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.75, boss: "long" },
+  { fruit: "🍓", key: "frutilla", cats: [5, 5, 6, 5, 6, 6, 6, 7, 7, 6], time: [70, 70, 65, 70, 65, 65, 65, 65, 65, 80], letters: ["easy", "medium"], pools: ["easy", "medium"], goal: 0.6, boss: null, reveal: "late", extra: { 7: ["lluvia"] } },
+  { fruit: "🥝", key: "kiwi", cats: [6, 6, 6, 7, 7, 7, 7, 7, 7, 6], time: [65, 60, 60, 60, 55, 55, 55, 50, 50, 55], letters: ["medium"], pools: ["easy", "medium", "hard"], goal: 0.65, boss: "flash", reveal: "all" },
+  { fruit: "🫐", key: "arandano", cats: [6, 7, 7, 8, 8, 7, 8, 8, 8, 8], time: [75, 70, 70, 65, 65, 70, 65, 65, 60, 90], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.75, boss: "long", reveal: "all" },
+  { fruit: "🍌", key: "banana", cats: [5, 5, 6, 6, 6, 6, 6, 7, 7, 6], time: [75, 70, 70, 65, 65, 65, 60, 65, 60, 80], letters: ["easy", "medium"], pools: ["easy", "medium"], goal: 0.55, boss: "flash", rules: ["short"] },
+  { fruit: "🍒", key: "cereza", cats: [5, 6, 6, 6, 7, 6, 7, 7, 7, 6], time: [75, 75, 70, 70, 65, 70, 65, 65, 60, 85], letters: ["easy", "medium"], pools: ["easy", "medium"], goal: 0.55, boss: null, rules: ["banned"] },
+  { fruit: "🍑", key: "durazno", cats: [5, 6, 6, 7, 7, 6, 7, 7, 7, 6], time: [75, 70, 70, 70, 65, 70, 65, 65, 60, 85], letters: ["easy", "medium"], pools: ["medium", "hard"], goal: 0.6, boss: "long", rules: ["memory"] },
+  { fruit: "🥭", key: "mango", cats: [5, 5, 6, 6, 6, 6, 6, 7, 7, 6], time: [16, 15, 15, 14, 13, 14, 13, 13, 12, 16], letters: ["medium"], pools: ["easy", "medium", "hard"], goal: 0.6, boss: null, rules: ["ticking"] },
+  { fruit: "🍅", key: "tomate", cats: [6, 6, 6, 6, 6, 6, 6, 6, 7, 6], time: [70, 70, 70, 14, 70, 70, 14, 70, 70, 85], letters: ["medium", "hard"], pools: ["medium", "hard"], goal: 0.6, boss: "flash",
+    levelRules: [["short"], ["banned"], ["memory"], ["ticking"], ["short", "memory"], ["memory", "banned"], ["ticking", "short"], ["reveal", "short"], ["memory", "short"], ["banned", "reveal"]] },
+  { fruit: "🥑", key: "palta", cats: [6, 6, 6, 7, 7, 7, 7, 7, 7, 7], time: [70, 70, 14, 70, 70, 65, 65, 13, 65, 14], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.6, boss: null,
+    levelRules: [["memory", "banned"], ["reveal", "short"], ["ticking", "banned"], ["memory", "short"], ["reveal", "banned"], ["memory", "banned"], ["reveal", "short"], ["ticking", "banned"], ["memory", "short"], ["ticking", "short"]] },
+  { fruit: "🍈", key: "melon", cats: [6, 7, 7, 7, 8, 7, 7, 8, 8, 8], time: [13, 75, 75, 13, 80, 75, 13, 80, 75, 14], letters: ["hard", "medium"], pools: ["medium", "hard"], goal: 0.65, boss: null,
+    levelRules: [["ticking", "banned"], ["memory", "short"], ["reveal", "banned"], ["ticking", "short"], ["memory", "banned"], ["reveal", "short"], ["ticking", "short"], ["memory", "banned"], ["reveal", "banned"], ["ticking", "banned"]] },
+  // Mundos nuevos de la app: categorías temáticas y reglas nuevas.
+  { fruit: "🍐", key: "pera", cats: [5, 5, 5, 6, 6, 6, 6, 6, 7, 6], time: [80, 80, 75, 75, 70, 70, 70, 75, 65, 85], letters: ["easy", "medium"], pools: ["cocina", "easy"], goal: 0.55, boss: null, rules: ["largas"], extra: { 7: ["lluvia"] } },
+  { fruit: "🍏", key: "manzanaverde", cats: [5, 5, 6, 6, 6, 6, 6, 7, 7, 6], time: [75, 75, 70, 70, 65, 65, 65, 65, 60, 70], letters: ["easy"], pools: ["viaje", "easy"], goal: 0.55, boss: "flash", rules: ["termina"] },
+  { fruit: "granada", key: "granada", cats: [6, 6, 7, 7, 7, 8, 8, 8, 8, 6], time: [70, 65, 70, 65, 60, 70, 65, 60, 60, 75], letters: ["easy"], pools: ["casa"], goal: 0.6, boss: null, rules: ["lluvia"] },
+  { fruit: "higo", key: "higo", cats: [5, 5, 6, 6, 6, 6, 7, 7, 7, 7], time: [30, 28, 30, 28, 26, 26, 28, 26, 24, 24], letters: ["easy", "medium"], pools: ["fiesta", "easy"], goal: 0.6, boss: "long", rules: ["suma"] },
+  { fruit: "ciruela", key: "ciruela", cats: [5, 5, 5, 6, 6, 6, 6, 7, 7, 7], time: [80, 75, 75, 75, 70, 70, 70, 75, 70, 85], letters: ["easy"], pools: ["naturaleza", "easy"], goal: 0.55, boss: null, rules: ["cadena"] },
+  { fruit: "frambuesa", key: "frambuesa", cats: [6, 6, 6, 6, 7, 6, 7, 7, 7, 7], time: [75, 70, 70, 28, 75, 70, 70, 26, 75, 85], letters: ["easy", "medium"], pools: ["ocio", "medium"], goal: 0.6, boss: "flash",
+    levelRules: [["largas"], ["termina"], ["lluvia"], ["suma"], ["cadena"], ["largas", "memory"], ["termina", "banned"], ["suma", "short"], ["cadena", "banned"], ["largas"]] },
+  { fruit: "maracuya", key: "maracuya", cats: [6, 7, 7, 7, 7, 7, 8, 7, 8, 7], time: [70, 26, 70, 75, 14, 70, 70, 24, 70, 85], letters: ["medium", "easy"], pools: ["cocina", "casa", "viaje"], goal: 0.6, boss: "long",
+    levelRules: [["termina", "memory"], ["suma", "banned"], ["largas", "reveal"], ["cadena", "short"], ["ticking", "termina"], ["lluvia", "banned"], ["memory", "largas"], ["suma", "termina"], ["reveal", "termina"], ["cadena", "banned"]] },
+  { fruit: "carambola", key: "carambola", cats: [7, 7, 7, 8, 7, 8, 7, 8, 8, 8], time: [70, 24, 13, 70, 75, 70, 24, 13, 75, 90], letters: ["medium", "hard"], pools: ["naturaleza", "ocio", "fiesta"], goal: 0.65, boss: null,
+    levelRules: [["largas", "banned"], ["suma", "memory"], ["ticking", "termina"], ["lluvia", "short"], ["cadena", "memory"], ["termina", "reveal", "banned"], ["suma", "short"], ["ticking", "largas"], ["memory", "termina", "short"], ["cadena", "termina"]] },
+  // Mundos de temporada: se abren en su fecha (y quedan para siempre). Para jugarlos alcanza con pasar el primer mundo.
+  { fruit: "carnaval", key: "carnaval", season: "2026-12-28", cats: [5, 5, 6, 6, 6, 6, 6, 7, 7, 6], time: [75, 70, 70, 28, 70, 70, 65, 70, 65, 80], letters: ["easy", "medium"], pools: ["carnaval", "easy"], goal: 0.55, boss: "flash",
+    levelRules: [[], ["termina"], ["lluvia"], ["suma"], ["memory"], ["largas"], ["banned"], ["reveal"], ["cadena"], ["short"]] },
 ];
 const ADV_SHORT_MAX = 6;
+const ADV_LONG_MIN = 7;
+const ADV_GOLD_SEEDS = 2;
+const ADV_BONUS_SECONDS = 8;
 const ADV_MEMORY_SECONDS = 6;
 const ADV_BANNED_CANDIDATES = ["O", "R", "S", "L", "I", "U", "T", "C"];
-const ADV_TOTAL = ADV_WORLDS.length * 6;
+// Letras con las que suelen terminar las palabras en cada idioma (regla "termina").
+const ADV_END_LETTERS = { es: ["A", "O", "E", "S", "R", "N", "L"], en: ["E", "S", "T", "Y", "R", "D", "N"], pt: ["A", "O", "E", "S", "R", "M"] };
+const ADV_TOTAL = ADV_WORLDS.length * ADV_PER_WORLD;
 // Lo que muestra la medalla de la letra en los jefes (cada categoría tiene la suya).
 const ADV_MIXED_SYMBOL = "★";
 
@@ -8870,39 +8951,56 @@ function advWorldName(W) { return t("adv_wname_" + W.key); }
 function advWorldDesc(W) { return t("adv_wdesc_" + W.key); }
 
 function advLevel(n) {
-  const w = Math.floor((n - 1) / 6);
-  const i = (n - 1) % 6;
+  const w = Math.floor((n - 1) / ADV_PER_WORLD);
+  const i = (n - 1) % ADV_PER_WORLD;
   const W = ADV_WORLDS[w];
   const rnd = seededRandom(hashString("aventura-" + n));
-  const pool = W.pools.flatMap(k => ADV_CATS[k]);
+  const rules = advLevelRules(W, i);
+  const rain = rules.includes("lluvia");
+  const pool = [...new Set((rain ? ["lluvia"] : W.pools).flatMap(k => ADV_CATS[k]))];
   for (let k = pool.length - 1; k > 0; k--) {
     const j = Math.floor(rnd() * (k + 1));
     [pool[k], pool[j]] = [pool[j], pool[k]];
   }
-  const categories = pool.slice(0, W.cats[i]);
-  const wildcard = categories[Math.floor(rnd() * categories.length)];
+  // Lluvia de ideas: la misma categoría varias veces ("Animal#1", "Animal#2"…; catLabel saca el número).
+  const categories = rain ? Array.from({ length: W.cats[i] }, (_, k) => pool[0] + "#" + (k + 1)) : pool.slice(0, W.cats[i]);
+  const wildcard = rain ? null : categories[Math.floor(rnd() * categories.length)];
   const needed = Math.max(2, Math.round(categories.length * W.goal));
-  const target = needed * ADV_POINTS;
+  let target = needed * ADV_POINTS;
   const maxWords = (categories.length + 1) * ADV_POINTS;
-  const target2 = Math.min(maxWords - ADV_POINTS, target + 2 * ADV_POINTS);
-  const letterKinds = W.letters;
+  let target2 = Math.min(maxWords - ADV_POINTS, target + 2 * ADV_POINTS);
+  const boss = i === ADV_BOSS_INDEX;
+  // En la cadena cada categoría toma la letra de la palabra anterior: no se mezcla con las letras del jefe.
+  const mixed = boss && !rules.includes("cadena");
+  const letterKinds = rain && !mixed ? ["easy"] : W.letters;
   const lettersLabel = letterKinds.length > 1 ? "adv_letters_mixed" : "adv_letters_" + letterKinds[0];
-  const rules = advLevelRules(W, i);
+  const endList = ADV_END_LETTERS[state.lang] || ADV_END_LETTERS.es;
+  const end = rules.includes("termina") ? endList[Math.floor(rnd() * endList.length)] : null;
   // Con reloj por categoría, el tiempo total del nivel es la suma de los de cada categoría.
-  const cardTime = rules.includes("ticking") ? W.time[i] : 0;
+  let cardTime = rules.includes("ticking") ? W.time[i] : 0;
+  let time = cardTime ? cardTime * categories.length : W.time[i];
+  // Modo experto (mundos terminados): menos tiempo y la meta de las 2 estrellas; da una estrella dorada.
+  const expert = state.advExpertN === n;
+  if (expert) {
+    cardTime = cardTime ? Math.max(8, Math.round(cardTime * 0.75)) : 0;
+    time = cardTime ? cardTime * categories.length : Math.max(15, Math.round(time * 0.75));
+    target = target2;
+    target2 = Math.min(maxWords, target2 + ADV_POINTS);
+  }
   return {
-    n, world: w, index: i, W, categories, wildcard, target, target2, time: cardTime ? cardTime * categories.length : W.time[i], cardTime,
-    letters: letterKinds.flatMap(k => ADV_LETTERS[k]), lettersLabel, boss: i === 5 ? W.boss : null, mixed: i === 5,
-    rules,
+    n, world: w, index: i, W, categories, wildcard, target, target2, time, cardTime,
+    letters: letterKinds.flatMap(k => ADV_LETTERS[k]), lettersLabel, boss: boss ? W.boss : null, mixed,
+    rules, end, rainBase: rain ? pool[0] : null, expert,
   };
 }
 
-const ADV_RULE_ICONS = { reveal: "dice", ticking: "stopwatch", short: "bolt", banned: "flame", memory: "books" };
+const ADV_RULE_ICONS = { reveal: "dice", ticking: "stopwatch", short: "bolt", banned: "flame", memory: "books", largas: "scales", termina: "ballot", lluvia: "rainbow", suma: "gem", cadena: "cadena" };
 
 // Las reglas especiales del nivel, para la ficha (texto largo) o para la partida (texto corto).
 function advRuleLines(L, short = false) {
   return (L.rules || []).filter(r => ADV_RULE_ICONS[r]).map(r => {
-    const vars = { n: ADV_SHORT_MAX, s: r === "memory" ? ADV_MEMORY_SECONDS : L.cardTime, x: state.advBanned || "?" };
+    const vars = { n: ADV_SHORT_MAX, s: r === "memory" ? ADV_MEMORY_SECONDS : L.cardTime, x: state.advBanned || "?",
+      m: ADV_LONG_MIN, e: L.end || "?", c: L.rainBase ? catLabel(L.rainBase) : "", w: L.categories.length, b: ADV_BONUS_SECONDS };
     return [ADV_RULE_ICONS[r], t((short ? "adv_note_" : "adv_rule_") + r, vars)];
   });
 }
@@ -8913,16 +9011,19 @@ function advRuleBreak(L, val) {
   const letters = normalizeAnswer(val).replace(/[^a-zñ]/g, "");
   if (advHas(L, "short") && letters.length > ADV_SHORT_MAX) return "adv_short";
   if (advHas(L, "banned") && state.advBanned && letters.includes(state.advBanned.toLowerCase())) return "adv_banned";
+  if (advHas(L, "largas") && letters.length < ADV_LONG_MIN) return "adv_largas";
+  if (advHas(L, "termina") && L.end && letters.slice(-1) !== L.end.toLowerCase()) return "adv_termina";
   return "";
 }
 
 function advHas(L, rule) { return !!(L && L.rules && L.rules.includes(rule)); }
 // Las categorías se muestran de a una con "reveal" y con "ticking".
-function advReveal(L) { return advHas(L, "reveal") || advHas(L, "ticking"); }
+function advReveal(L) { return advHas(L, "reveal") || advHas(L, "ticking") || advHas(L, "suma") || advHas(L, "cadena"); }
 
 function advLevelRules(W, i) {
   const rules = W.levelRules ? [...(W.levelRules[i] || [])] : [...(W.rules || [])];
-  if (W.reveal === "all" || (W.reveal === "late" && i >= 3)) rules.push("reveal");
+  ((W.extra && W.extra[i]) || []).forEach(r => { if (!rules.includes(r)) rules.push(r); });
+  if (!rules.includes("lluvia") && (W.reveal === "all" || (W.reveal === "late" && i >= 3))) rules.push("reveal");
   return rules;
 }
 
@@ -8937,10 +9038,48 @@ function advRegen(d) {
   return d;
 }
 
+// La web guarda la Aventura con 6 niveles por mundo: el nivel viejo pasa a su lugar nuevo
+// (los 5 primeros quedan igual y el jefe pasa al 10.º), así no se pierde nada de lo jugado.
+function advOldToNew(n) {
+  const w = Math.floor((n - 1) / 6), i = (n - 1) % 6;
+  return n >= 1 ? w * ADV_PER_WORLD + (i === 5 ? ADV_PER_WORLD : i + 1) : 0;
+}
+let advOldSeen = null;
+function advImportOld(d) {
+  let raw = null;
+  try { raw = localStorage.getItem(ADV_OLD_KEY); } catch (e) { raw = null; }
+  if (!raw || raw === advOldSeen) return false;
+  advOldSeen = raw;
+  let o = null;
+  try { o = JSON.parse(raw); } catch (e) { o = null; }
+  if (!o || typeof o.stars !== "object") return false;
+  let changed = false;
+  ["stars", "best"].forEach(campo => {
+    Object.entries(o[campo] || {}).forEach(([k, v]) => {
+      const n = advOldToNew(parseInt(k, 10));
+      if (n && n <= ADV_TOTAL && (Number(v) || 0) > (d[campo][n] || 0)) { d[campo][n] = Number(v) || 0; changed = true; }
+    });
+  });
+  return changed;
+}
+
 function advLoad() {
   let d = null;
   try { d = JSON.parse(localStorage.getItem(ADV_KEY) || "null"); } catch (e) { d = null; }
-  if (!d || d.v !== 1 || typeof d.lives !== "number") d = { v: 1, stars: {}, best: {}, lives: ADV_MAX_LIVES, livesAt: Date.now(), pending: null };
+  const fresh = !d || d.v !== 1 || typeof d.lives !== "number";
+  if (fresh) {
+    d = { v: 1, stars: {}, best: {}, lives: ADV_MAX_LIVES, livesAt: Date.now(), pending: null, cofres: [], oro: {} };
+    try {
+      const o = JSON.parse(localStorage.getItem(ADV_OLD_KEY) || "null");
+      if (o && typeof o.lives === "number") { d.lives = o.lives; d.livesAt = o.livesAt || Date.now(); }
+    } catch (e) { /* sin datos viejos */ }
+    advOldSeen = null;
+  }
+  if (!d.stars || typeof d.stars !== "object") d.stars = {};
+  if (!d.best || typeof d.best !== "object") d.best = {};
+  if (!Array.isArray(d.cofres)) d.cofres = [];
+  if (!d.oro || typeof d.oro !== "object") d.oro = {};
+  if (advImportOld(d) || fresh) advSave(d);
   return advRegen(d);
 }
 
@@ -8948,9 +9087,31 @@ function advSave(d) {
   try { localStorage.setItem(ADV_KEY, JSON.stringify(d)); } catch (e) { /* storage unavailable */ }
 }
 
-function advUnlocked(d, n) { return n === 1 || (d.stars[n - 1] || 0) > 0; }
+function advTodayKey() {
+  const x = new Date();
+  return x.getFullYear() + "-" + String(x.getMonth() + 1).padStart(2, "0") + "-" + String(x.getDate()).padStart(2, "0");
+}
+function advSeasonOpen(W) { return !W.season || advTodayKey() >= W.season; }
+function advWorldDone(d, w) { return (d.stars[(w + 1) * ADV_PER_WORLD] || 0) > 0; }
+function advWorldsDone(d) { let k = 0; ADV_WORLDS.forEach((W, w) => { if (advWorldDone(d, w)) k++; }); return k; }
+function advGoldCount(d) { return Object.keys(d.oro || {}).length; }
+// Los mundos de temporada no siguen la fila: se abren en su fecha para quien pasó el primer mundo.
+function advUnlocked(d, n) {
+  if (n === 1) return true;
+  const w = Math.floor((n - 1) / ADV_PER_WORLD), i = (n - 1) % ADV_PER_WORLD, W = ADV_WORLDS[w];
+  if (!W) return false;
+  if (W.season) {
+    if (!advSeasonOpen(W)) return false;
+    if (i === 0) return advWorldDone(d, 0);
+  }
+  return (d.stars[n - 1] || 0) > 0;
+}
 function advCurrent(d) {
-  for (let n = 1; n <= ADV_TOTAL; n++) if (!(d.stars[n] > 0)) return advUnlocked(d, n) ? n : null;
+  for (let n = 1; n <= ADV_TOTAL; n++) {
+    const W = ADV_WORLDS[Math.floor((n - 1) / ADV_PER_WORLD)];
+    if (W.season && !advUnlocked(d, n)) continue;
+    if (!(d.stars[n] > 0)) return advUnlocked(d, n) ? n : null;
+  }
   return null;
 }
 function advTotalStars(d) { return Object.values(d.stars).reduce((a, b) => a + (b || 0), 0); }
@@ -8994,6 +9155,7 @@ function advStartTicker() {
 
 function openAdventure() {
   if (state.adventureMode) leaveAdventureGame();
+  state.advExpertN = null;
   renderAdventureMap();
   showScreen("screen-adventure");
   advStartTicker();
@@ -9007,53 +9169,95 @@ function renderAdventureMap() {
   document.getElementById("advMapHearts").innerHTML = advHearts(d.lives);
   document.querySelector("#screen-adventure [data-adv-countdown]").textContent = advCountdownText(d);
   document.getElementById("advMapStarIcon").innerHTML = advStar(true);
-  document.getElementById("advMapStars").textContent = advTotalStars(d) + " / " + ADV_TOTAL * 3;
-  document.getElementById("advWorlds").innerHTML = ADV_WORLDS.map((W, w) => {
-    const first = w * 6 + 1;
-    let got = 0;
-    for (let n = first; n < first + 6; n++) got += d.stars[n] || 0;
-    const head = `<div class="adv-world-head"><span class="adv-world-fruit">${fruitSvg(W.fruit)}</span>
-      <div><h3>${escapeHtml(t("adv_world_name", { name: advWorldName(W) }))}</h3><p>${escapeHtml(advWorldDesc(W))}</p></div>
-      <span class="adv-world-stars">${advStar(true)}${got}/18</span></div>`;
-    if (!advUnlocked(d, first)) {
-      return `<div class="adv-world locked">${head}<p class="adv-lock-note">${ADV_LOCK_SVG}${escapeHtml(t("adv_world_locked", { name: advWorldName(ADV_WORLDS[w - 1]) }))}</p></div>`;
+  const gold = advGoldCount(d);
+  document.getElementById("advMapStars").innerHTML = escapeHtml(advTotalStars(d) + " / " + ADV_TOTAL * 3) +
+    (gold ? ` <span class="adv-gold-count">${advStar(true)}${gold}</span>` : "");
+  // Los mundos de temporada van arriba de todo mientras están abiertos o por llegar (45 días antes).
+  const order = ADV_WORLDS.map((W, w) => w);
+  const soon = w => { const W = ADV_WORLDS[w]; if (!W.season) return false; const start = new Date(W.season + "T00:00:00"); return advSeasonOpen(W) || start - Date.now() < 45 * 86400000; };
+  const top = order.filter(w => ADV_WORLDS[w].season && soon(w) && !advWorldDone(d, w));
+  const rest = order.filter(w => !top.includes(w) && (!ADV_WORLDS[w].season || soon(w)));
+  document.getElementById("advWorlds").innerHTML = [...top, ...rest].map(w => advWorldHtml(d, w)).join("");
+}
+
+function advWorldHtml(d, w) {
+  const W = ADV_WORLDS[w];
+  const first = w * ADV_PER_WORLD + 1;
+  let got = 0, golds = 0;
+  for (let n = first; n < first + ADV_PER_WORLD; n++) { got += d.stars[n] || 0; if (d.oro[n]) golds++; }
+  const kicker = W.season ? `<span class="adv-season-tag">${escapeHtml(t("adv_season_tag"))}</span>` : "";
+  const head = `<div class="adv-world-head"><span class="adv-world-fruit">${fruitSvg(W.fruit)}</span>
+    <div>${kicker}<h3>${escapeHtml(t("adv_world_name", { name: advWorldName(W) }))}</h3><p>${escapeHtml(advWorldDesc(W))}</p></div>
+    <span class="adv-world-stars">${advStar(true)}${got}/${ADV_PER_WORLD * 3}</span></div>`;
+  if (!advUnlocked(d, first)) {
+    let note;
+    if (W.season && !advSeasonOpen(W)) {
+      const fecha = new Date(W.season + "T12:00:00").toLocaleDateString(state.lang === "en" ? "en-US" : state.lang === "pt" ? "pt-BR" : "es-AR", { day: "numeric", month: "long" });
+      note = t("adv_season_soon", { date: fecha });
+    } else if (W.season) note = t("adv_world_locked", { name: advWorldName(ADV_WORLDS[0]) });
+    else note = t("adv_world_locked", { name: advWorldName(ADV_WORLDS[w - 1]) });
+    return `<div class="adv-world locked${W.season ? " season" : ""}">${head}<p class="adv-lock-note">${ADV_LOCK_SVG}${escapeHtml(note)}</p></div>`;
+  }
+  // Cada mundo es un cajón de verdulería: 9 lugares y el jefe abajo, a lo ancho.
+  let slots = "";
+  for (let i = 0; i < ADV_PER_WORLD; i++) {
+    const n = first + i;
+    const unlocked = advUnlocked(d, n);
+    const st = d.stars[n] || 0;
+    const boss = i === ADV_BOSS_INDEX;
+    const label = escapeHtml(t("adv_level_title", { n }));
+    let cls = "adv-slot" + (boss ? " boss" : "") + (d.oro[n] ? " gold" : "");
+    let inner;
+    if (st > 0) {
+      cls += " done";
+      inner = `<span class="adv-slot-n">${n}</span>${boss ? `<span class="adv-slot-crown">${iconSvg("crown")}</span>` : ""}<span class="adv-slot-fruit">${fruitSvg(W.fruit)}</span><span class="adv-mini-stars">${advStars(st)}</span>`;
+    } else if (unlocked) {
+      cls += " now";
+      inner = `${boss ? `<span class="adv-slot-crown">${iconSvg("crown")}</span>` : ""}<span class="adv-slot-big">${n}</span><span class="adv-tag now">${escapeHtml(t("adv_your_turn"))}</span>`;
+    } else {
+      cls += " locked";
+      inner = boss
+        ? `<span class="adv-slot-crown">${iconSvg("crown")}</span>${ADV_LOCK_SVG}<span class="adv-tag">${escapeHtml(t("adv_boss"))}</span>`
+        : `<span class="adv-slot-n">${n}</span>${ADV_LOCK_SVG}`;
     }
-    // Cada mundo es un cajón de verdulería con 6 lugares: cada nivel pasado pone su fruta.
-    let slots = "";
-    for (let i = 0; i < 6; i++) {
-      const n = first + i;
-      const unlocked = advUnlocked(d, n);
-      const st = d.stars[n] || 0;
-      const boss = i === 5;
-      const label = escapeHtml(t("adv_level_title", { n }));
-      let cls = "adv-slot" + (boss ? " boss" : "");
-      let inner;
-      if (st > 0) {
-        cls += " done";
-        inner = `<span class="adv-slot-n">${n}</span>${boss ? `<span class="adv-slot-crown">${iconSvg("crown")}</span>` : ""}<span class="adv-slot-fruit">${fruitSvg(W.fruit)}</span><span class="adv-mini-stars">${advStars(st)}</span>`;
-      } else if (unlocked) {
-        cls += " now";
-        inner = `${boss ? `<span class="adv-slot-crown">${iconSvg("crown")}</span>` : ""}<span class="adv-slot-big">${n}</span><span class="adv-tag now">${escapeHtml(t("adv_your_turn"))}</span>`;
-      } else {
-        cls += " locked";
-        inner = boss
-          ? `<span class="adv-slot-crown">${iconSvg("crown")}</span>${ADV_LOCK_SVG}<span class="adv-tag">${escapeHtml(t("adv_boss"))}</span>`
-          : `<span class="adv-slot-n">${n}</span>${ADV_LOCK_SVG}`;
-      }
-      slots += `<button type="button" class="${cls}" ${unlocked ? `onclick="openAdventureLevel(${n})"` : "disabled"} aria-label="${label}">${inner}</button>`;
-    }
-    return `<div class="adv-world">${head}<div class="adv-crate"><span class="adv-crate-plate">${escapeHtml(advWorldName(W))}</span><div class="adv-slots">${slots}</div></div></div>`;
-  }).join("");
+    slots += `<button type="button" class="${cls}" ${unlocked ? `onclick="openAdventureLevel(${n})"` : "disabled"} aria-label="${label}">${inner}</button>`;
+  }
+  let chest = "";
+  if (advWorldDone(d, w)) {
+    const open = d.cofres.includes(w);
+    chest = open
+      ? `<p class="adv-chest-done">${iconSvg("cofre")}${escapeHtml(t("adv_chest_opened"))}${golds ? ` · ${advStar(true)}${golds}/${ADV_PER_WORLD} ${escapeHtml(t("adv_gold_short"))}` : ` · ${escapeHtml(t("adv_expert_hint"))}`}</p>`
+      : `<button type="button" class="adv-chest-btn" onclick="advOpenChest(${w})">${iconSvg("cofre")}<span>${escapeHtml(t("adv_chest_open"))}</span></button>`;
+  }
+  return `<div class="adv-world${W.season ? " season" : ""}">${head}<div class="adv-crate"><span class="adv-crate-plate">${escapeHtml(advWorldName(W))}</span><div class="adv-slots">${slots}</div></div>${chest}</div>`;
+}
+
+// Cofre de cada mundo: se abre una vez al pasar el jefe (también para los mundos pasados antes de la actualización).
+function advOpenChest(w) {
+  const d = advLoad();
+  if (!advWorldDone(d, w) || d.cofres.includes(w)) return;
+  d.cofres = [...d.cofres, w];
+  advSave(d);
+  const ITEMS = ["hint", "clock", "shield", "joker", "reroll"];
+  const reward = { seeds: Math.min(80, 20 + 3 * w), item: ITEMS[w % ITEMS.length], qty: w >= 12 ? 2 : 1 };
+  addSeeds(reward.seeds);
+  const wallet = getWallet();
+  wallet.items[reward.item] = (wallet.items[reward.item] || 0) + reward.qty;
+  saveWallet(wallet);
+  track("adventure_chest", { world: w + 1 });
+  if (window.appAventuraCofre) appAventuraCofre(w, reward, advWorldsDone(d));
+  if (document.getElementById("screen-adventure").classList.contains("active")) renderAdventureMap();
 }
 
 function openAdventureLevel(n) {
   const d = advLoad();
   if (!advUnlocked(d, n)) return;
+  if (state.advExpertN !== n) state.advExpertN = null;
   const L = advLevel(n);
   state.advLevelN = n;
   const passed = (d.stars[n] || 0) > 0;
   document.getElementById("advLevelWorld").innerHTML = fruitSvg(L.W.fruit) + escapeHtml(t("adv_world_name", { name: advWorldName(L.W) }));
-  document.getElementById("advLevelTitle").textContent = t("adv_level_title", { n });
+  document.getElementById("advLevelTitle").textContent = t("adv_level_title", { n }) + (L.expert ? " · " + t("adv_expert_title") : "");
   document.getElementById("advLevelDesc").textContent = advWorldDesc(L.W);
   document.getElementById("advLevelGoal").textContent = t("adv_goal_value", { pts: L.target });
   document.getElementById("advLevelGoalIcon").innerHTML = iconSvg("trophy");
@@ -9082,6 +9286,7 @@ function openAdventureLevel(n) {
     ? advStar(true).replace('class="adv-star"', 'class="adv-star" style="width:18px;height:18px"') + escapeHtml(t("adv_replay_free"))
     : advHeart(true) + escapeHtml(t("adv_life_warning"));
   renderAdventureLevelItems(passed);
+  document.querySelector("#screen-adventure-level .results-card").classList.toggle("adv-expert-on", !!L.expert);
   showScreen("screen-adventure-level");
   window.scrollTo(0, 0);
 }
@@ -9091,6 +9296,14 @@ function renderAdventureLevelItems(passed) {
   const w = getWallet();
   const box = document.getElementById("advLevelItems");
   let html = "";
+  // Modo experto: en los mundos terminados, cada nivel se puede volver a jugar más difícil por una estrella dorada.
+  const n = state.advLevelN, d = advLoad();
+  const world = Math.floor((n - 1) / ADV_PER_WORLD);
+  if (passed && advWorldDone(d, world)) {
+    const on = state.advExpertN === n;
+    html += `<button type="button" class="adv-item-toggle adv-expert-toggle" aria-pressed="${on}" onclick="state.advExpertN = state.advExpertN === ${n} ? null : ${n}; openAdventureLevel(${n})">
+      <span class="adv-item-ico">${advStar(true)}</span><span>${escapeHtml(d.oro[n] ? t("adv_expert_done") : t("adv_expert_toggle"))}</span><span class="adv-item-check">${on ? "✓" : ""}</span></button>`;
+  }
   if (w.items.clock > 0) {
     html += `<button type="button" class="adv-item-toggle" aria-pressed="${!!state.advUseClock}" onclick="state.advUseClock = !state.advUseClock; renderAdventureLevelItems(${passed})">
       <span class="adv-item-ico">${iconSvg("stopwatch")}</span><span>${escapeHtml(t("adv_use_clock", { s: CLOCK_SECONDS, n: w.items.clock }))}</span><span class="adv-item-check">${state.advUseClock ? "✓" : ""}</span></button>`;
@@ -9099,6 +9312,14 @@ function renderAdventureLevelItems(passed) {
     html += `<p class="adv-rule"><span class="adv-item-ico">${SHIELD_SVG}</span>${escapeHtml(w.items.shield === 1 ? t("adv_shield_info_one") : t("adv_shield_info_many", { n: w.items.shield }))}</p>`;
   }
   box.innerHTML = html;
+}
+
+const ADV_RECENT_KEY = "tuttifruti_app_aventura_letras";
+function advRecentLetters() {
+  try { const a = JSON.parse(localStorage.getItem(ADV_RECENT_KEY) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; }
+}
+function advRememberLetter(l) {
+  try { localStorage.setItem(ADV_RECENT_KEY, JSON.stringify([...advRecentLetters(), l].slice(-8))); } catch (e) { /* sin memoria, igual se evita la última */ }
 }
 
 function startAdventureLevel(n = state.advLevelN, opts = {}) {
@@ -9124,8 +9345,14 @@ function startAdventureLevel(n = state.advLevelN, opts = {}) {
     d.pending = n;
     advSave(d);
   }
-  const options = L.letters.filter(l => l !== state.advLastLetter);
+  // App: no se repiten las últimas letras (guardadas en el teléfono, así cuenta también si saliste a
+  // mitad del nivel o cerraste la app). Con 9 letras posibles, no vuelve ninguna de las últimas 4.
+  const recent = advRecentLetters();
+  const avoid = recent.slice(-Math.max(1, Math.min(4, L.letters.length - 3)));
+  let options = L.letters.filter(l => !avoid.includes(l) && l !== state.advLastLetter);
+  if (!options.length) options = L.letters.filter(l => l !== state.advLastLetter);
   let letter = options[Math.floor(Math.random() * options.length)];
+  advRememberLetter(letter);
   let letterByCat = null;
   if (L.mixed) {
     // Una letra distinta por categoría; si el grupo de letras del mundo no alcanza, se completa con las medias.
@@ -9134,6 +9361,9 @@ function startAdventureLevel(n = state.advLevelN, opts = {}) {
     letterByCat = {};
     L.categories.forEach((cat, k) => { letterByCat[cat] = pool[k]; });
     letter = ADV_MIXED_SYMBOL;
+  } else if (advHas(L, "cadena")) {
+    // Cadena: la primera categoría usa la letra sorteada; cada una de las siguientes, la última letra de la anterior.
+    letterByCat = { [L.categories[0]]: letter };
   }
   // Letra prohibida: una que no sea la de la ronda (ni la de ninguna categoría en los jefes).
   state.advBanned = null;
@@ -9288,7 +9518,11 @@ async function finishAdventureRound() {
     }
   }
   const newStars = passed ? Math.max(0, stars - (d.stars[L.n] || 0)) : 0;
-  const newWorld = passed && !(d.stars[L.n] > 0) && L.index === 5 && L.world + 1 < ADV_WORLDS.length;
+  const firstBoss = passed && !(d.stars[L.n] > 0) && L.index === ADV_BOSS_INDEX;
+  const nextW = ADV_WORLDS[L.world + 1];
+  const newWorld = firstBoss && nextW && !nextW.season;
+  const newGold = passed && L.expert && !d.oro[L.n];
+  if (newGold) d.oro[L.n] = 1;
   if (passed) {
     if (d.pending === L.n) d.lives = Math.min(ADV_MAX_LIVES, d.lives + 1);
     d.stars[L.n] = Math.max(d.stars[L.n] || 0, stars);
@@ -9308,6 +9542,8 @@ async function finishAdventureRound() {
   if (newStars) addSeeds(newStars * SEEDS_PER_STAR);
   if (shieldSaved) advToast(SHIELD_SVG, t("adv_shield_saved"));
   if (newWorld) advToast(fruitSvg(ADV_WORLDS[L.world + 1].fruit), t("adv_new_world", { name: advWorldName(ADV_WORLDS[L.world + 1]) }));
+  if (newGold) { addSeeds(ADV_GOLD_SEEDS); advToast(advStar(true), t("adv_gold_won", { n: ADV_GOLD_SEEDS })); }
+  if (firstBoss) setTimeout(() => { if (document.getElementById("screen-adventure-result").classList.contains("active")) advOpenChest(L.world); }, 1800);
 }
 
 function advToast(iconHtml, text) {
@@ -9397,14 +9633,14 @@ function renderAdventureResult(r) {
   document.getElementById("advResultNoLives").innerHTML = noLives ? advNoLivesHtml() : "";
   document.getElementById("advResultExtra").innerHTML = "";
   if (r.passed) {
-    const next = L.n < ADV_TOTAL ? L.n + 1 : null;
-    advActions([
+    const next = L.n < ADV_TOTAL && !L.expert && advUnlocked(advLoad(), L.n + 1) ? L.n + 1 : null;
+    advActions(next ? [
       ["secondary", t("adv_map_btn"), "openAdventure()"],
-      next ? ["primary", t("adv_next_btn"), `openAdventureLevel(${next})`] : ["primary", t("adv_map_btn"), "openAdventure()"],
-    ]);
+      ["primary", t("adv_next_btn"), `openAdventureLevel(${next})`],
+    ] : [["primary", t("adv_map_btn"), "openAdventure()"]]);
     state.advShareInfo = { n: L.n, world: advWorldName(L.W), stars: r.stars };
     document.getElementById("advResultExtra").innerHTML =
-      (r.stars < 3 ? `<button class="btn btn-secondary btn-block adv-extra-btn" onclick="startAdventureLevel(${L.n})">${escapeHtml(t("adv_retry_stars_btn"))}</button>` : "") +
+      (r.stars < 3 && !L.expert ? `<button class="btn btn-secondary btn-block adv-extra-btn" onclick="startAdventureLevel(${L.n})">${escapeHtml(t("adv_retry_stars_btn"))}</button>` : "") +
       `<button class="btn btn-ghost btn-block adv-extra-btn" onclick="shareAdventureResult()">${escapeHtml(t("adv_share_btn"))}</button>`;
     launchConfetti();
   } else if (noLives) {
@@ -9469,26 +9705,26 @@ function track(name, params) {
 
 // ---------- Semillas y tienda (guardadas en este dispositivo) ----------
 const WALLET_KEY = "tuttifruti_wallet";
-const SEEDS_PER_STAR = 5;
-const SHOP_LIFE_PRICE = 40;
+const SEEDS_PER_STAR = 2;
+const SHOP_LIFE_PRICE = 50;
 const SHOP_FRUITS = [
-  { emoji: "🍏", price: 60, name: "fruit_green_apple" },
-  { emoji: "🍐", price: 100, name: "fruit_pear" },
-  { emoji: "🥭", price: 150, name: "fruit_mango" },
-  { emoji: "🫐", price: 200, name: "fruit_blueberry" },
-  { emoji: "🍅", price: 80, name: "fruit_tomato" },
-  { emoji: "🥑", price: 120, name: "fruit_avocado" },
-  { emoji: "🍈", price: 150, name: "fruit_melon" },
-  { emoji: "🍎✨", price: 700, name: "fruit_golden_apple" },
+  { emoji: "🍏", price: 80, name: "fruit_green_apple" },
+  { emoji: "🍐", price: 130, name: "fruit_pear" },
+  { emoji: "🥭", price: 195, name: "fruit_mango" },
+  { emoji: "🫐", price: 260, name: "fruit_blueberry" },
+  { emoji: "🍅", price: 105, name: "fruit_tomato" },
+  { emoji: "🥑", price: 155, name: "fruit_avocado" },
+  { emoji: "🍈", price: 195, name: "fruit_melon" },
+  { emoji: "🍎✨", price: 910, name: "fruit_golden_apple" },
 ];
 // Objetos para la Aventura: se acumulan en la billetera y se usan cuando hace falta.
-const SHOP_FULL_LIVES_PRICE = 120;
-const SHOP_CLOCK_PRICE = 25;
-const SHOP_SHIELD_PRICE = 30;
-const SHOP_JOKER_PRICE = 30;
+const SHOP_FULL_LIVES_PRICE = 155;
+const SHOP_CLOCK_PRICE = 30;
+const SHOP_SHIELD_PRICE = 40;
+const SHOP_JOKER_PRICE = 40;
 // Ayudas para jugar solo (Aventura y contrarreloj; nunca en el desafío del día, duelos ni online).
-const SHOP_HINT_PRICE = 20;
-const SHOP_REROLL_PRICE = 25;
+const SHOP_HINT_PRICE = 25;
+const SHOP_REROLL_PRICE = 30;
 const CLOCK_SECONDS = 15;
 const SHIELD_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 L20 5 V11 C20 16.5 16.6 20.4 12 22 C7.4 20.4 4 16.5 4 11 V5 Z" fill="#35C8F2"/><path d="M12 2 L20 5 V11 C20 16.5 16.6 20.4 12 22 Z" fill="#1FA6D0"/><path d="M8.5 12 L11 14.5 L15.8 9.5" stroke="#FFF3E2" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const SEED_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22 C6.5 22 4 17.5 4 13.5 C4 8 8.5 3.5 12 2 C15.5 3.5 20 8 20 13.5 C20 17.5 17.5 22 12 22 Z" fill="#8B5A2B"/><path d="M12 2 C13.8 6 13.8 11 12 16" stroke="#6B4320" stroke-width="1.6" fill="none" stroke-linecap="round"/><ellipse cx="8.6" cy="11" rx="1.6" ry="3" transform="rotate(20 8.6 11)" fill="#fff" opacity=".3"/></svg>';
@@ -10019,7 +10255,7 @@ function renderShopExtras(w) {
       <strong>${escapeHtml(t("snd_" + x.id))}</strong>
       <button type="button" class="owned try-btn" onclick="previewBastaSound('${x.id}')">${escapeHtml(t("shop_listen"))}</button>
       ${ownBtn("snd:" + x.id, x.price, eq.snd === x.id, `buyExtra('snd','${x.id}')`, `toggleExtra('snd','${x.id}')`)}</div>`).join("");
-  document.getElementById("shopThemes").innerHTML = PRESETS.filter(p => p.price).map(p => {
+  document.getElementById("shopThemes").innerHTML = PRESETS.filter(p => p.price && !p.pase).map(p => {
     const owned = presetOwned(p);
     const inUse = document.documentElement.getAttribute("data-theme") === p.theme;
     const btn = !owned
@@ -10645,10 +10881,12 @@ function myDuelUid(id, data) {
 // Sin cuenta, todo vive solo en este navegador. Con cuenta, estas claves se copian a
 // users/{uid}/data y se combinan con lo que haya en otros dispositivos.
 const SYNC_KEYS = [
-  "tuttifruti_adventure", "tuttifruti_wallet", "tuttifruti_progress", "tuttifruti_stats",
+  "tuttifruti_adventure", "tuttifruti_app_aventura", "tuttifruti_wallet", "tuttifruti_progress", "tuttifruti_stats",
   "tuttifruti_streak_history", "tuttifruti_duels", "tuttifruti_daily",
   "tuttifruti_avatar", "tuttifruti_playerName", "tuttifruti_preset",
 ];
+// El diccionario de la app puede crecer más que el resto (las reglas de Firebase le dejan 100.000).
+function syncMaxLength(key) { return key === "tuttifruti_app_diccionario" ? 100000 : 30000; }
 const syncPending = new Set();
 let syncTimer = null;
 let syncApplying = false;
@@ -10677,11 +10915,22 @@ function pushPendingSync() {
   const updates = {};
   syncPending.forEach(key => {
     const v = localStorage.getItem(key);
-    if (v != null && v.length <= 30000) updates[key] = v;
+    if (v != null && v.length <= syncMaxLength(key)) updates[key] = v;
   });
   syncPending.clear();
-  window.FB.update(window.FB.ref(window.FB.db, `users/${window.FB.uid}/data`), updates)
-    .catch(e => console.error("No se pudo guardar el progreso en la cuenta", e));
+  syncWrite(updates).catch(e => console.error("No se pudo guardar el progreso en la cuenta", e));
+}
+
+// Las claves compartidas con la app (tuttifruti_app_*) se guardan cada una por separado: así, si las
+// reglas de Firebase no aceptaran alguna, no traban el guardado de las semillas, el progreso, etc.
+function syncWrite(updates) {
+  const ref = window.FB.ref(window.FB.db, `users/${window.FB.uid}/data`);
+  const base = {}, propias = [];
+  Object.keys(updates).forEach(k => { if (/^tuttifruti_app_/.test(k)) propias.push(k); else base[k] = updates[k]; });
+  const tareas = [];
+  if (Object.keys(base).length) tareas.push(window.FB.update(ref, base));
+  propias.forEach(k => tareas.push(window.FB.update(ref, { [k]: updates[k] }).catch(e => console.error("No se pudo guardar " + k, e))));
+  return Promise.all(tareas);
 }
 
 function parseJson(raw) { try { return raw == null ? null : JSON.parse(raw); } catch (e) { return null; } }
@@ -10703,6 +10952,16 @@ function mergeSyncValue(key, localRaw, remoteRaw) {
       return JSON.stringify({
         ...R, v: 1, pending: null,
         stars: maxMap(L.stars, R.stars), best: maxMap(L.best, R.best),
+        lives: Math.max(L.lives || 0, R.lives || 0), livesAt: Math.min(L.livesAt || Date.now(), R.livesAt || Date.now()),
+      });
+    }
+    // La Aventura de 10 niveles por mundo (igual que en la app; también cofres abiertos y estrellas doradas).
+    case "tuttifruti_app_aventura": {
+      if (!L || !R) return remoteRaw;
+      return JSON.stringify({
+        ...R, v: 1, pending: null,
+        stars: maxMap(L.stars, R.stars), best: maxMap(L.best, R.best), oro: maxMap(L.oro, R.oro),
+        cofres: [...new Set([...(R.cofres || []), ...(L.cofres || [])])],
         lives: Math.max(L.lives || 0, R.lives || 0), livesAt: Math.min(L.livesAt || Date.now(), R.livesAt || Date.now()),
       });
     }
@@ -10731,6 +10990,14 @@ function mergeSyncValue(key, localRaw, remoteRaw) {
       out.counted = [...new Set([...(R.counted || []), ...(L.counted || [])])].slice(-80);
       out.achClaimed = [...new Set([...(R.achClaimed || []), ...(L.achClaimed || [])])];
       out.missionsDone = Math.max(L.missionsDone || 0, R.missionsDone || 0);
+      // Regalo del día y pase de temporada (compartidos con la app): se queda el más nuevo de cada uno.
+      const fecha = o => (o && o.ultimo) || "";
+      if (L.regalos || R.regalos) out.regalos = fecha(L.regalos) > fecha(R.regalos) ? L.regalos : (R.regalos || L.regalos);
+      const lt = L.temporada, rt = R.temporada;
+      if (lt || rt) {
+        if (lt && rt && lt.id === rt.id) out.temporada = { ...rt, ...lt, xp: Math.max(lt.xp || 0, rt.xp || 0) };
+        else out.temporada = (lt && (!rt || String(lt.id) > String(rt.id))) ? lt : rt;
+      }
       const lm = L.missions, rm = R.missions;
       if (lm && rm && lm.day === rm.day) {
         out.missions = { day: lm.day, counts: maxMap(lm.counts, rm.counts), claimed: [...new Set([...(rm.claimed || []), ...(lm.claimed || [])])], bonus: !!(lm.bonus || rm.bonus) };
@@ -10789,12 +11056,12 @@ async function syncWithAccount() {
       const merged = mergeSyncValue(key, localRaw, remoteRaw);
       if (merged == null) return;
       if (merged !== localRaw) localStorage.setItem(key, merged);
-      if (merged !== remoteRaw && merged.length <= 30000) updates[key] = merged;
+      if (merged !== remoteRaw && merged.length <= syncMaxLength(key)) updates[key] = merged;
     });
   } finally {
     syncApplying = false;
   }
-  if (Object.keys(updates).length) await window.FB.update(window.FB.ref(window.FB.db, `users/${window.FB.uid}/data`), updates);
+  if (Object.keys(updates).length) await syncWrite(updates);
   refreshAfterSync();
   publishProfile().catch(e => console.error("No se pudo publicar el perfil", e));
   processPendingFriend();
@@ -10817,6 +11084,7 @@ function refreshAfterSync() {
   checkAchievements();
   checkCanPlay();
   renderAccountBoxes();
+  if (window.appRenderInicio) appRenderInicio();
 }
 
 function isInAppBrowser() {
@@ -10894,17 +11162,17 @@ function giveWelcomeGift() {
 
 // ---------- Accesorios para la fruta (gorros, anteojos, cuello) ----------
 const ACCESSORY_ITEMS = [
-  { id: "party", slot: "hat", price: 60 }, { id: "cap", slot: "hat", price: 80 }, { id: "beanie", slot: "hat", price: 90 },
-  { id: "straw", slot: "hat", price: 100 }, { id: "tophat", slot: "hat", price: 150 }, { id: "crown", slot: "hat", price: 500 },
-  { id: "roundglasses", slot: "glasses", price: 60 }, { id: "sunglasses", slot: "glasses", price: 70 },
-  { id: "bowtie", slot: "neck", price: 50 }, { id: "scarf", slot: "neck", price: 70 },
+  { id: "party", slot: "hat", price: 80 }, { id: "cap", slot: "hat", price: 105 }, { id: "beanie", slot: "hat", price: 115 },
+  { id: "straw", slot: "hat", price: 130 }, { id: "tophat", slot: "hat", price: 195 }, { id: "crown", slot: "hat", price: 650 },
+  { id: "roundglasses", slot: "glasses", price: 80 }, { id: "sunglasses", slot: "glasses", price: 90 },
+  { id: "bowtie", slot: "neck", price: 65 }, { id: "scarf", slot: "neck", price: 90 },
   // Edición limitada: solo se compra en temporada de Halloween; quien lo tiene lo conserva siempre.
-  { id: "witch", slot: "hat", price: 80, season: "spooky" },
-  { id: "sombrero", slot: "hat", price: 120 }, { id: "santa", slot: "hat", price: 90, season: "xmas" },
-  { id: "mustache", slot: "face", price: 50 }, { id: "facepaint", slot: "face", price: 60 },
-  { id: "bandaid", slot: "face", price: 40 }, { id: "sparkles", slot: "face", price: 90 },
-  { id: "balloon", slot: "hand", price: 70 }, { id: "icecream", slot: "hand", price: 80 },
-  { id: "mic", slot: "hand", price: 100 }, { id: "mate", slot: "hand", price: 110 }, { id: "trophy", slot: "hand", price: 400 },
+  { id: "witch", slot: "hat", price: 105, season: "spooky" },
+  { id: "sombrero", slot: "hat", price: 155 }, { id: "santa", slot: "hat", price: 115, season: "xmas" },
+  { id: "mustache", slot: "face", price: 65 }, { id: "facepaint", slot: "face", price: 80 },
+  { id: "bandaid", slot: "face", price: 50 }, { id: "sparkles", slot: "face", price: 115 },
+  { id: "balloon", slot: "hand", price: 90 }, { id: "icecream", slot: "hand", price: 105 },
+  { id: "mic", slot: "hand", price: 130 }, { id: "mate", slot: "hand", price: 145 }, { id: "trophy", slot: "hand", price: 520 },
 ];
 // Navidad: del 1 de diciembre al 6 de enero.
 function isXmasSeason(date = new Date()) {
@@ -10923,8 +11191,8 @@ function accOwnedKey(id) { return "acc:" + id; }
 // Dibujos de 100x100 que van dentro del círculo detrás de la fruta. Sin degradados
 // (con id) para que no choquen si hay varios en la misma pantalla.
 const PROFILE_BGS = [
-  { id: "sunset", price: 80 }, { id: "stars", price: 120 }, { id: "beach", price: 120 },
-  { id: "party", price: 150 }, { id: "field", price: 200 },
+  { id: "sunset", price: 105 }, { id: "stars", price: 155 }, { id: "beach", price: 155 },
+  { id: "party", price: 195 }, { id: "field", price: 260 },
 ];
 const BG_ART = {
   sunset: '<rect width="100" height="100" fill="#FFB067"/><rect y="0" width="100" height="30" fill="#FF8A7A"/><rect y="30" width="100" height="20" fill="#FF9E72"/><circle cx="50" cy="70" r="26" fill="#FFD23F"/><rect y="74" width="100" height="26" fill="#9C6BFF" opacity=".55"/>',
@@ -10945,8 +11213,8 @@ function mascotStageHtml(mood, fruit, acc, bg) {
 }
 
 // ---------- Festejos al ganar y sonidos del ¡Basta! ----------
-const WIN_FX = [{ id: "hearts", price: 100 }, { id: "stars", price: 100 }, { id: "fireworks", price: 150 }];
-const BASTA_SOUNDS = [{ id: "whistle", price: 80 }, { id: "horn", price: 80 }, { id: "drum", price: 100 }];
+const WIN_FX = [{ id: "hearts", price: 130 }, { id: "stars", price: 130 }, { id: "fireworks", price: 195 }];
+const BASTA_SOUNDS = [{ id: "whistle", price: 105 }, { id: "horn", price: 105 }, { id: "drum", price: 130 }];
 function myWinFx() { const w = getWallet(); const id = w.equipped.fx; return id && w.owned.includes("fx:" + id) ? id : null; }
 function myBastaSound() { const w = getWallet(); const id = w.equipped.snd; return id && w.owned.includes("snd:" + id) ? id : null; }
 
@@ -10981,8 +11249,8 @@ function fxPieceSvg(fx) {
 
 // ---------- Stickers para reaccionar en la revisión (los ve toda la sala) ----------
 const STICKER_PACKS = [
-  { id: "hinchada", price: 60, items: ["fire", "crown", "crack"] },
-  { id: "picante", price: 60, items: ["enserio", "uy", "bolt"] },
+  { id: "hinchada", price: 80, items: ["fire", "crown", "crack"] },
+  { id: "picante", price: 80, items: ["enserio", "uy", "bolt"] },
 ];
 function ownedStickers() {
   const w = getWallet();
@@ -11713,5 +11981,19 @@ applyFriendLinkFromUrl();
 checkAchievements();
 </script>
 <script src="pwa.js"></script>
+<!-- Lo que viene de la app de iPhone (mismo código, adaptado a la web): ver juego/app-web.js. -->
+<script src="/juego/app-web.js"></script>
+<script src="/juego/tuteo.js"></script>
+<script src="/juego/iconos.js"></script>
+<script src="/juego/estilo.js"></script>
+<script src="/juego/aventura.js"></script>
+<script src="/juego/frutigrama.js"></script>
+<script src="/juego/temporada.js"></script>
+<script src="/juego/copa.js"></script>
+<script src="/juego/regalos.js"></script>
+<script src="/juego/gente.js"></script>
+<script src="/juego/records.js"></script>
+<script src="/juego/guia.js"></script>
+<script src="/juego/invitar.js"></script>
 </body>
 </html>
