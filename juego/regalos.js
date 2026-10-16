@@ -153,7 +153,8 @@
     if (!b) return;
     if (b.parentNode.firstChild !== b) b.parentNode.insertBefore(b, b.parentNode.firstChild);
     var e = APP.regaloHoy();
-    b.style.display = e.abierto ? "none" : "";
+    // Quien entra por primera vez ve antes la partida de práctica (guia.js); el regalo aparece después.
+    b.style.display = e.abierto || document.getElementById("guiaBanner") ? "none" : "";
     b.pintar(iconSvg("regalo"), tx("titulo"), esc(tx("banner_sub", { n: e.dia })));
   }
   APP.alPintarInicio(banner);

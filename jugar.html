@@ -1370,6 +1370,8 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
 <meta name="google-adsense-account" content="ca-pub-9897296561814312" />
 <script src="/analytics.js" defer></script>
 <script src="/cookie-consent.js" defer></script>
+<!-- Cartelito de Apple "Abrir en la App Store": solo lo muestra Safari en iPhone; en compu y Android no aparece nada. -->
+<meta name="apple-itunes-app" content="app-id=6820982794, app-argument=https://tuttipuntofrutti.com/jugar" />
 <link rel="stylesheet" href="/juego/juego.css" />
 </head>
 <body>
@@ -8518,6 +8520,8 @@ function renderLeague() {
   else html += `<div class="lg-list">${friends.map(a => `<div class="lg-row"><span class="lg-pos"></span><span class="lg-fruit">${mascotSvg(a.today ? "happy" : "sleepy", avatarOf(a), cleanAccessories(a.acc))}</span>
       <span class="lg-name">${escapeHtml(a.name || "?")}<small>${escapeHtml(a.today ? (a.today.daily != null ? t("lg_friends_daily", { n: a.today.daily }) : "") : t("lg_friends_idle"))}</small></span>
       ${a.today ? `<strong>${escapeHtml(t("lg_xp", { n: a.today.xp || 0 }))}</strong>` : "<span></span>"}</div>`).join("")}</div>`;
+  // Pase · Liga · Copa (juego/temporada.js): la liga es una de las tres solapas de Temporada.
+  if (window.appSolapasTemporada) html = appSolapasTemporada("liga") + html;
   document.getElementById("leagueContent").innerHTML = html;
 }
 function openLeague() {

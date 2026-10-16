@@ -177,9 +177,14 @@
 
   window.appSegmentosTemporada = function (activo) {
     return '<div class="screen-back-row"><button type="button" class="lobby-back" onclick="appIrAInicio()"><span aria-hidden="true">←</span> ' + esc(tx("volver")) + "</button></div>" +
-      '<div class="aj-segmentos tp-seg">' +
+      appSolapasTemporada(activo);
+  };
+  // Solo las solapas (la pantalla de la liga ya trae su botón de volver).
+  window.appSolapasTemporada = function (activo) {
+    var html = '<div class="aj-segmentos tp-seg">' +
       '<button type="button" class="aj-seg' + (activo === "pase" ? " activo" : "") + '" onclick="appAbrirTemporada()">' + esc(tx("pase")) + (APP.paseParaCobrar() > 0 ? ' <span class="tp-punto"></span>' : "") + "</button>" +
       '<button type="button" class="aj-seg' + (activo === "liga" ? " activo" : "") + '" onclick="appAbrirLiga()">' + esc(tx("liga")) + "</button></div>";
+    return window.appSolapaCopa ? appSolapaCopa(html, activo) : html;
   };
 
   function render() {
@@ -219,16 +224,20 @@
   };
 
   // ---------- Botón en la pantalla de modos ----------
+  // Un solo botón "Temporada" junta el pase, la liga y la Copa Frutibot (así la pantalla de modos queda más simple).
   function banner() {
-    var b = APP.banner("paseBanner", "pase-banner", function () { appAbrirTemporada(); }, "leagueBanner");
+    var b = APP.banner("temporadaBanner", "pase-banner", function () { appAbrirTemporada(); }, "streakBanner");
     if (!b) return;
     var T = APP.temporadaActual();
-    if (!T) { b.style.display = "none"; return; }
-    b.style.display = "";
-    var cobrar = APP.paseParaCobrar();
+    var cobrar = T ? APP.paseParaCobrar() : 0;
+    var partes = [];
+    var liga = document.getElementById("leagueBannerTitle");
+    if (liga && liga.textContent) partes.push(liga.textContent);
+    if (APP.copaResumen) partes.push(APP.copaResumen());
+    if (T) partes.push(tx("pase") + " " + alcanzados(T) + "/" + TOTAL);
     b.classList.toggle("has-news", cobrar > 0);
-    b.pintar(iconSvg(T.emoji), tx("titulo_banner"),
-      esc(cobrar > 0 ? (cobrar === 1 ? tx("para_cobrar_1") : tx("para_cobrar", { n: cobrar })) : tx("sub_banner", { n: alcanzados(T), t: TOTAL })));
+    b.pintar(T ? iconSvg(T.emoji) : iconSvg("trophy"), T ? tx("titulo", { t: T.nombre[state.lang] || T.nombre.es }) : tx("tab"),
+      esc(cobrar > 0 ? (cobrar === 1 ? tx("para_cobrar_1") : tx("para_cobrar", { n: cobrar })) : partes.join(" · ")));
   }
   APP.alPintarInicio(banner);
   banner();

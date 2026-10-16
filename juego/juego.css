@@ -358,7 +358,8 @@ body.app-guiando #screen-game .board { padding-top: 92px; }
 html[data-light] .daily-gente { color: var(--tinta); }
 
 /* ---------- Web: botones nuevos en la pantalla de modos ---------- */
-.mode-grid .app-siguiente, .mode-grid #regaloBanner, .mode-grid #guiaBanner { grid-column: 1 / -1; margin: 0; }
+.mode-grid .app-siguiente { margin: 0 0 18px; }
+@media (min-width: 900px) { .mode-grid .app-siguiente, .mode-grid #regaloBanner, .mode-grid #guiaBanner { grid-column: 1 / -1; margin: 0; } }
 #lobbyWrap:not(.view-hub) .app-siguiente { display: none; }
 .fg-banner { border-color: var(--lima); background: var(--crema-08); }
 html[data-light] .fg-banner { border-color: var(--lima-dark, #8FD32E); }
@@ -401,3 +402,7 @@ body.app-guiando #screen-game .board { padding-top: 84px; }
 .habla-opciones { border-top: 1px solid var(--borde); margin-top: 6px; padding-top: 6px; }
 .habla-titulo { margin: 4px 8px 6px; font: 700 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
 .habla-option { font-size: 14px; }
+
+/* La liga, la Copa y el pase van juntos en el botón "Temporada" (juego/temporada.js). */
+#lobbyWrap .mode-grid #leagueBanner { display: none !important; }
+#leagueContent > .tp-seg { margin-bottom: 18px; }

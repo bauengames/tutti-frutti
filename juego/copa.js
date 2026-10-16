@@ -87,9 +87,7 @@
   };
 
   // ---------- Solapa "Copa" dentro de Temporada ----------
-  var segAntes = window.appSegmentosTemporada;
-  window.appSegmentosTemporada = function (activo) {
-    var html = segAntes.apply(this, arguments);
+  window.appSolapaCopa = function (html, activo) {
     var boton = '<button type="button" class="aj-seg' + (activo === "copa" ? " activo" : "") + '" onclick="appAbrirCopa()">' + esc(tx("copa")) + "</button>";
     return html.replace(/<\/div>$/, boton + "</div>");
   };
@@ -282,16 +280,13 @@
     if (gano) { launchConfetti(); vibrar("bien"); } else if (!empate) { launchFruitConfetti("lose"); }
     P = null;
   }
-  // ---------- Botón en la pantalla de modos ----------
-  function banner() {
-    var b = APP.banner("copaBanner", "copa-banner", function () { appAbrirCopa(); }, "streakBanner");
-    if (!b) return;
-    var d = leer(), R = RIVALES[d.rival];
-    b.classList.toggle("done", !R);
-    b.pintar(iconSvg("crown"), tx("titulo"), esc(R ? tx("banner_sub", { r: nombre(R), n: d.rival + 1 }) : tx("banner_campeon")));
-  }
-  APP.alPintarInicio(banner);
-  banner();
+  // Para el botón "Temporada" de la pantalla de modos (juego/temporada.js).
+  APP.copaResumen = function () {
+    var d = leer();
+    return d.rival >= RIVALES.length ? tx("titulo") + " ✓" : tx("copa") + " " + d.rival + "/" + RIVALES.length;
+  };
+
+  if (window.appRenderInicio) appRenderInicio();
 
   // Si sale de la partida por otro lado (por ejemplo, un link), el reloj se frena.
   var pantallaAntes = window.showScreen;

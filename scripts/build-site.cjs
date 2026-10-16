@@ -408,6 +408,8 @@ function head(page) {
   ];
   if (page.noindex) lines.push(`<meta name="robots" content="${page.noindex}" />`);
   lines.push(`<meta name="theme-color" content="${THEME_COLOR}" />`);
+  // Cartelito de Apple "Abrir en la App Store": solo lo muestra Safari en iPhone; en compu y Android no aparece nada.
+  lines.push('<meta name="apple-itunes-app" content="app-id=6820982794" />');
   if (page.extraHead) lines.push(page.extraHead);
   lines.push(`<link rel="icon" type="image/svg+xml" href="${FAVICON}" />`);
   if (page.url) lines.push(`<link rel="canonical" href="${abs(page.url)}" />`);

@@ -169,7 +169,7 @@
   }
   function banner() {
     var b = document.getElementById("guiaBanner");
-    if (!nuncaJugo()) { if (b) b.remove(); return; }
+    if (!nuncaJugo()) { if (b) { b.remove(); setTimeout(appRenderInicio, 0); } return; }
     b = APP.banner("guiaBanner", "guia-banner", function () {
       // Sin nombre todavía: se le pone uno al azar (se cambia cuando quiera en "Tu nombre").
       var campo = document.getElementById("playerName");
@@ -188,6 +188,7 @@
   }
   APP.alPintarInicio(banner);
   banner();
+  setTimeout(appRenderInicio, 0); // el regalo se esconde mientras está este botón
 
   // ---------- Al azar: Frutibot entra a los 6 segundos, con cuenta regresiva ----------
   // Con pocos jugadores casi nunca aparece otra persona: esperar 12 segundos sin saber qué pasa hacía que la
