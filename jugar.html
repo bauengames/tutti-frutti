@@ -956,6 +956,8 @@ html[data-light] .friend-code { color: var(--tinta); }
 .create-cost { display: block; margin: 0 0 8px; padding: 8px 12px; border-radius: var(--radius); background: var(--surface); font-size: 14px; text-align: center; }
 .create-cost.short { background: rgba(255,94,91,.14); color: var(--text); font-weight: 600; }
 .twist-note { color: var(--pomelo); }
+#twistNote { flex-wrap: wrap; column-gap: 14px; row-gap: 4px; }
+#twistNote .twist-part { display: inline-flex; align-items: center; gap: 6px; }
 html[data-light] .twist-note { color: var(--tinta); }
 .vote-options { display: flex; flex-direction: column; gap: 10px; margin: 20px 0 14px; }
 .vote-option {
@@ -1613,6 +1615,10 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
           <button type="button" class="twist-chip" id="twist-vote" aria-pressed="false" onclick="toggleTwist('vote')">
             <span class="twist-icon" aria-hidden="true" data-icon="ballot"></span>
             <span class="twist-text"><strong data-i18n="twist_vote_title">Categoría doble votada</strong><small data-i18n="twist_vote_desc">Antes de cada ronda votan qué categoría vale el doble.</small></span>
+          </button>
+          <button type="button" class="twist-chip" id="twist-banned" aria-pressed="false" onclick="toggleTwist('banned')">
+            <span class="twist-icon" aria-hidden="true" data-icon="prohibida"></span>
+            <span class="twist-text"><strong data-i18n="twist_banned_title">Letra prohibida</strong><small data-i18n="twist_banned_desc">En cada ronda, además de la letra, sale una letra que no puede aparecer en ninguna palabra.</small></span>
           </button>
         </div>
       </div>
@@ -2987,6 +2993,9 @@ const I18N = {
     twist_flash_desc: "De vez en cuando toca una ronda de solo 20 segundos.",
     twist_vote_title: "Categoría doble votada",
     twist_vote_desc: "Antes de cada ronda votan qué categoría vale el doble.",
+    twist_banned_title: "Letra prohibida",
+    twist_banned_desc: "En cada ronda, además de la letra, sale una letra que no puede aparecer en ninguna palabra.",
+    banned_letter_note: "Prohibida la {x} en todas las palabras",
     hard_letter_note: "Letra difícil: esta ronda vale el doble",
     flash_round_note: "Ronda relámpago: {s} segundos",
     hard_letter_summary: "letra difícil, puntos ×2",
@@ -3684,6 +3693,9 @@ const I18N = {
     twist_flash_desc: "Every now and then you get a round of just 20 seconds.",
     twist_vote_title: "Voted double category",
     twist_vote_desc: "Before each round you vote on which category is worth double.",
+    twist_banned_title: "Banned letter",
+    twist_banned_desc: "Each round, besides the letter, you get a letter that can't appear in any word.",
+    banned_letter_note: "No {x} in any word",
     hard_letter_note: "Hard letter: this round is worth double",
     flash_round_note: "Lightning round: {s} seconds",
     hard_letter_summary: "hard letter, points ×2",
@@ -4381,6 +4393,9 @@ const I18N = {
     twist_flash_desc: "De vez em quando cai uma rodada de só 20 segundos.",
     twist_vote_title: "Categoria dupla votada",
     twist_vote_desc: "Antes de cada rodada vocês votam qual categoria vale o dobro.",
+    twist_banned_title: "Letra proibida",
+    twist_banned_desc: "Em cada rodada, além da letra, sai uma letra que não pode aparecer em nenhuma palavra.",
+    banned_letter_note: "Proibida a {x} em todas as palavras",
     hard_letter_note: "Letra difícil: esta rodada vale o dobro",
     flash_round_note: "Rodada relâmpago: {s} segundos",
     hard_letter_summary: "letra difícil, pontos ×2",
@@ -4628,7 +4643,7 @@ let state = {
   queueRef: null,
   randomSearchTimeoutId: null,
   randomRetryTimeoutId: null,
-  twists: { hard: false, flash: false, vote: false },
+  twists: { hard: false, flash: false, vote: false, banned: false },
   pendingRound: null,
   voteTimeoutId: null,
   voteCountdownId: null,
@@ -5326,7 +5341,7 @@ function isCustomCategory(cat) {
 function createRoomCost() {
   if (state.mode !== "create") return { customs: 0, twists: 0, total: 0 };
   const customs = state.categoriesMode === "random" ? 0 : state.categories.filter(isCustomCategory).length;
-  const twists = ["hard", "flash", "vote"].filter(k => state.twists && state.twists[k]).length;
+  const twists = ["hard", "flash", "vote", "banned"].filter(k => state.twists && state.twists[k]).length;
   return { customs, twists, total: customs * CUSTOM_CAT_PRICE + twists * TWIST_PRICE };
 }
 
@@ -5368,6 +5383,10 @@ function checkCanPlay() {
 // Sorteo tipo tragamonedas: primero pasan frutas rápido, después letras cada
 // vez más lentas, y recién ahí cae la letra real.
 function spinLetterReveal(finalLetter, onDone) {
+  // Los avisos de la ronda anterior (letra difícil, relámpago, letra prohibida) no pasan a la siguiente
+  // partida: los modos que los usan los vuelven a poner al terminar la ruleta.
+  const twistNote = document.getElementById("twistNote");
+  if (twistNote) { twistNote.style.display = "none"; twistNote.innerHTML = ""; }
   const medal = document.getElementById("medal");
   clearTimeout(state.spinId);
   medal.classList.remove("bounce");
@@ -5770,7 +5789,7 @@ function prepareBotAnswers(data) {
       const out = {};
       categories.forEach((cat, i) => {
         const v = byLabel[labels[i]];
-        if (typeof v === "string" && v && Math.random() < skill) out[cat] = v.slice(0, 40);
+        if (typeof v === "string" && v && Math.random() < skill && !hasBannedLetter(v, data.bannedLetter)) out[cat] = v.slice(0, 40);
       });
       return out;
     } catch (e) {
@@ -5916,13 +5935,13 @@ const TWISTS_KEY = "tuttifruti_twists";
 function loadTwists() {
   try {
     const saved = JSON.parse(localStorage.getItem(TWISTS_KEY) || "null");
-    if (saved && typeof saved === "object") return { hard: !!saved.hard, flash: !!saved.flash, vote: !!saved.vote };
+    if (saved && typeof saved === "object") return { hard: !!saved.hard, flash: !!saved.flash, vote: !!saved.vote, banned: !!saved.banned };
   } catch (e) { /* storage unavailable */ }
-  return { hard: false, flash: false, vote: false };
+  return { hard: false, flash: false, vote: false, banned: false };
 }
 
 function renderTwists() {
-  ["hard", "flash", "vote"].forEach(key => {
+  ["hard", "flash", "vote", "banned"].forEach(key => {
     const btn = document.getElementById("twist-" + key);
     if (!btn) return;
     btn.setAttribute("aria-pressed", String(!!state.twists[key]));
@@ -5986,15 +6005,27 @@ function roundMultiplier(data, cat) {
   return (cat === data.wildcard ? 2 : 1) * (data.hardLetter ? 2 : 1);
 }
 
-function renderTwistNote(hardLetter, flashSeconds, untimed = false) {
+function renderTwistNote(hardLetter, flashSeconds, untimed = false, bannedLetter = null) {
   const note = document.getElementById("twistNote");
   if (!note) return;
   const parts = [];
   if (untimed) parts.push(inlineIcon("stopwatch") + escapeHtml(t("untimed_round_note")));
   if (hardLetter) parts.push(inlineIcon("flame") + escapeHtml(t("hard_letter_note")));
   if (flashSeconds) parts.push(inlineIcon("bolt") + escapeHtml(t("flash_round_note", { s: flashSeconds })));
-  note.innerHTML = parts.join(" · ");
+  if (bannedLetter) parts.push(inlineIcon("prohibida") + escapeHtml(t("banned_letter_note", { x: bannedLetter })));
+  // Cada aviso va en su propio bloque: si son varios, se acomodan uno abajo del otro en vez de aplastarse.
+  note.innerHTML = parts.map(p => `<span class="twist-part">${p}</span>`).join("");
   note.style.display = parts.length ? "flex" : "none";
+}
+
+// Candidatas para la letra prohibida: comunes, así la ronda tiene gracia, pero ni la A ni la E
+// (con esas casi no quedarían palabras).
+const BANNED_LETTER_CANDIDATES = ["O", "R", "S", "L", "I", "U", "T", "C", "N", "M"];
+
+// ¿La palabra tiene la letra prohibida de la ronda? (sin mirar tildes ni mayúsculas)
+function hasBannedLetter(raw, banned) {
+  if (!banned || !raw) return false;
+  return normalizeAnswer(raw).replace(/[^a-zñ]/g, "").includes(normalizeAnswer(banned));
 }
 
 function hostStartGame() {
@@ -6023,6 +6054,9 @@ function hostStartGame() {
   const lastFlash = (state.room.lastFlashRound || 0) < round ? (state.room.lastFlashRound || 0) : 0;
   const flashAllowed = round > 1 && (!lastFlash || round - lastFlash >= FLASH_MIN_GAP);
   const flash = !!twists.flash && flashAllowed && Math.random() < FLASH_CHANCE;
+  // Letra prohibida: una común que no sea la de la ronda (si no, no se podría escribir nada).
+  const bannedOptions = BANNED_LETTER_CANDIDATES.filter(l => normalizeAnswer(l) !== normalizeAnswer(letter));
+  const bannedLetter = twists.banned ? bannedOptions[Math.floor(Math.random() * bannedOptions.length)] : null;
   const updates = {
     status: "playing",
     round,
@@ -6030,6 +6064,7 @@ function hostStartGame() {
     wildcard,
     usedLetters: used,
     hardLetter: !!twists.hard && HARD_LETTERS.includes(letter),
+    bannedLetter,
     roundDuration: flash ? FLASH_DURATION : (config.duration || state.duration),
     roundTimed: flash || config.timed !== false,
     lastFlashRound: flash ? round : (lastFlash || null),
@@ -6123,7 +6158,7 @@ function playOnlineRoundIntro(data) {
   spinLetterReveal(state.letter, () => {
     renderLetterHistory();
     renderWildcardNote();
-    renderTwistNote(!!data.hardLetter, flashSeconds, data.roundTimed === false);
+    renderTwistNote(!!data.hardLetter, flashSeconds, data.roundTimed === false, data.bannedLetter || null);
     beginPlayingOnline(data.roundStartAt, data.roundTimed !== false);
   });
 }
@@ -6541,6 +6576,7 @@ async function computeAndApplyScores(data, round) {
       }
       if (!answerMatchesLetter(raw, letter)) { classification[cat][pid] = { status: "badLetter" }; return; }
       if (isTrivialAnswer(raw)) { classification[cat][pid] = { status: "tooShort" }; return; }
+      if (hasBannedLetter(raw, data.bannedLetter)) { classification[cat][pid] = { status: "banned" }; return; }
       const norm = normalizeAnswer(raw);
       if (usedByPlayer[pid].has(norm)) { classification[cat][pid] = { status: "repeatedCat" }; return; }
       usedByPlayer[pid].add(norm);
@@ -6625,6 +6661,8 @@ async function computeAndApplyScores(data, round) {
         judgeInfo[`${cat}|${pid}`] = { letraInvalida: true };
       } else if (c.status === "tooShort") {
         judgeInfo[`${cat}|${pid}`] = { demasiadoCorta: true };
+      } else if (c.status === "banned") {
+        judgeInfo[`${cat}|${pid}`] = { letraProhibida: true };
       } else if (c.status === "repeatedCat") {
         judgeInfo[`${cat}|${pid}`] = { repetida: true };
       } else if (c.status === "joker") {
@@ -6785,6 +6823,8 @@ function renderOnlineResults(data) {
         extra = `<div style="font-size:11px; color:var(--text-support);">${t("doesnt_start_with", { letter: data.letter })}</div>`;
       } else if (info.demasiadoCorta) {
         extra = `<div style="font-size:11px; color:var(--text-support);">${t("answer_too_short")}</div>`;
+      } else if (info.letraProhibida) {
+        extra = `<div style="font-size:11px; color:var(--text-support);">${t("adv_reason_banned", { x: data.bannedLetter || "?" })}</div>`;
       } else if (info.repetida) {
         extra = `<div style="font-size:11px; color:var(--text-support);">${t("answer_repeated_cat")}</div>`;
       } else if (info.comodin) {
@@ -7326,6 +7366,7 @@ function onAnswerKeydown(e, el) {
 function onAnswerInput(el) {
   state.answers[el.dataset.cat] = el.value;
   if (state.adventureMode) el.classList.toggle("rule-bad", !!advRuleBreak(state.advLevel, el.value.trim()));
+  else if (state.room && state.room.bannedLetter) el.classList.toggle("rule-bad", !isJoker(el.value.trim()) && hasBannedLetter(el.value.trim(), state.room.bannedLetter));
   const isFilled = el.value.trim().length > 0;
   const wasFilled = el.classList.contains("filled");
   el.classList.toggle("filled", isFilled);

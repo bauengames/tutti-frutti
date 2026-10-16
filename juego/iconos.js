@@ -82,6 +82,10 @@
       '<rect x="28" y="56" width="44" height="8" rx="4" fill="' + C.pomelo + '"/>' +
       '<circle cx="42" cy="73" r="2.6" fill="' + C.tinta + '"/><circle cx="58" cy="73" r="2.6" fill="' + C.tinta + '"/><path d="M42 80 C46 84 54 84 58 80" stroke="' + C.tinta + '" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
       '<text x="27" y="24" font-family="Arial, sans-serif" font-weight="900" font-size="13" fill="' + C.pomelo + '">J</text>'),
+    // Letra prohibida (vuelta de tuerca del online): una ficha con una letra, tachada.
+    prohibida: svg('<rect x="24" y="24" width="52" height="52" rx="12" fill="' + C.crema + '"/>' +
+      '<text x="50" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="' + C.tinta + '">R</text>' +
+      '<circle cx="50" cy="50" r="38" fill="none" stroke="' + C.pomelo + '" stroke-width="9"/><path d="M23 23 L77 77" stroke="' + C.pomelo + '" stroke-width="9" stroke-linecap="round"/>'),
     objetivo: svg('<circle cx="50" cy="50" r="40" fill="' + C.pomelo + '"/><circle cx="50" cy="50" r="30" fill="#fff"/><circle cx="50" cy="50" r="20" fill="' + C.pomelo + '"/>' +
       '<circle cx="50" cy="50" r="10" fill="#fff"/><path d="M50 50 L84 16" stroke="' + C.tinta + '" stroke-width="5" stroke-linecap="round"/>' +
       '<path d="M84 16 L92 14 L86 22 Z M84 16 L86 8 L78 14 Z" fill="' + C.lima + '"/>'),
@@ -105,6 +109,7 @@
     return String(html).replace(re, function (e) { return e === "️" ? "" : '<span class="inline-icon">' + iconSvg(EMOJIS[e]) + "</span>"; });
   };
   // Botón del pack de Halloween (el texto lo pone la traducción; el dibujo va aparte).
+  document.querySelectorAll('[data-icon="prohibida"]').forEach(function (el) { el.innerHTML = iconSvg("prohibida"); });
   document.querySelectorAll(".pack-calabaza").forEach(function (el) { el.innerHTML = iconSvg("calabaza"); });
 
   // Saca los emojis de un texto que no puede llevar dibujos (placeholder, títulos simples).
