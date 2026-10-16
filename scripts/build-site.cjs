@@ -82,9 +82,9 @@ const GUIDES = [
     },
     pt: {
       nav: "Categorias de Stop",
-      title: "Categorias de Stop (Adedonha): 90 ideias | tutti.frutti",
-      description: "Mais de 90 categorias para Stop (Adedonha): clássicas, fáceis para crianças, difíceis, para adultos e temáticas de cinema, música, futebol e Brasil.",
-      ogTitle: "Categorias de Stop: ideias fáceis, difíceis e temáticas",
+      title: "Categorias de Adedonha (Stop): +90 ideias | tutti.frutti",
+      description: "Lista de categorias de Adedonha (Stop) prontas: clássicas, fáceis para crianças, difíceis, para adultos e temáticas de cinema, música, futebol e Brasil.",
+      ogTitle: "Categorias de Adedonha: ideias fáceis, difíceis e temáticas",
     },
   },
   {
@@ -104,9 +104,9 @@ const GUIDES = [
     },
     pt: {
       nav: "Folhas para imprimir",
-      title: "Folha de Stop (Adedonha) para imprimir | tutti.frutti",
-      description: "Baixe grátis três folhas de Stop em PDF tamanho A4: a clássica, uma para crianças e uma em branco para criar suas próprias categorias.",
-      ogTitle: "Folha de Stop para imprimir",
+      title: "Folha de Adedonha para imprimir (PDF grátis) | tutti.frutti",
+      description: "Baixe grátis três folhas de Adedonha (Stop) em PDF A4: a clássica, uma para crianças e uma em branco para criar suas próprias categorias.",
+      ogTitle: "Folha de Adedonha para imprimir",
     },
   },
   {
