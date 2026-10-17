@@ -47,6 +47,7 @@ async function puntajes(fecha) {
   const datos = r.ok ? await r.json() : null;
   const lista = Object.values(datos || {}).map((x) => Number(x && x.score) || 0).sort((a, b) => a - b);
   memoria[fecha] = { at: Date.now(), lista };
+  Object.keys(memoria).forEach((k) => { if (Date.now() - memoria[k].at > CACHE_MS) delete memoria[k]; });
   return lista;
 }
 
@@ -56,6 +57,10 @@ exports.handler = async (event) => {
   try { pedido = JSON.parse(event.body || "{}"); } catch (e) { return responder(400, { error: "pedido" }); }
   const fecha = String(pedido.fecha || "");
   if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha)) return responder(400, { error: "fecha" });
+  // Solo fechas cercanas (el desafío de hoy, con margen por zonas horarias): así nadie puede hacer que la
+  // función lea la base para cualquier fecha ni llenar la memoria de fechas inventadas.
+  const dias = (Date.parse(fecha + "T12:00:00Z") - Date.now()) / 86400000;
+  if (!(dias > -3 && dias < 2)) return responder(400, { error: "fecha" });
   try {
     const lista = await puntajes(fecha);
     const salida = { jugaron: lista.length };

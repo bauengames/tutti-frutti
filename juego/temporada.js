@@ -93,10 +93,13 @@
     if (!t || t.id !== T.id) t = { id: T.id, xp: 0 };
     return t;
   }
+  // Premios ya cobrados. Se guardan también en progress.temporada.cobrados: la lista "counted" solo
+  // conserva las últimas 80 marcas y, jugando mucho, las del pase se borraban y el premio se podía volver a cobrar.
   function cobrados(T) {
-    var c = getProgress().counted || [];
+    var p = getProgress(), c = p.counted || [];
+    var propios = p.temporada && p.temporada.id === T.id && Array.isArray(p.temporada.cobrados) ? p.temporada.cobrados : [];
     var lista = [];
-    for (var n = 1; n <= TOTAL; n++) if (c.indexOf("pase:" + T.id + ":" + n) >= 0) lista.push(n);
+    for (var n = 1; n <= TOTAL; n++) if (propios.indexOf(n) >= 0 || c.indexOf("pase:" + T.id + ":" + n) >= 0) lista.push(n);
     return lista;
   }
   function alcanzados(T) { return Math.min(TOTAL, Math.floor(datos(T).xp / XP_POR_PREMIO)); }
@@ -146,8 +149,12 @@
     var T = APP.temporadaActual();
     if (!T || n > alcanzados(T)) return;
     var clave = "pase:" + T.id + ":" + n;
-    if ((getProgress().counted || []).indexOf(clave) >= 0) return;
-    bumpProgress(function () {}, clave);
+    if (cobrados(T).indexOf(n) >= 0) return;
+    bumpProgress(function (p) {
+      var t = p.temporada && p.temporada.id === T.id ? p.temporada : { id: T.id, xp: 0 };
+      t.cobrados = (Array.isArray(t.cobrados) ? t.cobrados : []).concat([n]);
+      p.temporada = t;
+    }, clave);
     var p = premios(T)[n - 1];
     var w = getWallet();
     if (p.i) w.items[p.i] = (w.items[p.i] || 0) + 1;

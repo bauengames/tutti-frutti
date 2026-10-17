@@ -8347,8 +8347,9 @@ function checkStreakMilestones() {
   const goal = STREAK_GOALS.find(g => g[0] === n);
   if (!goal) return;
   const key = "racha:" + dayKey(-(n - 1)) + ":" + n;
-  if ((p.counted || []).includes(key)) return;
-  bumpProgress(() => {}, key);
+  // También en rachaPagada: "counted" guarda solo las últimas 80 marcas y jugando mucho el mismo día se podía borrar.
+  if (p.rachaPagada === key || (p.counted || []).includes(key)) return;
+  bumpProgress(q => { q.rachaPagada = key; }, key);
   addSeeds(goal[1]);
   setTimeout(() => { launchConfetti(); advToast(iconSvg("flame"), t("streak_goal_toast", { n, s: goal[1] })); }, 600);
 }
@@ -11031,6 +11032,7 @@ function mergeSyncValue(key, localRaw, remoteRaw) {
       out.lastDay = newer.lastDay || null;
       out.dayStreak = newer.dayStreak || 0;
       out.ligaClosed = [L.ligaClosed || "", R.ligaClosed || ""].sort().pop() || undefined;
+      out.rachaPagada = [L.rachaPagada || "", R.rachaPagada || ""].sort().pop() || undefined;
       out.unlocked = [...new Set([...(R.unlocked || []), ...(L.unlocked || [])])];
       out.counted = [...new Set([...(R.counted || []), ...(L.counted || [])])].slice(-80);
       out.achClaimed = [...new Set([...(R.achClaimed || []), ...(L.achClaimed || [])])];
@@ -11040,7 +11042,7 @@ function mergeSyncValue(key, localRaw, remoteRaw) {
       if (L.regalos || R.regalos) out.regalos = fecha(L.regalos) > fecha(R.regalos) ? L.regalos : (R.regalos || L.regalos);
       const lt = L.temporada, rt = R.temporada;
       if (lt || rt) {
-        if (lt && rt && lt.id === rt.id) out.temporada = { ...rt, ...lt, xp: Math.max(lt.xp || 0, rt.xp || 0) };
+        if (lt && rt && lt.id === rt.id) out.temporada = { ...rt, ...lt, xp: Math.max(lt.xp || 0, rt.xp || 0), cobrados: [...new Set([...(rt.cobrados || []), ...(lt.cobrados || [])])] };
         else out.temporada = (lt && (!rt || String(lt.id) > String(rt.id))) ? lt : rt;
       }
       const lm = L.missions, rm = R.missions;
