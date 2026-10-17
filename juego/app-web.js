@@ -46,6 +46,21 @@
     }).then(function (r) { clearTimeout(id); return r; }, function (e) { clearTimeout(id); throw e; });
   };
 
+  // Notificaciones al iPhone de un amigo (función "avisar" del sitio; el servidor verifica cada caso).
+  // Como mucho una por tipo y persona cada 10 minutos desde este navegador.
+  var ultimos = {};
+  APP.avisar = function (tipo, destino, extra) {
+    var F = window.FB;
+    if (!F || !F.idToken || !destino || destino === F.uid) return;
+    var clave = tipo + ":" + destino;
+    if (ultimos[clave] && Date.now() - ultimos[clave] < 600000) return;
+    ultimos[clave] = Date.now();
+    F.idToken().then(function (token) {
+      if (!token) return;
+      return apiPost("avisar", Object.assign({ idToken: token, tipo: tipo, destino: destino }, extra || {}), 10000);
+    }).catch(function () {});
+  };
+
   // Vibración corta en los celulares que la tienen.
   var PATRONES = { bien: [30], aviso: [40], error: [60, 40, 60], fuerte: [80] };
   window.vibrar = function (tipo) { try { if (typeof vibrate === "function") vibrate(PATRONES[tipo] || [30]); } catch (e) { /* nada */ } };

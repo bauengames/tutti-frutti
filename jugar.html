@@ -2176,6 +2176,8 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
   };
 
   // ---------- Cuenta de Google (opcional) ----------
+  // Credencial del jugador para las funciones del servidor que la verifican (avisar).
+  window.FB.idToken = () => (auth.currentUser ? auth.currentUser.getIdToken() : Promise.resolve(null));
   window.FB.user = () => {
     const u = auth.currentUser;
     if (!u) return null;
@@ -2748,6 +2750,9 @@ const I18N = {
     rematch_wanted: "{names} quiere la revancha. ¡Tocá Revancha para arrancar!",
     friend_duel_hint: "Jugás una ronda y a {name} le aparece el duelo en su sección de duelos.",
     duel_sent_to_friend: "Ya se lo mandamos a {name}: le aparece en sus duelos.",
+    duel_sent_title: "¡Le llegó a {name}!",
+    duel_sent_lead: "Sacaste {score} puntos. Ya le apareció en sus duelos y le avisamos. Cuando lo juegue, acá ves quién ganó.",
+    duel_send_failed: "No pudimos mandárselo directo a {name}. Mandale el link con el botón de abajo.",
     duels_inbox_heading: "Te desafiaron",
     duels_inbox_row: "{name} te desafió",
     duels_inbox_sub: "Sacó {score} pts. ¿Le ganás?",
@@ -3448,6 +3453,9 @@ const I18N = {
     rematch_wanted: "{names} wants a rematch. Tap Rematch to start!",
     friend_duel_hint: "You play a round and the duel shows up in {name}'s duels.",
     duel_sent_to_friend: "We sent it to {name}: it shows up in their duels.",
+    duel_sent_title: "{name} got it!",
+    duel_sent_lead: "You scored {score} points. It's already in their duels and we let them know. When they play, you'll see who won here.",
+    duel_send_failed: "We couldn't send it straight to {name}. Send them the link with the button below.",
     duels_inbox_heading: "You've been challenged",
     duels_inbox_row: "{name} challenged you",
     duels_inbox_sub: "Scored {score} pts. Can you win?",
@@ -4148,6 +4156,9 @@ const I18N = {
     rematch_wanted: "{names} quer a revanche. Toque em Revanche para começar!",
     friend_duel_hint: "Você joga uma rodada e o duelo aparece nos duelos de {name}.",
     duel_sent_to_friend: "Já enviamos para {name}: aparece nos duelos da pessoa.",
+    duel_sent_title: "{name} recebeu!",
+    duel_sent_lead: "Você fez {score} pontos. Já apareceu nos duelos da pessoa e avisamos. Quando jogar, você vê aqui quem ganhou.",
+    duel_send_failed: "Não conseguimos enviar direto para {name}. Mande o link com o botão abaixo.",
     duels_inbox_heading: "Te desafiaram",
     duels_inbox_row: "{name} te desafiou",
     duels_inbox_sub: "Fez {score} pts. Você ganha?",
@@ -8009,6 +8020,7 @@ async function addFriendByCode(raw) {
     // Las dos listas a la vez: en la del otro solo se puede anotar quien tiene su código.
     await F.update(F.ref(F.db), { [`friends/${F.uid}/${fid}`]: code, [`friends/${fid}/${F.uid}`]: code });
     track("friend_add");
+    if (window.APP && APP.avisar) APP.avisar("amigo", fid);
     const fsnap = await F.get(F.ref(F.db, `profiles/${fid}`)).catch(() => null);
     const name = fsnap && fsnap.exists() ? fsnap.val().name : "";
     seedToast(t("friends_added", { name: name || formatFriendCode(code) }));
@@ -10582,6 +10594,7 @@ async function finishDuelRound() {
     if (!uid) throw new Error("sin identidad");
     const ref = window.FB.ref(window.FB.db, "duels/" + duel.id);
     state.duelSentTo = null;
+    state.duelSendFailed = null;
     if (role === "creator") {
       await window.FB.set(ref, {
         letter: duel.letter, categories: duel.categories, wildcard: duel.wildcard, duration: duel.duration,
@@ -10596,8 +10609,11 @@ async function finishDuelRound() {
           });
           state.duelSentTo = target.name;
           track("duel_friend_sent");
+          // Si el amigo tiene la app de iPhone, le llega una notificación (el servidor verifica que sea cierto).
+          if (window.APP && APP.avisar) APP.avisar("duelo", target.uid, { duelo: duel.id });
         } catch (e) {
           console.error("No se pudo mandar el duelo al amigo", e);
+          state.duelSendFailed = target.name;
         }
       }
     } else {
@@ -10605,6 +10621,11 @@ async function finishDuelRound() {
       window.FB.remove(window.FB.ref(window.FB.db, `duelInbox/${uid}/${duel.id}`)).catch(() => {});
     }
     const snap = await window.FB.get(ref);
+    // Si le ganaste al que creó el duelo, se le avisa en el iPhone (si tiene la app).
+    const datosDuelo = snap.val() || {};
+    if (role !== "creator" && window.APP && APP.avisar && datosDuelo.creator && datosDuelo.creator.uid !== uid && score > (datosDuelo.creator.score || 0)) {
+      APP.avisar("duelo_ganado", datosDuelo.creator.uid, { duelo: duel.id });
+    }
     showDuelResult(duel.id, snap.val(), true);
     addSeeds(seedsForScore(score));
   });
@@ -10836,7 +10857,13 @@ function showDuelResult(id, data, fresh) {
   if (isCreator) {
     title.textContent = t(fresh ? "duel_created_title" : "duel_yours_title");
     lead.textContent = rivals.length ? t("duel_created_lead", { score: creator.score || 0 }) : t("duel_created_lead", { score: creator.score || 0 }) + " " + t("duel_waiting_rivals");
-    if (fresh && state.duelSentTo) lead.textContent += " " + t("duel_sent_to_friend", { name: state.duelSentTo });
+    // Duelo a un amigo: le llegó directo, así que el link pasa a ser opcional (para retar a alguien más).
+    if (fresh && state.duelSentTo) {
+      title.textContent = t("duel_sent_title", { name: state.duelSentTo });
+      lead.textContent = t("duel_sent_lead", { score: creator.score || 0 });
+    } else if (fresh && state.duelSendFailed) {
+      lead.textContent = t("duel_send_failed", { name: state.duelSendFailed });
+    }
   } else {
     const mine = mineEntry.score || 0, theirs = creator.score || 0;
     const key = mine > theirs ? "duel_win" : (mine < theirs ? "duel_lose" : "duel_tie");
@@ -10871,7 +10898,11 @@ function showDuelResult(id, data, fresh) {
       <span class="rank-name">${escapeHtml(p.name || "?")}</span>
       <span class="rank-score">${p.score || 0} pts</span>
     </div>`).join("");
-  document.getElementById("duelShareBtn").textContent = t(isCreator ? "duel_share_btn" : "duel_share_more_btn");
+  const enviadoDirecto = isCreator && fresh && !!state.duelSentTo;
+  const shareBtn = document.getElementById("duelShareBtn");
+  shareBtn.textContent = t(isCreator && !enviadoDirecto ? "duel_share_btn" : "duel_share_more_btn");
+  shareBtn.classList.toggle("btn-primary", !enviadoDirecto);
+  shareBtn.classList.toggle("btn-secondary", enviadoDirecto);
   document.getElementById("duelLinkInput").value = duelUrl(id);
   document.getElementById("duelNewBtn").style.display = isCreator ? "none" : "";
   showScreen("screen-duel-result");
