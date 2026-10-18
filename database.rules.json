@@ -152,6 +152,9 @@
           "titulo": {
             ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
           },
+          "ropa": {
+            ".validate": "newData.isString() && newData.val().length <= 160 && newData.val().matches(/^[a-z0-9_:,]*$/)"
+          },
           "$other": {
             ".validate": false
           },
@@ -183,6 +186,9 @@
           },
           "titulo": {
             ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+          },
+          "ropa": {
+            ".validate": "newData.isString() && newData.val().length <= 160 && newData.val().matches(/^[a-z0-9_:,]*$/)"
           },
           "$other": {
             ".validate": false
@@ -221,6 +227,12 @@
         },
         "duration": {
           ".validate": "newData.isNumber() && newData.val() >= 10 && newData.val() <= 120"
+        },
+        "modo": {
+          ".validate": "newData.isString() && newData.val().matches(/^(prohibida|largas|termina|lluvia)$/)"
+        },
+        "extra": {
+          ".validate": "newData.isString() && newData.val().matches(/^[A-Z]?$/)"
         },
         "createdAt": {
           ".validate": "newData.isNumber() && (data.exists() ? newData.val() === data.val() : newData.val() === now)"
@@ -407,6 +419,12 @@
         "bg": {
           ".validate": "newData.isString() && newData.val().length <= 20"
         },
+        "marco": {
+          ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+        },
+        "titulo": {
+          ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+        },
         "updatedAt": {
           ".validate": "newData.val() === now"
         },
@@ -427,6 +445,30 @@
         "$fid": {
           ".write": "auth != null && auth.token.email != null && $fid !== $uid && (auth.uid === $uid || (auth.uid === $fid && (!newData.exists() || newData.val() === root.child('profiles').child($uid).child('code').val())))",
           ".validate": "newData.isString() && newData.val().length <= 12"
+        }
+      }
+    },
+    "friendRequests": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$from": {
+          ".write": "auth != null && auth.token.email != null && $from !== $uid && ((auth.uid === $from && !data.exists()) || ((auth.uid === $uid || auth.uid === $from) && !newData.exists()))",
+          ".validate": "newData.hasChildren(['name', 'avatar', 'code', 'at']) && root.child('friendCodes').child(newData.child('code').val()).val() === $from",
+          "name": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
+          },
+          "avatar": {
+            ".validate": "newData.isString() && newData.val().length <= 8"
+          },
+          "code": {
+            ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9]{6,12}$/)"
+          },
+          "at": {
+            ".validate": "newData.val() === now"
+          },
+          "$other": {
+            ".validate": false
+          }
         }
       }
     },
@@ -464,6 +506,9 @@
               },
               "titulo": {
                 ".validate": "newData.isString() && newData.val().matches(/^[a-z_]{1,20}$/)"
+              },
+              "ropa": {
+                ".validate": "newData.isString() && newData.val().length <= 160 && newData.val().matches(/^[a-z0-9_:,]*$/)"
               },
               "$other": {
                 ".validate": false

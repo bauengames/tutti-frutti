@@ -8,6 +8,7 @@
 //   duelo_ganado  → el destino creó el duelo y el que pide lo jugó con más puntos.
 //   liga          → los dos están en el mismo grupo de la liga de esta semana y el que pide tiene más XP.
 //   amigo         → el que pide y el destino ya son amigos (los dos lados de la lista).
+//   solicitud     → el que pide le mandó una solicitud de amistad al destino (friendRequests/{destino}/{quien}).
 //   record        → son amigos y el mejor Contrarreloj del que pide es mayor que el del destino.
 //   prueba        → un aviso a uno mismo, para probar que las notificaciones llegan (solo a tu propio teléfono).
 // Límite: cada destino recibe como mucho un aviso de cada tipo cada cierto tiempo (avisos/{uid}/{tipo}).
@@ -16,11 +17,12 @@ const crypto = require("crypto");
 
 const PROYECTO = "tuttipuntofrutti";
 const BASE = "https://tuttipuntofrutti-default-rtdb.firebaseio.com";
-const ESPERA_MS = { duelo: 2 * 60 * 1000, duelo_ganado: 2 * 60 * 1000, liga: 6 * 60 * 60 * 1000, amigo: 24 * 60 * 60 * 1000, record: 6 * 60 * 60 * 1000, prueba: 60 * 1000 };
+const ESPERA_MS = { duelo: 2 * 60 * 1000, duelo_ganado: 2 * 60 * 1000, liga: 6 * 60 * 60 * 1000, amigo: 24 * 60 * 60 * 1000, solicitud: 24 * 60 * 60 * 1000, record: 6 * 60 * 60 * 1000, prueba: 60 * 1000 };
 
 const TEXTOS = {
   es: {
     amigo: ["¡Tenés un amigo nuevo!", "{n} te agregó como amigo. ¿Le mandás un duelo?"],
+    solicitud: ["¡Te quieren de amigo!", "{n} te mandó una solicitud de amistad."],
     record: ["¡Te superaron en Contrarreloj!", "{n} superó tu mejor puntaje. ¿Lo recuperás?"],
     prueba: ["¡Funciona!", "Las notificaciones de tutti.frutti te llegan bien."],
     duelo: ["¡Te desafiaron!", "{n} te mandó un duelo. ¿Te animás?"],
@@ -29,6 +31,7 @@ const TEXTOS = {
   },
   en: {
     amigo: ["You have a new friend!", "{n} added you as a friend. Send them a duel?"],
+    solicitud: ["New friend request!", "{n} sent you a friend request."],
     record: ["Your record was beaten!", "{n} beat your best Time Attack score. Win it back?"],
     prueba: ["It works!", "tutti.frutti notifications are reaching you."],
     duelo: ["You've been challenged!", "{n} sent you a duel. Up for it?"],
@@ -37,6 +40,7 @@ const TEXTOS = {
   },
   pt: {
     amigo: ["Você tem um amigo novo!", "{n} te adicionou como amigo. Que tal mandar um duelo?"],
+    solicitud: ["Pedido de amizade!", "{n} te mandou um pedido de amizade."],
     record: ["Te superaram no Contrarrelógio!", "{n} superou sua melhor pontuação. Vai recuperar?"],
     prueba: ["Funciona!", "As notificações do tutti.frutti estão chegando."],
     duelo: ["Você foi desafiado!", "{n} te mandou um duelo. Topa?"],
@@ -158,6 +162,11 @@ exports.handler = async (event) => {
       }
       nombre = yo.name;
       link = "tuttifrutti://jugar?amigos";
+    } else if (tipo === "solicitud") {
+      const pedidoAmistad = await leer(`friendRequests/${destino}/${quien}`);
+      if (!pedidoAmistad) return responder(403, { error: "no corresponde" });
+      nombre = pedidoAmistad.name;
+      link = "tuttifrutti://jugar?amigos";
     } else if (tipo === "liga") {
       const semana = semanaActual();
       if (pedido.semana !== semana || !/^[0-4]$/.test(String(pedido.div)) || !/^[0-9]{1,5}$/.test(String(pedido.grupo))) return responder(400, { error: "pedido" });
@@ -169,8 +178,8 @@ exports.handler = async (event) => {
     }
 
     // Límite: un aviso de cada tipo cada tanto, por destino.
-    // "amigo" se limita por cada par (un aviso por día de la misma persona); el resto, por destino.
-    const limite = tipo === "amigo" ? `avisos/${destino}/amigo_${quien}` : `avisos/${destino}/${tipo}`;
+    // "amigo" y "solicitud" se limitan por cada par (un aviso por día de la misma persona); el resto, por destino.
+    const limite = tipo === "amigo" || tipo === "solicitud" ? `avisos/${destino}/${tipo}_${quien}` : `avisos/${destino}/${tipo}`;
     const ultimo = await leer(limite);
     if (ultimo && Date.now() - ultimo < ESPERA_MS[tipo]) return responder(200, { ok: true, salteado: true });
     await escribir(limite, Date.now());
