@@ -406,3 +406,22 @@ body.app-guiando #screen-game .board { padding-top: 84px; }
 /* La liga, la Copa y el pase van juntos en el botón "Temporada" (juego/temporada.js). */
 #lobbyWrap .mode-grid #leagueBanner { display: none !important; }
 #leagueContent > .tp-seg { margin-bottom: 18px; }
+
+/* Duelos con modos (juego/duelos.js) */
+.dm-hoja { text-align: left; }
+.dm-hoja h2 { text-align: center; }
+.dm-hoja > .hint { text-align: center; margin: 4px 0 14px; }
+.dm-opciones { display: flex; flex-direction: column; gap: 8px; max-height: 60vh; overflow-y: auto; }
+.dm-opcion { display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 14px; border-radius: 16px; border: 1.5px solid var(--borde); background: rgba(var(--fg-rgb), .04);
+  color: var(--text); text-align: left; cursor: pointer; font-family: var(--font-body); }
+.dm-opcion:active { transform: scale(.98); }
+.dm-icono { flex: none; width: 34px; height: 34px; }
+.dm-icono svg { width: 100%; height: 100%; display: block; }
+.dm-texto { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dm-texto strong { font: 800 16px/1.2 var(--font-display); }
+.dm-texto small { font-size: 13px; line-height: 1.3; color: var(--text-muted); }
+.duel-modo { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin: 10px 0 0; }
+.duel-modo:empty { display: none; }
+.duel-modo-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: var(--radius-pill); background: var(--tinta); color: #FFD23F; font: 700 14px var(--font-body); }
+.duel-modo-chip .inline-icon svg, .duel-modo-chip svg { width: 18px; height: 18px; }
+.duel-modo-desc { font-size: 14px; opacity: .85; }

@@ -1873,6 +1873,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
         <div class="duel-intro-avatar" id="duelIntroAvatar"></div>
         <h2 id="duelIntroTitle"></h2>
         <p id="duelIntroLead"></p>
+        <p class="duel-modo" id="duelIntroModo"></p>
       </div>
       <div class="stats-grid">
         <div class="stat-card"><span class="stat-value" id="duelIntroCats"></span><span class="stat-label" data-i18n="adv_fact_cats">Categorías</span></div>
@@ -10572,6 +10573,8 @@ async function finishDuelRound() {
   const secondsLeft = Math.max(0, state.secondsLeft);
   const results = await judgeSoloAnswers(state.categories, state.answers, duel.letter, 1, "DUELO");
   if (!state.duelMode) return;
+  // Duelo con modo (juego/duelos.js, igual que en la app): la palabra que rompe la regla no suma.
+  if (window.APP && APP.reglaDuelo) results.forEach(r => { if (r.valid && !r.joker && APP.reglaDuelo(duel, r.val)) { r.valid = false; r.reason = "rule"; } });
   let score = 0, valid = 0;
   results.forEach(r => {
     if (!r.valid) return;
@@ -10598,6 +10601,7 @@ async function finishDuelRound() {
     if (role === "creator") {
       await window.FB.set(ref, {
         letter: duel.letter, categories: duel.categories, wildcard: duel.wildcard, duration: duel.duration,
+        ...(duel.modo ? { modo: duel.modo, extra: duel.extra || "" } : {}), // duelo con modo (juego/duelos.js)
         createdAt: window.FB.serverTimestamp(), creator: { uid, ...me },
       });
       const target = state.duelTarget;
@@ -10651,11 +10655,13 @@ function openDuelLink(id) {
       showDuelResult(id, data, false);
       return;
     }
-    state.pendingDuel = { id, letter: data.letter, categories: data.categories, wildcard: data.wildcard, duration: data.duration };
+    state.pendingDuel = { id, letter: data.letter, categories: data.categories, wildcard: data.wildcard, duration: data.duration, modo: data.modo, extra: data.extra };
     const c = data.creator || {};
     document.getElementById("duelIntroAvatar").innerHTML = mascotSvg("happy", AVATARS.includes(c.avatar) ? c.avatar : "🍏");
     document.getElementById("duelIntroTitle").textContent = t("duel_intro_title", { name: c.name || "?" });
     document.getElementById("duelIntroLead").textContent = t("duel_intro_lead", { score: c.score || 0 });
+    const modoIntro = document.getElementById("duelIntroModo");
+    if (modoIntro) modoIntro.innerHTML = window.APP && APP.duelModoHtml ? APP.duelModoHtml(data) : "";
     document.getElementById("duelIntroCats").textContent = (data.categories || []).length;
     document.getElementById("duelIntroTime").textContent = (data.duration || DUEL_DURATION) + " s";
     document.getElementById("duelName").value = document.getElementById("playerName").value.trim();
@@ -12065,6 +12071,7 @@ checkAchievements();
 <script src="/juego/iconos.js"></script>
 <script src="/juego/estilo.js"></script>
 <script src="/juego/aventura.js"></script>
+<script src="/juego/duelos.js"></script>
 <script src="/juego/frutigrama.js"></script>
 <script src="/juego/temporada.js"></script>
 <script src="/juego/copa.js"></script>
