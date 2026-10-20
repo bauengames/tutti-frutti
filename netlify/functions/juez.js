@@ -54,7 +54,7 @@ Criterios:
 - Nunca invalides una respuesta por mayúsculas, minúsculas, tildes o diéresis: "maria", "MARIA", "María" y "maría" son la misma respuesta.
 - Debe pertenecer razonablemente a la categoría.
 - Aceptá regionalismos de cualquier país hispanohablante (lunfardo, jerga peruana, mexicanismos, etc.), nombres populares y marcas reales cuando la categoría lo admite.
-- Aceptá errores menores de ortografía si la palabra es claramente reconocible.
+- Aceptá errores menores de ortografía si la palabra es claramente reconocible, salvo que el error cambie la primera letra de la palabra bien escrita: "qiwi" (kiwi), "zandía" (sandía), "vestruz" (avestruz), "omero" (Homero) o "sapallo" (zapallo) son inválidas, porque así se hace trampa con la letra de la ronda.
 - No conocer una palabra NO es motivo para rechazarla. Existen miles de marcas, comercios, lugares, equipos, artistas y personas locales que quizás no conozcas: si la respuesta podría razonablemente pertenecer a la categoría, es válida.
 - Muchas marcas, lugares y equipos se llaman como personas o como palabras comunes (por ejemplo Isadora, Mimo o Lucía son marcas argentinas): que suene a nombre de persona no invalida una respuesta en Marca, ni al revés.
 - Las respuestas de varias palabras son válidas ("Salto en alto", "Pez espada", "Milanesa a la napolitana", "Río de Janeiro").
@@ -77,7 +77,7 @@ Criteria:
 - Never reject an answer because of uppercase, lowercase or accents: "maria", "MARIA", "María" and "maría" are the same answer.
 - It must reasonably belong to the category.
 - Accept regional terms, slang, common names and real brands when the category allows it.
-- Accept minor spelling mistakes if the word is clearly recognizable.
+- Accept minor spelling mistakes if the word is clearly recognizable, unless the mistake changes the first letter of the correctly spelled word: "qiwi" (kiwi), "nife" (knife), "rite" (write) or "zukini" (zucchini) are invalid, because that's cheating on the round's letter.
 - Not knowing a word is NOT a reason to reject it. There are thousands of local brands, shops, places, teams, artists and people you may not know: if the answer could reasonably belong to the category, it is valid.
 - Many brands, places and teams are named like people or common words: sounding like a person's name doesn't invalidate a Brand answer, or the other way around.
 - Multi-word answers are valid ("High jump", "Swordfish", "Rio de Janeiro").
@@ -100,7 +100,7 @@ Critérios:
 - Nunca invalide uma resposta por maiúsculas, minúsculas ou acentos: "maria", "MARIA", "María" e "maría" são a mesma resposta.
 - Deve pertencer razoavelmente à categoria.
 - Aceite regionalismos, gírias, nomes populares e marcas reais quando a categoria permitir.
-- Aceite pequenos erros de ortografia se a palavra for claramente reconhecível.
+- Aceite pequenos erros de ortografia se a palavra for claramente reconhecível, a não ser que o erro mude a primeira letra da palavra bem escrita: "qiwi" (kiwi), "zapo" (sapo) ou "omem" (homem) são inválidas, porque assim se trapaceia com a letra da rodada.
 - Não conhecer uma palavra NÃO é motivo para rejeitá-la. Existem milhares de marcas, lojas, lugares, times, artistas e pessoas locais que você talvez não conheça: se a resposta puder razoavelmente pertencer à categoria, ela é válida.
 - Muitas marcas, lugares e times têm nome de pessoa ou de palavra comum: parecer nome de pessoa não invalida uma resposta em Marca, nem o contrário.
 - Respostas com várias palavras são válidas ("Salto em altura", "Peixe-espada", "Rio de Janeiro").
@@ -122,19 +122,19 @@ Preencha "motivo" com uma frase breve EM PORTUGUÊS somente quando "valida" for 
 const PROMPTS_APELACION = {
   es: `Sos el juez de apelación de un juego de tutti frutti (Stop, Basta). Otro juez rechazó estas respuestas y los jugadores apelaron, porque a veces rechaza palabras que sí corresponden.
 Revisá cada una con criterio amplio, como lo haría un grupo de amigos que juega: si la respuesta pertenece razonablemente a la categoría (aunque sea una disciplina, una variante, un caso particular, un regionalismo o algo poco conocido), es válida. Las respuestas de varias palabras valen. La letra inicial ya fue verificada: no la evalúes.
-Confirmá el rechazo SOLO si la respuesta claramente no corresponde a la categoría o no es una palabra real.
+Confirmá el rechazo SOLO si la respuesta claramente no corresponde a la categoría, no es una palabra real, o está mal escrita de forma que cambia su primera letra ("qiwi" por kiwi, "zandía" por sandía).
 Respondé SOLO con JSON, sin texto adicional ni bloques de código:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
 Completá "motivo" con una frase breve EN ESPAÑOL solo cuando "valida" sea false.`,
   en: `You are the appeals judge of a word game (Scattergories-style). Another judge rejected these answers and the players appealed, because it sometimes rejects words that do fit.
 Review each one broadly, the way a group of friends playing would: if the answer reasonably belongs to the category (even if it's a discipline, a variant, a specific case, a regional term or something little known), it is valid. Multi-word answers count. The first letter was already checked: don't evaluate it.
-Confirm the rejection ONLY if the answer clearly doesn't fit the category or isn't a real word.
+Confirm the rejection ONLY if the answer clearly doesn't fit the category, isn't a real word, or is misspelled in a way that changes its first letter ("qiwi" for kiwi, "nife" for knife).
 Respond ONLY with JSON, no extra text or code fences:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
 Fill in "motivo" with a short reason IN ENGLISH only when "valida" is false.`,
   pt: `Você é o juiz de apelação de um jogo de palavras (Adedanha, Stop). Outro juiz rejeitou estas respostas e os jogadores apelaram, porque às vezes ele rejeita palavras que correspondem.
 Revise cada uma com critério amplo, como faria um grupo de amigos jogando: se a resposta pertence razoavelmente à categoria (mesmo que seja uma modalidade, uma variante, um caso particular, um regionalismo ou algo pouco conhecido), ela é válida. Respostas com várias palavras valem. A letra inicial já foi verificada: não a avalie.
-Confirme a rejeição SOMENTE se a resposta claramente não corresponde à categoria ou não é uma palavra real.
+Confirme a rejeição SOMENTE se a resposta claramente não corresponde à categoria, não é uma palavra real, ou está escrita errado de um jeito que muda a primeira letra ("qiwi" por kiwi, "zapo" por sapo).
 Responda APENAS com JSON, sem texto adicional nem blocos de código:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
 Preencha "motivo" com uma frase breve EM PORTUGUÊS somente quando "valida" for false.`,
