@@ -5,7 +5,8 @@
 // Memoria del juez: lo que ya se decidió se guarda en Firebase (juezMemoria/{idioma}/{categoría}/{palabra})
 // y la próxima vez se responde sin preguntarle a la IA (más rápido y más barato).
 // - Válidas: se guardan siempre (las aceptó el juez o la apelación).
-// - Rechazadas: solo si las confirmó la apelación (el modelo más capaz), para no "aprender" errores del rápido.
+// - Rechazadas: solo si las confirmó la apelación (el modelo más capaz), para no "aprender" errores del rápido,
+//   y con la versión de las instrucciones (VERSION_RECHAZOS): si se mejoran, los rechazos viejos se revisan de nuevo.
 // Usa la cuenta de servicio (variable FIREBASE_SERVICE_ACCOUNT, la misma de avisar.js). El nodo no se puede
 // leer ni escribir desde los teléfonos (las reglas niegan todo lo que no está listado). Si la variable falta
 // o Firebase no contesta a tiempo, el juez funciona igual que antes, sin memoria.
@@ -13,6 +14,9 @@
 const crypto = require("crypto");
 const BASE_DATOS = "https://tuttipuntofrutti-default-rtdb.firebaseio.com";
 const TIMEOUT_MEMORIA_MS = 1200;
+// Versión de los rechazos guardados: al mejorar las instrucciones del juez se sube y los rechazos viejos
+// se vuelven a revisar (las válidas se mantienen). 2 = palabras con varios significados (24/10/2026).
+const VERSION_RECHAZOS = 2;
 
 const MAX_DISPUTAS = 30;
 const MAX_LARGO_PALABRA = 40;
@@ -54,6 +58,7 @@ Criterios:
 - Nunca invalides una respuesta por mayúsculas, minúsculas, tildes o diéresis: "maria", "MARIA", "María" y "maría" son la misma respuesta.
 - Debe pertenecer razonablemente a la categoría.
 - Aceptá regionalismos de cualquier país hispanohablante (lunfardo, jerga peruana, mexicanismos, etc.), nombres populares y marcas reales cuando la categoría lo admite.
+- Muchas palabras tienen más de un significado según el país: alcanza con que UNO de sus significados encaje en la categoría. Por ejemplo, en Parte del cuerpo valen "Pera" (la barbilla en Argentina), "Gamba" (pierna), "Coco" o "Mate" (cabeza), "Jeta" (cara), "Pata" (pierna) y "Cogote" (cuello); en Animal vale "Gato" aunque también sea una herramienta. Antes de rechazar, pensá si la palabra tiene otro significado, coloquial o regional, que sí corresponda.
 - Aceptá errores menores de ortografía si la palabra es claramente reconocible, salvo que el error cambie la primera letra de la palabra bien escrita: "qiwi" (kiwi), "zandía" (sandía), "vestruz" (avestruz), "omero" (Homero) o "sapallo" (zapallo) son inválidas, porque así se hace trampa con la letra de la ronda.
 - No conocer una palabra NO es motivo para rechazarla. Existen miles de marcas, comercios, lugares, equipos, artistas y personas locales que quizás no conozcas: si la respuesta podría razonablemente pertenecer a la categoría, es válida.
 - Muchas marcas, lugares y equipos se llaman como personas o como palabras comunes (por ejemplo Isadora, Mimo o Lucía son marcas argentinas): que suene a nombre de persona no invalida una respuesta en Marca, ni al revés.
@@ -77,6 +82,7 @@ Criteria:
 - Never reject an answer because of uppercase, lowercase or accents: "maria", "MARIA", "María" and "maría" are the same answer.
 - It must reasonably belong to the category.
 - Accept regional terms, slang, common names and real brands when the category allows it.
+- Many words have more than one meaning: it's enough for ONE of its meanings (including slang or regional ones) to fit the category. Before rejecting, consider whether the word has another meaning that does fit.
 - Accept minor spelling mistakes if the word is clearly recognizable, unless the mistake changes the first letter of the correctly spelled word: "qiwi" (kiwi), "nife" (knife), "rite" (write) or "zukini" (zucchini) are invalid, because that's cheating on the round's letter.
 - Not knowing a word is NOT a reason to reject it. There are thousands of local brands, shops, places, teams, artists and people you may not know: if the answer could reasonably belong to the category, it is valid.
 - Many brands, places and teams are named like people or common words: sounding like a person's name doesn't invalidate a Brand answer, or the other way around.
@@ -100,6 +106,7 @@ Critérios:
 - Nunca invalide uma resposta por maiúsculas, minúsculas ou acentos: "maria", "MARIA", "María" e "maría" são a mesma resposta.
 - Deve pertencer razoavelmente à categoria.
 - Aceite regionalismos, gírias, nomes populares e marcas reais quando a categoria permitir.
+- Muitas palavras têm mais de um significado: basta que UM deles (inclusive gíria ou regional) se encaixe na categoria. Antes de rejeitar, pense se a palavra tem outro significado que corresponda.
 - Aceite pequenos erros de ortografia se a palavra for claramente reconhecível, a não ser que o erro mude a primeira letra da palavra bem escrita: "qiwi" (kiwi), "zapo" (sapo) ou "omem" (homem) são inválidas, porque assim se trapaceia com a letra da rodada.
 - Não conhecer uma palavra NÃO é motivo para rejeitá-la. Existem milhares de marcas, lojas, lugares, times, artistas e pessoas locais que você talvez não conheça: se a resposta puder razoavelmente pertencer à categoria, ela é válida.
 - Muitas marcas, lugares e times têm nome de pessoa ou de palavra comum: parecer nome de pessoa não invalida uma resposta em Marca, nem o contrário.
@@ -122,18 +129,21 @@ Preencha "motivo" com uma frase breve EM PORTUGUÊS somente quando "valida" for 
 const PROMPTS_APELACION = {
   es: `Sos el juez de apelación de un juego de tutti frutti (Stop, Basta). Otro juez rechazó estas respuestas y los jugadores apelaron, porque a veces rechaza palabras que sí corresponden.
 Revisá cada una con criterio amplio, como lo haría un grupo de amigos que juega: si la respuesta pertenece razonablemente a la categoría (aunque sea una disciplina, una variante, un caso particular, un regionalismo o algo poco conocido), es válida. Las respuestas de varias palabras valen. La letra inicial ya fue verificada: no la evalúes.
+Si la palabra tiene más de un significado, en cualquier país hispanohablante (también coloquial o regional), alcanza con que UNO encaje: "Pera" vale como Parte del cuerpo (en Argentina es la barbilla), "Gamba" (pierna), "Coco" (cabeza).
 Confirmá el rechazo SOLO si la respuesta claramente no corresponde a la categoría, no es una palabra real, o está mal escrita de forma que cambia su primera letra ("qiwi" por kiwi, "zandía" por sandía).
 Respondé SOLO con JSON, sin texto adicional ni bloques de código:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
 Completá "motivo" con una frase breve EN ESPAÑOL solo cuando "valida" sea false.`,
   en: `You are the appeals judge of a word game (Scattergories-style). Another judge rejected these answers and the players appealed, because it sometimes rejects words that do fit.
 Review each one broadly, the way a group of friends playing would: if the answer reasonably belongs to the category (even if it's a discipline, a variant, a specific case, a regional term or something little known), it is valid. Multi-word answers count. The first letter was already checked: don't evaluate it.
+If the word has more than one meaning (including slang or regional ones), it's enough for ONE of them to fit.
 Confirm the rejection ONLY if the answer clearly doesn't fit the category, isn't a real word, or is misspelled in a way that changes its first letter ("qiwi" for kiwi, "nife" for knife).
 Respond ONLY with JSON, no extra text or code fences:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
 Fill in "motivo" with a short reason IN ENGLISH only when "valida" is false.`,
   pt: `Você é o juiz de apelação de um jogo de palavras (Adedanha, Stop). Outro juiz rejeitou estas respostas e os jogadores apelaram, porque às vezes ele rejeita palavras que correspondem.
 Revise cada uma com critério amplo, como faria um grupo de amigos jogando: se a resposta pertence razoavelmente à categoria (mesmo que seja uma modalidade, uma variante, um caso particular, um regionalismo ou algo pouco conhecido), ela é válida. Respostas com várias palavras valem. A letra inicial já foi verificada: não a avalie.
+Se a palavra tem mais de um significado (inclusive gíria ou regional), basta que UM deles se encaixe.
 Confirme a rejeição SOMENTE se a resposta claramente não corresponde à categoria, não é uma palavra real, ou está escrita errado de um jeito que muda a primeira letra ("qiwi" por kiwi, "zapo" por sapo).
 Responda APENAS com JSON, sem texto adicional nem blocos de código:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
@@ -262,7 +272,7 @@ async function recordar(idioma, disputas) {
       const r = await fetch(`${BASE_DATOS}/${ruta}.json`, { headers: { Authorization: "Bearer " + token } });
       const v = r.ok ? await r.json() : null;
       if (v === 1) return { id: d.id, valida: true, motivo: "" };
-      if (v && v.v === 0) return { id: d.id, valida: false, motivo: String(v.m || "").slice(0, 200) };
+      if (v && v.v === 0 && (v.p || 1) >= VERSION_RECHAZOS) return { id: d.id, valida: false, motivo: String(v.m || "").slice(0, 200) };
       return null;
     })), TIMEOUT_MEMORIA_MS);
     (resultados || []).forEach(x => { if (x) sabidas.set(x.id, x); });
@@ -284,7 +294,7 @@ async function aprender(idioma, disputas, veredictos, confirmadasPorApelacion) {
       if (!ruta) return null;
       let valor = null;
       if (v.valida) valor = 1;
-      else if (confirmadasPorApelacion.has(d.id)) valor = { v: 0, m: String(v.motivo || "").slice(0, 120) };
+      else if (confirmadasPorApelacion.has(d.id)) valor = { v: 0, m: String(v.motivo || "").slice(0, 120), p: VERSION_RECHAZOS };
       if (valor === null) return null;
       return fetch(`${BASE_DATOS}/${ruta}.json`, { method: "PUT", headers: { Authorization: "Bearer " + token }, body: JSON.stringify(valor) });
     }).filter(Boolean);

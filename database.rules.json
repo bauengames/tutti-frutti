@@ -600,6 +600,161 @@
           ".validate": false
         }
       }
+    },
+    "partidas": {
+      "$pid": {
+        ".read": "auth != null && $pid.matches(/^[A-Za-z0-9]{10}$/)",
+        ".write": "auth != null && $pid.matches(/^[A-Za-z0-9]{10}$/) && !data.exists() && newData.child('a').val() === auth.uid && (newData.child('b').val() === '-' || (newData.child('tipo').val() === 'amigo' && newData.child('b').val() !== auth.uid && root.child('friends').child(auth.uid).child(newData.child('b').val()).exists()) || (newData.child('tipo').val() === 'revancha' && newData.child('b').val() !== auth.uid && newData.child('b').val() !== 'frutibot' && ((root.child('partidas').child(newData.child('de').val()).child('a').val() === auth.uid && root.child('partidas').child(newData.child('de').val()).child('b').val() === newData.child('b').val()) || (root.child('partidas').child(newData.child('de').val()).child('b').val() === auth.uid && root.child('partidas').child(newData.child('de').val()).child('a').val() === newData.child('b').val()))))",
+        ".validate": "newData.hasChildren(['a', 'b', 'tipo', 'at'])",
+        "a": {
+          ".validate": "newData.isString() && newData.val().length <= 128"
+        },
+        "b": {
+          ".write": "auth != null && data.exists() && data.val() === '-' && root.child('partidas').child($pid).child('tipo').val() === 'azar' && ((newData.val() === auth.uid && root.child('partidas').child($pid).child('a').val() !== auth.uid) || (newData.val() === 'frutibot' && root.child('partidas').child($pid).child('a').val() === auth.uid))",
+          ".validate": "newData.isString() && newData.val().length <= 128"
+        },
+        "tipo": {
+          ".validate": "newData.isString() && newData.val().matches(/^(azar|amigo|revancha)$/)"
+        },
+        "at": {
+          ".validate": "newData.isNumber() && (data.exists() ? newData.val() === data.val() : newData.val() === now)"
+        },
+        "p": {
+          "$uid": {
+            ".write": "auth != null && (root.child('partidas').child($pid).child('a').val() === auth.uid || root.child('partidas').child($pid).child('b').val() === auth.uid) && (auth.uid === $uid || ($uid === 'frutibot' && root.child('partidas').child($pid).child('a').val() === auth.uid && root.child('partidas').child($pid).child('b').val() === 'frutibot'))",
+            ".validate": "newData.hasChildren(['n', 'f'])",
+            "n": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
+            },
+            "f": {
+              ".validate": "newData.isString() && newData.val().length <= 8"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "r": {
+          "$k": {
+            ".write": "auth != null && $k.matches(/^[0-2]$/) && !data.exists() && (root.child('partidas').child($pid).child('a').val() === auth.uid || root.child('partidas').child($pid).child('b').val() === auth.uid) && (newData.child('q').val() === auth.uid || (newData.child('q').val() === 'frutibot' && root.child('partidas').child($pid).child('b').val() === 'frutibot' && root.child('partidas').child($pid).child('a').val() === auth.uid))",
+            ".validate": "$k.matches(/^[0-2]$/) && newData.hasChildren(['l', 'c', 'w', 'q', 'at'])",
+            "l": {
+              ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 2"
+            },
+            "c": {
+              "$i": {
+                ".validate": "$i.matches(/^[0-9]$/) && newData.isString() && newData.val().length <= 40"
+              }
+            },
+            "w": {
+              ".validate": "newData.isString() && newData.val().length <= 40"
+            },
+            "q": {
+              ".validate": "newData.isString() && newData.val().length <= 128"
+            },
+            "at": {
+              ".validate": "newData.isNumber() && (data.exists() ? newData.val() === data.val() : newData.val() === now)"
+            },
+            "s": {
+              "$uid": {
+                ".write": "auth != null && !data.exists() && ((auth.uid === $uid && (root.child('partidas').child($pid).child('a').val() === auth.uid || root.child('partidas').child($pid).child('b').val() === auth.uid)) || ($uid === 'frutibot' && root.child('partidas').child($pid).child('b').val() === 'frutibot' && root.child('partidas').child($pid).child('a').val() === auth.uid))",
+                ".validate": "newData.hasChildren(['pt', 'v', 'at'])",
+                "pt": {
+                  ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 400"
+                },
+                "v": {
+                  ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 12"
+                },
+                "at": {
+                  ".validate": "newData.isNumber() && (data.exists() ? newData.val() === data.val() : newData.val() === now)"
+                },
+                "res": {
+                  "$i": {
+                    ".validate": "$i.matches(/^[0-9]$/) && newData.hasChildren(['ok'])",
+                    "v": {
+                      ".validate": "newData.isString() && newData.val().length <= 40"
+                    },
+                    "ok": {
+                      ".validate": "newData.isBoolean()"
+                    },
+                    "$other": {
+                      ".validate": false
+                    }
+                  }
+                },
+                "$other": {
+                  ".validate": false
+                }
+              }
+            },
+            "md": {
+              ".validate": "newData.isString() && newData.val().matches(/^(prohibida|largas|termina|lluvia)$/)"
+            },
+            "x": {
+              ".validate": "newData.isString() && newData.val().matches(/^[A-Z]$/)"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
+        },
+        "fin": {
+          ".write": "auth != null && !data.exists() && (root.child('partidas').child($pid).child('a').val() === auth.uid || root.child('partidas').child($pid).child('b').val() === auth.uid)",
+          ".validate": "newData.hasChildren(['g', 'por', 'at'])",
+          "g": {
+            ".validate": "newData.isString() && newData.val().length <= 128"
+          },
+          "por": {
+            ".validate": "newData.isString() && newData.val().matches(/^(puntos|abandono|rendicion)$/)"
+          },
+          "at": {
+            ".validate": "newData.isNumber()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "de": {
+          ".validate": "newData.isString() && newData.val().matches(/^[A-Za-z0-9]{10}$/)"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "misPartidas": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$pid": {
+          ".write": "auth != null && $pid.matches(/^[A-Za-z0-9]{10}$/) && (root.child('partidas').child($pid).child('a').val() === auth.uid || root.child('partidas').child($pid).child('b').val() === auth.uid) && (auth.uid === $uid || root.child('partidas').child($pid).child('a').val() === $uid || root.child('partidas').child($pid).child('b').val() === $uid)",
+          ".validate": "newData.hasChildren(['at'])",
+          "at": {
+            ".validate": "newData.isNumber()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
+    "buscando": {
+      ".read": "auth != null",
+      ".indexOn": [
+        "at"
+      ],
+      "$pid": {
+        ".write": "auth != null && $pid.matches(/^[A-Za-z0-9]{10}$/) && (newData.exists() ? (newData.child('u').val() === auth.uid && root.child('partidas').child($pid).child('a').val() === auth.uid && root.child('partidas').child($pid).child('b').val() === '-') : data.exists())",
+        ".validate": "newData.hasChildren(['u', 'at'])",
+        "u": {
+          ".validate": "newData.isString() && newData.val().length <= 128"
+        },
+        "at": {
+          ".validate": "newData.isNumber() && newData.val() === now"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
     }
   }
 }

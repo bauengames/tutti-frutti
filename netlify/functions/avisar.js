@@ -10,6 +10,7 @@
 //   amigo         → el que pide y el destino ya son amigos (los dos lados de la lista).
 //   solicitud     → el que pide le mandó una solicitud de amistad al destino (friendRequests/{destino}/{quien}).
 //   record        → son amigos y el mejor Contrarreloj del que pide es mayor que el del destino.
+//   turno         → duelo por turnos (partidas/{id}): los dos son jugadores del duelo y ahora le toca al destino.
 //   prueba        → un aviso a uno mismo, para probar que las notificaciones llegan (solo a tu propio teléfono).
 // Límite: cada destino recibe como mucho un aviso de cada tipo cada cierto tiempo (avisos/{uid}/{tipo}).
 
@@ -17,7 +18,7 @@ const crypto = require("crypto");
 
 const PROYECTO = "tuttipuntofrutti";
 const BASE = "https://tuttipuntofrutti-default-rtdb.firebaseio.com";
-const ESPERA_MS = { duelo: 2 * 60 * 1000, duelo_ganado: 2 * 60 * 1000, liga: 6 * 60 * 60 * 1000, amigo: 24 * 60 * 60 * 1000, solicitud: 24 * 60 * 60 * 1000, record: 6 * 60 * 60 * 1000, prueba: 60 * 1000 };
+const ESPERA_MS = { duelo: 2 * 60 * 1000, duelo_ganado: 2 * 60 * 1000, liga: 6 * 60 * 60 * 1000, amigo: 24 * 60 * 60 * 1000, solicitud: 24 * 60 * 60 * 1000, record: 6 * 60 * 60 * 1000, prueba: 60 * 1000, turno: 60 * 1000 };
 
 const TEXTOS = {
   es: {
@@ -28,6 +29,7 @@ const TEXTOS = {
     duelo: ["¡Te desafiaron!", "{n} te mandó un duelo. ¿Te animás?"],
     duelo_ganado: ["¡Te ganaron el duelo!", "{n} hizo más puntos que vos. ¿Revancha?"],
     liga: ["¡Te pasaron en la liga!", "{n} te pasó en la liga de esta semana. Jugá y recuperá tu lugar."],
+    turno: ["¡Te toca!", "{n} jugó su turno en el duelo. ¡Te toca!"],
   },
   en: {
     amigo: ["You have a new friend!", "{n} added you as a friend. Send them a duel?"],
@@ -37,6 +39,7 @@ const TEXTOS = {
     duelo: ["You've been challenged!", "{n} sent you a duel. Up for it?"],
     duelo_ganado: ["You lost the duel!", "{n} scored more than you. Rematch?"],
     liga: ["You were overtaken!", "{n} passed you in this week's league. Play and take your spot back."],
+    turno: ["Your turn!", "{n} played their turn in your duel. Your move!"],
   },
   pt: {
     amigo: ["Você tem um amigo novo!", "{n} te adicionou como amigo. Que tal mandar um duelo?"],
@@ -46,6 +49,7 @@ const TEXTOS = {
     duelo: ["Você foi desafiado!", "{n} te mandou um duelo. Topa?"],
     duelo_ganado: ["Você perdeu o duelo!", "{n} fez mais pontos que você. Revanche?"],
     liga: ["Te passaram na liga!", "{n} te passou na liga desta semana. Jogue e recupere seu lugar."],
+    turno: ["Sua vez!", "{n} jogou o turno no duelo. Sua vez!"],
   },
 };
 
@@ -167,6 +171,13 @@ exports.handler = async (event) => {
       if (!pedidoAmistad) return responder(403, { error: "no corresponde" });
       nombre = pedidoAmistad.name;
       link = "tuttifrutti://jugar?amigos";
+    } else if (tipo === "turno") {
+      if (!/^[A-Za-z0-9]{10}$/.test(String(pedido.partida || ""))) return responder(400, { error: "pedido" });
+      const p = await leer(`partidas/${pedido.partida}`);
+      const jugadores = p ? [p.a, p.b] : [];
+      if (!p || p.fin || !jugadores.includes(quien) || !jugadores.includes(destino)) return responder(403, { error: "no corresponde" });
+      nombre = (p.p && p.p[quien] && p.p[quien].n) || null;
+      link = "tuttifrutti://jugar?partida=" + pedido.partida;
     } else if (tipo === "liga") {
       const semana = semanaActual();
       if (pedido.semana !== semana || !/^[0-4]$/.test(String(pedido.div)) || !/^[0-9]{1,5}$/.test(String(pedido.grupo))) return responder(400, { error: "pedido" });
@@ -178,8 +189,8 @@ exports.handler = async (event) => {
     }
 
     // Límite: un aviso de cada tipo cada tanto, por destino.
-    // "amigo" y "solicitud" se limitan por cada par (un aviso por día de la misma persona); el resto, por destino.
-    const limite = tipo === "amigo" || tipo === "solicitud" ? `avisos/${destino}/${tipo}_${quien}` : `avisos/${destino}/${tipo}`;
+    // "amigo", "solicitud" y "turno" se limitan por cada par (un aviso por día de la misma persona); el resto, por destino.
+    const limite = tipo === "amigo" || tipo === "solicitud" || tipo === "turno" ? `avisos/${destino}/${tipo}_${quien}` : `avisos/${destino}/${tipo}`;
     const ultimo = await leer(limite);
     if (ultimo && Date.now() - ultimo < ESPERA_MS[tipo]) return responder(200, { ok: true, salteado: true });
     await escribir(limite, Date.now());
