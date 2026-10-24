@@ -915,4 +915,6 @@
   }
   APP.alPintarInicio(tarjeta);
   tarjeta();
+  // /jugar?frutigrama abre directo el acertijo (lo usa la página de inicio del sitio).
+  if (/[?&]frutigrama\b/.test(location.search)) setTimeout(function () { appAbrirFrutigrama(); }, 0);
 })();
