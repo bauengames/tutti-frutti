@@ -48,9 +48,9 @@
   var TEMPORADAS = [
     { id: "t1", emoji: "cerezo", nombre: { es: "Primavera", en: "Spring", pt: "Primavera" }, desde: "2026-10-04", hasta: "2026-11-15",
       icono: "primavera", tema: "lima__lavanda", acc: ["balloon", "sparkles", "tophat", "crown"] },
-    { id: "t2", emoji: "sun", nombre: { es: "Verano", en: "Summer", pt: "Verão" }, desde: "2026-11-16", hasta: "2026-12-27",
+    { id: "t2", emoji: "sun", nombre: { es: "Verano", en: "Summer", pt: "Verão" }, desde: "2026-11-16", hasta: "2027-01-06",
       icono: "verano", tema: "mandarina__noche", acc: ["icecream", "straw", "mustache", "trophy"] },
-    { id: "t3", emoji: "mascara", nombre: { es: "Carnaval", en: "Carnival", pt: "Carnaval" }, desde: "2026-12-28", hasta: "2027-02-14",
+    { id: "t3", emoji: "mascara", nombre: { es: "Carnaval", en: "Carnival", pt: "Carnaval" }, desde: "2027-01-07", hasta: "2027-02-14", // junto con el mundo Carnaval de la Aventura, cuando termina la Navidad
       icono: "carnaval", tema: "sandia__lavanda", acc: ["party", "bowtie", "mic", "beanie"] },
   ];
   if (APP.hemisferioSur && !APP.hemisferioSur()) {

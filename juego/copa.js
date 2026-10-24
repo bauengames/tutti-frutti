@@ -146,9 +146,11 @@
 
   function sortear(R) {
     var letras = [].concat.apply([], R.letras.map(function (k) { return ADV_LETTERS[k]; }));
-    var letra = letras[Math.floor(Math.random() * letras.length)];
     var pool = [].concat(ADV_CATS.easy, ADV_CATS.medium).sort(function () { return Math.random() - 0.5; });
-    return { letra: letra, cats: pool.slice(0, R.cats) };
+    var cats = pool.slice(0, R.cats);
+    if (window.letrasPosibles) letras = letrasPosibles(letras, cats); // nada de Color con Q (letras.js)
+    var letra = letras[Math.floor(Math.random() * letras.length)];
+    return { letra: letra, cats: cats };
   }
   // El rival: pide palabras a la IA (como Frutibot) y se queda con una parte según su nivel.
   function respuestasRival(R, letra, cats) {

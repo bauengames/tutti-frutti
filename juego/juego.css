@@ -425,3 +425,114 @@ body.app-guiando #screen-game .board { padding-top: 84px; }
 .duel-modo-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: var(--radius-pill); background: var(--tinta); color: #FFD23F; font: 700 14px var(--font-body); }
 .duel-modo-chip .inline-icon svg, .duel-modo-chip svg { width: 18px; height: 18px; }
 .duel-modo-desc { font-size: 14px; opacity: .85; }
+
+/* ---------- Online más claro (juego/online.js, puntajes.js, revision.js; copiado de app.css) ---------- */
+/* Resultados de cada ronda online (app-puntajes.js): puesto arriba, tabla con lo de la ronda, por qué valió cada palabra y qué puso cada rival. */
+.pz-online .hero-band .score-key { display: none; }
+.pz-online .ranking { margin: 4px 0 18px; }
+.pz-online .ranking .section-title { margin-bottom: 10px; }
+.pz-dif { display: block; font-size: 15px; opacity: .8; margin-top: 2px; }
+.pz-gana { flex: none; font: 700 13px var(--font-mono); color: var(--lima); background: rgba(182, 239, 60, .12); border-radius: var(--radius-pill); padding: 3px 9px; }
+.pz-gana.cero { color: var(--text-muted); background: var(--crema-08); }
+html[data-light] .pz-gana { color: var(--tinta); background: rgba(182, 239, 60, .5); }
+html[data-light] .pz-gana.cero { color: var(--text-muted); background: var(--crema-08); }
+.pz-extra { flex-basis: 100%; min-width: 0; }
+.pz-motivo { margin: 0; font: 600 13px var(--font-body); color: var(--text-muted); }
+.rt-bien .pz-motivo { color: var(--text); opacity: .85; }
+.pz-otros { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; }
+.pz-otro { display: inline-flex; align-items: baseline; gap: 5px; max-width: 100%; padding: 4px 10px; border-radius: var(--radius-pill); background: var(--crema-08); font: 500 13px var(--font-body); color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pz-otro b { font-weight: 700; color: var(--text-muted); }
+.pz-otro i { font: 700 12px var(--font-mono); font-style: normal; color: var(--text-muted); }
+.pz-otro i.si { color: var(--lima); }
+/* ---------- Online más fácil (app-online.js) ---------- */
+/* El código se ve recién en la sala; las categorías sin caja con scroll propio. */
+html.app #roomFieldCreate { display: none !important; }
+html.app .cat-picker-grid { max-height: none; overflow: visible; }
+#lobbyWrap.ol-plegado #hostConfigFields { display: none !important; }
+.ol-resumen { display: flex; align-items: center; gap: 12px; padding: 14px 16px; margin: 4px 0 16px; border-radius: 18px; border: 1.5px solid var(--borde); background: var(--surface); }
+.ol-resumen-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.ol-resumen-txt .label { margin: 0; }
+.ol-resumen-txt .label:empty { display: none; }
+.ol-resumen-txt strong { font: 700 15px/1.35 var(--font-body); }
+.ol-cambiar { flex: none; min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--primary); background: none; color: var(--primary-texto, var(--primary)); font: 700 14px var(--font-body); cursor: pointer; }
+.ol-unirme input { flex: 1; min-width: 0; }
+.ol-azar { margin: 4px 0 16px; }
+.ol-azar-nota { margin: 0 0 18px; font: 500 15px/1.45 var(--font-body); color: var(--crema-72); }
+.ol-azar-duelo { padding: 14px 16px; border-radius: 18px; border: 1.5px solid var(--borde); background: var(--surface); }
+.ol-azar-duelo p { margin: 0 0 12px; font: 500 14px/1.4 var(--font-body); color: var(--crema-72); }
+.ol-sala { margin: 14px 0 6px; }
+.ol-sala-reglas { margin: 0 0 12px; text-align: center; font: 600 14px/1.4 var(--font-body); color: var(--crema-72); }
+.ol-sala-botones { display: flex; gap: 10px; }
+.ol-sala-botones .btn { flex: 1; min-height: 48px; }
+.ol-amigo { gap: 12px; }
+.ol-amigo > span:nth-child(2) { flex: 1; min-width: 0; }
+/* Las tres pestañas de Online en una fila también en iPhone chico. */
+@media (max-width: 380px) {
+  html.app .mode-tabs { flex-wrap: nowrap; }
+  html.app .mode-tab { flex: 1 1 0; min-width: 0; padding: 12px 4px; font-size: 15px; }
+}
+.pz-rondas { display: block; margin-top: 2px; font: 600 12px var(--font-mono); color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* "Revisá las respuestas" (app-revision.js): un renglón por jugador; reacciones y objetar en una hoja al tocar la palabra. */
+.rv-corto { margin: 6px 0 14px; font: 500 15px var(--font-body); color: var(--text-muted); }
+.rv-como { background: none; border: 0; padding: 0; color: var(--text); font: 700 15px var(--font-body); text-decoration: underline; cursor: pointer; }
+.rv-cat { background: var(--surface); border-radius: var(--radius-card); padding: 10px 14px 4px; margin: 0 0 10px; }
+.rv-titulo { display: flex; align-items: center; gap: 6px; margin: 2px 0 4px; font: 700 12px var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); }
+.rv-fila { width: 100%; display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 6px 0; border: 0; border-top: 1px solid var(--borde); background: none; color: var(--text); text-align: left; font: inherit; }
+.rv-titulo + .rv-fila { border-top: 0; }
+button.rv-fila { cursor: pointer; }
+button.rv-fila:active { background: var(--crema-08); }
+.rv-quien { flex: 0 0 34%; min-width: 0; display: flex; align-items: center; font: 500 14px var(--font-body); color: var(--text-muted); }
+.rv-quien .player-avatar, .rv-quien .player-dot { flex: none; }
+.rv-nombre { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rv-val { flex: 1; min-width: 36%; font: 600 17px/1.25 var(--font-body); overflow-wrap: anywhere; }
+.rv-fila.vacia .rv-val { color: rgba(var(--fg-rgb), .35); font-weight: 400; font-style: italic; }
+.rv-fila.mia .rv-nombre { color: var(--text); font-weight: 700; }
+.rv-marcas { flex: none; display: flex; gap: 4px; align-items: center; }
+.rv-reac { display: inline-flex; align-items: center; gap: 2px; padding: 2px 7px 2px 4px; border-radius: 999px; background: var(--crema-08); font: 700 11px var(--font-mono); color: var(--text-muted); }
+.rv-reac.mia { background: rgba(255, 94, 91, .16); color: var(--text); }
+.rv-reac .reaction-icon, .rv-reac .reaction-icon svg { width: 18px; height: 18px; }
+.rv-obj { display: inline-flex; align-items: center; gap: 3px; padding: 3px 8px; border-radius: 999px; background: rgba(255, 94, 91, .16); color: var(--pomelo); font: 700 12px var(--font-mono); }
+.rv-obj svg { width: 14px; height: 14px; }
+html[data-light] .rv-obj { color: #B3261E; }
+.rv-fila.objetada .rv-val { color: var(--pomelo); }
+html[data-light] .rv-fila.objetada .rv-val { color: #B3261E; }
+.rv-hoja { text-align: center; }
+.rv-h-de { margin: 0 0 2px !important; font: 600 14px var(--font-body); color: var(--text-muted); }
+.rv-h-val { font-size: 30px !important; margin: 0 0 16px !important; overflow-wrap: anywhere; }
+.rv-h-label { margin: 0 0 8px !important; font: 700 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+.rv-h-reac { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 0 18px; }
+.rv-h-reac .reaction-btn { min-width: 58px; min-height: 48px; justify-content: center; }
+.rv-h-nota { margin: 0 0 12px !important; font: 600 14px var(--font-body); color: var(--text); }
+.rv-h-objetar { background: var(--pomelo) !important; color: #fff !important; }
+.rv-h-riesgo { margin: 8px 0 0 !important; font: 500 12px var(--font-body); color: var(--text-muted); }
+/* Resultados mano a mano (app-puntajes.js, 2 jugadores): frente a frente, corona y categorías lado a lado. */
+.pz-duo #answerList, .pz-duo .rt-total, .pz-duo .ranking, .pz-duo #roundMascot, .pz-duo #wordOfRound { display: none !important; }
+.pz-duo .hero-band { text-align: center; padding-top: 40px; }
+.pz-duo #resultsTitle { font-size: 32px; letter-spacing: -.02em; margin-top: 14px; }
+.pz-vs { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 6px; }
+.pz-jug { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.pz-fruta { position: relative; width: 84px; height: 84px; display: grid; place-items: center; }
+.pz-fruta svg.mascot-svg { width: 76px; height: 76px; overflow: visible; filter: drop-shadow(0 6px 6px rgba(20, 16, 31, .25)); }
+.pz-jug.gana .pz-fruta svg.mascot-svg { width: 84px; height: 84px; }
+.pz-jug.pierde .pz-fruta svg.mascot-svg { width: 62px; height: 62px; opacity: .85; }
+.pz-corona { position: absolute; top: -30px; left: 50%; width: 40px; height: 40px; transform: translateX(-50%) rotate(-10deg); color: var(--mandarina); filter: drop-shadow(0 3px 0 rgba(20, 16, 31, .3)); animation: pz-corona .6s cubic-bezier(.3, 1.6, .5, 1) .2s both; }
+.pz-corona svg { width: 100%; height: 100%; }
+@keyframes pz-corona { from { transform: translateX(-50%) translateY(-24px) rotate(-30deg); opacity: 0; } to { transform: translateX(-50%) rotate(-10deg); opacity: 1; } }
+.pz-jug small { font: 700 14px var(--font-body); color: var(--tinta); opacity: .8; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pz-jug strong { font: 800 34px/1 var(--font-display); color: var(--tinta); }
+.pz-jug.pierde strong { opacity: .6; }
+.pz-x { font: 800 16px var(--font-display); color: var(--tinta); opacity: .5; margin-bottom: 22px; }
+.pz-duo-lista { margin-top: 6px; }
+.pz-dfila { margin: 0 0 10px; animation: rise-in .32s cubic-bezier(.2, .8, .2, 1) both; }
+.pz-dcat { display: block; text-align: center; font: 700 11px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 4px; }
+.pz-dcat i { font-style: normal; background: var(--mandarina); color: var(--tinta); border-radius: 6px; padding: 0 5px; }
+.pz-par { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.pz-c { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-width: 0; background: var(--surface); border-radius: 14px; padding: 11px 12px; font: 700 16px var(--font-body); color: var(--text); border: 2px solid transparent; overflow-wrap: anywhere; }
+.pz-c.der { flex-direction: row-reverse; text-align: right; }
+.pz-c b { flex: none; font: 800 13px var(--font-mono); color: var(--text-muted); }
+.pz-c.gana { border-color: var(--lima); }
+.pz-c.gana b { color: var(--lima); }
+html[data-light] .pz-c.gana b { color: color-mix(in srgb, var(--lima) 40%, #14101F); }
+.pz-c.cero { color: var(--text-muted); font-style: italic; font-weight: 500; }
+.pz-dnota { margin: 4px 2px 0; font: 600 12px var(--font-body); color: var(--text-muted); }

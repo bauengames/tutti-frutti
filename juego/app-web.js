@@ -61,6 +61,9 @@
     }).catch(function () {});
   };
 
+  // Nombres de otros jugadores: en la app se tapan los bloqueados; en la web se muestran tal cual.
+  if (typeof window.safeName !== "function") window.safeName = function (n) { return n; };
+
   // Vibración corta en los celulares que la tienen.
   var PATRONES = { bien: [30], aviso: [40], error: [60, 40, 60], fuerte: [80] };
   window.vibrar = function (tipo) { try { if (typeof vibrate === "function") vibrate(PATRONES[tipo] || [30]); } catch (e) { /* nada */ } };

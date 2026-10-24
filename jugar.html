@@ -1536,6 +1536,7 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
           <button type="button" class="pack-btn" data-pack="argento" onclick="loadPack('argento')" data-i18n="pack_argento">Cultura argentina</button>
           <button type="button" class="pack-btn" data-pack="peru" onclick="loadPack('peru')" data-i18n="pack_peru">Cultura peruana</button>
           <button type="button" class="pack-btn" data-pack="mexico" onclick="loadPack('mexico')" data-i18n="pack_mexico">Cultura mexicana</button>
+          <button type="button" class="pack-btn" data-pack="brasil" onclick="loadPack('brasil')" data-i18n="pack_brasil">Stop brasileño</button>
           <button type="button" class="pack-btn pack-seasonal" data-pack="halloween" onclick="loadPack('halloween')" style="display:none;" data-i18n="pack_halloween">🎃 Halloween y Muertos</button>
           <button type="button" class="pack-btn" data-pack="random" onclick="loadPack('random')" data-i18n="pack_random">Random</button>
         </div>
@@ -2257,6 +2258,8 @@ const CATEGORY_PACKS = {
   // el pack Random, el contrarreloj ni el desafío del día.
   peru: ["Comida peruana", "Departamento del Perú", "Postre peruano", "Palabra de la jerga peruana", "Club de fútbol peruano", "Personaje histórico peruano"],
   mexico: ["Comida mexicana", "Estado de la República Mexicana", "Mexicanismo", "Equipo de fútbol mexicano", "Cantante mexicano", "Personaje histórico mexicano"],
+  // El Stop como se juega en Brasil: CEP (cidade, estado ou país) y MSÉ ("minha sogra é…") son clásicos de allá.
+  brasil: ["CEP (ciudad, estado o país)", "Mi suegra es… (adjetivo)", "Comida brasileña", "Club de fútbol brasileño", "Novela o serie brasileña", "Cantante o banda brasileña"],
   // De temporada: el botón solo aparece entre fines de septiembre y el 5 de noviembre (ver isSpookySeason).
   halloween: ["Disfraz", "Monstruo o criatura", "Película de terror", "Golosina", "Algo que da miedo", "Algo de la ofrenda de muertos"],
 };
@@ -2324,6 +2327,12 @@ const CATEGORY_LABELS = {
   "Equipo de fútbol mexicano": { es: "Equipo de fútbol mexicano", en: "Mexican soccer team", pt: "Time de futebol mexicano" },
   "Cantante mexicano": { es: "Cantante mexicano", en: "Mexican singer", pt: "Cantor mexicano" },
   "Personaje histórico mexicano": { es: "Personaje histórico mexicano", en: "Mexican historical figure", pt: "Personagem histórico mexicano" },
+  "CEP (ciudad, estado o país)": { es: "CEP (ciudad, estado o país)", en: "City, state or country", pt: "CEP (cidade, estado ou país)" },
+  "Mi suegra es… (adjetivo)": { es: "Mi suegra es…", en: "My mother-in-law is…", pt: "MSÉ (Minha sogra é…)" },
+  "Comida brasileña": { es: "Comida brasileña", en: "Brazilian food", pt: "Comida brasileira" },
+  "Club de fútbol brasileño": { es: "Club de fútbol brasileño", en: "Brazilian soccer club", pt: "Time de futebol brasileiro" },
+  "Novela o serie brasileña": { es: "Novela o serie brasileña", en: "Brazilian soap opera or series", pt: "Novela ou série brasileira" },
+  "Cantante o banda brasileña": { es: "Cantante o banda brasileña", en: "Brazilian singer or band", pt: "Cantor ou banda brasileira" },
 };
 
 // Nombres de jugador, categorías propias y respuestas escritas por cualquier
@@ -2396,6 +2405,7 @@ const I18N = {
     pack_clasico: "Clásico",
     pack_argento: "Cultura argentina",
     pack_peru: "Cultura peruana",
+    pack_brasil: "Stop brasileño",
     pack_mexico: "Cultura mexicana",
     adv_banner_title: "Aventura",
     adv_banner_sub: "Nivel {n} · {stars} estrellas",
@@ -2544,7 +2554,7 @@ const I18N = {
     joker_label: "Comodín",
     joker_use_title: "Usar un comodín (tenés {n})",
     joker_result_note: "Comodín: {pts} puntos fijos",
-    shop_full_lives_desc: "Recarga las 5 vidas de la Aventura de una.",
+    shop_full_lives_desc: "Recarga todas las vidas de la Aventura de una.",
     shop_clock_title: "Reloj extra",
     shop_clock_desc: "+{s} segundos en un nivel de la Aventura. Tenés {n}.",
     shop_shield_title: "Escudo",
@@ -2601,6 +2611,7 @@ const I18N = {
     mascot_adv_win: ["¡Así se hace!", "¡Nivel pasado! Vamos por el próximo.", "¡Qué nivel!"],
     mascot_adv_perfect: ["¡Tres estrellas! Sos crack.", "Perfecto, ni una mancha."],
     mascot_adv_fail: ["Casi... ¡otra vez!", "Uy, por poquito.", "La próxima sale."],
+    mascot_adv_fail_far: ["¡Dale, otra vez!", "Esta vez no salió.", "La próxima sale."],
     mascot_adv_nolives: ["Me quedé sin energía... volvé en un rato.", "Zzz... las vidas se recargan solas."],
     pack_random: "Random",
     judge_label: "Reglas de la sala",
@@ -3099,6 +3110,7 @@ const I18N = {
     pack_clasico: "Classic",
     pack_argento: "Argentine culture",
     pack_peru: "Peruvian culture",
+    pack_brasil: "Brazilian Stop",
     pack_mexico: "Mexican culture",
     adv_banner_title: "Adventure",
     adv_banner_sub: "Level {n} · {stars} stars",
@@ -3247,7 +3259,7 @@ const I18N = {
     joker_label: "Joker",
     joker_use_title: "Use a joker (you have {n})",
     joker_result_note: "Joker: {pts} fixed points",
-    shop_full_lives_desc: "Refills all 5 Adventure lives at once.",
+    shop_full_lives_desc: "Refills all your Adventure lives at once.",
     shop_clock_title: "Extra clock",
     shop_clock_desc: "+{s} seconds on an Adventure level. You have {n}.",
     shop_shield_title: "Shield",
@@ -3304,6 +3316,7 @@ const I18N = {
     mascot_adv_win: ["Way to go!", "Level cleared! On to the next one.", "What a level!"],
     mascot_adv_perfect: ["Three stars! You rock.", "Perfect, not a single miss."],
     mascot_adv_fail: ["So close... try again!", "Oops, almost.", "You'll get it next time."],
+    mascot_adv_fail_far: ["Come on, one more try!", "Not this time.", "You'll get it next time."],
     mascot_adv_nolives: ["I'm out of energy... come back in a bit.", "Zzz... lives refill on their own."],
     pack_random: "Random",
     judge_label: "Room rules",
@@ -3802,6 +3815,7 @@ const I18N = {
     pack_clasico: "Clássico",
     pack_argento: "Cultura argentina",
     pack_peru: "Cultura peruana",
+    pack_brasil: "Stop brasileiro",
     pack_mexico: "Cultura mexicana",
     adv_banner_title: "Aventura",
     adv_banner_sub: "Nível {n} · {stars} estrelas",
@@ -3950,7 +3964,7 @@ const I18N = {
     joker_label: "Coringa",
     joker_use_title: "Usar um coringa (você tem {n})",
     joker_result_note: "Coringa: {pts} pontos fixos",
-    shop_full_lives_desc: "Recarrega as 5 vidas da Aventura de uma vez.",
+    shop_full_lives_desc: "Recarrega todas as vidas da Aventura de uma vez.",
     shop_clock_title: "Relógio extra",
     shop_clock_desc: "+{s} segundos num nível da Aventura. Você tem {n}.",
     shop_shield_title: "Escudo",
@@ -4007,6 +4021,7 @@ const I18N = {
     mascot_adv_win: ["Isso aí!", "Nível concluído! Vamos para o próximo.", "Que nível!"],
     mascot_adv_perfect: ["Três estrelas! Você arrasa.", "Perfeito, nenhum erro."],
     mascot_adv_fail: ["Quase... de novo!", "Ops, foi por pouco.", "Na próxima sai."],
+    mascot_adv_fail_far: ["Bora, mais uma vez!", "Dessa vez não deu.", "Na próxima sai."],
     mascot_adv_nolives: ["Fiquei sem energia... volte daqui a pouco.", "Zzz... as vidas recarregam sozinhas."],
     pack_random: "Random",
     judge_label: "Regras da sala",
@@ -4777,13 +4792,15 @@ function randomLetter() {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
-function drawLetter() {
+// cats: las categorías de la ronda cuando las eligió el juego (app-letras.js evita letras sin palabras).
+function drawLetter(cats) {
   const pool = activeLetterPool();
   let available = pool.filter(l => !state.usedLetters.includes(l));
   if (available.length === 0) {
     state.usedLetters = [];
     available = [...pool];
   }
+  if (cats && typeof letrasPosibles === "function") available = letrasPosibles(available, cats, pool);
   const letter = available[Math.floor(Math.random() * available.length)];
   state.usedLetters.push(letter);
   rememberLetter(letter);
@@ -5457,6 +5474,7 @@ function myPlayerLabel() {
 }
 
 function createRoomOnline() {
+  state.salaAuto = false; // sala armada a mano: la letra se sortea entre las que eligieron
   whenFirebaseReady(async () => {
     const roomData = {
       hostId: state.playerId,
@@ -5630,6 +5648,7 @@ async function claimOpponent(candidateId) {
   state.duration = RANDOM_MATCH_CONFIG.duration;
   state.totalRounds = RANDOM_MATCH_CONFIG.totalRounds;
   state.letterPool = [...RANDOM_MATCH_CONFIG.letterPool];
+  state.salaAuto = true;
 
   const roomData = {
     hostId: state.playerId,
@@ -5747,6 +5766,7 @@ async function startBotMatch() {
   state.duration = RANDOM_MATCH_CONFIG.duration;
   state.totalRounds = RANDOM_MATCH_CONFIG.totalRounds;
   state.letterPool = [...RANDOM_MATCH_CONFIG.letterPool];
+  state.salaAuto = true;
   const roomData = {
     hostId: state.playerId,
     status: "lobby",
@@ -6052,8 +6072,6 @@ function hostStartGame() {
     used = [];
     available = [...pool];
   }
-  const letter = available[Math.floor(Math.random() * available.length)];
-  used = [...used, letter];
   const round = state.room.round || 1;
   const isRandomCategories = config.categoriesMode === "random";
   const baseCategories = config.categories || [];
@@ -6061,6 +6079,12 @@ function hostStartGame() {
   const roundCategories = isRandomCategories
     ? pickRandomCategorySet(RANDOM_PACK_CATEGORY_COUNT)
     : (hasMysterySlots ? resolveCategories(baseCategories) : baseCategories);
+  // Si las categorías las eligió el juego (Al azar, Frutibot, categorías al azar o misteriosas), no sale una
+  // letra sin palabras para alguna (app-letras.js). En las salas armadas a mano se respeta lo elegido.
+  const elegidasPorElJuego = !!state.room.bot || state.salaAuto || isRandomCategories || hasMysterySlots;
+  if (elegidasPorElJuego && typeof letrasPosibles === "function") available = letrasPosibles(available, roundCategories, pool);
+  const letter = available[Math.floor(Math.random() * available.length)];
+  used = [...used, letter];
   const wildcard = pickWildcard(roundCategories);
   // lastFlashRound queda guardado en la sala; si es de una partida anterior (revancha), no cuenta.
   const lastFlash = (state.room.lastFlashRound || 0) < round ? (state.room.lastFlashRound || 0) : 0;
@@ -7249,8 +7273,10 @@ function advanceReveal(skip) {
     const nextCard = cards[state.revealIdx + 1];
     const nextCat = nextCard.querySelector("input").dataset.cat;
     let nextLetter = !skip && val && !isJoker(val) ? normalizeAnswer(val).replace(/[^a-zñ]/g, "").slice(-1).toUpperCase() : "";
-    if (!nextLetter || ["K", "Q", "W", "X"].includes(nextLetter)) {
-      const opts = L.letters.filter(x => x !== letter);
+    const sinPalabras = typeof letraPosible === "function" && nextLetter && !letraPosible(nextLetter, nextCat);
+    if (!nextLetter || ["K", "Q", "W", "X"].includes(nextLetter) || sinPalabras) {
+      let opts = L.letters.filter(x => x !== letter);
+      if (typeof letrasPosibles === "function") opts = letrasPosibles(opts, nextCat);
       nextLetter = opts[Math.floor(Math.random() * opts.length)] || "A";
     }
     state.letterByCat[nextCat] = nextLetter;
@@ -7340,11 +7366,12 @@ function useReroll() {
   if (!soloToolsAllowed() || w.items.reroll <= 0 || state.rerollUsed || state.letterByCat) return;
   let letter;
   if (state.adventureMode) {
-    const pool = state.advLevel.letters.filter(l => l !== state.letter);
+    let pool = state.advLevel.letters.filter(l => l !== state.letter);
     if (!pool.length) return;
+    if (typeof letrasPosibles === "function") pool = letrasPosibles(pool, state.categories);
     letter = pool[Math.floor(Math.random() * pool.length)];
   } else {
-    letter = drawLetter();
+    letter = drawLetter(state.categories);
   }
   w.items.reroll -= 1;
   saveWallet(w);
@@ -7474,7 +7501,7 @@ function startStreakRound() {
   document.getElementById("bastaWrap").style.display = "none";
   document.getElementById("roundLabel").textContent = t("streak_round_label", { n: state.streakRound });
 
-  state.letter = drawLetter();
+  state.letter = drawLetter(state.categories);
   state.answers = {};
   // El aro del reloj muestra el tiempo que le queda a toda la partida; solo
   // corre mientras se juega (no durante el sorteo ni mientras decide el juez).
@@ -8915,7 +8942,7 @@ const ADV_KEY = "tuttifruti_app_aventura";
 const ADV_OLD_KEY = "tuttifruti_adventure";
 const ADV_PER_WORLD = 10;
 const ADV_BOSS_INDEX = ADV_PER_WORLD - 1;
-const ADV_MAX_LIVES = 5;
+const ADV_MAX_LIVES = 3;
 const ADV_REGEN_MS = 30 * 60 * 1000;
 const ADV_POINTS = 10;
 const ADV_PERFECT_SECONDS = 10;
@@ -8936,6 +8963,7 @@ const ADV_CATS = {
   naturaleza: ["Insecto", "Animal marino", "Ave", "Árbol", "Planta o flor", "Accidente geográfico"],
   ocio: ["Superhéroe", "Dibujo animado", "Videojuego", "Libro", "Serie", "Juguete"],
   carnaval: ["Disfraz", "Instrumento musical", "Baile", "Algo que brilla", "Algo de carnaval", "Color"],
+  navidad: ["Algo de Navidad", "Comida navideña", "Algo para regalar", "Algo del arbolito", "Algo de las vacaciones", "Juguete"],
   // Lluvia de ideas: una sola categoría bien amplia, muchas palabras.
   lluvia: ["Animal", "Comida", "Objeto", "Nombre", "País", "Fruta", "Profesión", "Marca", "Prenda de ropa", "Ciudad"],
 };
@@ -8983,7 +9011,8 @@ const ADV_WORLDS = [
   { fruit: "carambola", key: "carambola", cats: [7, 7, 7, 8, 7, 8, 7, 8, 8, 8], time: [70, 24, 13, 70, 75, 70, 24, 13, 75, 90], letters: ["medium", "hard"], pools: ["naturaleza", "ocio", "fiesta"], goal: 0.65, boss: null,
     levelRules: [["largas", "banned"], ["suma", "memory"], ["ticking", "termina"], ["lluvia", "short"], ["cadena", "memory"], ["termina", "reveal", "banned"], ["suma", "short"], ["ticking", "largas"], ["memory", "termina", "short"], ["cadena", "termina"]] },
   // Mundos de temporada: se abren en su fecha (y quedan para siempre). Para jugarlos alcanza con pasar el primer mundo.
-  { fruit: "carnaval", key: "carnaval", season: "2026-12-28", cats: [5, 5, 6, 6, 6, 6, 6, 7, 7, 6], time: [75, 70, 70, 28, 70, 70, 65, 70, 65, 80], letters: ["easy", "medium"], pools: ["carnaval", "easy"], goal: 0.55, boss: "flash",
+  // Carnaval aparece y se abre cuando termina la Navidad (6/1), así no se pisan.
+  { fruit: "carnaval", key: "carnaval", season: "2027-01-07", anuncio: "2027-01-07", cats: [5, 5, 6, 6, 6, 6, 6, 7, 7, 6], time: [75, 70, 70, 28, 70, 70, 65, 70, 65, 80], letters: ["easy", "medium"], pools: ["carnaval", "easy"], goal: 0.55, boss: "flash",
     levelRules: [[], ["termina"], ["lluvia"], ["suma"], ["memory"], ["largas"], ["banned"], ["reveal"], ["cadena"], ["short"]] },
 ];
 const ADV_SHORT_MAX = 6;
@@ -9233,7 +9262,8 @@ function renderAdventureMap() {
     (gold ? ` <span class="adv-gold-count">${advStar(true)}${gold}</span>` : "");
   // Los mundos de temporada van arriba de todo mientras están abiertos o por llegar (45 días antes).
   const order = ADV_WORLDS.map((W, w) => w);
-  const soon = w => { const W = ADV_WORLDS[w]; if (!W.season) return false; const start = new Date(W.season + "T00:00:00"); return advSeasonOpen(W) || start - Date.now() < 45 * 86400000; };
+  // Los mundos de temporada se anuncian (cerrados, "Llega el…") 45 días antes, o desde su fecha "anuncio" si la tienen.
+  const soon = w => { const W = ADV_WORLDS[w]; if (!W.season) return false; if (advSeasonOpen(W)) return true; if (W.anuncio) return advTodayKey() >= W.anuncio; const start = new Date(W.season + "T00:00:00"); return start - Date.now() < 45 * 86400000; };
   const top = order.filter(w => ADV_WORLDS[w].season && soon(w) && !advWorldDone(d, w));
   const rest = order.filter(w => !top.includes(w) && (!ADV_WORLDS[w].season || soon(w)));
   document.getElementById("advWorlds").innerHTML = [...top, ...rest].map(w => advWorldHtml(d, w)).join("");
@@ -9408,9 +9438,29 @@ function startAdventureLevel(n = state.advLevelN, opts = {}) {
   // mitad del nivel o cerraste la app). Con 9 letras posibles, no vuelve ninguna de las últimas 4.
   const recent = advRecentLetters();
   const avoid = recent.slice(-Math.max(1, Math.min(4, L.letters.length - 3)));
-  let options = L.letters.filter(l => !avoid.includes(l) && l !== state.advLastLetter);
-  if (!options.length) options = L.letters.filter(l => l !== state.advLastLetter);
+  // Nada de letras sin palabras para alguna categoría (app-letras.js; por ejemplo, Color con Q). Normalmente se
+  // sortea entre las letras que sirven para todas. Si así quedan menos de 3 (mundos de letras difíciles), la
+  // letra sale como siempre y la categoría que no tiene palabras se cambia, solo en esta ronda, por otra del mundo.
+  // Cadena y jefes: la letra sorteada es solo la de la primera categoría (las demás se resuelven aparte).
+  let roundCats = [...L.categories], roundWild = L.wildcard;
+  const conFiltro = typeof letrasPosibles === "function";
+  const catsLetra = (L.mixed || advHas(L, "cadena")) ? L.categories.slice(0, 1) : L.categories;
+  let posibles = conFiltro ? L.letters.filter(l => letraPosible(l, catsLetra)) : L.letters;
+  const cambiarCategorias = conFiltro && posibles.length < 3 && !L.rainBase && !L.mixed && !advHas(L, "cadena");
+  if (cambiarCategorias || !posibles.length) posibles = L.letters;
+  let options = posibles.filter(l => !avoid.includes(l) && l !== state.advLastLetter);
+  if (!options.length) options = posibles.filter(l => l !== state.advLastLetter);
+  if (!options.length) options = posibles;
   let letter = options[Math.floor(Math.random() * options.length)];
+  if (cambiarCategorias) {
+    const repuesto = [...new Set(L.W.pools.flatMap(k => ADV_CATS[k] || []))].filter(c => !roundCats.includes(c) && letraPosible(letter, c)).sort(() => Math.random() - 0.5);
+    roundCats = roundCats.map(c => {
+      if (letraPosible(letter, c) || !repuesto.length) return c;
+      const otra = repuesto.shift();
+      if (roundWild === c) roundWild = otra;
+      return otra;
+    });
+  }
   advRememberLetter(letter);
   let letterByCat = null;
   if (L.mixed) {
@@ -9418,7 +9468,12 @@ function startAdventureLevel(n = state.advLevelN, opts = {}) {
     let pool = [...L.letters].sort(() => Math.random() - 0.5);
     if (pool.length < L.categories.length) pool = pool.concat(ADV_LETTERS.medium.filter(x => !pool.includes(x)).sort(() => Math.random() - 0.5));
     letterByCat = {};
-    L.categories.forEach((cat, k) => { letterByCat[cat] = pool[k]; });
+    // A cada categoría, la primera letra libre que tenga palabras para ella.
+    L.categories.forEach((cat, k) => {
+      let i = pool.findIndex(x => typeof letraPosible !== "function" || letraPosible(x, cat));
+      if (i < 0) i = 0;
+      letterByCat[cat] = pool.splice(i, 1)[0] || ADV_LETTERS.easy[k % ADV_LETTERS.easy.length];
+    });
     letter = ADV_MIXED_SYMBOL;
   } else if (advHas(L, "cadena")) {
     // Cadena: la primera categoría usa la letra sorteada; cada una de las siguientes, la última letra de la anterior.
@@ -9442,8 +9497,8 @@ function startAdventureLevel(n = state.advLevelN, opts = {}) {
   state.advLevelN = n;
   state.advLevel = L;
   state.letterByCat = letterByCat;
-  state.categories = [...L.categories];
-  state.wildcardCategory = L.wildcard;
+  state.categories = roundCats;
+  state.wildcardCategory = roundWild;
   state.letter = letter;
   state.usedLetters = [];
   state.answers = {};
@@ -9651,7 +9706,7 @@ function renderAdventureResult(r) {
     ? t("adv_result_sub_mixed", { world: advWorldName(L.W), n: L.n })
     : t("adv_result_sub", { world: advWorldName(L.W), n: L.n, letter: r.letter });
   setMascot("advResultMascot", r.passed ? "happy" : (noLives ? "sleepy" : "sad"),
-    r.passed ? (r.stars === 3 ? "mascot_adv_perfect" : "mascot_adv_win") : (noLives ? "mascot_adv_nolives" : "mascot_adv_fail"), "small");
+    r.passed ? (r.stars === 3 ? "mascot_adv_perfect" : "mascot_adv_win") : (noLives ? "mascot_adv_nolives" : (r.score * 2 >= L.target ? "mascot_adv_fail" : "mascot_adv_fail_far")), "small");
 
   const list = document.getElementById("advResultList");
   list.innerHTML = "";
@@ -9885,7 +9940,7 @@ function renderShop() {
   renderShopExtras(w);
   document.getElementById("shopAdventure").innerHTML =
     item(advHeart(true), t("shop_life_title"), full ? t("shop_lives_full") : t("shop_life_desc", { n: d.lives }), SHOP_LIFE_PRICE, full, "buyLife()") +
-    item(`<span class="shop-art-x">${advHeart(true)}<b>×5</b></span>`, t("shop_full_lives_title"), full ? t("shop_lives_full") : t("shop_full_lives_desc"), SHOP_FULL_LIVES_PRICE, full, "buyShopItem('full')") +
+    item(`<span class="shop-art-x">${advHeart(true)}<b>×${ADV_MAX_LIVES}</b></span>`, t("shop_full_lives_title"), full ? t("shop_lives_full") : t("shop_full_lives_desc"), SHOP_FULL_LIVES_PRICE, full, "buyShopItem('full')") +
     item(iconSvg("stopwatch"), t("shop_clock_title"), t("shop_clock_desc", { s: CLOCK_SECONDS, n: w.items.clock }), SHOP_CLOCK_PRICE, false, "buyShopItem('clock')") +
     item(SHIELD_SVG, t("shop_shield_title"), t("shop_shield_desc", { n: w.items.shield }), SHOP_SHIELD_PRICE, false, "buyShopItem('shield')");
 }
@@ -10482,7 +10537,7 @@ function openDuelCreate(target = null) {
   const categories = pool.slice(0, DUEL_CATEGORY_COUNT);
   const duel = {
     id: newDuelId(),
-    letter: DEFAULT_LETTERS[Math.floor(Math.random() * DEFAULT_LETTERS.length)],
+    letter: (l => l[Math.floor(Math.random() * l.length)])(typeof letrasPosibles === "function" ? letrasPosibles(DEFAULT_LETTERS, categories) : DEFAULT_LETTERS),
     categories,
     wildcard: categories[Math.floor(Math.random() * categories.length)],
     duration: DUEL_DURATION,
@@ -12068,6 +12123,7 @@ checkAchievements();
 <!-- Lo que viene de la app de iPhone (mismo código, adaptado a la web): ver juego/app-web.js. -->
 <script src="/juego/app-web.js"></script>
 <script src="/juego/tuteo.js"></script>
+<script src="/juego/letras.js"></script>
 <script src="/juego/iconos.js"></script>
 <script src="/juego/estilo.js"></script>
 <script src="/juego/aventura.js"></script>
@@ -12080,5 +12136,8 @@ checkAchievements();
 <script src="/juego/records.js"></script>
 <script src="/juego/guia.js"></script>
 <script src="/juego/invitar.js"></script>
+<script src="/juego/online.js"></script>
+<script src="/juego/puntajes.js"></script>
+<script src="/juego/revision.js"></script>
 </body>
 </html>
