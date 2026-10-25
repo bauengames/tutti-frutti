@@ -71,6 +71,30 @@ const TEXTOS = {
     grupo: ["Du bist dran in der Gruppe!", "{n} hat eine Runde im Gruppenduell zusammengestellt. Spiel sie!"],
     sala: ["Du bist eingeladen!", "{n} wartet in einem tutti.frutti-Raum auf dich. Kommst du?"],
   },
+  fr: {
+    amigo: ["Tu as un nouvel ami !", "{n} t'a ajouté en ami. Tu lui envoies un duel ?"],
+    solicitud: ["Nouvelle demande d'ami !", "{n} t'a envoyé une demande d'ami."],
+    record: ["Ton record est battu !", "{n} a dépassé ton meilleur score au Contre-la-montre. Tu le reprends ?"],
+    prueba: ["Ça marche !", "Les notifications de tutti.frutti t'arrivent bien."],
+    duelo: ["On te lance un défi !", "{n} t'a envoyé un duel. Tu relèves le défi ?"],
+    duelo_ganado: ["Duel perdu !", "{n} a fait plus de points que toi. Revanche ?"],
+    liga: ["On t'a dépassé !", "{n} t'a dépassé dans la ligue de cette semaine. Joue et reprends ta place."],
+    turno: ["À toi de jouer !", "{n} a joué son tour dans le duel. À toi !"],
+    grupo: ["À toi dans le groupe !", "{n} a lancé une manche dans le duel en groupe. Joue-la !"],
+    sala: ["On t'invite à jouer !", "{n} t'attend dans un salon tutti.frutti. Tu viens ?"],
+  },
+  it: {
+    amigo: ["Hai un nuovo amico!", "{n} ti ha aggiunto agli amici. Gli mandi un duello?"],
+    solicitud: ["Nuova richiesta di amicizia!", "{n} ti ha mandato una richiesta di amicizia."],
+    record: ["Il tuo record è stato battuto!", "{n} ha superato il tuo miglior punteggio in Contro il tempo. Te lo riprendi?"],
+    prueba: ["Funziona!", "Le notifiche di tutti.frutti ti arrivano."],
+    duelo: ["Ti hanno sfidato!", "{n} ti ha mandato un duello. Accetti?"],
+    duelo_ganado: ["Duello perso!", "{n} ha fatto più punti di te. Rivincita?"],
+    liga: ["Ti hanno superato!", "{n} ti ha superato nella lega di questa settimana. Gioca e riprenditi il posto."],
+    turno: ["Tocca a te!", "{n} ha giocato il suo turno nel duello. Tocca a te!"],
+    grupo: ["Tocca a te nel gruppo!", "{n} ha preparato un turno nel duello di gruppo. Giocalo!"],
+    sala: ["Ti invitano a giocare!", "{n} ti aspetta in una stanza di tutti.frutti. Entri?"],
+  },
 };
 
 // ---------- Utilidades ----------

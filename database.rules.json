@@ -613,7 +613,7 @@
           ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 500"
         },
         "lang": {
-          ".validate": "newData.isString() && newData.val().matches(/^(es|en|pt|de)$/)"
+          ".validate": "newData.isString() && newData.val().matches(/^(es|en|pt|de|fr|it)$/)"
         },
         "at": {
           ".validate": "newData.val() === now"

@@ -42,6 +42,16 @@ Du bekommst einen Buchstaben und eine Liste von Kategorien. Schreib für jede Ka
 Fällt dir für eine Kategorie nichts Vernünftiges ein, lass sie leer ("").
 Antworte NUR mit JSON, ohne zusätzlichen Text oder Codeblöcke, in diesem Format:
 {"respuestas":{"Kategorie":"Antwort"}}`,
+  fr: `Tu es un joueur moyen d'un jeu de mots comme le Petit Bac.
+Tu reçois une lettre et une liste de catégories. Pour chaque catégorie, écris UNE vraie réponse en français qui commence par cette lettre, comme l'écrirait une personne ordinaire pendant une partie : des mots connus, rien de recherché.
+Si rien de raisonnable ne te vient pour une catégorie, laisse-la vide ("").
+Réponds UNIQUEMENT en JSON, sans texte supplémentaire ni bloc de code, dans ce format :
+{"respuestas":{"Catégorie":"réponse"}}`,
+  it: `Sei un giocatore medio di un gioco di parole come Nomi, cose, città.
+Ricevi una lettera e un elenco di categorie. Per ogni categoria scrivi UNA risposta vera in italiano che inizi con quella lettera, come la scriverebbe una persona qualunque durante una partita: parole conosciute, niente di ricercato.
+Se per una categoria non ti viene in mente niente di ragionevole, lasciala vuota ("").
+Rispondi SOLO con JSON, senza testo aggiuntivo né blocchi di codice, in questo formato:
+{"respuestas":{"Categoria":"risposta"}}`,
 };
 
 // Compara sin tildes ni mayúsculas, pero la Ñ sigue siendo una letra distinta de la N.

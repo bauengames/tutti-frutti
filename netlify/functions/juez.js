@@ -147,6 +147,54 @@ Kriterien:
 Antworte NUR mit JSON, ohne zusätzlichen Text oder Codeblöcke, in diesem Format:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
 Fülle "motivo" nur dann mit einem kurzen Grund AUF DEUTSCH, wenn "valida" false ist.`,
+  fr: `Tu es l'arbitre d'un jeu de mots (Petit Bac / tutti frutti). Tu reçois une liste de réponses contestées, chacune avec sa catégorie. Pour chaque réponse, décide si elle est valable.
+
+Critères :
+- La lettre initiale a déjà été vérifiée avant de t'arriver : ne l'évalue PAS et ne l'utilise pas comme motif.
+- N'invalide jamais une réponse à cause des majuscules, des minuscules ou des accents : « helene », « HÉLÈNE », « Hélène » et « hélène » sont la même réponse.
+- Elle doit raisonnablement appartenir à la catégorie.
+- Accepte les régionalismes (de France, de Belgique, de Suisse, du Québec ou d'Afrique), l'argot, les noms populaires et les vraies marques quand la catégorie le permet.
+- Beaucoup de mots ont plus d'un sens : il suffit qu'UN de ces sens (même familier ou régional) corresponde à la catégorie. Avant de refuser, demande-toi si le mot a un autre sens qui convient.
+- Accepte les petites fautes d'orthographe si le mot est clairement reconnaissable, sauf si la faute change la première lettre du mot bien écrit : « kamion » (camion), « filosophe » (philosophe) ou « otel » (hôtel) ne sont pas valables, car ce serait tricher avec la lettre de la manche.
+- Ne pas connaître un mot n'est PAS un motif de refus. Il existe des milliers de marques, commerces, lieux, équipes, artistes et personnes locales que tu ne connais peut-être pas : si la réponse peut raisonnablement appartenir à la catégorie, elle est valable.
+- Beaucoup de marques, lieux et équipes portent un nom de personne ou un mot courant : ressembler à un prénom n'invalide pas une réponse en Marque, ni l'inverse.
+- Les réponses de plusieurs mots sont valables (« Saut en hauteur », « Poisson-scie », « Rio de Janeiro »).
+- Interprète chaque catégorie au sens large, comme le ferait un groupe d'amis qui joue. Par exemple :
+  · Sport : sports collectifs et individuels, disciplines et épreuves (saut en hauteur, saut à la perche, lancer du javelot, lancer du poids, 100 mètres, marathon, papillon), variantes (beach-volley, futsal, ski nautique) et sports cérébraux ou mécaniques (échecs, sport automobile).
+  · Animal : espèces, races, petits et insectes (caniche, espadon, têtard, fourmi). · Nourriture : plats, préparations, ingrédients, desserts et en-cas.
+  · Métier : métiers, emplois et occupations (plombier, influenceur, baby-sitter). · Objet : toute chose matérielle qu'on peut toucher.
+  · Prénom/Nom de famille : de toute origine, y compris les surnoms courants. · Ville/Pays : aussi les capitales, les villages et les noms dans d'autres langues.
+- Sois cohérent : si tu accepterais une réponse, accepte aussi celles du même genre (si « Javelot » vaut comme Sport, « Saut en hauteur » aussi).
+- Refuse seulement ce qui ne correspond clairement pas (par exemple « chien » comme Couleur), les lettres sans sens ou ce qui n'est pas un vrai mot.
+- En cas de doute raisonnable, la réponse est valable.
+
+Réponds UNIQUEMENT en JSON, sans texte supplémentaire ni bloc de code, dans ce format :
+{"veredictos":[{"id":"...","valida":true,"motivo":""}]}
+Remplis "motivo" avec une courte raison EN FRANÇAIS seulement quand "valida" vaut false.`,
+  it: `Sei il giudice di un gioco di parole (Nomi, cose, città / tutti frutti). Ricevi un elenco di risposte contestate, ognuna con la sua categoria. Per ogni risposta, decidi se è valida.
+
+Criteri:
+- La lettera iniziale è già stata controllata prima di arrivare a te: NON valutarla e non usarla come motivo.
+- Non invalidare mai una risposta per maiuscole, minuscole o accenti: "nicolo", "NICOLÒ", "Nicolò" e "nicolò" sono la stessa risposta.
+- Deve appartenere ragionevolmente alla categoria.
+- Accetta regionalismi e parole dialettali, gergo, nomi popolari e marche reali quando la categoria lo permette.
+- Molte parole hanno più di un significato: basta che UNO (anche colloquiale o regionale) rientri nella categoria. Prima di rifiutare, chiediti se la parola ha un altro significato che va bene.
+- Accetta piccoli errori di ortografia se la parola è chiaramente riconoscibile, a meno che l'errore cambi la prima lettera della parola scritta bene: "kiesa" (chiesa), "qadro" (quadro) o "otel" (hotel) non sono valide, perché così si imbroglia con la lettera del turno.
+- Non conoscere una parola NON è un motivo per rifiutarla. Esistono migliaia di marche, negozi, luoghi, squadre, artisti e persone locali che forse non conosci: se la risposta può ragionevolmente appartenere alla categoria, è valida.
+- Molte marche, luoghi e squadre hanno il nome di una persona o di una parola comune: sembrare un nome di persona non invalida una risposta in Marca, né il contrario.
+- Le risposte di più parole sono valide ("Salto in alto", "Pesce spada", "Rio de Janeiro").
+- Interpreta ogni categoria in senso ampio, come farebbe un gruppo di amici che gioca. Per esempio:
+  · Sport: sport di squadra e individuali, discipline e specialità (salto in alto, salto con l'asta, lancio del giavellotto, getto del peso, 100 metri, maratona, farfalla), varianti (beach volley, calcetto, sci nautico) e sport della mente o a motore (scacchi, automobilismo).
+  · Animale: specie, razze, cuccioli e insetti (barboncino, pesce spada, girino, formica). · Cibo: piatti, preparazioni, ingredienti, dolci e snack.
+  · Mestiere: mestieri, lavori e professioni (idraulico, influencer, babysitter). · Cosa: qualsiasi oggetto materiale che si può toccare.
+  · Nome/Cognome: di qualsiasi origine, anche i soprannomi comuni. · Città/Paese: anche capitali, paesini e nomi in altre lingue.
+- Sii coerente: se accetteresti una risposta, accetta anche quelle dello stesso tipo (se "Giavellotto" vale come Sport, vale anche "Salto in alto").
+- Rifiuta solo ciò che chiaramente non c'entra (per esempio "cane" come Colore), lettere a caso o ciò che non è una parola vera.
+- In caso di ragionevole dubbio, la risposta è valida.
+
+Rispondi SOLO con JSON, senza testo aggiuntivo né blocchi di codice, in questo formato:
+{"veredictos":[{"id":"...","valida":true,"motivo":""}]}
+Compila "motivo" con un breve motivo IN ITALIANO solo quando "valida" è false.`,
 };
 
 // Segunda opinión: solo para las respuestas que el primer juez rechazó.
@@ -179,6 +227,20 @@ Bestätige die Ablehnung NUR, wenn die Antwort klar nicht zur Kategorie passt, k
 Antworte NUR mit JSON, ohne zusätzlichen Text oder Codeblöcke:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
 Fülle "motivo" nur dann mit einem kurzen Grund AUF DEUTSCH, wenn "valida" false ist.`,
+  fr: `Tu es l'arbitre d'appel d'un jeu de mots (Petit Bac). Un autre arbitre a refusé ces réponses et les joueurs ont fait appel, parce qu'il refuse parfois des mots qui conviennent.
+Examine chacune au sens large, comme le ferait un groupe d'amis qui joue : si la réponse appartient raisonnablement à la catégorie (même s'il s'agit d'une discipline, d'une variante, d'un cas particulier, d'un régionalisme ou de quelque chose de peu connu), elle est valable. Les réponses de plusieurs mots comptent. La lettre initiale a déjà été vérifiée : ne l'évalue pas.
+Si le mot a plus d'un sens (même familier ou régional), il suffit qu'UN de ces sens convienne.
+Confirme le refus SEULEMENT si la réponse ne correspond clairement pas à la catégorie, n'est pas un vrai mot, ou est mal écrite d'une façon qui change sa première lettre (« kamion » pour camion, « otel » pour hôtel).
+Réponds UNIQUEMENT en JSON, sans texte supplémentaire ni bloc de code :
+{"veredictos":[{"id":"...","valida":true,"motivo":""}]}
+Remplis "motivo" avec une courte raison EN FRANÇAIS seulement quand "valida" vaut false.`,
+  it: `Sei il giudice d'appello di un gioco di parole (Nomi, cose, città). Un altro giudice ha rifiutato queste risposte e i giocatori hanno fatto ricorso, perché a volte rifiuta parole che invece vanno bene.
+Rivedi ognuna con criterio ampio, come farebbe un gruppo di amici che gioca: se la risposta appartiene ragionevolmente alla categoria (anche se è una disciplina, una variante, un caso particolare, un regionalismo o qualcosa di poco noto), è valida. Le risposte di più parole valgono. La lettera iniziale è già stata controllata: non valutarla.
+Se la parola ha più di un significato (anche colloquiale o regionale), basta che UNO vada bene.
+Conferma il rifiuto SOLO se la risposta chiaramente non c'entra con la categoria, non è una parola vera, o è scritta male in un modo che cambia la sua prima lettera ("kiesa" per chiesa, "qadro" per quadro).
+Rispondi SOLO con JSON, senza testo aggiuntivo né blocchi di codice:
+{"veredictos":[{"id":"...","valida":true,"motivo":""}]}
+Compila "motivo" con un breve motivo IN ITALIANO solo quando "valida" è false.`,
 };
 
 // Llama al modelo y devuelve los veredictos que vinieron bien formados (id -> veredicto),
@@ -340,6 +402,8 @@ const MOTIVO_LETRA = {
   en: "Doesn't start with the round's letter",
   pt: "Não começa com a letra da rodada",
   de: "Beginnt nicht mit dem Buchstaben der Runde",
+  fr: "Ne commence pas par la lettre de la manche",
+  it: "Non inizia con la lettera del turno",
 };
 
 const HOSTS_PERMITIDOS = new Set([
