@@ -123,6 +123,30 @@ Critérios:
 Responda APENAS com JSON, sem texto adicional nem blocos de código, neste formato:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
 Preencha "motivo" com uma frase breve EM PORTUGUÊS somente quando "valida" for false.`,
+  de: `Du bist der Schiedsrichter eines Wortspiels (Stadt, Land, Fluss / tutti frutti). Du bekommst eine Liste angefochtener Antworten, jede mit ihrer Kategorie. Entscheide bei jeder Antwort, ob sie gültig ist.
+
+Kriterien:
+- Der Anfangsbuchstabe wurde schon geprüft, bevor die Antwort zu dir kommt: Bewerte ihn NICHT und nutze ihn nicht als Grund.
+- Lehne eine Antwort nie wegen Groß- oder Kleinschreibung, Umlauten oder Akzenten ab: "jürgen", "JÜRGEN", "Jürgen" und "Juergen" sind dieselbe Antwort.
+- Sie muss vernünftigerweise zur Kategorie passen.
+- Akzeptiere regionale Begriffe, Umgangssprache, Kosenamen und echte Marken, wenn die Kategorie es erlaubt.
+- Viele Wörter haben mehr als eine Bedeutung: Es reicht, wenn EINE davon (auch umgangssprachlich oder regional) zur Kategorie passt. Überlege vor dem Ablehnen, ob das Wort eine andere passende Bedeutung hat.
+- Akzeptiere kleine Rechtschreibfehler, wenn das Wort klar erkennbar ist, außer der Fehler ändert den Anfangsbuchstaben des richtig geschriebenen Wortes: "Kwalle" (Qualle), "Fogel" (Vogel) oder "Wase" (Vase) sind ungültig, weil damit beim Buchstaben der Runde geschummelt wird.
+- Ein Wort nicht zu kennen ist KEIN Grund, es abzulehnen. Es gibt Tausende lokale Marken, Geschäfte, Orte, Vereine, Künstler und Personen, die du vielleicht nicht kennst: Wenn die Antwort vernünftigerweise zur Kategorie gehören kann, ist sie gültig.
+- Viele Marken, Orte und Vereine heißen wie Personen oder gewöhnliche Wörter: Dass etwas wie ein Vorname klingt, macht eine Antwort bei Marke nicht ungültig, und umgekehrt.
+- Antworten aus mehreren Wörtern sind gültig ("Rio de Janeiro", "Roter Milan", "Hoher Sprung").
+- Leg jede Kategorie großzügig aus, so wie eine Gruppe Freunde beim Spielen. Zum Beispiel:
+  · Sportart: Mannschafts- und Einzelsportarten, Disziplinen und Wettkämpfe (Hochsprung, Stabhochsprung, Speerwurf, Kugelstoßen, 100-Meter-Lauf, Marathon, Schmetterling), Varianten (Beachvolleyball, Hallenfußball, Wasserski) und Denk- oder Motorsport (Schach, Motorsport).
+  · Tier: Arten, Rassen, Jungtiere und Insekten (Pudel, Schwertfisch, Kaulquappe, Ameise). · Essen: Gerichte, Zubereitungen, Zutaten, Nachspeisen und Snacks.
+  · Beruf: Handwerke, Jobs und Tätigkeiten (Klempner, Influencer, Babysitter). · Gegenstand: alles Greifbare.
+  · Name/Nachname: jeder Herkunft, auch gängige Spitznamen. · Stadt/Land: auch Hauptstädte, Dörfer und Namen in anderen Sprachen. · Fluss: Flüsse, Bäche und Ströme aus aller Welt.
+- Sei konsequent: Wenn du eine Antwort akzeptieren würdest, akzeptiere auch andere derselben Art (wenn "Speerwurf" eine Sportart ist, dann auch "Hochsprung").
+- Lehne nur ab, was klar nicht passt (zum Beispiel "Hund" als Farbe), sinnlose Buchstaben oder was kein echtes Wort ist.
+- Im Zweifel ist die Antwort gültig.
+
+Antworte NUR mit JSON, ohne zusätzlichen Text oder Codeblöcke, in diesem Format:
+{"veredictos":[{"id":"...","valida":true,"motivo":""}]}
+Fülle "motivo" nur dann mit einem kurzen Grund AUF DEUTSCH, wenn "valida" false ist.`,
 };
 
 // Segunda opinión: solo para las respuestas que el primer juez rechazó.
@@ -148,6 +172,13 @@ Confirme a rejeição SOMENTE se a resposta claramente não corresponde à categ
 Responda APENAS com JSON, sem texto adicional nem blocos de código:
 {"veredictos":[{"id":"...","valida":true,"motivo":""}]}
 Preencha "motivo" com uma frase breve EM PORTUGUÊS somente quando "valida" for false.`,
+  de: `Du bist der Berufungsrichter eines Wortspiels (Stadt, Land, Fluss). Ein anderer Schiedsrichter hat diese Antworten abgelehnt und die Spieler haben Einspruch eingelegt, weil er manchmal Wörter ablehnt, die doch passen.
+Prüfe jede großzügig, so wie eine Gruppe Freunde beim Spielen: Wenn die Antwort vernünftigerweise zur Kategorie gehört (auch als Disziplin, Variante, Sonderfall, regionaler Begriff oder etwas wenig Bekanntes), ist sie gültig. Antworten aus mehreren Wörtern zählen. Der Anfangsbuchstabe wurde schon geprüft: Bewerte ihn nicht.
+Hat das Wort mehr als eine Bedeutung (auch umgangssprachlich oder regional), reicht es, wenn EINE davon passt.
+Bestätige die Ablehnung NUR, wenn die Antwort klar nicht zur Kategorie passt, kein echtes Wort ist oder so falsch geschrieben ist, dass sich ihr Anfangsbuchstabe ändert ("Kwalle" statt Qualle, "Fogel" statt Vogel).
+Antworte NUR mit JSON, ohne zusätzlichen Text oder Codeblöcke:
+{"veredictos":[{"id":"...","valida":true,"motivo":""}]}
+Fülle "motivo" nur dann mit einem kurzen Grund AUF DEUTSCH, wenn "valida" false ist.`,
 };
 
 // Llama al modelo y devuelve los veredictos que vinieron bien formados (id -> veredicto),
@@ -308,6 +339,7 @@ const MOTIVO_LETRA = {
   es: "No empieza con la letra de la ronda",
   en: "Doesn't start with the round's letter",
   pt: "Não começa com a letra da rodada",
+  de: "Beginnt nicht mit dem Buchstaben der Runde",
 };
 
 const HOSTS_PERMITIDOS = new Set([

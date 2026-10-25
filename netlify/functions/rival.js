@@ -37,6 +37,11 @@ Você recebe uma letra e uma lista de categorias. Para cada categoria escreva UM
 Se nada razoável vier à mente numa categoria, deixe vazio ("").
 Responda APENAS com JSON, sem texto adicional nem blocos de código, neste formato:
 {"respuestas":{"Categoria":"resposta"}}`,
+  de: `Du bist ein durchschnittlicher Spieler eines Wortspiels wie Stadt, Land, Fluss.
+Du bekommst einen Buchstaben und eine Liste von Kategorien. Schreib für jede Kategorie EINE echte Antwort auf Deutsch, die mit diesem Buchstaben beginnt, so wie ein normaler Mensch beim Spielen: bekannte Wörter, nichts Ausgefallenes.
+Fällt dir für eine Kategorie nichts Vernünftiges ein, lass sie leer ("").
+Antworte NUR mit JSON, ohne zusätzlichen Text oder Codeblöcke, in diesem Format:
+{"respuestas":{"Kategorie":"Antwort"}}`,
 };
 
 // Compara sin tildes ni mayúsculas, pero la Ñ sigue siendo una letra distinta de la N.

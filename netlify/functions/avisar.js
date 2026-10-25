@@ -59,6 +59,18 @@ const TEXTOS = {
     grupo: ["Sua vez no grupo!", "{n} montou uma rodada no duelo em grupo. Jogue!"],
     sala: ["Te convidaram para jogar!", "{n} está te esperando na sala do tutti.frutti. Vai entrar?"],
   },
+  de: {
+    amigo: ["Du hast einen neuen Freund!", "{n} hat dich als Freund hinzugefügt. Schickst du ein Duell?"],
+    solicitud: ["Neue Freundschaftsanfrage!", "{n} hat dir eine Freundschaftsanfrage geschickt."],
+    record: ["Dein Rekord wurde geknackt!", "{n} hat dein bestes Zeitrennen übertroffen. Holst du es dir zurück?"],
+    prueba: ["Es funktioniert!", "Die Mitteilungen von tutti.frutti kommen bei dir an."],
+    duelo: ["Du wurdest herausgefordert!", "{n} hat dir ein Duell geschickt. Bist du dabei?"],
+    duelo_ganado: ["Duell verloren!", "{n} hat mehr Punkte geholt als du. Revanche?"],
+    liga: ["Du wurdest überholt!", "{n} hat dich in der Liga dieser Woche überholt. Spiel und hol dir deinen Platz zurück."],
+    turno: ["Du bist dran!", "{n} hat im Duell gespielt. Jetzt du!"],
+    grupo: ["Du bist dran in der Gruppe!", "{n} hat eine Runde im Gruppenduell zusammengestellt. Spiel sie!"],
+    sala: ["Du bist eingeladen!", "{n} wartet in einem tutti.frutti-Raum auf dich. Kommst du?"],
+  },
 };
 
 // ---------- Utilidades ----------

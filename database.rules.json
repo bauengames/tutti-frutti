@@ -110,6 +110,21 @@
               ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 2"
             }
           }
+        },
+        "emotes": {
+          "$playerId": {
+            ".write": "auth != null && auth.uid === $playerId && root.child('rooms').child($roomCode).child('players').child(auth.uid).exists()",
+            ".validate": "newData.hasChildren(['e', 'at'])",
+            "e": {
+              ".validate": "newData.isString() && newData.val().matches(/^[a-z]{2,12}$/)"
+            },
+            "at": {
+              ".validate": "newData.isNumber() && newData.val() === now"
+            },
+            "$other": {
+              ".validate": false
+            }
+          }
         }
       }
     },
@@ -476,9 +491,16 @@
       "$inviter": {
         ".read": "auth != null && auth.uid === $inviter",
         "$invitee": {
-          ".write": "auth != null && auth.uid === $invitee && auth.token.email != null && $invitee !== $inviter && !data.exists() && !root.child('users').child($invitee).exists()",
+          ".write": "auth != null && auth.uid === $invitee && $invitee !== $inviter && !data.exists() && ((auth.token.email != null && !root.child('users').child($invitee).exists()) || (!root.child('referidos').child($invitee).exists() && newData.parent().parent().parent().child('referidos').child($invitee).val() === $inviter))",
           ".validate": "newData.isString() && root.child('friendCodes').child(newData.val()).val() === $inviter"
         }
+      }
+    },
+    "referidos": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && !data.exists()",
+        ".validate": "newData.isString() && newData.val() !== $uid && newData.parent().parent().child('referrals').child(newData.val()).child($uid).exists()"
       }
     },
     "ligas": {
@@ -591,7 +613,7 @@
           ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 500"
         },
         "lang": {
-          ".validate": "newData.isString() && newData.val().matches(/^(es|en|pt)$/)"
+          ".validate": "newData.isString() && newData.val().matches(/^(es|en|pt|de)$/)"
         },
         "at": {
           ".validate": "newData.val() === now"
