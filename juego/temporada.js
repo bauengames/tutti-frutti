@@ -13,7 +13,8 @@
       exclusivos: "Exclusivos de esta temporada", cobrar: "Cobrar", bloqueado: "Jugá para desbloquearlo",
       semillas: "{n} semillas", hint: "Pista", joker: "Comodín", reroll: "Cambiar letra", clock: "Reloj extra", shield: "Escudo", freeze: "Congelador",
       acc: "Accesorio", icono: "Ícono para la app de iPhone «{n}»", titulo_banner: "Pase de temporada", sub_banner: "Premio {n} de {t} · gratis jugando", para_cobrar: "¡Tenés {n} premios para cobrar!", para_cobrar_1: "¡Tenés un premio para cobrar!", volver: "Modos", tema: "Tema «{n}»", pronto: "La próxima temporada empieza pronto. ¡Seguí sumando XP!",
-      como: "Ganás XP jugando cualquier modo. Cada 100 XP desbloqueás un premio. Los exclusivos no vuelven cuando termina la temporada.",
+      como: "Ganás XP jugando cualquier modo. Cada {n} XP desbloqueás un premio. Los exclusivos no vuelven cuando termina la temporada.",
+      como_sube: "Ganás XP jugando cualquier modo. Cada premio pide un poco más: {a} XP los primeros, {b} los del medio y {c} los últimos. Los exclusivos no vuelven cuando termina la temporada.",
       cobrado: "¡{p}!", pase_tema: "Pase",
     },
     en: {
@@ -22,7 +23,8 @@
       exclusivos: "This season's exclusives", cobrar: "Claim", bloqueado: "Play to unlock it",
       semillas: "{n} seeds", hint: "Hint", joker: "Joker", reroll: "New letter", clock: "Extra time", shield: "Shield", freeze: "Streak freeze",
       acc: "Accessory", icono: "iPhone app icon “{n}”", titulo_banner: "Season pass", sub_banner: "Reward {n} of {t} · free by playing", para_cobrar: "You have {n} rewards to claim!", para_cobrar_1: "You have a reward to claim!", volver: "Modes", tema: "“{n}” theme", pronto: "The next season starts soon. Keep earning XP!",
-      como: "Earn XP playing any mode. Every 100 XP unlocks a reward. Exclusives don't come back when the season ends.",
+      como: "Earn XP playing any mode. Every {n} XP unlocks a reward. Exclusives don't come back when the season ends.",
+      como_sube: "Earn XP playing any mode. Each reward asks a bit more: {a} XP for the first ones, {b} for the middle ones and {c} for the last ones. Exclusives don't come back when the season ends.",
       cobrado: "{p}!", pase_tema: "Pass",
     },
     pt: {
@@ -31,7 +33,8 @@
       exclusivos: "Exclusivos desta temporada", cobrar: "Resgatar", bloqueado: "Jogue para desbloquear",
       semillas: "{n} sementes", hint: "Dica", joker: "Coringa", reroll: "Trocar letra", clock: "Relógio extra", shield: "Escudo", freeze: "Congelador",
       acc: "Acessório", icono: "Ícone do app de iPhone “{n}”", titulo_banner: "Passe de temporada", sub_banner: "Prêmio {n} de {t} · grátis jogando", para_cobrar: "Você tem {n} prêmios para resgatar!", para_cobrar_1: "Você tem um prêmio para resgatar!", volver: "Modos", tema: "Tema “{n}”", pronto: "A próxima temporada começa em breve. Continue somando XP!",
-      como: "Você ganha XP jogando qualquer modo. A cada 100 XP desbloqueia um prêmio. Os exclusivos não voltam quando a temporada acaba.",
+      como: "Você ganha XP jogando qualquer modo. A cada {n} XP desbloqueia um prêmio. Os exclusivos não voltam quando a temporada acaba.",
+      como_sube: "Você ganha XP jogando qualquer modo. Cada prêmio pede um pouco mais: {a} XP os primeiros, {b} os do meio e {c} os últimos. Os exclusivos não voltam quando a temporada acaba.",
       cobrado: "{p}!", pase_tema: "Passe",
     },
   };
@@ -49,9 +52,9 @@
     { id: "t1", emoji: "cerezo", nombre: { es: "Primavera", en: "Spring", pt: "Primavera" }, desde: "2026-10-04", hasta: "2026-11-15",
       icono: "primavera", tema: "lima__lavanda", acc: ["balloon", "sparkles", "tophat", "crown"] },
     { id: "t2", emoji: "sun", nombre: { es: "Verano", en: "Summer", pt: "Verão" }, desde: "2026-11-16", hasta: "2027-01-06",
-      icono: "verano", tema: "mandarina__noche", acc: ["icecream", "straw", "mustache", "trophy"] },
+      icono: "verano", tema: "mandarina__noche", acc: ["icecream", "straw", "mustache", "trophy"], xp: [200, 300, 400] },
     { id: "t3", emoji: "mascara", nombre: { es: "Carnaval", en: "Carnival", pt: "Carnaval" }, desde: "2027-01-07", hasta: "2027-02-14", // junto con el mundo Carnaval de la Aventura, cuando termina la Navidad
-      icono: "carnaval", tema: "sandia__lavanda", acc: ["party", "bowtie", "mic", "beanie"] },
+      icono: "carnaval", tema: "sandia__lavanda", acc: ["party", "bowtie", "mic", "beanie"], xp: [200, 300, 400] },
   ];
   if (APP.hemisferioSur && !APP.hemisferioSur()) {
     TEMPORADAS[0].nombre = { es: "Flores", en: "Blossom", pt: "Flores" };
@@ -102,7 +105,11 @@
     for (var n = 1; n <= TOTAL; n++) if (propios.indexOf(n) >= 0 || c.indexOf("pase:" + T.id + ":" + n) >= 0) lista.push(n);
     return lista;
   }
-  function alcanzados(T) { return Math.min(TOTAL, Math.floor(datos(T).xp / XP_POR_PREMIO)); }
+  // XP que pide cada premio: sin "xp" en la temporada, 100 cada uno; con xp: [a, b, c], a los premios 1-10,
+  // b los 11-20 y c los 21-30 (igual que en la app, app-temporada.js).
+  function costo(T, n) { var e = T.xp || [XP_POR_PREMIO]; return e[Math.min(e.length - 1, Math.floor((n - 1) / 10))]; }
+  function hasta(T, n) { var s = 0; for (var k = 1; k <= n; k++) s += costo(T, k); return s; }
+  function alcanzados(T) { var xp = datos(T).xp, n = 0; while (n < TOTAL && xp >= hasta(T, n + 1)) n++; return n; }
   APP.paseParaCobrar = function () {
     var T = APP.temporadaActual();
     if (!T) return 0;
@@ -201,13 +208,13 @@
     var d = datos(T), hechos = cobrados(T), llegaste = alcanzados(T);
     var dias = Math.round((fechaDe(T.hasta) - fechaDe(dayKey())) / 86400000);
     var lista = premios(T);
-    var enNivel = d.xp - llegaste * XP_POR_PREMIO;
+    var enNivel = d.xp - hasta(T, llegaste), proximo = costo(T, llegaste + 1);
     html += '<div class="tp-cabecera"><span class="tp-emoji">' + iconSvg(T.emoji) + '</span><div><h1>' + esc(tx("titulo", { t: T.nombre[state.lang] || T.nombre.es })) + "</h1>" +
       "<small>" + esc(dias > 0 ? tx("termina", { n: dias }) : tx("termina_hoy")) + "</small></div></div>" +
       '<div class="tp-progreso"><div class="tp-progreso-fila"><strong>' + esc(tx("nivel", { n: llegaste, t: TOTAL })) + "</strong><small>" +
-      esc(llegaste >= TOTAL ? tx("completo") : tx("xp", { a: enNivel, b: XP_POR_PREMIO })) + '</small></div>' +
-      '<span class="ah-barra"><span style="width:' + (llegaste >= TOTAL ? 100 : Math.round(100 * enNivel / XP_POR_PREMIO)) + '%"></span></span></div>' +
-      '<p class="hint">' + esc(tx("como")) + "</p>" +
+      esc(llegaste >= TOTAL ? tx("completo") : tx("xp", { a: enNivel, b: proximo })) + '</small></div>' +
+      '<span class="ah-barra"><span style="width:' + (llegaste >= TOTAL ? 100 : Math.round(100 * enNivel / proximo)) + '%"></span></span></div>' +
+      '<p class="hint">' + esc(T.xp && T.xp.length > 1 ? tx("como_sube", { a: T.xp[0], b: T.xp[1], c: T.xp[2] }) : tx("como", { n: costo(T, 1) })) + "</p>" +
       '<h2 class="ah-titulo-seccion">' + esc(tx("exclusivos")) + "</h2>" +
       '<div class="tp-exclusivos"><div><img class="tp-icono-app" src="/juego/iconos/' + T.icono + '.png" alt=""><small>' + esc(tx("icono", { n: T.nombre[state.lang] || T.nombre.es })) + "</small></div>" +
       "<div>" + dibujoPremio({ tema: T.tema }) + "<small>" + esc(tx("tema", { n: nombreTema(T.tema) })) + "</small></div></div>" +
