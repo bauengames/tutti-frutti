@@ -247,9 +247,9 @@ const GUIDES = [
     urls: { es: "/respuestas-tutti-frutti" },
     es: {
       nav: "Respuestas por letra",
-      title: "Respuestas para tutti frutti por letra | tutti.frutti",
+      title: "Respuestas para tutti frutti de la A a la Z | tutti.frutti",
       description: "Ideas de respuestas para tutti frutti con cada letra, de la A a la Z: nombres, animales, países, ciudades, colores, comidas, objetos, profesiones y más.",
-      ogTitle: "Respuestas para tutti frutti por letra",
+      ogTitle: "Respuestas para tutti frutti de la A a la Z",
     },
   },
   // Páginas para quienes buscan el juego con el nombre que tiene en su país. Solo en español.
@@ -786,6 +786,7 @@ function buildGuide(g, lang) {
   };
   let main = readTpl(`guias/${lang}/${g.key}.html`);
   main = main.replace(/\{\{CTA:([^}]+)\}\}/g, (m, text) => ctaBox(lang, text));
+  main = main.replace("{{TODAS_LAS_LETRAS}}", () => allLettersSections());
   write(url, contentPage(page, main));
   return page;
 }
@@ -855,6 +856,30 @@ function obviousSection(entry) {
     </section>`;
 }
 
+// Todas las letras en la página /respuestas-tutti-frutti: una sección por letra con sus respuestas y consejos.
+function allLettersSections() {
+  return LETTERS.map((entry) => {
+    const L = entry.letter;
+    const rows = entry.cats.map(([cat, words]) => `<tr><td><strong>${esc(cat)}</strong></td><td>${words.map(esc).join(", ")}</td></tr>`).join("\n            ");
+    return `<section id="letra-${L.toLowerCase()}">
+      <h2>Respuestas con la ${L}</h2>
+      <p>${esc(entry.intro)}</p>
+      <div style="overflow-x:auto">
+        <table class="score-table answers-table">
+          <thead><tr><th>Categoría</th><th>Ideas</th></tr></thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      </div>
+      <ul>
+        ${entry.tips.map((tip) => `<li>${esc(tip)}</li>`).join("\n        ")}
+      </ul>
+      <p class="letter-top"><a href="#elegir-letra">↑ Elegir otra letra</a></p>
+    </section>`;
+  }).join("\n\n    ");
+}
+
 function buildLetterPages() {
   return LETTERS.map((entry, i) => {
     const L = entry.letter, url = letterUrl(L);
@@ -864,6 +889,9 @@ function buildLetterPages() {
       description: `Ideas de respuestas para tutti frutti con la letra ${L}: nombres, animales, países, ciudades, colores, comidas, objetos, profesiones, deportes y marcas.`,
       ogTitle: `Tutti frutti con la letra ${L}: respuestas por categoría`,
       alternates: null,
+      // Todas las letras están juntas en /respuestas-tutti-frutti (la página que se indexa); estas siguen
+      // andando para quien llegue por un link, pero Google no las cuenta como 20 páginas parecidas.
+      noindex: "noindex, follow",
       jsonld: breadcrumbJsonLd([["Inicio", "/"], ["Respuestas por letra", GUIDE.respuestas.urls.es], [`Letra ${L}`, url]]),
     };
     const rows = entry.cats.map(([cat, words]) => `<tr><td><strong>${esc(cat)}</strong></td><td>${words.map(esc).join(", ")}</td></tr>`).join("\n            ");
