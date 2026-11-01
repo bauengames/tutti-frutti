@@ -170,6 +170,9 @@
           "ropa": {
             ".validate": "newData.isString() && newData.val().length <= 160 && newData.val().matches(/^[a-z0-9_:,]*$/)"
           },
+          "bg": {
+            ".validate": "newData.isString() && newData.val().matches(/^[a-z0-9_]{1,24}$/)"
+          },
           "$other": {
             ".validate": false
           },
@@ -204,6 +207,9 @@
           },
           "ropa": {
             ".validate": "newData.isString() && newData.val().length <= 160 && newData.val().matches(/^[a-z0-9_:,]*$/)"
+          },
+          "bg": {
+            ".validate": "newData.isString() && newData.val().matches(/^[a-z0-9_]{1,24}$/)"
           },
           "$other": {
             ".validate": false
@@ -532,6 +538,9 @@
               "ropa": {
                 ".validate": "newData.isString() && newData.val().length <= 160 && newData.val().matches(/^[a-z0-9_:,]*$/)"
               },
+              "bg": {
+                ".validate": "newData.isString() && newData.val().matches(/^[a-z0-9_]{1,24}$/)"
+              },
               "$other": {
                 ".validate": false
               }
@@ -650,6 +659,12 @@
             },
             "f": {
               ".validate": "newData.isString() && newData.val().length <= 8"
+            },
+            "ropa": {
+              ".validate": "newData.isString() && newData.val().length <= 160 && newData.val().matches(/^[a-z0-9_:,]*$/)"
+            },
+            "bg": {
+              ".validate": "newData.isString() && newData.val().matches(/^[a-z0-9_]{1,24}$/)"
             },
             "$other": {
               ".validate": false
@@ -803,6 +818,12 @@
             },
             "f": {
               ".validate": "newData.isString() && newData.val().length <= 8"
+            },
+            "ropa": {
+              ".validate": "newData.isString() && newData.val().length <= 160 && newData.val().matches(/^[a-z0-9_:,]*$/)"
+            },
+            "bg": {
+              ".validate": "newData.isString() && newData.val().matches(/^[a-z0-9_]{1,24}$/)"
             },
             "$other": {
               ".validate": false

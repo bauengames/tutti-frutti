@@ -6330,8 +6330,23 @@ function answerMatchesLetter(raw, letter) {
 
 // Una respuesta de un solo carácter (p. ej. escribir nada más que la letra
 // de la ronda) nunca es una palabra real para ninguna categoría.
+// (1/11) Tampoco vale un artículo, preposición o conjunción sola ("La", "El", "De", "The"…): varios jugadores
+// avisaron que el juez las daba por buenas. Si hay alguna otra palabra ("La Rioja", "El Salvador") sí vale; las
+// palabras cortas de verdad ("Ñu", "Té", "LG") no están en la lista. Igual que en la app.
+const FUNCTION_WORDS = {
+  es: "el la los las lo un una unos unas al del de en y e o u a con por para sin que se su sus mi tu yo le les nos ya ni no es son muy pero como este esta ese esa eso esto él ella",
+  en: "the a an of and or to in on at by for with from it is as my your his her its our this that",
+  pt: "o a os as um uma uns umas de do da dos das em no na nos nas e ou com por para que se meu minha seu sua",
+};
+const functionWordSets = {};
+function isFunctionWordAnswer(raw) {
+  const lang = FUNCTION_WORDS[state.lang] ? state.lang : "es";
+  const set = functionWordSets[lang] || (functionWordSets[lang] = new Set(FUNCTION_WORDS[lang].split(" ")));
+  const tokens = String(raw || "").toLowerCase().split(/[^a-zà-öø-ÿ\u00f1]+/i).filter(Boolean);
+  return tokens.length > 0 && tokens.every(tk => tk.length < 2 || set.has(tk));
+}
 function isTrivialAnswer(raw) {
-  return normalizeAnswer(raw).length < 2;
+  return normalizeAnswer(raw).length < 2 || isFunctionWordAnswer(raw);
 }
 
 // Distancia de edición (Levenshtein) — se usa para tolerar errores de tipeo
