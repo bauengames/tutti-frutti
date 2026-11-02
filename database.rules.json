@@ -941,6 +941,80 @@
           }
         }
       }
+    },
+    "rareza": {
+      "$dia": {
+        ".read": "auth != null && $dia.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid && !data.exists() && $dia.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
+          "$i": {
+            ".validate": "$i.matches(/^([0-9]|v)$/) && newData.isString() && newData.val().length <= 40"
+          }
+        }
+      }
+    },
+    "rachasAmigos": {
+      "$pid": {
+        ".read": "auth != null && ($pid.beginsWith(auth.uid + '_') || $pid.endsWith('_' + auth.uid))",
+        ".write": "auth != null && ($pid.beginsWith(auth.uid + '_') || $pid.endsWith('_' + auth.uid)) && (data.exists() || (newData.child('a').val() + '_' + newData.child('b').val() === $pid && root.child('rachaPedidos').child(auth.uid).child(newData.child('a').val() === auth.uid ? newData.child('b').val() : newData.child('a').val()).exists() && root.child('friends').child(auth.uid).child(newData.child('a').val() === auth.uid ? newData.child('b').val() : newData.child('a').val()).exists()))",
+        ".validate": "!newData.exists() || newData.hasChildren(['a', 'b', 'n'])",
+        "a": {
+          ".validate": "newData.isString() && (!data.exists() || newData.val() === data.val())"
+        },
+        "b": {
+          ".validate": "newData.isString() && (!data.exists() || newData.val() === data.val())"
+        },
+        "n": {
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 10000 && (!data.exists() || newData.val() === data.val() || newData.val() === data.val() + 1 || newData.val() === 1)"
+        },
+        "dia": {
+          ".validate": "newData.isString() && (newData.val() === '' || newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/))"
+        },
+        "salvada": {
+          ".validate": "newData.isString() && (newData.val() === '' || newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/))"
+        },
+        "desde": {
+          ".validate": "newData.isNumber()"
+        },
+        "u": {
+          "$uid": {
+            ".validate": "(newData.parent().parent().child('a').val() === $uid || newData.parent().parent().child('b').val() === $uid) && ($uid === auth.uid || newData.val() === data.val()) && newData.isString() && (newData.val() === '' || newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/))"
+          }
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    },
+    "misRachas": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$pid": {
+          ".write": "auth != null && ($pid.beginsWith(auth.uid + '_') || $pid.endsWith('_' + auth.uid)) && ($pid.beginsWith($uid + '_') || $pid.endsWith('_' + $uid))",
+          ".validate": "newData.val() === true"
+        }
+      }
+    },
+    "rachaPedidos": {
+      "$to": {
+        ".read": "auth != null && auth.uid === $to",
+        "$from": {
+          ".write": "auth != null && $from !== $to && ((auth.uid === $from && root.child('friends').child($from).child($to).exists()) || (auth.uid === $to && !newData.exists()))",
+          ".validate": "newData.hasChildren(['n', 'f', 'at'])",
+          "n": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
+          },
+          "f": {
+            ".validate": "newData.isString() && newData.val().length <= 8"
+          },
+          "at": {
+            ".validate": "newData.val() === now"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
     }
   }
 }

@@ -13,6 +13,7 @@
 //   turno         → duelo por turnos (partidas/{id}): los dos son jugadores del duelo y ahora le toca al destino.
 //   grupo         → duelo en grupo (grupos/{id}): los dos están en el grupo, que sigue abierto (ronda nueva o invitación).
 //   sala          → invitación a una sala online: son amigos y el que pide está en la sala (rooms/{código}/players).
+//   racha         → racha de a dos (rachasAmigos/{a_b}): el que pide ya jugó hoy y el destino todavía no.
 //   prueba        → un aviso a uno mismo, para probar que las notificaciones llegan (solo a tu propio teléfono).
 // Límite: cada destino recibe como mucho un aviso de cada tipo cada cierto tiempo (avisos/{uid}/{tipo}).
 
@@ -20,7 +21,7 @@ const crypto = require("crypto");
 
 const PROYECTO = "tuttipuntofrutti";
 const BASE = "https://tuttipuntofrutti-default-rtdb.firebaseio.com";
-const ESPERA_MS = { duelo: 2 * 60 * 1000, duelo_ganado: 2 * 60 * 1000, liga: 6 * 60 * 60 * 1000, amigo: 24 * 60 * 60 * 1000, solicitud: 24 * 60 * 60 * 1000, record: 6 * 60 * 60 * 1000, prueba: 60 * 1000, turno: 60 * 1000, grupo: 60 * 1000, sala: 60 * 1000 };
+const ESPERA_MS = { duelo: 2 * 60 * 1000, duelo_ganado: 2 * 60 * 1000, liga: 6 * 60 * 60 * 1000, amigo: 24 * 60 * 60 * 1000, solicitud: 24 * 60 * 60 * 1000, record: 6 * 60 * 60 * 1000, prueba: 60 * 1000, turno: 60 * 1000, grupo: 60 * 1000, sala: 60 * 1000, racha: 20 * 60 * 60 * 1000 };
 
 const TEXTOS = {
   es: {
@@ -33,6 +34,8 @@ const TEXTOS = {
     liga: ["¡Te pasaron en la liga!", "{n} te pasó en la liga de esta semana. Jugá y recuperá tu lugar."],
     turno: ["¡Te toca!", "{n} jugó su turno en el duelo. ¡Te toca!"],
     grupo: ["¡Te toca en el grupo!", "{n} armó una ronda en el duelo en grupo. ¡Jugala!"],
+    racha: ["¡Tu racha te espera!", "{n} ya jugó hoy: no dejes que se apague la racha de {d} días."],
+    racha_corta: ["¡Tu racha te espera!", "{n} ya jugó hoy: jugá vos también para que la racha siga."],
     sala: ["¡Te invitan a jugar!", "{n} te espera en su sala de tutti.frutti. ¿Entrás?"],
   },
   en: {
@@ -45,6 +48,8 @@ const TEXTOS = {
     liga: ["You were overtaken!", "{n} passed you in this week's league. Play and take your spot back."],
     turno: ["Your turn!", "{n} played their turn in your duel. Your move!"],
     grupo: ["Your turn in the group!", "{n} set up a round in your group duel. Play it!"],
+    racha: ["Your streak is waiting!", "{n} already played today: don't let your {d}-day streak go out."],
+    racha_corta: ["Your streak is waiting!", "{n} already played today: play too to keep your streak going."],
     sala: ["You're invited to play!", "{n} is waiting for you in their tutti.frutti room. Join?"],
   },
   pt: {
@@ -57,6 +62,8 @@ const TEXTOS = {
     liga: ["Te passaram na liga!", "{n} te passou na liga desta semana. Jogue e recupere seu lugar."],
     turno: ["Sua vez!", "{n} jogou o turno no duelo. Sua vez!"],
     grupo: ["Sua vez no grupo!", "{n} montou uma rodada no duelo em grupo. Jogue!"],
+    racha: ["Sua sequência está esperando!", "{n} já jogou hoje: não deixe a sequência de {d} dias se apagar."],
+    racha_corta: ["Sua sequência está esperando!", "{n} já jogou hoje: jogue você também para a sequência continuar."],
     sala: ["Te convidaram para jogar!", "{n} está te esperando na sala do tutti.frutti. Vai entrar?"],
   },
   de: {
@@ -69,6 +76,8 @@ const TEXTOS = {
     liga: ["Du wurdest überholt!", "{n} hat dich in der Liga dieser Woche überholt. Spiel und hol dir deinen Platz zurück."],
     turno: ["Du bist dran!", "{n} hat im Duell gespielt. Jetzt du!"],
     grupo: ["Du bist dran in der Gruppe!", "{n} hat eine Runde im Gruppenduell zusammengestellt. Spiel sie!"],
+    racha: ["Eure Serie wartet!", "{n} hat heute schon gespielt: Lass eure Serie von {d} Tagen nicht abreißen."],
+    racha_corta: ["Eure Serie wartet!", "{n} hat heute schon gespielt: Spiel auch, damit eure Serie weitergeht."],
     sala: ["Du bist eingeladen!", "{n} wartet in einem tutti.frutti-Raum auf dich. Kommst du?"],
   },
   fr: {
@@ -81,6 +90,8 @@ const TEXTOS = {
     liga: ["On t'a dépassé !", "{n} t'a dépassé dans la ligue de cette semaine. Joue et reprends ta place."],
     turno: ["À toi de jouer !", "{n} a joué son tour dans le duel. À toi !"],
     grupo: ["À toi dans le groupe !", "{n} a lancé une manche dans le duel en groupe. Joue-la !"],
+    racha: ["Votre série vous attend !", "{n} a déjà joué aujourd'hui : ne laisse pas s'éteindre votre série de {d} jours."],
+    racha_corta: ["Votre série vous attend !", "{n} a déjà joué aujourd'hui : joue toi aussi pour que la série continue."],
     sala: ["On t'invite à jouer !", "{n} t'attend dans un salon tutti.frutti. Tu viens ?"],
   },
   it: {
@@ -93,6 +104,8 @@ const TEXTOS = {
     liga: ["Ti hanno superato!", "{n} ti ha superato nella lega di questa settimana. Gioca e riprenditi il posto."],
     turno: ["Tocca a te!", "{n} ha giocato il suo turno nel duello. Tocca a te!"],
     grupo: ["Tocca a te nel gruppo!", "{n} ha preparato un turno nel duello di gruppo. Giocalo!"],
+    racha: ["La vostra serie ti aspetta!", "{n} ha già giocato oggi: non lasciare che si spenga la vostra serie di {d} giorni."],
+    racha_corta: ["La vostra serie ti aspetta!", "{n} ha già giocato oggi: gioca anche tu perché la serie continui."],
     sala: ["Ti invitano a giocare!", "{n} ti aspetta in una stanza di tutti.frutti. Entri?"],
   },
 };
@@ -174,7 +187,8 @@ exports.handler = async (event) => {
   let pedido;
   try { pedido = JSON.parse(event.body || "{}"); } catch (e) { return responder(400, { error: "pedido" }); }
   const { tipo, destino } = pedido;
-  if (!TEXTOS.es[tipo] || !seguro(destino)) return responder(400, { error: "pedido" });
+  // Solo los tipos que se verifican (racha_corta es un texto, no un tipo que se pueda pedir).
+  if (!TEXTOS.es[tipo] || !ESPERA_MS[tipo] || !seguro(destino)) return responder(400, { error: "pedido" });
 
   let quien;
   try { quien = await verificarJugador(pedido.idToken); } catch (e) { return responder(401, { error: "credencial" }); }
@@ -183,7 +197,7 @@ exports.handler = async (event) => {
 
   try {
     // ¿Es cierto lo que dice? (y de paso, el nombre del que pide, sacado de la base, no del pedido)
-    let nombre = null, link = "tuttifrutti://jugar";
+    let nombre = null, link = "tuttifrutti://jugar", rachaDias = 0;
     if (tipo === "duelo" || tipo === "duelo_ganado") {
       if (!/^[A-Za-z0-9]{10}$/.test(String(pedido.duelo || ""))) return responder(400, { error: "pedido" });
       const duelo = await leer(`duels/${pedido.duelo}`);
@@ -235,6 +249,21 @@ exports.handler = async (event) => {
       if (!ida || !vuelta || !yo) return responder(403, { error: "no corresponde" });
       nombre = yo.name;
       link = "tuttifrutti://jugar?room=" + pedido.sala;
+    } else if (tipo === "racha") {
+      // Id del par: los dos uids ordenados (igual que la app). Si la app lo manda, tiene que coincidir.
+      const id = quien < destino ? quien + "_" + destino : destino + "_" + quien;
+      if (pedido.racha != null && pedido.racha !== id) return responder(400, { error: "pedido" });
+      const rt = await leer(`rachasAmigos/${id}`);
+      const u = (rt && rt.u) || {};
+      // "Hoy" es la fecha del teléfono de quien jugó: vale cualquier fecha que sea hoy en alguna zona horaria.
+      const dias = [-14, 0, 14].map((h) => new Date(Date.now() + h * 3600 * 1000).toISOString().slice(0, 10));
+      if (!rt || ![rt.a, rt.b].includes(quien) || ![rt.a, rt.b].includes(destino) || !dias.includes(u[quien]) || u[destino] === u[quien]) {
+        return responder(403, { error: "no corresponde" });
+      }
+      const perfil = await leer(`profiles/${quien}`);
+      nombre = (perfil && perfil.name) || null;
+      rachaDias = Number(rt.n) || 0;
+      link = "tuttifrutti://jugar?racha";
     } else if (tipo === "liga") {
       const semana = semanaActual();
       if (pedido.semana !== semana || !/^[0-4]$/.test(String(pedido.div)) || !/^[0-9]{1,5}$/.test(String(pedido.grupo))) return responder(400, { error: "pedido" });
@@ -246,9 +275,9 @@ exports.handler = async (event) => {
     }
 
     // Límite: un aviso de cada tipo cada tanto, por destino.
-    // "amigo", "solicitud", "turno", "grupo" y "sala" se limitan por cada par (la espera de ESPERA_MS: un día para amigo y
-    // solicitud, un minuto para turno, grupo y sala); el resto, por destino.
-    const limite = tipo === "amigo" || tipo === "solicitud" || tipo === "turno" || tipo === "grupo" || tipo === "sala" ? `avisos/${destino}/${tipo}_${quien}` : `avisos/${destino}/${tipo}`;
+    // "amigo", "solicitud", "turno", "grupo", "sala" y "racha" se limitan por cada par (la espera de ESPERA_MS: un día
+    // para amigo y solicitud, un minuto para turno, grupo y sala, y 20 horas para racha: uno por día); el resto, por destino.
+    const limite = ["amigo", "solicitud", "turno", "grupo", "sala", "racha"].includes(tipo) ? `avisos/${destino}/${tipo}_${quien}` : `avisos/${destino}/${tipo}`;
     const ultimo = await leer(limite);
     if (ultimo && Date.now() - ultimo < ESPERA_MS[tipo]) return responder(200, { ok: true, salteado: true });
     await escribir(limite, Date.now());
@@ -256,13 +285,13 @@ exports.handler = async (event) => {
     const datos = await leer(`tokens/${destino}`);
     if (!datos || !datos.t) return responder(200, { ok: true, sinTelefono: true });
     const t = TEXTOS[datos.lang] || TEXTOS.es;
-    const [titulo, cuerpo] = t[tipo];
+    const [titulo, cuerpo] = t[tipo === "racha" && rachaDias < 2 ? "racha_corta" : tipo];
     const r = await fetch(`https://fcm.googleapis.com/v1/projects/${PROYECTO}/messages:send`, {
       method: "POST",
       headers: { "Content-Type": "application/json", Authorization: "Bearer " + (await tokenDeAcceso()) },
       body: JSON.stringify({ message: {
         token: datos.t,
-        notification: { title: titulo, body: cuerpo.replace("{n}", limpiarNombre(nombre)) },
+        notification: { title: titulo, body: cuerpo.replace("{n}", limpiarNombre(nombre)).replace("{d}", String(rachaDias)) },
         data: { link },
         apns: { payload: { aps: { sound: "default" } } },
       } }),
