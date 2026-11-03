@@ -47,6 +47,7 @@ semana ----------` hasta `dailyLetterFits`:
 - `startDaily()`: `duration` del modo; arma `state.letterByCat`, `state.advBanned` y `state.advLevel`
   (`{ rules, cardTime, letters, categories }`) para reusar las reglas de la Aventura; el rótulo de la ronda suma el
   modo y `#twistNote` muestra el modo (y la letra prohibida).
+- `goToLobby()`: dentro de `if (state.dailyMode)`, `state.advLevel = null; state.advBanned = null; state.letterByCat = null;` (si no, al abandonar la Sopa de letras a mitad de partida, el Contrarreloj se queda sin "Cambiar letra" y la pista puede usar otra letra).
 - `tickDaily()`: llama a `tickRevealCard()` (reloj por categoría de A ciegas).
 - `finishDailyRound()`: pasa `ch.letterByCat` a `judgeSoloAnswers`; aplica `advRuleBreak` (letra prohibida); bonus
   `Math.min(DAILY_MAX_TIME_BONUS, secondsLeft)`; el registro guarda `mode`, `letterByCat` y `banned`; limpia

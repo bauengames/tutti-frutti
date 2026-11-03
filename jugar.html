@@ -12219,6 +12219,7 @@ function goToLobby() {
     clearInterval(state.timerId);
     clearTimeout(state.spinId);
     state.dailyMode = false;
+    state.advLevel = null; state.advBanned = null; state.letterByCat = null;
     if (state.categoriesBeforeDaily) {
       state.categories = state.categoriesBeforeDaily;
       state.categoriesBeforeDaily = null;
