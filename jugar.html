@@ -2937,6 +2937,7 @@ const I18N = {
     doesnt_start_with: "No empieza con {letter}",
     answer_too_short: "Es solo la letra, no cuenta como palabra",
     answer_repeated_cat: "Ya la usaste en otra categoría esta ronda",
+    answer_repeated_word: "Ya usaste esta palabra",
     judge_valid: "Válida",
     judge_invalid: "No válida",
     judge_no_response: " (el juez no respondió, se aceptó por defecto)",
@@ -3642,6 +3643,7 @@ const I18N = {
     doesnt_start_with: "Doesn't start with {letter}",
     answer_too_short: "It's just the letter, it doesn't count as a word",
     answer_repeated_cat: "You already used it in another category this round",
+    answer_repeated_word: "You already used this word",
     judge_valid: "Valid",
     judge_invalid: "Not valid",
     judge_no_response: " (the judge didn't respond, it was accepted by default)",
@@ -4347,6 +4349,7 @@ const I18N = {
     doesnt_start_with: "Não começa com {letter}",
     answer_too_short: "É só a letra, não conta como palavra",
     answer_repeated_cat: "Você já usou em outra categoria nesta rodada",
+    answer_repeated_word: "Você já usou esta palavra",
     judge_valid: "Válida",
     judge_invalid: "Não válida",
     judge_no_response: " (o juiz não respondeu, foi aceita por padrão)",
@@ -8854,6 +8857,7 @@ const DAILY_MODE_TEXTS = {
     velocidad: ["A toda velocidad", "De a una: arrancás con {s} segundos y cada palabra que completás suma {b}."],
     lluvia: ["Lluvia de ideas", "Una sola categoría y {n} palabras distintas para escribir."],
     modo: "{dia} · {modo}",
+    manana: "Mañana: {modo}.",
   },
   en: {
     clasico: ["Classic", "Same letter for everyone and just one try."],
@@ -8864,6 +8868,7 @@ const DAILY_MODE_TEXTS = {
     velocidad: ["Full speed", "One at a time: you start with {s} seconds and every word you complete adds {b}."],
     lluvia: ["Brainstorm", "A single category and {n} different words to write."],
     modo: "{dia} · {modo}",
+    manana: "Tomorrow: {modo}.",
   },
   pt: {
     clasico: ["Clássico", "A mesma letra para todos e uma única chance."],
@@ -8874,6 +8879,7 @@ const DAILY_MODE_TEXTS = {
     velocidad: ["A toda velocidade", "Uma por vez: você começa com {s} segundos e cada palavra completada soma {b}."],
     lluvia: ["Chuva de ideias", "Uma só categoria e {n} palavras diferentes para escrever."],
     modo: "{dia} · {modo}",
+    manana: "Amanhã: {modo}.",
   },
   de: {
     clasico: ["Klassisch", "Derselbe Buchstabe für alle und nur ein Versuch."],
@@ -8884,6 +8890,7 @@ const DAILY_MODE_TEXTS = {
     velocidad: ["Volle Fahrt", "Einzeln: Du startest mit {s} Sekunden und jedes fertige Wort bringt {b} dazu."],
     lluvia: ["Ideenregen", "Eine einzige Kategorie und {n} verschiedene Wörter."],
     modo: "{dia} · {modo}",
+    manana: "Morgen: {modo}.",
   },
   fr: {
     clasico: ["Classique", "La même lettre pour tout le monde et un seul essai."],
@@ -8894,6 +8901,7 @@ const DAILY_MODE_TEXTS = {
     velocidad: ["À toute vitesse", "Une par une : tu commences avec {s} secondes et chaque mot trouvé en ajoute {b}."],
     lluvia: ["Pluie d'idées", "Une seule catégorie et {n} mots différents à écrire."],
     modo: "{dia} · {modo}",
+    manana: "Demain : {modo}.",
   },
   it: {
     clasico: ["Classico", "La stessa lettera per tutti e un solo tentativo."],
@@ -8904,6 +8912,7 @@ const DAILY_MODE_TEXTS = {
     velocidad: ["A tutta velocità", "Una alla volta: parti con {s} secondi e ogni parola completata ne aggiunge {b}."],
     lluvia: ["Pioggia di idee", "Una sola categoria e {n} parole diverse da scrivere."],
     modo: "{dia} · {modo}",
+    manana: "Domani: {modo}.",
   },
 };
 const DAILY_LOCALES = { es: "es-AR", en: "en-US", pt: "pt-BR", de: "de-DE", fr: "fr-FR", it: "it-IT" };
@@ -8916,6 +8925,11 @@ function dailyModeText(ch, which) {
   let str = which === "name" ? pair[0] : pair[1];
   str = str.replace("{x}", ch.banned || "").replace("{s}", DAILY_VELOCIDAD_START).replace("{b}", ADV_BONUS_SECONDS).replace("{n}", ch.categories.length);
   return window.APP && APP.tu ? APP.tu(str) : str;
+}
+// "Mañana: A ciegas"
+function dailyTomorrowText() {
+  const T = DAILY_MODE_TEXTS[state.lang] || DAILY_MODE_TEXTS.es;
+  return T.manana.replace("{modo}", dailyModeText(getDailyChallenge(dayKey(1)), "name"));
 }
 // "Martes · Sopa de letras"
 function dailyModeTitle(ch) {
@@ -9021,6 +9035,19 @@ function dailyModeIntro(then) {
     <h2>${escapeHtml(dailyModeTitle(ch))}</h2>
     <p>${escapeHtml(dailyModeText(ch, "desc"))}</p>
     <button type="button" class="btn btn-primary btn-block" data-ok onclick="closeInfoModal(); (window.__dailyIntroThen || function () {})()">${escapeHtml(t("adv_play_btn"))}</button>`);
+}
+
+// Vuelve del desafío al estado normal del juego.
+function leaveDailyMode() {
+  clearInterval(state.timerId);
+  clearTimeout(state.spinId);
+  state.dailyMode = false;
+  state.advLevel = null; state.advBanned = null; state.letterByCat = null;
+  if (state.categoriesBeforeDaily) {
+    state.categories = state.categoriesBeforeDaily;
+    state.categoriesBeforeDaily = null;
+    renderCatChips();
+  }
 }
 
 function openDaily() {
@@ -10239,8 +10266,8 @@ const HOWTO_TEXTS = {
   "daily": [
    "Cómo se juega el desafío del día",
    [
-    "Todos los jugadores reciben la misma letra y las mismas 6 categorías.",
-    "Tenés <strong>60 segundos</strong> y una sola oportunidad por día.",
+    "Todos los jugadores reciben el mismo desafío: las mismas letras y las mismas categorías.",
+    "Cada día de la semana tiene su modo, y tenés <strong>una sola oportunidad</strong> por día.",
     "Cada palabra válida suma 10 puntos y la categoría marcada vale el doble. Si valen todas, sumás 20 extra, y los segundos que te sobren también suman.",
     "Los 3 mejores del día ganan semillas: 100, 60 y 40."
    ]
@@ -10335,8 +10362,8 @@ const HOWTO_TEXTS = {
   "daily": [
    "How the Daily challenge works",
    [
-    "Every player gets the same letter and the same 6 categories.",
-    "You have <strong>60 seconds</strong> and only one try per day.",
+    "Every player gets the same challenge: the same letters and the same categories.",
+    "Each day of the week has its own mode, and you only get <strong>one try</strong> per day.",
     "Each valid word is worth 10 points and the marked category counts double. If they all count you get 20 extra, and leftover seconds add up too.",
     "The top 3 of the day win seeds: 100, 60 and 40."
    ]
@@ -10431,8 +10458,8 @@ const HOWTO_TEXTS = {
   "daily": [
    "Como funciona o desafio do dia",
    [
-    "Todos os jogadores recebem a mesma letra e as mesmas 6 categorias.",
-    "Você tem <strong>60 segundos</strong> e uma única chance por dia.",
+    "Todos os jogadores recebem o mesmo desafio: as mesmas letras e as mesmas categorias.",
+    "Cada dia da semana tem seu modo, e você tem <strong>uma única chance</strong> por dia.",
     "Cada palavra válida vale 10 pontos e a categoria marcada vale o dobro. Se todas valerem, ganha 20 extras, e os segundos que sobrarem também somam.",
     "Os 3 melhores do dia ganham sementes: 100, 60 e 40."
    ]
@@ -11802,10 +11829,15 @@ async function claimDailyPrizes() {
     const key = dayKey(-off);
     const w = getWallet();
     if (w.dailyChecked.includes(key) || !dailyDateClosed(key)) continue;
-    const snap = await F.get(F.query(F.ref(F.db, `daily/${dailyBoardKey(key)}`), F.orderByChild("score"), F.limitToLast(10)));
-    const entries = [];
-    snap.forEach(c => { entries.push({ uid: c.key, score: (c.val() || {}).score || 0 }); });
-    const mine = entries.find(e => e.uid === F.uid);
+    // Si ese día jugaste antes de los modos, tu puntaje está en daily/{fecha}, no en el ranking del modo.
+    let entries = [], mine = null;
+    for (const tabla of new Set([dailyBoardKey(key), key])) {
+      const snap = await F.get(F.query(F.ref(F.db, `daily/${tabla}`), F.orderByChild("score"), F.limitToLast(10)));
+      const filas = [];
+      snap.forEach(c => { filas.push({ uid: c.key, score: (c.val() || {}).score || 0 }); });
+      mine = filas.find(e => e.uid === F.uid) || null;
+      if (mine) { entries = filas; break; }
+    }
     const w2 = getWallet();
     w2.dailyChecked = [...w2.dailyChecked, key].slice(-30);
     let prize = 0, place = 0;
@@ -11833,7 +11865,7 @@ function soloReasonText(r, letter) {
   if (r.valid || !r.val) return "";
   if (r.reason === "letter") return t("doesnt_start_with", { letter });
   if (r.reason === "short") return t("answer_too_short");
-  if (r.reason === "repeated") return t("answer_repeated_cat");
+  if (r.reason === "repeated") return t(/#\d+$/.test(r.cat) ? "answer_repeated_word" : "answer_repeated_cat");
   if (r.reason === "judge") return `${t("judge_invalid")}${r.motivo ? " — " + escapeHtml(r.motivo) : ""}`;
   return "";
 }
@@ -11879,7 +11911,7 @@ function showDailyResult(record, fresh) {
   note.className = "hint";
   note.style.textAlign = "center";
   note.style.marginTop = "14px";
-  note.textContent = (record.full ? t("daily_full_bonus", { n: FULL_ROUND_BONUS }) + " " : "") + (record.bonus ? t("daily_time_bonus", { bonus: record.bonus }) + " " : "") + t("daily_come_back") + " " + t("daily_prize_info");
+  note.textContent = (record.full ? t("daily_full_bonus", { n: FULL_ROUND_BONUS }) + " " : "") + (record.bonus ? t("daily_time_bonus", { bonus: record.bonus }) + " " : "") + dailyTomorrowText() + " " + t("daily_prize_info");
   list.appendChild(note);
 
   const objContainer = document.getElementById("myObjectionsOutcome");
@@ -12215,17 +12247,7 @@ function goToLobby() {
   if (state.duelMode) leaveDuelGame();
   renderShopButton();
   refreshDuelBanner();
-  if (state.dailyMode) {
-    clearInterval(state.timerId);
-    clearTimeout(state.spinId);
-    state.dailyMode = false;
-    state.advLevel = null; state.advBanned = null; state.letterByCat = null;
-    if (state.categoriesBeforeDaily) {
-      state.categories = state.categoriesBeforeDaily;
-      state.categoriesBeforeDaily = null;
-      renderCatChips();
-    }
-  }
+  if (state.dailyMode) leaveDailyMode();
   // La pantalla de resultados la comparten todos los modos: se deja como la
   // esperan las salas online.
   const scoreKey = document.querySelector("#screen-results .score-key");

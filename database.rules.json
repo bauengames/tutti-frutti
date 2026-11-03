@@ -946,7 +946,7 @@
       "$dia": {
         ".read": "auth != null && $dia.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
         "$uid": {
-          ".write": "auth != null && auth.uid === $uid && !data.exists() && $dia.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
+          ".write": "auth != null && auth.uid === $uid && (!data.exists() || !newData.exists()) && $dia.matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)",
           "$i": {
             ".validate": "$i.matches(/^([0-9]|v)$/) && newData.isString() && newData.val().length <= 40"
           }

@@ -253,11 +253,11 @@ exports.handler = async (event) => {
       // Id del par: los dos uids ordenados (igual que la app). Si la app lo manda, tiene que coincidir.
       const id = quien < destino ? quien + "_" + destino : destino + "_" + quien;
       if (pedido.racha != null && pedido.racha !== id) return responder(400, { error: "pedido" });
-      const rt = await leer(`rachasAmigos/${id}`);
+      const [rt, amigo] = await Promise.all([leer(`rachasAmigos/${id}`), leer(`friends/${quien}/${destino}`)]);
       const u = (rt && rt.u) || {};
       // "Hoy" es la fecha del teléfono de quien jugó: vale cualquier fecha que sea hoy en alguna zona horaria.
       const dias = [-14, 0, 14].map((h) => new Date(Date.now() + h * 3600 * 1000).toISOString().slice(0, 10));
-      if (!rt || ![rt.a, rt.b].includes(quien) || ![rt.a, rt.b].includes(destino) || !dias.includes(u[quien]) || u[destino] === u[quien]) {
+      if (!rt || !amigo || ![rt.a, rt.b].includes(quien) || ![rt.a, rt.b].includes(destino) || !dias.includes(u[quien]) || u[destino] === u[quien]) {
         return responder(403, { error: "no corresponde" });
       }
       const perfil = await leer(`profiles/${quien}`);
