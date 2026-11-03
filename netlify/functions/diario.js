@@ -3,7 +3,8 @@
 // dejan que un teléfono lea más que el top 10) y devuelve solo números, nunca nombres.
 // Necesita la variable de entorno FIREBASE_SERVICE_ACCOUNT (la misma de avisar.js y juez.js).
 //
-// Pedido (POST): { fecha: "2026-10-16", puntos: 120 }   (puntos es opcional)
+// Pedido (POST): { fecha: "2026-10-16", puntos: 120 }   (puntos es opcional). Los días con modo usan
+// "2026-11-10-sopa" (daily/{fecha}-{modo}, ver getDailyChallenge en jugar.html).
 // Respuesta:     { jugaron: 1240, mejorQue: 70 }        (mejorQue solo si mandaste puntos)
 // Cada fecha se lee como mucho una vez cada 3 minutos (queda en memoria mientras la función sigue viva).
 
@@ -56,10 +57,10 @@ exports.handler = async (event) => {
   let pedido;
   try { pedido = JSON.parse(event.body || "{}"); } catch (e) { return responder(400, { error: "pedido" }); }
   const fecha = String(pedido.fecha || "");
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(fecha)) return responder(400, { error: "fecha" });
+  if (!/^\d{4}-\d{2}-\d{2}(-(sopa|ciegas|prohibida|locas|velocidad|lluvia))?$/.test(fecha)) return responder(400, { error: "fecha" });
   // Solo fechas cercanas (el desafío de hoy, con margen por zonas horarias): así nadie puede hacer que la
   // función lea la base para cualquier fecha ni llenar la memoria de fechas inventadas.
-  const dias = (Date.parse(fecha + "T12:00:00Z") - Date.now()) / 86400000;
+  const dias = (Date.parse(fecha.slice(0, 10) + "T12:00:00Z") - Date.now()) / 86400000;
   if (!(dias > -3 && dias < 2)) return responder(400, { error: "fecha" });
   try {
     const lista = await puntajes(fecha);

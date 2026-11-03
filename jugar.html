@@ -5456,7 +5456,7 @@ function renderWildcardNote() {
   if (state.wildcardCategory) {
     note.style.display = "flex";
     // Con categorías ocultas no se dice cuál es la doble: se ve el ×2 cuando aparece.
-    const hidden = state.adventureMode && state.advLevel && (advReveal(state.advLevel) || advHas(state.advLevel, "memory"));
+    const hidden = soloRulesOn() && state.advLevel && (advReveal(state.advLevel) || advHas(state.advLevel, "memory"));
     note.innerHTML = inlineIcon("star") + escapeHtml(hidden ? t("wildcard_note_hidden") : t("wildcard_note", { cat: catLabel(state.wildcardCategory) }));
   } else {
     note.style.display = "none";
@@ -7165,7 +7165,7 @@ function renderCatGrid() {
     card.className = "card";
     card.style.animationDelay = (i * 0.05) + "s";
     const isWild = cat === state.wildcardCategory;
-    const ownLetter = state.adventureMode && state.letterByCat ? state.letterByCat[cat] : null;
+    const ownLetter = soloRulesOn() && state.letterByCat ? state.letterByCat[cat] : null;
     if (ownLetter) card.classList.add("has-letter");
     card.innerHTML = `
       <div class="card-pin"></div>
@@ -7177,7 +7177,7 @@ function renderCatGrid() {
   });
   state.revealIdx = null;
   clearTimeout(state.memoryTimer);
-  if (state.adventureMode && state.advLevel && advReveal(state.advLevel)) {
+  if (soloRulesOn() && state.advLevel && advReveal(state.advLevel)) {
     state.revealIdx = 0;
     state.cardSecondsLeft = state.advLevel.cardTime || 0;
     updateRevealCards();
@@ -7200,6 +7200,9 @@ function renderCatGrid() {
 // Se ve una categoría por vez: para descubrir la siguiente hay que completar la actual
 // (que empiece con la letra) o pasarla. Las anteriores quedan fijas.
 function revealMode() { return state.revealIdx != null; }
+// Las reglas de la Aventura (de a una, reloj por categoría, letra prohibida, letra por categoría) también
+// se usan en el desafío del día, según el modo de cada día de la semana.
+function soloRulesOn() { return !!(state.adventureMode || (state.dailyMode && (state.advLevel || state.letterByCat))); }
 
 function updateRevealCards() {
   const cards = Array.from(document.querySelectorAll("#catGrid .card"));
@@ -7262,7 +7265,7 @@ function tickRevealCard() {
 }
 
 function advanceReveal(skip) {
-  if (!revealMode() || !state.adventureMode) return;
+  if (!revealMode() || !soloRulesOn()) return;
   const cards = Array.from(document.querySelectorAll("#catGrid .card"));
   const card = cards[state.revealIdx];
   if (!card) return;
@@ -7419,7 +7422,7 @@ function onAnswerKeydown(e, el) {
 
 function onAnswerInput(el) {
   state.answers[el.dataset.cat] = el.value;
-  if (state.adventureMode) el.classList.toggle("rule-bad", !!advRuleBreak(state.advLevel, el.value.trim()));
+  if (soloRulesOn()) el.classList.toggle("rule-bad", !!advRuleBreak(state.advLevel, el.value.trim()));
   else if (state.room && state.room.bannedLetter) el.classList.toggle("rule-bad", !isJoker(el.value.trim()) && hasBannedLetter(el.value.trim(), state.room.bannedLetter));
   const isFilled = el.value.trim().length > 0;
   const wasFilled = el.classList.contains("filled");
@@ -8786,8 +8789,153 @@ function seededRandom(seed) {
   };
 }
 
+// ---------- Un modo distinto para cada día de la semana ----------
+// El día sale de la FECHA del desafío (no del reloj del teléfono), así todos juegan el mismo modo.
+// Lunes: clásico (idéntico al desafío de siempre). Los otros días tienen un modo y guardan su ranking en
+// daily/{fecha}-{modo}, así no se mezclan con los puntajes de las versiones viejas de la app (que arman el
+// clásico todos los días en daily/{fecha}). Lo comparten la web y la app (mismo código).
+const DAILY_MODE_BY_WEEKDAY = ["lluvia", "clasico", "sopa", "ciegas", "prohibida", "locas", "velocidad"]; // 0 = domingo
+const DAILY_CIEGAS_SECONDS = 12;     // A ciegas: segundos por categoría
+const DAILY_VELOCIDAD_START = 30;    // A toda velocidad: arranca con 30 s y cada palabra suma ADV_BONUS_SECONDS (8)
+const DAILY_MAX_TIME_BONUS = 60;     // el bonus por segundos sobrantes nunca pasa de 60 (lo valida Firebase)
+const DAILY_SOPA_EXCLUDE = ["K", "Q", "W", "X"];
+// Categorías locas (viernes): no existen en el resto del juego; valen frases cortas.
+const DAILY_LOCAS = {
+  "Excusa para llegar tarde": { en: "Excuse for being late", pt: "Desculpa para chegar atrasado", de: "Ausrede fürs Zuspätkommen", fr: "Excuse pour arriver en retard", it: "Scusa per arrivare in ritardo" },
+  "Algo que se grita en la cancha": { en: "Something you yell at a game", pt: "Algo que se grita no estádio", de: "Etwas, das man im Stadion ruft", fr: "Un truc qu'on crie au stade", it: "Qualcosa che si urla allo stadio" },
+  "Algo que siempre se pierde": { en: "Something that always gets lost", pt: "Algo que sempre se perde", de: "Etwas, das immer verloren geht", fr: "Un truc qu'on perd toujours", it: "Qualcosa che si perde sempre" },
+  "Lo primero que se hace al levantarse": { en: "First thing you do when you get up", pt: "A primeira coisa que se faz ao acordar", de: "Das Erste nach dem Aufstehen", fr: "La première chose qu'on fait au réveil", it: "La prima cosa che si fa appena alzati" },
+  "Algo pegajoso": { en: "Something sticky", pt: "Algo grudento", de: "Etwas Klebriges", fr: "Un truc collant", it: "Qualcosa di appiccicoso" },
+  "Un nombre para un perro": { en: "A name for a dog", pt: "Um nome para um cachorro", de: "Ein Name für einen Hund", fr: "Un nom pour un chien", it: "Un nome per un cane" },
+  "Un nombre para un gato": { en: "A name for a cat", pt: "Um nome para um gato", de: "Ein Name für eine Katze", fr: "Un nom pour un chat", it: "Un nome per un gatto" },
+  "Algo que da vergüenza": { en: "Something embarrassing", pt: "Algo que dá vergonha", de: "Etwas Peinliches", fr: "Un truc gênant", it: "Qualcosa che fa vergognare" },
+  "Algo que hay en una cartera": { en: "Something in a purse", pt: "Algo que tem numa bolsa", de: "Etwas in einer Handtasche", fr: "Un truc dans un sac à main", it: "Qualcosa che c'è in una borsa" },
+  "Algo que se lleva a la playa": { en: "Something you take to the beach", pt: "Algo que se leva à praia", de: "Etwas für den Strand", fr: "Un truc qu'on emporte à la plage", it: "Qualcosa da portare in spiaggia" },
+  "Algo que hace ruido": { en: "Something noisy", pt: "Algo que faz barulho", de: "Etwas, das Lärm macht", fr: "Un truc qui fait du bruit", it: "Qualcosa che fa rumore" },
+  "Algo que huele mal": { en: "Something that smells bad", pt: "Algo que cheira mal", de: "Etwas, das schlecht riecht", fr: "Un truc qui sent mauvais", it: "Qualcosa che puzza" },
+  "Algo que huele rico": { en: "Something that smells good", pt: "Algo que cheira bem", de: "Etwas, das gut riecht", fr: "Un truc qui sent bon", it: "Qualcosa che profuma" },
+  "Algo que se rompe fácil": { en: "Something that breaks easily", pt: "Algo que quebra fácil", de: "Etwas, das leicht kaputtgeht", fr: "Un truc qui se casse facilement", it: "Qualcosa che si rompe facilmente" },
+  "Algo redondo": { en: "Something round", pt: "Algo redondo", de: "Etwas Rundes", fr: "Un truc rond", it: "Qualcosa di rotondo" },
+  "Algo que se hace en una fila": { en: "Something you do while waiting in line", pt: "Algo que se faz numa fila", de: "Etwas, das man in einer Schlange macht", fr: "Un truc qu'on fait en faisant la queue", it: "Qualcosa che si fa in fila" },
+  "Un regalo horrible": { en: "A horrible gift", pt: "Um presente horrível", de: "Ein schreckliches Geschenk", fr: "Un cadeau horrible", it: "Un regalo orribile" },
+  "Algo que se dice en una primera cita": { en: "Something you say on a first date", pt: "Algo que se diz num primeiro encontro", de: "Etwas, das man beim ersten Date sagt", fr: "Un truc qu'on dit à un premier rendez-vous", it: "Qualcosa che si dice al primo appuntamento" },
+  "Algo que no se le presta a nadie": { en: "Something you never lend", pt: "Algo que não se empresta a ninguém", de: "Etwas, das man niemandem leiht", fr: "Un truc qu'on ne prête à personne", it: "Qualcosa che non si presta a nessuno" },
+  "Un superpoder inútil": { en: "A useless superpower", pt: "Um superpoder inútil", de: "Eine nutzlose Superkraft", fr: "Un superpouvoir inutile", it: "Un superpotere inutile" },
+  "Algo que se come con la mano": { en: "Something you eat with your hands", pt: "Algo que se come com a mão", de: "Etwas, das man mit der Hand isst", fr: "Un truc qu'on mange avec les mains", it: "Qualcosa che si mangia con le mani" },
+  "Algo que se compra en el supermercado": { en: "Something you buy at the supermarket", pt: "Algo que se compra no supermercado", de: "Etwas aus dem Supermarkt", fr: "Un truc qu'on achète au supermarché", it: "Qualcosa che si compra al supermercato" },
+  "Una excusa para no hacer la tarea": { en: "An excuse for not doing homework", pt: "Uma desculpa para não fazer a lição", de: "Eine Ausrede für fehlende Hausaufgaben", fr: "Une excuse pour ne pas faire ses devoirs", it: "Una scusa per non fare i compiti" },
+  "Algo que se hace cuando llueve": { en: "Something you do when it rains", pt: "Algo que se faz quando chove", de: "Etwas, das man bei Regen macht", fr: "Un truc qu'on fait quand il pleut", it: "Qualcosa che si fa quando piove" },
+  "Algo frío": { en: "Something cold", pt: "Algo frio", de: "Etwas Kaltes", fr: "Un truc froid", it: "Qualcosa di freddo" },
+  "Algo que pica": { en: "Something that itches or stings", pt: "Algo que pica ou arde", de: "Etwas, das juckt oder brennt", fr: "Un truc qui pique", it: "Qualcosa che pizzica" },
+  "Algo que tiene ruedas": { en: "Something with wheels", pt: "Algo que tem rodas", de: "Etwas mit Rädern", fr: "Un truc qui a des roues", it: "Qualcosa con le ruote" },
+  "Algo que vuela y no es un animal": { en: "Something that flies and isn't an animal", pt: "Algo que voa e não é um animal", de: "Etwas, das fliegt und kein Tier ist", fr: "Un truc qui vole et qui n'est pas un animal", it: "Qualcosa che vola e non è un animale" },
+  "Algo que dice una abuela": { en: "Something a grandma says", pt: "Algo que uma avó diz", de: "Etwas, das eine Oma sagt", fr: "Un truc que dit une grand-mère", it: "Qualcosa che dice una nonna" },
+  "Algo que se olvida en un viaje": { en: "Something you forget on a trip", pt: "Algo que se esquece numa viagem", de: "Etwas, das man auf Reisen vergisst", fr: "Un truc qu'on oublie en voyage", it: "Qualcosa che si dimentica in viaggio" },
+  "Un nombre para una banda de rock": { en: "A name for a rock band", pt: "Um nome para uma banda de rock", de: "Ein Name für eine Rockband", fr: "Un nom pour un groupe de rock", it: "Un nome per una band rock" },
+  "Algo que se hace en vacaciones": { en: "Something you do on vacation", pt: "Algo que se faz nas férias", de: "Etwas, das man im Urlaub macht", fr: "Un truc qu'on fait en vacances", it: "Qualcosa che si fa in vacanza" },
+  "Algo que tiene botones": { en: "Something with buttons", pt: "Algo que tem botões", de: "Etwas mit Knöpfen", fr: "Un truc qui a des boutons", it: "Qualcosa con i bottoni" },
+  "Algo que se infla": { en: "Something you inflate", pt: "Algo que se enche de ar", de: "Etwas, das man aufbläst", fr: "Un truc qu'on gonfle", it: "Qualcosa che si gonfia" },
+  "Algo que se hace con los pies": { en: "Something you do with your feet", pt: "Algo que se faz com os pés", de: "Etwas, das man mit den Füßen macht", fr: "Un truc qu'on fait avec les pieds", it: "Qualcosa che si fa con i piedi" },
+  "Algo que da sueño": { en: "Something that makes you sleepy", pt: "Algo que dá sono", de: "Etwas, das müde macht", fr: "Un truc qui donne sommeil", it: "Qualcosa che fa venire sonno" },
+  "Algo que se usa en invierno": { en: "Something you use in winter", pt: "Algo que se usa no inverno", de: "Etwas für den Winter", fr: "Un truc qu'on utilise en hiver", it: "Qualcosa che si usa d'inverno" },
+  "Algo blando": { en: "Something soft", pt: "Algo macio", de: "Etwas Weiches", fr: "Un truc mou", it: "Qualcosa di morbido" },
+  "Algo que hace feliz a cualquiera": { en: "Something that makes anyone happy", pt: "Algo que deixa qualquer um feliz", de: "Etwas, das jeden glücklich macht", fr: "Un truc qui rend tout le monde heureux", it: "Qualcosa che rende felice chiunque" },
+  "Algo que se hace a escondidas": { en: "Something you do in secret", pt: "Algo que se faz escondido", de: "Etwas, das man heimlich macht", fr: "Un truc qu'on fait en cachette", it: "Qualcosa che si fa di nascosto" },
+};
+Object.keys(DAILY_LOCAS).forEach(k => { if (!CATEGORY_LABELS[k]) CATEGORY_LABELS[k] = Object.assign({ es: k }, DAILY_LOCAS[k]); });
+// Textos de los modos (6 idiomas: la web usa es/en/pt; la app, todos).
+const DAILY_MODE_TEXTS = {
+  es: {
+    clasico: ["Clásico", "La misma letra para todos y una sola oportunidad."],
+    sopa: ["Sopa de letras", "Cada categoría tiene su propia letra: fijate cuál le toca a cada una."],
+    ciegas: ["A ciegas", "Las categorías salen de a una, cada una con su reloj, y no sabés cuál viene."],
+    prohibida: ["Letra prohibida", "Además de la letra, hay una que no puede aparecer en ninguna palabra: hoy es la {x}."],
+    locas: ["Categorías locas", "Categorías que no están en ningún otro modo. Valen frases cortas."],
+    velocidad: ["A toda velocidad", "De a una: arrancás con {s} segundos y cada palabra que completás suma {b}."],
+    lluvia: ["Lluvia de ideas", "Una sola categoría y {n} palabras distintas para escribir."],
+    modo: "{dia} · {modo}",
+  },
+  en: {
+    clasico: ["Classic", "Same letter for everyone and just one try."],
+    sopa: ["Letter soup", "Each category has its own letter: check which one each gets."],
+    ciegas: ["Blindfold", "Categories come one at a time, each with its own clock, and you don't know what's next."],
+    prohibida: ["Banned letter", "Besides the letter, there's one that can't appear in any word: today it's {x}."],
+    locas: ["Crazy categories", "Categories you won't find in any other mode. Short phrases count."],
+    velocidad: ["Full speed", "One at a time: you start with {s} seconds and every word you complete adds {b}."],
+    lluvia: ["Brainstorm", "A single category and {n} different words to write."],
+    modo: "{dia} · {modo}",
+  },
+  pt: {
+    clasico: ["Clássico", "A mesma letra para todos e uma única chance."],
+    sopa: ["Sopa de letras", "Cada categoria tem sua própria letra: veja qual é a de cada uma."],
+    ciegas: ["Às cegas", "As categorias aparecem uma por vez, cada uma com seu relógio, e você não sabe qual vem."],
+    prohibida: ["Letra proibida", "Além da letra, há uma que não pode aparecer em nenhuma palavra: hoje é a {x}."],
+    locas: ["Categorias malucas", "Categorias que não estão em nenhum outro modo. Valem frases curtas."],
+    velocidad: ["A toda velocidade", "Uma por vez: você começa com {s} segundos e cada palavra completada soma {b}."],
+    lluvia: ["Chuva de ideias", "Uma só categoria e {n} palavras diferentes para escrever."],
+    modo: "{dia} · {modo}",
+  },
+  de: {
+    clasico: ["Klassisch", "Derselbe Buchstabe für alle und nur ein Versuch."],
+    sopa: ["Buchstabensuppe", "Jede Kategorie hat ihren eigenen Buchstaben: Schau, welcher wohin gehört."],
+    ciegas: ["Blind", "Die Kategorien kommen einzeln, jede mit eigener Uhr, und du weißt nicht, was als Nächstes kommt."],
+    prohibida: ["Verbotener Buchstabe", "Außer dem Anfangsbuchstaben gibt es einen, der in keinem Wort vorkommen darf: heute das {x}."],
+    locas: ["Verrückte Kategorien", "Kategorien, die es in keinem anderen Modus gibt. Kurze Sätze zählen."],
+    velocidad: ["Volle Fahrt", "Einzeln: Du startest mit {s} Sekunden und jedes fertige Wort bringt {b} dazu."],
+    lluvia: ["Ideenregen", "Eine einzige Kategorie und {n} verschiedene Wörter."],
+    modo: "{dia} · {modo}",
+  },
+  fr: {
+    clasico: ["Classique", "La même lettre pour tout le monde et un seul essai."],
+    sopa: ["Soupe de lettres", "Chaque catégorie a sa propre lettre : regarde laquelle va avec chacune."],
+    ciegas: ["À l'aveugle", "Les catégories arrivent une par une, chacune avec son chrono, et tu ne sais pas laquelle vient."],
+    prohibida: ["Lettre interdite", "En plus de la lettre, il y en a une qui ne peut apparaître dans aucun mot : aujourd'hui, c'est le {x}."],
+    locas: ["Catégories folles", "Des catégories qu'on ne trouve dans aucun autre mode. Les phrases courtes comptent."],
+    velocidad: ["À toute vitesse", "Une par une : tu commences avec {s} secondes et chaque mot trouvé en ajoute {b}."],
+    lluvia: ["Pluie d'idées", "Une seule catégorie et {n} mots différents à écrire."],
+    modo: "{dia} · {modo}",
+  },
+  it: {
+    clasico: ["Classico", "La stessa lettera per tutti e un solo tentativo."],
+    sopa: ["Zuppa di lettere", "Ogni categoria ha la sua lettera: guarda quale tocca a ciascuna."],
+    ciegas: ["Alla cieca", "Le categorie escono una alla volta, ognuna con il suo orologio, e non sai quale arriva."],
+    prohibida: ["Lettera proibita", "Oltre alla lettera, ce n'è una che non può comparire in nessuna parola: oggi è la {x}."],
+    locas: ["Categorie pazze", "Categorie che non ci sono in nessun'altra modalità. Valgono frasi brevi."],
+    velocidad: ["A tutta velocità", "Una alla volta: parti con {s} secondi e ogni parola completata ne aggiunge {b}."],
+    lluvia: ["Pioggia di idee", "Una sola categoria e {n} parole diverse da scrivere."],
+    modo: "{dia} · {modo}",
+  },
+};
+const DAILY_LOCALES = { es: "es-AR", en: "en-US", pt: "pt-BR", de: "de-DE", fr: "fr-FR", it: "it-IT" };
+function dailyModeFor(key) { return DAILY_MODE_BY_WEEKDAY[new Date(key + "T12:00:00Z").getUTCDay()]; }
+// Dónde se guarda el ranking de ese día: el clásico en daily/{fecha}; los demás en daily/{fecha}-{modo}.
+function dailyBoardKey(key) { const m = dailyModeFor(key); return m === "clasico" ? key : key + "-" + m; }
+function dailyModeText(ch, which) {
+  const T = DAILY_MODE_TEXTS[state.lang] || DAILY_MODE_TEXTS.es;
+  const pair = T[ch.mode] || T.clasico;
+  let str = which === "name" ? pair[0] : pair[1];
+  str = str.replace("{x}", ch.banned || "").replace("{s}", DAILY_VELOCIDAD_START).replace("{b}", ADV_BONUS_SECONDS).replace("{n}", ch.categories.length);
+  return window.APP && APP.tu ? APP.tu(str) : str;
+}
+// "Martes · Sopa de letras"
+function dailyModeTitle(ch) {
+  const T = DAILY_MODE_TEXTS[state.lang] || DAILY_MODE_TEXTS.es;
+  let dia = new Date(ch.key + "T12:00:00Z").toLocaleDateString(DAILY_LOCALES[state.lang] || "es-AR", { weekday: "long", timeZone: "UTC" });
+  dia = dia.charAt(0).toUpperCase() + dia.slice(1);
+  return T.modo.replace("{dia}", dia).replace("{modo}", dailyModeText(ch, "name"));
+}
+// Letras que sirven para una categoría, mirando siempre la tabla en español (juego/letras.js): así el
+// desafío sale igual en todos los idiomas.
+function dailyLetterFits(letter, cat) {
+  const tabla = window.APP && APP.letrasEvitar && APP.letrasEvitar.es;
+  const malas = tabla && tabla[String(cat).replace(/#\d+$/, "")];
+  return !malas || malas.indexOf(letter) < 0;
+}
+
 // La letra y las categorías salen de la fecha: cualquiera que juegue el mismo
 // día recibe exactamente el mismo desafío, sin necesidad de un servidor.
+// Primero se sortea siempre el clásico (igual que antes, en el mismo orden); los modos usan
+// después el mismo generador, así el lunes sale exactamente el desafío de siempre.
 function getDailyChallenge(key = dayKey()) {
   const rnd = seededRandom(hashString("tuttifrutti-" + key));
   const letter = DEFAULT_LETTERS[Math.floor(rnd() * DEFAULT_LETTERS.length)];
@@ -8798,7 +8946,45 @@ function getDailyChallenge(key = dayKey()) {
   }
   const categories = pool.slice(0, DAILY_CATEGORY_COUNT);
   const wildcard = categories[Math.floor(rnd() * categories.length)];
-  return { key, letter, categories, wildcard };
+  const ch = { key, letter, categories, wildcard, mode: dailyModeFor(key), boardKey: dailyBoardKey(key),
+    letterByCat: null, banned: null, rules: [], cardTime: 0, duration: DAILY_DURATION };
+  const shuffled = list => {
+    const a = [...list];
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  };
+  if (ch.mode === "sopa") {
+    // Cada categoría con su letra (distintas entre sí, sin K, Q, W ni X, y que tengan palabras para esa categoría).
+    const letras = shuffled(DEFAULT_LETTERS.filter(l => !DAILY_SOPA_EXCLUDE.includes(l)));
+    ch.letterByCat = {};
+    ch.categories.forEach(cat => {
+      let i = letras.findIndex(l => dailyLetterFits(l, cat));
+      if (i < 0) i = 0;
+      ch.letterByCat[cat] = letras.splice(i, 1)[0];
+    });
+    ch.letter = ADV_MIXED_SYMBOL;
+  } else if (ch.mode === "ciegas") {
+    ch.rules = ["ticking"];
+    ch.cardTime = DAILY_CIEGAS_SECONDS;
+    ch.duration = DAILY_CIEGAS_SECONDS * ch.categories.length;
+  } else if (ch.mode === "prohibida") {
+    const opciones = BANNED_LETTER_CANDIDATES.filter(l => !["A", "E", "O"].includes(l) && l !== ch.letter);
+    ch.banned = opciones[Math.floor(rnd() * opciones.length)];
+    ch.rules = ["banned"];
+  } else if (ch.mode === "locas") {
+    ch.categories = shuffled(Object.keys(DAILY_LOCAS)).slice(0, DAILY_CATEGORY_COUNT);
+    ch.wildcard = ch.categories[Math.floor(rnd() * ch.categories.length)];
+  } else if (ch.mode === "velocidad") {
+    ch.rules = ["suma"];
+    ch.duration = DAILY_VELOCIDAD_START;
+  } else if (ch.mode === "lluvia") {
+    const base = ADV_CATS.lluvia[Math.floor(rnd() * ADV_CATS.lluvia.length)];
+    ch.letter = ADV_LETTERS.easy[Math.floor(rnd() * ADV_LETTERS.easy.length)];
+    ch.categories = Array.from({ length: DAILY_CATEGORY_COUNT }, (_, k) => base + "#" + (k + 1));
+    ch.wildcard = null;
+    ch.rainBase = base;
+  }
+  return ch;
 }
 
 function getTodayDaily() {
@@ -8819,9 +9005,22 @@ function renderDailyBanner() {
   if (!banner) return;
   const today = getTodayDaily();
   banner.classList.toggle("done", !!today);
+  const ch = getDailyChallenge();
+  // El modo del día va siempre: "Martes · Sopa de letras" y una línea que lo explica (o el puntaje, si ya jugaste).
   document.getElementById("dailyBannerSub").textContent = today
-    ? t("daily_banner_done", { score: today.score || 0 })
-    : t("daily_banner_play");
+    ? dailyModeTitle(ch) + " · " + t("daily_banner_done", { score: today.score || 0 })
+    : dailyModeTitle(ch) + " · " + (ch.mode === "clasico" ? t("daily_banner_play") : dailyModeText(ch, "desc"));
+}
+
+// Antes de jugar, una ventanita con el modo del día (los días que no son clásicos).
+function dailyModeIntro(then) {
+  const ch = getDailyChallenge();
+  if (ch.mode === "clasico") { then(); return; }
+  window.__dailyIntroThen = then;
+  showInfoModal(`<span class="confirm-art">${iconSvg("sun")}</span>
+    <h2>${escapeHtml(dailyModeTitle(ch))}</h2>
+    <p>${escapeHtml(dailyModeText(ch, "desc"))}</p>
+    <button type="button" class="btn btn-primary btn-block" data-ok onclick="closeInfoModal(); (window.__dailyIntroThen || function () {})()">${escapeHtml(t("adv_play_btn"))}</button>`);
 }
 
 function openDaily() {
@@ -8839,7 +9038,7 @@ function openDaily() {
   state.playerName = name;
   try { localStorage.setItem("tuttifruti_playerName", name); } catch (e) { /* storage unavailable */ }
   getAudioCtx();
-  withHowTo("daily", startDaily);
+  withHowTo("daily", () => dailyModeIntro(startDaily));
 }
 
 function startDaily() {
@@ -8857,8 +9056,13 @@ function startDaily() {
   state.letter = ch.letter;
   state.usedLetters = [];
   state.answers = {};
-  state.duration = DAILY_DURATION;
-  state.secondsLeft = DAILY_DURATION;
+  state.duration = ch.duration;
+  state.secondsLeft = ch.duration;
+  // Reglas del modo del día: se usan las mismas de la Aventura (categorías de a una, reloj por categoría,
+  // letra prohibida, cada palabra suma tiempo, letra por categoría). En el clásico no hay ninguna.
+  state.letterByCat = ch.letterByCat ? { ...ch.letterByCat } : null;
+  state.advBanned = ch.banned;
+  state.advLevel = ch.rules.length ? { rules: ch.rules, cardTime: ch.cardTime, letters: DEFAULT_LETTERS, categories: ch.categories } : null;
   // Un solo intento: queda marcado apenas arranca, así recargar la página no
   // sirve para ver la letra y volver a jugar.
   saveDaily({ date: ch.key, letter: ch.letter, score: 0, valid: 0, total: ch.categories.length, grid: "", results: [], unfinished: true });
@@ -8870,11 +9074,17 @@ function startDaily() {
   document.getElementById("timerWrap").style.display = "none";
   document.getElementById("catGrid").style.display = "none";
   document.getElementById("bastaWrap").style.display = "none";
-  document.getElementById("roundLabel").textContent = t("daily_round_label", { date: formatDayLabel(ch.key) });
+  document.getElementById("roundLabel").textContent = t("daily_round_label", { date: formatDayLabel(ch.key) }) + " · " + dailyModeText(ch, "name");
   spinLetterReveal(ch.letter, () => {
     renderLetterHistory();
     renderWildcardNote();
     renderTwistNote(false, 0);
+    if (ch.mode !== "clasico") {
+      // El modo, debajo de la letra (como las vueltas de tuerca).
+      const note = document.getElementById("twistNote");
+      note.insertAdjacentHTML("beforeend", `<span class="twist-part">${inlineIcon("sun")}${escapeHtml(dailyModeText(ch, "name") + (ch.banned ? " · " + t("banned_letter_note", { x: ch.banned }) : ""))}</span>`);
+      note.style.display = "flex";
+    }
     document.getElementById("timerWrap").style.display = "block";
     renderCatGrid();
     document.getElementById("catGrid").style.display = "grid";
@@ -8889,6 +9099,8 @@ function startDaily() {
 function tickDaily() {
   state.secondsLeft--;
   updateTimerDisplay();
+  tickRevealCard();
+  if (!state.dailyMode || state.dailyFinishing) return;
   if (state.secondsLeft > 0 && state.secondsLeft <= 5) {
     playTic();
     vibrate(50);
@@ -8907,7 +9119,12 @@ async function finishDailyRound() {
   clearTimeout(state.spinId);
   const ch = state.dailyChallenge;
   const secondsLeft = Math.max(0, state.secondsLeft);
-  const results = await judgeSoloAnswers(state.categories, state.answers, ch.letter, 1, "DIARIO");
+  const results = await judgeSoloAnswers(state.categories, state.answers, ch.letter, 1, "DIARIO", ch.letterByCat);
+  // Letra prohibida: la palabra que la tiene no suma (como en la Aventura).
+  if (state.advLevel) results.forEach(r => {
+    const broken = r.valid && !r.joker ? advRuleBreak(state.advLevel, r.val) : "";
+    if (broken) { r.valid = false; r.reason = broken; }
+  });
   let score = 0;
   let valid = 0;
   results.forEach(r => {
@@ -8915,15 +9132,16 @@ async function finishDailyRound() {
     valid++;
     score += r.joker ? JOKER_POINTS : DAILY_POINTS_PER_CATEGORY * (r.cat === ch.wildcard ? 2 : 1);
   });
-  const bonus = valid > 0 ? secondsLeft : 0;
+  const bonus = valid > 0 ? Math.min(DAILY_MAX_TIME_BONUS, secondsLeft) : 0;
   const full = results.length > 0 && valid === results.length;
   score += bonus + (full ? FULL_ROUND_BONUS : 0);
   const record = {
-    date: ch.key, letter: ch.letter, wildcard: ch.wildcard, score, bonus, full, valid, total: results.length,
+    date: ch.key, mode: ch.mode, letter: ch.letter, letterByCat: ch.letterByCat, banned: ch.banned, wildcard: ch.wildcard, score, bonus, full, valid, total: results.length,
     grid: results.map(r => (r.valid ? "1" : "0")).join(""),
     results: results.map(r => ({ cat: r.cat, val: r.val, valid: !!r.valid, joker: !!r.joker, reason: r.reason || "", motivo: r.motivo || "" })),
   };
   saveDaily(record);
+  state.advLevel = null; state.advBanned = null; state.letterByCat = null;
   bumpProgress(p => {
     p.dailyCount += 1;
     addMission(p, "daily");
@@ -8932,14 +9150,14 @@ async function finishDailyRound() {
   addSeeds(seedsForScore(score));
   whenFirebaseReady(() => {
     if (!window.FB.uid) {
-      showGlobalBoard("daily_board_heading", `daily/${ch.key}`, "daily_board_empty");
+      showGlobalBoard("daily_board_heading", `daily/${ch.boardKey}`, "daily_board_empty");
       return;
     }
-    window.FB.set(window.FB.ref(window.FB.db, `daily/${ch.key}/${window.FB.uid}`), {
+    window.FB.set(window.FB.ref(window.FB.db, `daily/${ch.boardKey}/${window.FB.uid}`), {
       name: state.playerName.slice(0, 30), avatar: getMyAvatar(), score, valid, total: results.length, grid: record.grid,
       ...(window.APP && APP.miEstilo ? APP.miEstilo() : {}),
     }).catch(e => console.error("No se pudo guardar el desafío del día", e)).finally(() => {
-      showGlobalBoard("daily_board_heading", `daily/${ch.key}`, "daily_board_empty");
+      showGlobalBoard("daily_board_heading", `daily/${ch.boardKey}`, "daily_board_empty");
     });
   });
   showDailyResult(record, true);
@@ -11584,7 +11802,7 @@ async function claimDailyPrizes() {
     const key = dayKey(-off);
     const w = getWallet();
     if (w.dailyChecked.includes(key) || !dailyDateClosed(key)) continue;
-    const snap = await F.get(F.query(F.ref(F.db, `daily/${key}`), F.orderByChild("score"), F.limitToLast(10)));
+    const snap = await F.get(F.query(F.ref(F.db, `daily/${dailyBoardKey(key)}`), F.orderByChild("score"), F.limitToLast(10)));
     const entries = [];
     snap.forEach(c => { entries.push({ uid: c.key, score: (c.val() || {}).score || 0 }); });
     const mine = entries.find(e => e.uid === F.uid);
@@ -11604,6 +11822,13 @@ async function claimDailyPrizes() {
   }
 }
 
+// Motivo de las reglas del modo del día (letra prohibida) en el resultado.
+function advRuleReasonFor(r, record) {
+  if (r.valid || !r.val) return "";
+  if (r.reason === "adv_banned") return t("adv_reason_banned", { x: record.banned || "?" });
+  return "";
+}
+
 function soloReasonText(r, letter) {
   if (r.valid || !r.val) return "";
   if (r.reason === "letter") return t("doesnt_start_with", { letter });
@@ -11614,12 +11839,15 @@ function soloReasonText(r, letter) {
 }
 
 function showDailyResult(record, fresh) {
+  const modeCh = getDailyChallenge(record.date);
   document.getElementById("resultsTitle").textContent = t("daily_result_title") + " · " + formatDayLabel(record.date);
   const summary = document.getElementById("resultsSummary");
   if (record.unfinished) {
     summary.textContent = t("daily_unfinished");
   } else {
-    summary.innerHTML = `${t("letter_word")}: <strong>${escapeHtml(record.letter)}</strong> · ${t("daily_result_summary", { valid: record.valid, total: record.total, score: `<strong id="dailyScoreCount">${record.score}</strong>` })}`;
+    summary.innerHTML = `${escapeHtml(dailyModeTitle(modeCh))} · ` + (record.letterByCat ? "" : `${t("letter_word")}: <strong>${escapeHtml(record.letter)}</strong> · `) +
+      (record.banned ? escapeHtml(t("banned_letter_note", { x: record.banned })) + " · " : "") +
+      t("daily_result_summary", { valid: record.valid, total: record.total, score: `<strong id="dailyScoreCount">${record.score}</strong>` });
     if (fresh) animateCount(document.getElementById("dailyScoreCount"), 0, record.score);
   }
   const scoreKey = document.querySelector("#screen-results .score-key");
@@ -11633,12 +11861,13 @@ function showDailyResult(record, fresh) {
   (record.results || []).forEach((r, i) => {
     const isWild = r.cat === record.wildcard;
     const basePts = r.valid ? DAILY_POINTS_PER_CATEGORY : 0;
-    const reason = soloReasonText(r, record.letter);
+    const ownLetter = record.letterByCat && record.letterByCat[r.cat];
+    const reason = advRuleReasonFor(r, record) || soloReasonText(r, ownLetter || record.letter);
     const row = document.createElement("div");
     row.className = "answer-row";
     row.style.flexWrap = "wrap";
     row.innerHTML = `
-      <span class="answer-cat">${escapeHtml(catLabel(r.cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
+      <span class="answer-cat">${ownLetter ? `<span class="cat-letter">${escapeHtml(ownLetter)}</span>` : ""}${escapeHtml(catLabel(r.cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
       <span class="answer-val ${r.val ? "" : "empty"}">${r.val ? escapeHtml(answerText(r.val)) : t("no_answer")}</span>
       <span class="points points-${r.valid ? 10 : 0}">+${r.joker ? JOKER_POINTS : (isWild ? basePts * 2 : basePts)}</span>
       ${reason ? `<div style="flex-basis:100%; font-size:11px; color:var(--text-support);">${reason}</div>` : ""}
@@ -11673,7 +11902,7 @@ function showDailyResult(record, fresh) {
     document.getElementById("globalBoardHeading").textContent = t("daily_board_heading");
     document.getElementById("globalBoardList").innerHTML = `<p class="streak-history-empty">${t("board_loading")}</p>`;
   } else {
-    showGlobalBoard("daily_board_heading", `daily/${record.date}`, "daily_board_empty");
+    showGlobalBoard("daily_board_heading", `daily/${dailyBoardKey(record.date)}`, "daily_board_empty");
   }
   showScreen("screen-results");
 }
@@ -11683,8 +11912,9 @@ async function shareDailyResult(record) {
   // muestran dibujos en el texto), igual que el Wordle.
   const grid = (record.grid || "").split("").map(c => (c === "1" ? "🟩" : "🟥")).join("");
   const date = formatDayLabel(record.date);
-  const canvas = await buildShareCanvas(record.score + " pts", t("share_daily_subtitle", { valid: record.valid, total: record.total, date }), iconSvg("sun"), { grid: record.grid });
-  shareCanvasImage(canvas, t("share_daily_text", { date, score: record.score, grid }));
+  const modo = dailyModeText(getDailyChallenge(record.date), "name");
+  const canvas = await buildShareCanvas(record.score + " pts", modo + " · " + t("share_daily_subtitle", { valid: record.valid, total: record.total, date }), iconSvg("sun"), { grid: record.grid });
+  shareCanvasImage(canvas, t("share_daily_text", { date: date + " · " + modo, score: record.score, grid }));
 }
 
 // Valida las respuestas de una partida individual (contrarreloj o desafío del

@@ -30,7 +30,8 @@
     var m = memoria[clave];
     if (m && Date.now() - m.at < CACHE_MS) return Promise.resolve(m.datos);
     if (typeof apiPost !== "function" || !fecha) return Promise.resolve(null);
-    var cuerpo = { fecha: fecha };
+    // Los días con modo tienen su propio ranking (daily/{fecha}-{modo}): el porcentaje se calcula contra ese.
+    var cuerpo = { fecha: typeof dailyBoardKey === "function" ? dailyBoardKey(fecha) : fecha };
     if (puntos != null) cuerpo.puntos = puntos;
     return apiPost("diario", cuerpo, 8000).then(function (r) { return r && r.ok ? r.json() : null; }).then(function (datos) {
       if (datos && typeof datos.jugaron === "number") memoria[clave] = { at: Date.now(), datos: datos };
