@@ -725,7 +725,12 @@
               }
             },
             "md": {
-              ".validate": "newData.isString() && newData.val().matches(/^(prohibida|largas|termina|lluvia)$/)"
+              ".validate": "newData.isString() && newData.val().matches(/^(prohibida|largas|termina|lluvia|ciegas|sopa)$/)"
+            },
+            "lc": {
+              "$i": {
+                ".validate": "$i.matches(/^[0-9]$/) && newData.isString() && newData.val().matches(/^[A-Z]$/)"
+              }
             },
             "x": {
               ".validate": "newData.isString() && newData.val().matches(/^[A-Z]$/)"
@@ -887,7 +892,12 @@
               }
             },
             "md": {
-              ".validate": "newData.isString() && newData.val().matches(/^(prohibida|largas|termina|lluvia)$/)"
+              ".validate": "newData.isString() && newData.val().matches(/^(prohibida|largas|termina|lluvia|ciegas|sopa)$/)"
+            },
+            "lc": {
+              "$i": {
+                ".validate": "$i.matches(/^[0-9]$/) && newData.isString() && newData.val().matches(/^[A-Z]$/)"
+              }
             },
             "x": {
               ".validate": "newData.isString() && newData.val().matches(/^[A-Z]$/)"
