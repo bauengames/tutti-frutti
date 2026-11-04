@@ -2474,7 +2474,7 @@ const I18N = {
     adv_lives_left: "Te quedan {n} vidas.",
     adv_lives_left_one: "Te queda 1 vida.",
     adv_next_life_label: "Próxima vida en",
-    adv_regen_note: "Se recarga una vida cada 30 minutos, hasta 5. Mientras tanto, los otros modos se juegan sin límite.",
+    adv_regen_note: "Se recarga una vida cada 30 minutos, hasta {n}. Mientras tanto, los otros modos se juegan sin límite.",
     adv_streak_btn: "Jugar contrarreloj",
     adv_reason_long: "tiene menos de 5 letras",
     adv_new_world: "¡Desbloqueaste el Mundo {name}!",
@@ -3180,7 +3180,7 @@ const I18N = {
     adv_lives_left: "You have {n} lives left.",
     adv_lives_left_one: "You have 1 life left.",
     adv_next_life_label: "Next life in",
-    adv_regen_note: "You get a life back every 30 minutes, up to 5. Meanwhile, the other modes have no limits.",
+    adv_regen_note: "You get a life back every 30 minutes, up to {n}. Meanwhile, the other modes have no limits.",
     adv_streak_btn: "Play time attack",
     adv_reason_long: "has fewer than 5 letters",
     adv_new_world: "You unlocked the {name} World!",
@@ -3886,7 +3886,7 @@ const I18N = {
     adv_lives_left: "Restam {n} vidas.",
     adv_lives_left_one: "Resta 1 vida.",
     adv_next_life_label: "Próxima vida em",
-    adv_regen_note: "Uma vida recarrega a cada 30 minutos, até 5. Enquanto isso, os outros modos não têm limite.",
+    adv_regen_note: "Uma vida recarrega a cada 30 minutos, até {n}. Enquanto isso, os outros modos não têm limite.",
     adv_streak_btn: "Jogar contra o relógio",
     adv_reason_long: "tem menos de 5 letras",
     adv_new_world: "Você desbloqueou o Mundo {name}!",
@@ -10036,7 +10036,7 @@ function renderAdventureResult(r) {
 function advNoLivesHtml() {
   return `<div class="adv-nolives">
     <div class="adv-countdown-box"><p class="label">${escapeHtml(t("adv_next_life_label"))}</p><strong data-adv-countdown-time>${advTimeToNextLife(advLoad())}</strong></div>
-    <p class="hint">${escapeHtml(t("adv_regen_note"))}</p>
+    <p class="hint">${escapeHtml(t("adv_regen_note", { n: ADV_MAX_LIVES }))}</p>
   </div>`;
 }
 
