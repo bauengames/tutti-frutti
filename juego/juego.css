@@ -536,3 +536,13 @@ html[data-light] .rv-fila.objetada .rv-val { color: #B3261E; }
 html[data-light] .pz-c.gana b { color: color-mix(in srgb, var(--lima) 40%, #14101F); }
 .pz-c.cero { color: var(--text-muted); font-style: italic; font-weight: 500; }
 .pz-dnota { margin: 4px 2px 0; font: 600 12px var(--font-body); color: var(--text-muted); }
+
+/* "Terminar la partida" en las salas sin límite de rondas (juego/sala.js): entre "Volver al lobby" y "Jugar otra ronda". */
+#screen-results .actions-row .sala-terminar { order: 1; }
+#screen-results .actions-row:has(.sala-terminar) #nextRoundBtn { order: 2; }
+
+/* ¡Basta! online apagado hasta completar todo o pasados 30 s (juego/reglas.js). */
+#bastaWrap .basta.basta-espera { filter: saturate(.35) brightness(.85); opacity: .7; }
+#bastaWrap .basta.basta-niega { animation: basta-niega .35s ease; }
+@keyframes basta-niega { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+.rg-cierre { margin-top: 4px; text-align: center; }

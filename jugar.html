@@ -5565,6 +5565,7 @@ function showSearchingScreen() {
 function startRandomMatch() {
   whenFirebaseReady(async () => {
     state.online = true;
+    state.busqueda = (state.busqueda || 0) + 1;
     showSearchingScreen();
 
     await window.FB.set(queueEntryRef(state.playerId), {
@@ -5604,6 +5605,10 @@ function scheduleRetryFindOpponent() {
 }
 
 async function tryFindOpponent() {
+  // Si mientras se esperaba la respuesta la búsqueda terminó (te emparejaron, saliste), no se toca la cola:
+  // antes podía pisar el "claimed", reclamar una segunda sala o volver a poner tu lugar en la cola sin nombre.
+  const busqueda = state.busqueda;
+  const sigue = () => state.busqueda === busqueda && !!state.queueRef;
   const q = window.FB.query(
     window.FB.ref(window.FB.db, "queue"),
     window.FB.orderByChild("status"),
@@ -5611,21 +5616,33 @@ async function tryFindOpponent() {
     window.FB.limitToFirst(5)
   );
   const snap = await window.FB.get(q);
-  if (!snap.exists()) return;
+  if (!snap.exists() || !sigue()) return;
   const candidates = [];
   snap.forEach(child => { if (child.key !== state.playerId) candidates.push(child.key); });
   if (candidates.length === 0) return;
 
   // Me saco a mí mismo de la cola mientras intento emparejar, para no ser
   // reclamado por un tercero a mitad de camino (evita dobles emparejamientos).
-  await window.FB.update(queueEntryRef(state.playerId), { status: "busy" });
+  // Solo si seguís esperando (si alguien te reclamó en el medio, te quedás con esa sala).
+  const ocupado = await window.FB.runTransaction(queueEntryRef(state.playerId), current => {
+    if (current === null) return null;
+    if (current.status !== "waiting") return undefined;
+    return { ...current, status: "busy" };
+  });
+  if (!ocupado.committed || !ocupado.snapshot.exists() || !sigue()) return;
 
   for (const candidateId of candidates) {
+    if (!sigue()) return;
     const claimed = await claimOpponent(candidateId);
     if (claimed) return;
   }
 
-  await window.FB.update(queueEntryRef(state.playerId), { status: "waiting" });
+  if (!sigue()) return;
+  await window.FB.runTransaction(queueEntryRef(state.playerId), current => {
+    if (current === null) return null;
+    if (current.status !== "busy") return undefined;
+    return { ...current, status: "waiting" };
+  });
 }
 
 async function claimOpponent(candidateId) {
@@ -5668,7 +5685,9 @@ async function claimOpponent(candidateId) {
     },
     players: {
       [state.playerId]: myPlayerLabel(),
-      [candidateId]: { name: candidateData.name || t("opponent_generic"), score: 0, connected: true, avatar: avatarOf(candidateData) },
+      // Sin "connected": lo pone el rival al entrar (joinMatchedRoom). Si nunca entra (quedó en la cola de un
+      // teléfono que ya no estaba), juego/sala.js lo da por desconectado y la revisión no lo espera.
+      [candidateId]: { name: candidateData.name || t("opponent_generic"), score: 0, avatar: avatarOf(candidateData) },
     },
   };
   await window.FB.set(roomsRef(), roomData);
@@ -5701,12 +5720,16 @@ function joinMatchedRoom(roomCode) {
     state.duration = (data.config && data.config.duration) || RANDOM_MATCH_CONFIG.duration;
     state.totalRounds = (data.config && data.config.totalRounds) != null ? data.config.totalRounds : RANDOM_MATCH_CONFIG.totalRounds;
     recordGameStart();
+    // Avisa que entró (y con su nombre, fruta y estilo de ahora): quien armó la sala lo anotó desde la cola.
+    const { score, ...sinPuntaje } = myPlayerLabel();
+    window.FB.update(window.FB.ref(window.FB.db, "rooms/" + roomCode + "/players/" + state.playerId), sinPuntaje).catch(() => { /* sigue igual */ });
     setupDisconnectHandling();
     subscribeToRoom();
   }).catch(handleOnlineError);
 }
 
 function cleanupRandomSearch() {
+  state.busqueda = (state.busqueda || 0) + 1;
   clearTimeout(state.randomSearchTimeoutId);
   clearTimeout(state.botTimeoutId);
   clearTimeout(state.randomRetryTimeoutId);
@@ -6065,6 +6088,11 @@ function hasBannedLetter(raw, banned) {
 
 function hostStartGame() {
   if (!state.room) return;
+  // Dos toques seguidos ("Jugar otra ronda", "Revancha") arrancaban la ronda dos veces con letras distintas:
+  // los demás jugaban con la primera y el puntaje se calculaba con la segunda.
+  const arranque = state.roomCode + ":" + (state.room.round || 1);
+  if (state.ultimoArranque && state.ultimoArranque.clave === arranque && Date.now() - state.ultimoArranque.at < 8000) return;
+  state.ultimoArranque = { clave: arranque, at: Date.now() };
   const config = state.room.config || {};
   const twists = config.twists || {};
   const basePool = (config.letterPool && config.letterPool.length) ? config.letterPool : DEFAULT_LETTERS;
@@ -6299,11 +6327,13 @@ function onRoundCollecting() {
 }
 
 async function hostOpenReview(round) {
-  const snap = await window.FB.get(roomsRef());
+  // La sala de cuando empezó: si mientras tanto saliste y entraste a otra, no se escribe en la nueva.
+  const salaRef = roomsRef();
+  const snap = await window.FB.get(salaRef);
   if (!snap.exists()) return;
   const data = snap.val();
   if (data.status !== "collecting") return;
-  await window.FB.update(roomsRef(), {
+  await window.FB.update(salaRef, {
     status: "review",
     reviewStartAt: window.FB.serverTimestamp(),
     [`objections/${round}`]: null,
@@ -6565,11 +6595,17 @@ function hostFinalizeReviewNow() {
 async function hostFinalizeReview(round) {
   if (state.reviewFinalizing) return;
   state.reviewFinalizing = true;
-  const snap = await window.FB.get(roomsRef());
-  if (!snap.exists()) return;
-  const data = snap.val();
-  if (data.status !== "review") return;
-  await computeAndApplyScores(data, round);
+  try {
+    const snap = await window.FB.get(roomsRef());
+    if (!snap.exists()) return;
+    const data = snap.val();
+    if (data.status !== "review") return;
+    await computeAndApplyScores(data, round);
+  } catch (e) {
+    // Sin conexión o rechazado: se libera para que el próximo "Listo" (o el tiempo) lo vuelva a intentar.
+    console.error(e);
+    state.reviewFinalizing = false;
+  }
 }
 
 async function callJudge(roomCode, round, letter, disputas) {
@@ -6598,6 +6634,7 @@ async function callJudge(roomCode, round, letter, disputas) {
 }
 
 async function computeAndApplyScores(data, round) {
+  const salaRef = roomsRef();
   const categories = data.categories || (data.config && data.config.categories) || [];
   const answers = (data.answers && data.answers[round]) || {};
   const objectionsForRound = (data.objections && data.objections[round]) || {};
@@ -6668,7 +6705,7 @@ async function computeAndApplyScores(data, round) {
   let verdicts = {};
   let judgeFailed = false;
   if (disputas.length > 0) {
-    await window.FB.update(roomsRef(), { status: "judging" });
+    await window.FB.update(salaRef, { status: "judging" });
     const result = await callJudge(state.roomCode, round, letter, disputas);
     verdicts = result.verdicts;
     judgeFailed = result.failed;
@@ -6690,7 +6727,9 @@ async function computeAndApplyScores(data, round) {
         raw = c.raw;
       } else if (c.status === "needsJudge") {
         const v = verdicts[c.id];
-        const hasVerdict = !!v && !judgeFailed;
+        // Un veredicto "sin verificar" (el juez no contestó y la palabra no se pudo revisar) vale, sin multa
+        // para quien objetó y sin decir que el juez la aprobó.
+        const hasVerdict = !!v && !judgeFailed && !v.sinVerificar;
         isValid = !hasVerdict ? true : v.valida !== false;
         raw = c.raw;
         judgeInfo[`${cat}|${pid}`] = {
@@ -6753,7 +6792,7 @@ async function computeAndApplyScores(data, round) {
   updates[`judgeInfo/${round}`] = judgeInfo;
   updates[`penalties/${round}`] = penalties;
   updates.status = "results";
-  await window.FB.update(roomsRef(), updates);
+  await window.FB.update(salaRef, updates);
 }
 
 function renderMyObjectionsOutcome(data, round) {
@@ -6845,7 +6884,7 @@ function renderOnlineResults(data) {
   let judgeWinCount = 0;
   categories.forEach(cat => {
     const pts = myScores[cat] || 0;
-    if (pts / roundMultiplier(data, cat) >= 10) uniqueCount++;
+    if (!isJoker((myAnswers[cat] || "").trim()) && pts / roundMultiplier(data, cat) >= 10) uniqueCount++;
     const info = judgeInfo[`${cat}|${state.playerId}`];
     if (info && info.valida === true && !info.sinRespuesta) judgeWinCount++;
   });
@@ -6863,7 +6902,9 @@ function renderOnlineResults(data) {
     const val = (myAnswers[cat] || "").trim();
     const pts = myScores[cat] || 0;
     const isWild = cat === data.wildcard;
-    const basePts = pts / roundMultiplier(data, cat);
+    // El comodín vale siempre lo mismo: no se divide por el ×2 (daba "points-5", "repetida" o "2.5").
+    const comodin = isJoker(val);
+    const basePts = comodin ? JOKER_POINTS : pts / roundMultiplier(data, cat);
     const info = judgeInfo[`${cat}|${state.playerId}`];
     let extra = "";
     if (info) {
@@ -6894,7 +6935,7 @@ function renderOnlineResults(data) {
     row.innerHTML = `
       <span class="answer-cat">${escapeHtml(catLabel(cat))}${isWild ? '<span class="wildcard-badge">×2</span>' : ""}</span>
       <span class="answer-val ${val ? "" : "empty"}">${val ? escapeHtml(answerText(val)) : t("no_answer")}</span>
-      <span class="points points-${basePts}" title="${t('score_label_' + basePts)}">+${pts}</span>
+      <span class="points points-${basePts}" title="${comodin ? escapeHtml(answerText(val)) : t('score_label_' + basePts)}">+${pts}</span>
       ${extra ? `<div style="flex-basis:100%;">${extra}</div>` : ""}
     `;
     revealRow(row, rowIndex);
@@ -6928,7 +6969,8 @@ function renderOnlineResults(data) {
   if (state.isHost) {
     nextBtn.style.display = "block";
     nextBtn.textContent = isLastRound ? t("view_final_result_btn") : t("play_another_round_btn");
-    nextBtn.onclick = () => hostNextRoundOrFinal(data, isLastRound);
+    nextBtn.disabled = false;
+    nextBtn.onclick = () => { nextBtn.disabled = true; hostNextRoundOrFinal(data, isLastRound); };
     waitingNote.style.display = "none";
   } else {
     nextBtn.style.display = "none";
@@ -6962,7 +7004,7 @@ function hostNextRoundOrFinal(data, isLastRound) {
 function renderOnlineFinal(data) {
   const players = data.players || {};
   // Semillas por la partida online (una sola vez por partida).
-  const seedKey = state.roomCode + ":" + data.round;
+  const seedKey = state.roomCode + ":" + (data.roundStartAt || data.round);
   if (players[state.playerId] && state.lastSeedGame !== seedKey) {
     state.lastSeedGame = seedKey;
     addSeeds(seedsForScore(players[state.playerId].score));
@@ -7002,8 +7044,8 @@ function renderOnlineFinal(data) {
   const iWon = !!(winner && winner.pid === state.playerId);
   state._finalShareInfo = { score: me ? me.score : 0, won: iWon };
   const tiedAtTop = sorted.length > 1 && sorted[0].score === sorted[1].score;
-  if (players[state.playerId]) bumpProgress(p => { addMission(p, "online_play"); }, `game:${state.roomCode}:${totalGames}`);
-  if (iWon && !tiedAtTop) bumpProgress(p => { p.wins += 1; addMission(p, "online_win"); }, `win:${state.roomCode}:${totalGames}`);
+  if (players[state.playerId]) bumpProgress(p => { addMission(p, "online_play"); }, `game:${state.roomCode}:${data.roundStartAt || totalGames}`);
+  if (iWon && !tiedAtTop) bumpProgress(p => { p.wins += 1; addMission(p, "online_win"); }, `win:${state.roomCode}:${data.roundStartAt || totalGames}`);
   showScreen("screen-final");
   showFinalOutcomeFor(iWon);
 }
@@ -7040,6 +7082,8 @@ function renderRematchState(data) {
 
 function askRematch() {
   if (state.isHost || !state.roomCode) return;
+  // Si la partida nueva ya arrancó, el pedido quedaba guardado y en el próximo final decía que la querías.
+  if (state.room && state.room.status !== "final") return;
   const btn = document.getElementById("finalPlayAgainBtn");
   if (btn) btn.disabled = true;
   window.FB.set(window.FB.ref(window.FB.db, `rooms/${state.roomCode}/players/${state.playerId}/rematch`), true)
@@ -7050,9 +7094,12 @@ function hostRematch() {
   if (!state.isHost || !state.room) return;
   const players = state.room.players || {};
   const resetPlayers = {};
+  const porJugador = {};
   Object.keys(players).forEach(pid => {
     const { rematch, ...rest } = players[pid];
     resetPlayers[pid] = { ...rest, score: 0 };
+    porJugador[`players/${pid}/score`] = 0;
+    porJugador[`players/${pid}/rematch`] = null;
   });
   const pool = (state.room.config && state.room.config.letterPool && state.room.config.letterPool.length)
     ? state.room.config.letterPool
@@ -7075,7 +7122,10 @@ function hostRematch() {
   // suscripción) para que hostStartGame() lea el estado ya reseteado —
   // mismo motivo por el que claimOpponent() hace lo mismo al emparejar.
   state.room = { ...state.room, ...updates };
-  window.FB.update(roomsRef(), updates).then(() => {
+  // A Firebase van solo el puntaje y el pedido de revancha de cada uno: el nombre, la fruta y el resto
+  // los escribe cada jugador (acá se veían con los cambios locales, como el de un jugador bloqueado).
+  const { players: _local, ...resto } = updates;
+  window.FB.update(roomsRef(), { ...resto, ...porJugador }).then(() => {
     hostStartGame();
   });
 }
@@ -12407,5 +12457,7 @@ checkAchievements();
 <script src="/juego/online.js"></script>
 <script src="/juego/puntajes.js"></script>
 <script src="/juego/revision.js"></script>
+<script src="/juego/sala.js"></script>
+<script src="/juego/reglas.js"></script>
 </body>
 </html>
