@@ -9209,7 +9209,9 @@ async function finishDailyRound() {
     valid++;
     score += r.joker ? JOKER_POINTS : DAILY_POINTS_PER_CATEGORY * (r.cat === ch.wildcard ? 2 : 1);
   });
-  const bonus = valid > 0 ? Math.min(DAILY_MAX_TIME_BONUS, secondsLeft) : 0;
+  // Los segundos que sobran suman solo si valen todas (igual que la app desde la 1.0.17): antes alcanzaba una
+  // palabra válida y convenía escribir una y cortar.
+  const bonus = valid > 0 && valid === results.length ? Math.min(DAILY_MAX_TIME_BONUS, secondsLeft) : 0;
   const full = results.length > 0 && valid === results.length;
   score += bonus + (full ? FULL_ROUND_BONUS : 0);
   const record = {
@@ -10318,7 +10320,7 @@ const HOWTO_TEXTS = {
    [
     "Todos los jugadores reciben el mismo desafío: las mismas letras y las mismas categorías.",
     "Cada día de la semana tiene su modo, y tenés <strong>una sola oportunidad</strong> por día.",
-    "Cada palabra válida suma 10 puntos y la categoría marcada vale el doble. Si valen todas, sumás 20 extra, y los segundos que te sobren también suman.",
+    "Cada palabra válida suma 10 puntos y la categoría marcada vale el doble. Si valen todas, sumás 20 extra y también los segundos que te sobren.",
     "Los 3 mejores del día ganan semillas: 100, 60 y 40."
    ]
   ],
@@ -10335,7 +10337,7 @@ const HOWTO_TEXTS = {
    "Cómo se juega un duelo",
    [
     "Es una sola ronda de <strong>60 segundos</strong>: una letra y 6 categorías, una de ellas vale el doble.",
-    "Completá lo que puedas y tocá <strong>¡Basta!</strong> Los segundos que te sobren suman puntos extra.",
+    "Completá lo que puedas y tocá <strong>¡Basta!</strong> Si valen todas, los segundos que te sobren suman puntos extra.",
     "Después mandale el link a quien quieras: juega exactamente la misma ronda cuando pueda.",
     "En <strong>Mis duelos</strong> ves quién jugó y quién sacó más puntos."
    ]
@@ -10414,7 +10416,7 @@ const HOWTO_TEXTS = {
    [
     "Every player gets the same challenge: the same letters and the same categories.",
     "Each day of the week has its own mode, and you only get <strong>one try</strong> per day.",
-    "Each valid word is worth 10 points and the marked category counts double. If they all count you get 20 extra, and leftover seconds add up too.",
+    "Each valid word is worth 10 points and the marked category counts double. If they all count you get 20 extra, plus your leftover seconds.",
     "The top 3 of the day win seeds: 100, 60 and 40."
    ]
   ],
@@ -10431,7 +10433,7 @@ const HOWTO_TEXTS = {
    "How a duel works",
    [
     "It's a single <strong>60-second</strong> round: one letter and 6 categories, one of them counts double.",
-    "Fill in what you can and tap <strong>Stop!</strong> Leftover seconds add extra points.",
+    "Fill in what you can and tap <strong>Stop!</strong> If they all count, leftover seconds add extra points.",
     "Then send the link to anyone you want: they play the exact same round whenever they can.",
     "In <strong>My duels</strong> you see who played and who scored more."
    ]
@@ -10510,7 +10512,7 @@ const HOWTO_TEXTS = {
    [
     "Todos os jogadores recebem o mesmo desafio: as mesmas letras e as mesmas categorias.",
     "Cada dia da semana tem seu modo, e você tem <strong>uma única chance</strong> por dia.",
-    "Cada palavra válida vale 10 pontos e a categoria marcada vale o dobro. Se todas valerem, ganha 20 extras, e os segundos que sobrarem também somam.",
+    "Cada palavra válida vale 10 pontos e a categoria marcada vale o dobro. Se todas valerem, ganha 20 extras e também os segundos que sobrarem.",
     "Os 3 melhores do dia ganham sementes: 100, 60 e 40."
    ]
   ],
@@ -10527,7 +10529,7 @@ const HOWTO_TEXTS = {
    "Como funciona um duelo",
    [
     "É uma única rodada de <strong>60 segundos</strong>: uma letra e 6 categorias, uma delas vale o dobro.",
-    "Preencha o que puder e toque em <strong>Stop!</strong> Os segundos que sobrarem somam pontos extra.",
+    "Preencha o que puder e toque em <strong>Stop!</strong> Se todas valerem, os segundos que sobrarem somam pontos extra.",
     "Depois envie o link para quem quiser: a pessoa joga exatamente a mesma rodada quando puder.",
     "Em <strong>Meus duelos</strong> você vê quem jogou e quem fez mais pontos."
    ]
@@ -10946,7 +10948,8 @@ async function finishDuelRound() {
     valid++;
     score += r.joker ? JOKER_POINTS : DAILY_POINTS_PER_CATEGORY * (r.cat === duel.wildcard ? 2 : 1);
   });
-  if (valid > 0) score += secondsLeft;
+  // Los segundos que sobran suman solo si valen todas (como en el Desafío del día y en la app).
+  if (valid > 0 && valid === results.length) score += secondsLeft;
   bumpProgress(p => {
     addMission(p, "duel");
     addMission(p, "valid_words", results.filter(r => r.valid && !r.joker).length);
