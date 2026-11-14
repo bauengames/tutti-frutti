@@ -1,0 +1,10 @@
+Diccionarios del juez sin conexión de tutti.frutti (es, pt, de, fr, it, en).
+
+Fuente: FrequencyWords, de Hermit Dave (https://github.com/hermitdave/FrequencyWords), listas de frecuencia de palabras
+de OpenSubtitles 2018. Licencia: Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0,
+https://creativecommons.org/licenses/by-sa/4.0/). En inglés se suman las palabras de /usr/share/dict/words (dominio público).
+
+Cambios hechos (estos archivos se distribuyen con la misma licencia CC BY-SA 4.0): solo palabras que aparecen al menos
+2 veces, en minúscula, sin tildes ni signos (ß → ss, æ → ae, œ → oe), solo letras a-z, de 2 a 30 letras, ordenadas.
+Formato: cada renglón = un carácter con cuántas letras comparte con la palabra anterior (0-9, a-z = 10-35) + el resto.
+Lo usa www/app-juez-offline.js. Cómo rearmarlos: herramientas/diccionarios/.

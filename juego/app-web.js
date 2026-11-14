@@ -28,6 +28,24 @@
     } catch (e) { /* sin almacenamiento */ }
   };
 
+  // Partidas que terminan (como en la app): Aventura, duelos, final de una partida online o contra Frutibot,
+  // Contrarreloj y desafío del día. Lo usan el arbolito de Navidad y el título "Veterano".
+  var pantallaAntes = window.showScreen, ultimaPantalla = "";
+  if (typeof pantallaAntes === "function") window.showScreen = function (id) {
+    var r = pantallaAntes.apply(this, arguments);
+    try {
+      var modo = id === ultimaPantalla ? null
+        : id === "screen-adventure-result" ? "aventura"
+        : id === "screen-duel-result" ? "duelo"
+        : id === "screen-final" ? "online"
+        : id === "screen-results" && state.streakMode ? "contrarreloj"
+        : id === "screen-results" && state.dailyMode ? "diario" : null;
+      ultimaPantalla = id;
+      if (modo) APP.partidaTerminada(modo);
+    } catch (e) { console.error(e); }
+    return r;
+  };
+
   // Al terminar de mostrar los resultados (en la web aparecen de una): se espera un momento.
   APP.alTerminarRevision = function (fn) { setTimeout(fn, 1400); };
 
@@ -60,6 +78,17 @@
       return apiPost("avisar", Object.assign({ idToken: token, tipo: tipo, destino: destino }, extra || {}), 10000);
     }).catch(function () {});
   };
+
+  // Números en los textos: en la app pasa "1 palabras" a "1 palabra"; en la web los textos ya vienen bien.
+  APP.numeros = function (str) { return typeof str === "string" ? str.replace(/(\d) %/g, "$1\u00a0%") : str; };
+  // La carita de otro jugador (amigos del Frutigrama, etc.): su fruta con sus accesorios.
+  APP.caraJugador = function (clase, p, animo) {
+    var cara = typeof friendMascot === "function" ? friendMascot(p || {}, animo || "happy") : "";
+    return '<span class="' + clase + ' con-cara">' + cara + "</span>";
+  };
+
+  // Medidas de la pantalla (la ruleta y las caritas las usan): en la web 1px del estilo es 1px de la medida.
+  APP.vista = function () { return { f: 1, alto: window.innerHeight }; };
 
   // Nombres de otros jugadores: en la app se tapan los bloqueados; en la web se muestran tal cual.
   if (typeof window.safeName !== "function") window.safeName = function (n) { return n; };

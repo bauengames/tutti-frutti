@@ -186,7 +186,7 @@
             ".validate": "newData.isNumber() && newData.val() > 0 && newData.val() <= 100000"
           },
           "rounds": {
-            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 40 && newData.parent().child('score').val() <= (newData.val() + 1) * 90"
+            ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 40 && newData.parent().child('score').val() <= (newData.val() + 1) * 540"
           },
           ".read": "auth != null && auth.uid === $uid"
         }

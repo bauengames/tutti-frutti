@@ -546,3 +546,243 @@ html[data-light] .pz-c.gana b { color: color-mix(in srgb, var(--lima) 40%, #1410
 #bastaWrap .basta.basta-niega { animation: basta-niega .35s ease; }
 @keyframes basta-niega { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 .rg-cierre { margin-top: 4px; text-align: center; }
+
+/* Frutigrama al día con la app (13/11): botón de la pista, tablero que se toca para escribir, caritas de amigos. */
+.fg-pista-btn { flex: none; display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 999px; border: 2px solid color-mix(in srgb, #FFD23F 60%, transparent); background: rgba(255, 210, 63, .12); color: var(--text); font: 700 13px var(--font-body); cursor: pointer; }
+.fg-pista-btn svg { width: 18px; height: 18px; }
+.fg-pista-opciones .btn { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.fg-board.tocable { cursor: text; }
+.fg-am-fruta > .fg-am-cara { display: block; width: 100%; height: 100%; }
+.fg-am-fruta > .fg-am-cara > svg { width: 100%; height: 100%; }
+
+/* Moderación (juego/moderacion.js, igual que la app): ⋯ al lado de otro jugador, denuncia y bloqueados. */
+.md-mas { flex: none; width: 32px; height: 32px; margin-left: 2px; border-radius: 50%; border: 0; background: rgba(var(--fg-rgb), .08); color: var(--text-muted); font: 700 18px/1 var(--font-body); cursor: pointer; }
+#waitingPlayers .md-mas { margin-left: auto; }
+.rank-row .md-mas { margin-left: 8px; }
+.md-motivos { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0; }
+.md-motivos .aj-seg { padding: 12px 8px; border-radius: 14px; border: 2px solid var(--borde); background: var(--surface); }
+.md-motivos .aj-seg.activo { border-color: var(--primary); background: var(--primary); color: var(--tinta); }
+.md-bloquear { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font: 500 15px var(--font-body); text-align: left; }
+.md-bloquear input { width: 22px; height: 22px; accent-color: var(--primary); flex: none; }
+.md-lista .aj-fila { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; }
+.md-lista .aj-fila .btn { padding: 6px 14px; }
+.md-bloqueados-btn { margin-top: 12px; }
+
+/* Borrar la cuenta (juego/cuenta.js, igual que la app). */
+.cu-boton { display: block; margin: 14px auto 0; padding: 8px 12px; border: 0; background: none; color: #E5484D; font: 600 14px var(--font-body); text-decoration: underline; cursor: pointer; }
+.ab-label { display: block; font: 700 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 8px; }
+.cu-hoja input { width: 100%; box-sizing: border-box; font: 700 18px var(--font-body); letter-spacing: .08em; padding: 14px 16px; border-radius: var(--radius); border: 2px solid var(--borde-fuerte); background: var(--surface); color: var(--text); margin: 6px 0 14px; text-transform: uppercase; }
+.cu-hoja input:focus { outline: none; border-color: #E5484D; }
+.cu-hoja .cu-borrar { background: #E5484D; color: #fff; border: 0; margin-bottom: 8px; }
+.cu-hoja .cu-borrar:disabled { opacity: .4; }
+
+/* Caritas en las salas online (juego/emotes.js, igual que la app). */
+.em-boton { position: fixed; right: 16px; bottom: calc(104px + env(safe-area-inset-bottom)); z-index: 60; width: 54px; height: 54px; border-radius: 50%; border: 2px solid var(--borde-fuerte); background: var(--surface); box-shadow: 0 8px 20px rgba(0, 0, 0, .3); display: none; place-items: center; padding: 6px; cursor: pointer; }
+.em-boton.visible { display: grid; animation: em-entra .3s cubic-bezier(.34, 1.56, .64, 1) both; }
+.em-boton.activo { border-color: var(--primary); }
+.em-boton svg { width: 38px; height: 38px; overflow: visible; }
+.em-barra { position: fixed; right: 12px; bottom: calc(168px + env(safe-area-inset-bottom)); z-index: 61; display: grid; grid-template-columns: repeat(4, 54px); gap: 6px; padding: 10px; border-radius: 22px; background: var(--surface); border: 2px solid var(--borde); box-shadow: 0 14px 34px rgba(0, 0, 0, .35); opacity: 0; transform: translateY(10px) scale(.96); transform-origin: bottom right; pointer-events: none; transition: opacity .18s ease, transform .22s cubic-bezier(.2, .8, .2, 1); }
+.em-barra.abierta { opacity: 1; transform: none; pointer-events: auto; }
+.em-op { width: 54px; height: 54px; border: 0; border-radius: 16px; background: var(--surface-media); display: grid; place-items: center; padding: 6px; cursor: pointer; }
+.em-op:active { transform: scale(.92); }
+.em-op svg { width: 38px; height: 38px; overflow: visible; color: var(--text); }
+.em-pila { position: fixed; top: calc(70px + env(safe-area-inset-top)); left: 0; right: 0; z-index: 59; display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none; }
+.em-globo { display: flex; align-items: center; gap: 8px; padding: 6px 14px 6px 6px; border-radius: 999px; background: var(--surface); border: 2px solid var(--borde); box-shadow: 0 8px 20px rgba(0, 0, 0, .3); animation: em-globo .4s cubic-bezier(.34, 1.56, .64, 1) both; }
+.em-globo.mio { border-color: var(--primary); }
+.em-globo.sale { opacity: 0; transform: translateY(-8px); transition: opacity .3s ease, transform .3s ease; }
+.em-dib { width: 40px; height: 40px; display: grid; place-items: center; }
+.em-dib svg { width: 40px; height: 40px; overflow: visible; color: var(--text); }
+.em-nombre { font: 700 14px var(--font-body); color: var(--text); max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@keyframes em-entra { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+@keyframes em-globo { from { opacity: 0; transform: translateY(-10px) scale(.8); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .em-boton.visible, .em-globo { animation: none; } }
+.em-cara { display: block; width: 40px; height: 40px; }
+.em-dib .em-cara svg, .em-op .em-cara svg { width: 100%; height: 100%; }
+.em-hueco { margin-top: 78px !important; }
+
+/* Rareza y lo que pusieron tus amigos en el Desafío del día (juego/rareza.js, igual que la app). */
+.rz-chip { display: flex; width: fit-content; align-items: center; gap: 4px; margin-top: 4px; font: 600 12.5px/1.3 var(--font-body);
+  color: var(--text-muted); white-space: nowrap; }
+.rz-chip svg { width: 13px; height: 13px; flex: none; }
+.rz-chip.rz-rara, .rz-chip.rz-unica { padding: 3px 9px 3px 7px; border-radius: 999px; color: var(--text); font-weight: 700;
+  background: color-mix(in srgb, var(--primary) 22%, transparent); }
+.rz-chip.rz-unica { background: color-mix(in srgb, var(--primary) 40%, transparent); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--primary) 70%, transparent); }
+html[data-light] .rz-chip.rz-rara, html[data-light] .rz-chip.rz-unica { color: var(--primary); }
+.rz-nota { text-align: center; margin: 12px 0 0; }
+/* ---------- Lo que pusieron tus amigos (Desafío del día, app-rareza.js; versión B aprobada el 2/11) ----------
+   Arriba quiénes son; debajo de cada palabra, la fruta de cada amigo con su palabra (borde: igual que la tuya).
+   Tocar una fruta despliega la ficha del amigo en esa fila. */
+.da-cab { margin: 4px 0 10px; padding: 10px 12px 12px; border-radius: 14px; background: var(--crema-08); text-align: left; }
+.da-cab > b { display: block; font: 700 14px var(--font-body); color: var(--text); }
+/* Desplegable (8/11): cerrado, solo el título, las frutas y la flecha; abierto, la lista de amigos y sus palabras. */
+.da-cab { padding: 0; }
+.da-abrir { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 52px; padding: 10px 12px; border: 0; background: none; color: var(--text); text-align: left; cursor: pointer; border-radius: 14px; }
+.da-abrir b { flex: 1; min-width: 0; font: 700 14px/1.25 var(--font-body); }
+.da-minis { display: flex; flex: none; }
+.da-minis .da-fruta { width: 28px; height: 28px; box-shadow: 0 0 0 2px var(--surface); }
+.da-minis .da-fruta + .da-fruta { margin-left: -8px; }
+.da-flecha { flex: none; width: 20px; height: 20px; color: var(--text-muted); transition: transform .2s ease; }
+.da-abierto .da-flecha { transform: rotate(180deg); }
+.da-abierto .da-minis { display: none; }
+.da-cab .da-ley { margin: 0; padding: 0 12px 12px; }
+.da-lista:not(.da-abierto) :is(.da-ley, .da-fila, .da-perfil) { display: none; }
+@media (prefers-reduced-motion: reduce) { .da-flecha { transition: none; } }
+.da-ley { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+.da-fila { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--borde); }
+.da-chip { display: inline-flex; align-items: center; gap: 5px; min-height: 32px; padding: 3px 10px 3px 3px; border: 0; border-radius: 999px;
+  background: var(--crema-08); color: var(--text); font: 600 13.5px/1.2 var(--font-body); text-align: left; cursor: pointer; max-width: 100%; overflow-wrap: anywhere; }
+.da-chip-ley { background: none; padding-left: 0; font-weight: 700; }
+.da-fruta { width: 26px; height: 26px; flex: none; border-radius: 50%; background: var(--surface-media); display: grid; place-items: center; font-style: normal; }
+.da-fruta svg { width: 22px; height: 22px; }
+.da-chip.da-igual { background: color-mix(in srgb, var(--primary) 22%, transparent); box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--primary) 55%, transparent); }
+.da-chip.da-nada { color: var(--text-muted); }
+.da-chip.da-tocado .da-fruta { box-shadow: 0 0 0 2px var(--primary); }
+.da-chip:active { scale: .96; }
+.da-perfil { flex-basis: 100%; display: flex; align-items: center; gap: 12px; margin-top: 8px; padding: 10px 12px; border-radius: 14px;
+  background: var(--crema-08); text-align: left; animation: da-abre .22s cubic-bezier(.2, .8, .2, 1) both; }
+@keyframes da-abre { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .da-perfil { animation: none; } }
+.da-escena { width: 52px; height: 52px; flex: none; border-radius: 14px; overflow: hidden; display: grid; place-items: center; }
+.da-escena > * { width: 100%; height: 100%; }
+.da-escena svg { width: 100%; height: 100%; }
+.da-datos { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.da-datos b { font: 800 16px var(--font-display); color: var(--text); overflow-wrap: anywhere; }
+.da-datos small { font: 600 12.5px/1.3 var(--font-body); color: var(--text-muted); }
+.da-datos small:empty { display: none; }
+html.letra-grande .da-perfil { flex-wrap: wrap; } /* con la letra grande, "Ver perfil" abajo: si no, el texto queda en una columna finita */
+html.letra-grande .da-ver { flex-basis: 100%; }
+.da-ver { flex: none; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 2px solid var(--borde-fuerte); background: none; color: var(--text);
+  font: 700 14px var(--font-body); cursor: pointer; }
+
+/* Mundo de temporada de la Aventura (juego/mundo-temporada.js): botón en la pantalla de modos y hoja de "¡Llegó!". */
+.mt-banner { border-color: color-mix(in srgb, var(--mandarina) 70%, transparent); background: linear-gradient(100deg, color-mix(in srgb, #E23A4E 18%, var(--surface)), var(--surface) 62%); }
+.mt-banner .daily-icon { width: 46px; height: 46px; animation: none; }
+.mt-t-fruta { display: block; width: 46px; height: 46px; }
+.mt-t-fruta svg { width: 100%; height: 100%; display: block; }
+.mt-arte svg { width: 96px; height: 96px; }
+
+/* Sección de temporada arriba de todo en la tienda (juego/navidad.js, igual que la app). */
+.hw-seccion { margin: 6px 0 22px; padding: 14px 12px 4px; border-radius: 22px; background: linear-gradient(160deg, #3A2160, #24163F 60%, #3A1F2C); border: 1.5px solid #F57C12; }
+.hw-cabeza { display: flex; align-items: center; gap: 12px; margin: 0 4px 12px; color: #FFF3E2; }
+.hw-cabeza h2 { margin: 0; font: 800 22px/1.1 var(--font-display); }
+.hw-cabeza small { display: block; margin-top: 2px; font-size: 13px; color: #FFC58A; }
+.hw-icono { flex: none; width: 40px; height: 40px; }
+.hw-icono svg { width: 100%; height: 100%; display: block; }
+.hw-grilla { margin-bottom: 8px; }
+.hw-grilla .shop-limited { display: none; }
+
+/* Decorá tu arbolito (juego/arbolito.js, igual que la app). */
+.mu-hoja { text-align: center; }
+.mu-kicker { font: 700 12px var(--font-mono, monospace); letter-spacing: .08em; text-transform: uppercase; color: #F28C0F; margin: 0 0 4px; }
+.mu-altar { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 14px 0 6px; padding: 14px; border-radius: 18px;
+  background: color-mix(in srgb, #F28C0F 10%, transparent); }
+.mu-altar .mu-cosa { width: 44px; height: 44px; font-size: 26px; border-radius: 12px; }
+.mu-altar .mu-ofrenda { gap: 8px; }
+.mu-progreso { font: 700 14px var(--font-body); }
+.mu-hoja .btn + .btn { margin-top: 10px; }
+.mu-premio { width: 120px; height: 120px; margin: 4px auto 6px; }
+.mu-premio svg { width: 100%; height: 100%; overflow: visible; }
+.mu-termina { font: 600 12px var(--font-body); opacity: .7; margin-top: -4px; }
+.mu-hoy { text-align: center; font: 600 13px/1.35 var(--font-body); color: #F2A24B; text-wrap: pretty; }
+.ar-hoja .mu-kicker { color: #2EA85C; }
+.ar-altar { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 14px 0 6px; padding: 18px 14px 14px; border-radius: 18px; overflow: hidden;
+  background: radial-gradient(circle at 50% 32%, rgba(255,217,138,.32), rgba(255,158,94,.08) 38%, rgba(255,158,94,0) 60%), linear-gradient(180deg, #24376F, #15204A); }
+.ar-arbol { position: relative; isolation: isolate; height: min(220px, 25vh); aspect-ratio: 200 / 240; margin-bottom: 16px; }
+@media (max-height: 700px) { .ar-arbol { height: 16vh; margin-bottom: 12px; } } /* iPhone chico (y con letra grande): la hoja entra entera */
+/* Lomita de nieve donde apoya el arbolito */
+.ar-arbol::after { content: ""; position: absolute; z-index: -1; left: -22%; right: -22%; bottom: -7%; height: 17%; border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 35%, #FFFFFF 0%, #DCE8FB 55%, rgba(220,232,251,0) 72%); }
+.ar-arbol svg, .ar-premio svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.ar-hoja .mu-hoy { color: #FFD23F; }
+.ar-premio { width: 130px; height: 140px; margin: 4px auto 6px; }
+.ar-banner { border-color: color-mix(in srgb, #2EA85C 65%, transparent); background: linear-gradient(100deg, color-mix(in srgb, #2EA85C 18%, var(--surface)), var(--surface) 60%); }
+.ar-banner .daily-icon { width: 40px; height: 48px; animation: none; }
+.ar-t-arbol { display: block; width: 40px; height: 48px; }
+.ar-t-arbol svg { width: 100%; height: 100%; display: block; }
+.ar-t-cuenta { color: #FFD23F; font-weight: 800; }
+
+/* Tu fruta con vida en la partida (juego/fruta.js, igual que la app). */
+.app-companera { position: relative; width: 64px; height: 64px; flex: none; margin: 0 auto 10px; cursor: pointer; }
+.acp-fruta { width: 100%; height: 100%; animation: acp-respira 2.6s ease-in-out infinite; transform-origin: 50% 100%; }
+.acp-fruta svg { width: 100%; height: 100%; overflow: visible; display: block; }
+.acp-fruta.salta { animation: acp-salta .45s cubic-bezier(.3, .7, .3, 1); }
+.app-companera.nerviosa .acp-fruta { animation: acp-tiembla .25s linear infinite; }
+.app-companera.muy-nerviosa .acp-fruta { animation: acp-tiembla .12s linear infinite; }
+.app-companera.nerviosa::after, .app-companera.muy-nerviosa::after {
+  content: "💦"; position: absolute; top: -2px; right: -8px; font-size: 16px; animation: acp-gota 1s ease-in infinite;
+}
+.acp-globo {
+  position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translate(-50%, 6px) scale(.8); opacity: 0;
+  padding: 5px 10px; border-radius: 12px; background: var(--surface); color: var(--text); border: 2px solid var(--borde);
+  font: 700 12.5px var(--font-body); white-space: nowrap; pointer-events: none; transition: opacity .2s, transform .25s cubic-bezier(.3, .7, .3, 1.4); z-index: 3;
+}
+.acp-globo.visible { opacity: 1; transform: translate(-50%, 0) scale(1); }
+@keyframes acp-respira { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.04, .97); } }
+@keyframes acp-salta { 0% { transform: translateY(0) scale(1); } 30% { transform: translateY(-14px) scale(.94, 1.08); } 60% { transform: translateY(0) scale(1.1, .9); } 100% { transform: translateY(0) scale(1); } }
+@keyframes acp-tiembla { 0% { transform: translateX(0) rotate(0); } 25% { transform: translateX(-2px) rotate(-3deg); } 75% { transform: translateX(2px) rotate(3deg); } 100% { transform: translateX(0) rotate(0); } }
+@keyframes acp-gota { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
+
+/* Resultados con ritmo (juego/ritmo.js, igual que la app). */
+.rt-bien .pz-motivo { color: var(--text); opacity: .85; }
+.answer-row.rt-espera { opacity: 0; transform: translateY(10px); animation: none !important; }
+.answer-row.rt-entra { animation: rt-entra .32s cubic-bezier(.34, 1.4, .64, 1) both !important; }
+@keyframes rt-entra { from { opacity: 0; transform: translateY(10px) scale(.97); } to { opacity: 1; transform: none; } }
+.answer-row.rt-entra .points { animation: points-pop .45s cubic-bezier(.34, 1.56, .64, 1) both .12s !important; }
+.rt-marca { flex: none; width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font: 800 14px/1 var(--font-body); animation: rt-marca .4s cubic-bezier(.34, 1.8, .64, 1) both .08s; }
+.rt-bien .rt-marca { background: var(--lima); color: #14101F; }
+.rt-mal .rt-marca { background: rgba(var(--fg-rgb), .12); color: var(--text-muted); }
+.answer-row.rt-mal { opacity: .78; }
+@keyframes rt-marca { from { transform: scale(0) rotate(-40deg); } to { transform: none; } }
+.rt-total { position: sticky; top: calc(env(safe-area-inset-top) + 8px); z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 10px; padding: 10px 16px; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--surface) 88%, transparent); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 2px solid var(--borde); font: 600 15px var(--font-body); color: var(--text-muted); cursor: pointer; }
+.rt-total strong { font: 800 22px/1 var(--font-display); color: var(--text); font-variant-numeric: tabular-nums; }
+.rt-total.rt-late strong { animation: rt-late .3s ease; }
+.rt-total.rt-hecho { border-color: var(--primary); }
+@keyframes rt-late { 40% { transform: scale(1.18); color: var(--primary); } }
+html.app #screen-game .app-companera { grid-area: fruta; margin: 0; }
+
+/* La ruleta de la letra, en grande (juego/ruleta.js, igual que la app). */
+.ru-capa { position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: 0; visibility: hidden;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  transition: opacity .22s ease, visibility 0s linear .22s; }
+.ru-capa.visible { opacity: 1; visibility: visible; transition: opacity .22s ease; }
+.ru-capa.sale { background: transparent; transition: background .3s ease; }
+.ru-centro { position: absolute; left: 0; right: 0; top: calc(var(--ru-top, 220px) + env(safe-area-inset-top)); display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.ru-capa.sale .ru-titulo { opacity: 0; transition: opacity .15s ease; }
+.ru-titulo { margin: 0; font: 700 15px var(--font-body); color: var(--text-muted); letter-spacing: .01em; }
+.ru-ficha { position: relative; width: 168px; height: 168px; border-radius: 40px; display: grid; place-items: center;
+  background: linear-gradient(145deg, var(--primary), color-mix(in srgb, var(--primary) 55%, var(--secondary, #FFA62B)));
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .35), inset 0 -8px 0 rgba(0, 0, 0, .18); animation: ru-entra .35s cubic-bezier(.2, .9, .3, 1.25) both; }
+.ru-letra { font: 800 112px/1 var(--font-display); color: var(--tinta); letter-spacing: -.02em; }
+.ru-letra .medal-fruit { display: block; width: 104px; height: 104px; }
+.ru-letra .medal-fruit svg { width: 100%; height: 100%; }
+.ru-letra.paso { animation: ru-paso .12s ease-out; }
+.ru-capa.cae .ru-ficha { animation: ru-cae .42s cubic-bezier(.3, 1.6, .5, 1); }
+.ru-brillo { position: absolute; inset: -6px; border-radius: 46px; border: 4px solid var(--lima); opacity: 0; pointer-events: none; }
+.ru-capa.cae .ru-brillo { animation: ru-brillo .5s ease-out; }
+@keyframes ru-entra { from { transform: scale(.6) translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes ru-paso { from { transform: translateY(-18%); opacity: .4; } to { transform: none; opacity: 1; } }
+@keyframes ru-cae { 0% { transform: scale(1); } 40% { transform: scale(1.16); } 100% { transform: scale(1); } }
+@keyframes ru-brillo { 0% { opacity: .9; transform: scale(.95); } 100% { opacity: 0; transform: scale(1.35); } }
+/* Las categorías entran en cascada después de la ruleta. */
+@keyframes ru-casilla { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
+#catGrid.cascada > * { animation: ru-casilla .34s cubic-bezier(.2, .9, .3, 1.15) both; }
+#catGrid.cascada > :nth-child(4) { animation-delay: .15s; } #catGrid.cascada > :nth-child(5) { animation-delay: .2s; }
+#catGrid.cascada > :nth-child(6) { animation-delay: .25s; } #catGrid.cascada > :nth-child(7) { animation-delay: .3s; }
+#catGrid.cascada > :nth-child(8) { animation-delay: .35s; } #catGrid.cascada > :nth-child(n+9) { animation-delay: .4s; }
+/* Al terminar, la capa desaparece al instante (si se desvanecía, la ficha volvía a asomar en el centro). */
+/* Letra prohibida (online y Aventura): debajo de la ficha mientras gira. */
+.ru-prohibida { display: none; align-items: center; gap: 8px; margin: 4px 0 0; padding: 8px 16px 8px 10px; border-radius: 999px;
+  background: var(--pomelo); color: #fff; font: 800 17px var(--font-body); box-shadow: 0 6px 18px rgba(0, 0, 0, .18); }
+.ru-prohibida.si { display: inline-flex; animation: ru-prohibida .35s cubic-bezier(.3, 1.5, .5, 1) both; }
+.ru-prohibida b { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px; background: #fff; color: var(--tinta);
+  font: 800 20px/1 var(--font-display); text-decoration: line-through; text-decoration-color: var(--pomelo); text-decoration-thickness: 3px; }
+.ru-capa.sale .ru-prohibida, .ru-capa.oculta .ru-prohibida { opacity: 0; animation: none; transition: opacity .12s ease; }
+@keyframes ru-prohibida { from { opacity: 0; transform: translateY(8px) scale(.85); } to { opacity: 1; transform: none; } }
+.ru-capa.oculta { opacity: 0 !important; visibility: hidden !important; transition: none !important; }
+.ru-capa.oculta .ru-ficha { animation: none; opacity: 0; }
+.ru-capa { pointer-events: none; }
+.ru-capa .ay-otra { pointer-events: auto; }
+.ru-ficha.ay-cambia { animation: ru-cae .42s cubic-bezier(.3, 1.6, .5, 1); }
+#screen-game .topline .app-companera { margin: 0 6px; }
+.musica-btn.apagada { opacity: .45; }
+#catGrid.cascada > :nth-child(2) { animation-delay: .05s; } #catGrid.cascada > :nth-child(3) { animation-delay: .1s; }

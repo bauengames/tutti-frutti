@@ -2123,11 +2123,12 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
   import {
     getDatabase, ref, set, get, update, onValue, off, runTransaction,
-    serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst, limitToLast
+    serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst, limitToLast, goOffline, goOnline
   } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
   import {
     getAuth, signInAnonymously, setPersistence, browserLocalPersistence,
-    GoogleAuthProvider, linkWithPopup, signInWithPopup, signInWithCredential, signOut
+    GoogleAuthProvider, linkWithPopup, signInWithPopup, signInWithCredential, signOut,
+    reauthenticateWithPopup, deleteUser
   } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 
   const firebaseConfig = {
@@ -2164,7 +2165,8 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
   }
   const uid = await signIn();
 
-  window.FB = { db, uid, ref, set, get, update, onValue, off, runTransaction, serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst, limitToLast, serverOffset: 0 };
+  window.FB = { db, uid, ref, set, get, update, onValue, off, runTransaction, serverTimestamp, onDisconnect, remove, query, orderByChild, equalTo, limitToFirst, limitToLast, serverOffset: 0,
+    desconectar: () => goOffline(db), conectar: () => goOnline(db) };
   // Diferencia entre el reloj de este dispositivo y el del servidor: así los
   // relojes de las rondas se cuentan igual para todos, aunque algún celular
   // tenga la hora adelantada o atrasada.
@@ -2210,6 +2212,28 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
       console.error("No se pudo iniciar sesión con Google", e);
       return { ok: false, code: e.code || "" };
     }
+  };
+  // Borrar la cuenta (juego/cuenta.js): primero se vuelve a elegir la misma cuenta de Google (Firebase
+  // exige un inicio reciente para borrar); al final el navegador vuelve a una identidad anónima nueva.
+  window.FB.reautenticar = async () => {
+    const u = auth.currentUser;
+    if (!u || u.isAnonymous) return { ok: false, code: "sin-cuenta" };
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+    try {
+      await reauthenticateWithPopup(u, provider);
+      return { ok: true };
+    } catch (e) {
+      if (e && (e.code === "auth/popup-closed-by-user" || e.code === "auth/cancelled-popup-request")) return { ok: false, code: "cancelled" };
+      if (e && e.code === "auth/user-mismatch") return { ok: false, code: "otra-cuenta" };
+      console.error("No se pudo confirmar la cuenta", e);
+      return { ok: false, code: (e && e.code) || "" };
+    }
+  };
+  window.FB.borrarUsuario = async () => {
+    await deleteUser(auth.currentUser);
+    const cred = await signInAnonymously(auth);
+    window.FB.uid = cred.user.uid;
   };
   // Al salir, el dispositivo vuelve a una identidad anónima nueva.
   window.FB.logout = async () => {
@@ -4875,6 +4899,20 @@ function getAudioCtx() {
   return state.audioCtx;
 }
 
+// Volumen de los efectos, de 0 a 1 (en la app se elige en Ajustes; en la web siempre 1). Los sonidos nuevos
+// (juego/sonidos.js) pasan por esta salida.
+function volumenEfectos() {
+  try { const v = localStorage.getItem("tuttifruti_app_vol_efectos"); return v === null ? 1 : Math.max(0, Math.min(1, Number(v) || 0)); } catch (e) { return 1; }
+}
+function salidaEfectos(ctx) {
+  if (!state.efectosOut || state.efectosOut.context !== ctx) {
+    state.efectosOut = ctx.createGain();
+    state.efectosOut.connect(ctx.destination);
+  }
+  state.efectosOut.gain.value = volumenEfectos();
+  return state.efectosOut;
+}
+
 function beep({ freq = 440, duration = 0.12, type = "sine", vol = 0.18, delay = 0 } = {}) {
   if (state.muted) return;
   const ctx = getAudioCtx();
@@ -5829,6 +5867,15 @@ function prepareBotAnswers(data) {
   const round = data.round;
   const categories = data.categories || (data.config && data.config.categories) || [];
   const labels = categories.map(c => catLabel(c));
+  const skill = 0.55 + Math.random() * 0.3;
+  // Si la IA no contesta (sin conexión, error), Frutibot usa las palabras de respaldo (juego/frutibot-respaldo.js):
+  // antes no escribía nada en toda la partida.
+  const respaldo = () => {
+    const base = window.APP && APP.frutibotRespaldo ? APP.frutibotRespaldo(data.letter, categories, state.lang) : {};
+    const out = {};
+    Object.keys(base).forEach(cat => { if (Math.random() < skill && !hasBannedLetter(base[cat], data.bannedLetter)) out[cat] = base[cat]; });
+    return out;
+  };
   const promise = (async () => {
     try {
       const controller = new AbortController();
@@ -5840,10 +5887,10 @@ function prepareBotAnswers(data) {
         signal: controller.signal,
       });
       clearTimeout(timeoutId);
-      if (!res.ok) return {};
+      if (!res.ok) return respaldo();
       const json = await res.json();
       const byLabel = (json && json.respuestas) || {};
-      const skill = 0.55 + Math.random() * 0.3;
+      if (!Object.keys(byLabel).length) return respaldo();
       const out = {};
       categories.forEach((cat, i) => {
         const v = byLabel[labels[i]];
@@ -5851,7 +5898,7 @@ function prepareBotAnswers(data) {
       });
       return out;
     } catch (e) {
-      return {};
+      return respaldo();
     }
   })();
   state.botAnswers = { round, promise };
@@ -7395,6 +7442,9 @@ function renderSoloTools() {
 
 // Pista: pide a la IA una palabra para la categoría elegida (la que tenés seleccionada o la
 // primera vacía) y la muestra adentro del casillero. Solo se descuenta si llega la pista.
+function respaldoPista(letter, cat) {
+  return (window.APP && APP.frutibotRespaldo) ? APP.frutibotRespaldo(letter, [cat], state.lang)[cat] || "" : "";
+}
 async function useHint() {
   const w = getWallet();
   if (!soloToolsAllowed() || w.items.hint <= 0 || state.hintBusy) return;
@@ -7408,13 +7458,17 @@ async function useHint() {
   state.hintBusy = true;
   renderSoloTools();
   try {
-    const res = await fetch("/.netlify/functions/rival", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ letra: letter, categorias: [catLabel(cat)], idioma: state.lang }),
-    });
-    const json = res.ok ? await res.json() : null;
-    const word = json && json.respuestas && json.respuestas[catLabel(cat)];
+    let json = null;
+    try {
+      const res = await fetch("/.netlify/functions/rival", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ letra: letter, categorias: [catLabel(cat)], idioma: state.lang }),
+      });
+      json = res.ok ? await res.json() : null;
+    } catch (e) { /* sin conexión: se usa el respaldo */ }
+    // Sin conexión o si la IA no contesta, la pista sale de las palabras de respaldo (juego/frutibot-respaldo.js).
+    const word = (json && json.respuestas && json.respuestas[catLabel(cat)]) || respaldoPista(letter, cat);
     if (!word) throw new Error("sin pista");
     const w2 = getWallet();
     w2.items.hint = Math.max(0, w2.items.hint - 1);
@@ -9326,6 +9380,9 @@ const ADV_WORLDS = [
   // Carnaval aparece y se abre cuando termina la Navidad (6/1), así no se pisan.
   { fruit: "carnaval", key: "carnaval", season: "2027-01-07", anuncio: "2027-01-07", cats: [5, 5, 6, 6, 6, 6, 6, 7, 7, 6], time: [75, 70, 70, 28, 70, 70, 65, 70, 65, 80], letters: ["easy", "medium"], pools: ["carnaval", "easy"], goal: 0.55, boss: "flash",
     levelRules: [[], ["termina"], ["lluvia"], ["suma"], ["memory"], ["largas"], ["banned"], ["reveal"], ["cadena"], ["short"]] },
+  // Navidad (juego/navidad.js): va al final para no cambiar los números de los niveles que ya existen.
+  { fruit: "navidad", key: "navidad", season: "2026-12-01", anuncio: "2026-11-15", cats: [5, 5, 5, 6, 6, 6, 6, 6, 7, 6], time: [80, 75, 75, 70, 16, 28, 70, 65, 70, 80], letters: ["easy", "medium"], pools: ["navidad", "easy"], goal: 0.55, boss: "long",
+    levelRules: [[], ["memory"], ["termina"], ["lluvia"], ["ticking"], ["suma"], ["banned"], ["largas"], ["reveal", "short"], ["cadena"]] },
 ];
 const ADV_SHORT_MAX = 6;
 const ADV_LONG_MIN = 7;
@@ -9495,14 +9552,14 @@ function advSeasonOpen(W) { return !W.season || advTodayKey() >= W.season; }
 function advWorldDone(d, w) { return (d.stars[(w + 1) * ADV_PER_WORLD] || 0) > 0; }
 function advWorldsDone(d) { let k = 0; ADV_WORLDS.forEach((W, w) => { if (advWorldDone(d, w)) k++; }); return k; }
 function advGoldCount(d) { return Object.keys(d.oro || {}).length; }
-// Los mundos de temporada no siguen la fila: se abren en su fecha para quien pasó el primer mundo.
+// Los mundos de temporada no siguen la fila: se abren en su fecha, para todos.
 function advUnlocked(d, n) {
   if (n === 1) return true;
   const w = Math.floor((n - 1) / ADV_PER_WORLD), i = (n - 1) % ADV_PER_WORLD, W = ADV_WORLDS[w];
   if (!W) return false;
   if (W.season) {
     if (!advSeasonOpen(W)) return false;
-    if (i === 0) return advWorldDone(d, 0);
+    if (i === 0) return true; // (10/11, igual que la app) abiertos para todos desde su fecha (antes había que pasar el Mundo Manzana)
   }
   return (d.stars[n - 1] || 0) > 0;
 }
@@ -12449,18 +12506,33 @@ checkAchievements();
 <script src="/juego/estilo.js"></script>
 <script src="/juego/aventura.js"></script>
 <script src="/juego/duelos.js"></script>
+<script src="/juego/frutigrama-nuevas.js"></script>
 <script src="/juego/frutigrama.js"></script>
 <script src="/juego/temporada.js"></script>
 <script src="/juego/copa.js"></script>
 <script src="/juego/regalos.js"></script>
 <script src="/juego/gente.js"></script>
-<script src="/juego/records.js"></script>
+<script src="/juego/rareza.js"></script>
+<script src="/juego/sonidos.js"></script>
+<script src="/juego/ritmo.js"></script>
+<script src="/juego/fruta.js"></script>
+<script src="/juego/ruleta.js"></script>
+<script src="/juego/musica.js"></script>
 <script src="/juego/guia.js"></script>
 <script src="/juego/invitar.js"></script>
 <script src="/juego/online.js"></script>
 <script src="/juego/puntajes.js"></script>
+<script src="/juego/frutibot-respaldo.js"></script>
+<script src="/juego/juez-offline.js"></script>
 <script src="/juego/revision.js"></script>
+<script src="/juego/emotes.js"></script>
 <script src="/juego/sala.js"></script>
 <script src="/juego/reglas.js"></script>
+<script src="/juego/conexion.js"></script>
+<script src="/juego/moderacion.js"></script>
+<script src="/juego/cuenta.js"></script>
+<script src="/juego/navidad.js"></script>
+<script src="/juego/arbolito.js"></script>
+<script src="/juego/mundo-temporada.js"></script>
 </body>
 </html>
