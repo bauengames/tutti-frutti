@@ -546,3 +546,22 @@ html[data-light] .pz-c.gana b { color: color-mix(in srgb, var(--lima) 40%, #1410
 #bastaWrap .basta.basta-niega { animation: basta-niega .35s ease; }
 @keyframes basta-niega { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 .rg-cierre { margin-top: 4px; text-align: center; }
+
+/* Contrarreloj: rondas sorpresa, combo y tiempo extra (juego/contrarreloj.js, igual que la app). */
+#twistNote.cr-nota { align-items: center; gap: 6px 10px; color: var(--text); font: 600 13px var(--font-body); }
+#twistNote.cr-nota svg { width: 16px; height: 16px; flex: none; }
+#twistNote.cr-nota > span { display: inline-flex; align-items: center; gap: 4px; }
+#twistNote.cr-oro strong { color: #E8B923; }
+html[data-light] #twistNote.cr-oro strong { color: #9A7300; }
+#twistNote.cr-relampago strong { color: var(--pomelo); }
+.cr-sep { width: 1px; height: 12px; background: var(--borde); }
+.cr-combo { padding: 3px 10px; border-radius: 999px; background: var(--lima); color: #14101F; font-weight: 800; box-shadow: 0 2px 0 color-mix(in srgb, var(--lima) 55%, #14101F); }
+.cr-premio { position: fixed; left: 50%; top: 64%; z-index: 120; transform: translate(-50%, 0); display: flex; flex-direction: column; align-items: center; gap: 6px;
+  pointer-events: none; animation: cr-entra .35s cubic-bezier(.3, 1.4, .5, 1) both; }
+.cr-premio.sale { animation: cr-sale .35s ease-in both; }
+.cr-premio-s { padding: 8px 18px; border-radius: 999px; background: var(--lima); color: #14101F; font: 800 22px var(--font-display); box-shadow: 0 8px 20px rgba(0,0,0,.25); }
+.cr-premio-combo { padding: 6px 16px; border-radius: 999px; background: var(--mandarina); color: #14101F; font: 800 18px var(--font-display); box-shadow: 0 8px 20px rgba(0,0,0,.25); }
+@keyframes cr-entra { from { opacity: 0; transform: translate(-50%, 16px) scale(.8); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
+@keyframes cr-sale { to { opacity: 0; transform: translate(-50%, -12px) scale(.95); } }
+@media (prefers-reduced-motion: reduce) { .cr-premio, .cr-premio.sale { animation: none; } }
+.cr-extra { color: var(--primary); font-weight: 700; }
