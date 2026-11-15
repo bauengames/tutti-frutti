@@ -416,6 +416,7 @@
         ".write": "auth != null && auth.uid === $uid && auth.token.email != null",
         ".validate": "newData.hasChildren(['name', 'code', 'avatar', 'stats', 'updatedAt']) && root.child('friendCodes').child(newData.child('code').val()).val() === $uid",
         "name": {
+          ".read": "auth != null && root.child('friendRequests').child(auth.uid).child($uid).exists()",
           ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 30"
         },
         "code": {
