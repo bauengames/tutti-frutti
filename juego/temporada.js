@@ -38,6 +38,54 @@
       cobrado: "{p}!", pase_tema: "Passe",
     },
   };
+  // (16/11, igual que la app) Más claro (un jugador: "no se entiende lo de los premios, ni que dice exclusivos de esta
+  // temporada; no queda claro que hay que ganarlos"). "Pase" pasa a "Premios"; en vez del párrafo, tres pasos; los
+  // exclusivos pasan a "Premios especiales" con su número, candado y cuánto falta; cada fila dice cuánta XP falta y al
+  // tocarla explica qué es el premio; y hay un "?" que explica cómo funciona la Temporada.
+  // En la web, el ícono es para la app de iPhone y el tema se elige en la Tienda.
+  var NUEVOS = {
+    es: { pase: "Premios", pase_tema: "Temporada", completo: "¡Ganaste los 30 premios!",
+      jugar: "Jugá y ganá premios", paso1: "Jugá cualquier modo", paso2: "Sumás XP", paso3: "Abrís un premio",
+      ganados: "{n} de {t} premios", faltan: "Te faltan {n} XP", falta_fila: "{n} XP",
+      especiales: "Premios especiales", especiales_sub: "Solo se ganan jugando esta temporada. No se venden y no vuelven.",
+      premio_n: "Premio {n}", icono_corto: "Ícono de la app", tema_corto: "Tema de colores",
+      listo: "¡Listo para cobrar!", tuyo: "Ya es tuyo", ayuda: "Cómo funciona la Temporada", entendido: "Entendido",
+      d_semillas: "Para cambiar en la Tienda por frutas, accesorios y más.",
+      d_acc: "Un accesorio para tu fruta. Si ya lo tenés, te llevás 25 semillas.",
+      d_icono: "Para la app de iPhone: cambia cómo se ve tutti.frutti en la pantalla de inicio de tu teléfono.",
+      d_tema: "Los colores de todo el juego. Se elige en la Tienda.",
+      d_freeze: "Si un día no jugás, se usa solo y tu racha sigue.",
+      d_solo: "Solo se gana esta temporada.",
+      d_cuando: "Premio {n} · te faltan {x} XP" },
+    en: { pase: "Rewards", pase_tema: "Season", completo: "You won all 30 rewards!",
+      jugar: "Play and win rewards", paso1: "Play any mode", paso2: "Earn XP", paso3: "Unlock a reward",
+      ganados: "{n} of {t} rewards", faltan: "{n} XP to go", falta_fila: "{n} XP",
+      especiales: "Special rewards", especiales_sub: "You can only win them by playing this season. They're not for sale and won't come back.",
+      premio_n: "Reward {n}", icono_corto: "App icon", tema_corto: "Color theme",
+      listo: "Ready to claim!", tuyo: "It's yours", ayuda: "How the season works", entendido: "Got it",
+      d_semillas: "Trade them in the Shop for fruits, accessories and more.",
+      d_acc: "An accessory for your fruit. If you already have it, you get 25 seeds.",
+      d_icono: "For the iPhone app: changes how tutti.frutti looks on your phone's home screen.",
+      d_tema: "Colors for the whole game. Pick it in the Shop.",
+      d_freeze: "If you skip a day, it's used automatically and your streak goes on.",
+      d_solo: "Only this season.",
+      d_cuando: "Reward {n} · {x} XP to go" },
+    pt: { pase: "Prêmios", pase_tema: "Temporada", completo: "Você ganhou os 30 prêmios!",
+      jugar: "Jogue e ganhe prêmios", paso1: "Jogue qualquer modo", paso2: "Ganhe XP", paso3: "Libere um prêmio",
+      ganados: "{n} de {t} prêmios", faltan: "Faltam {n} XP", falta_fila: "{n} XP",
+      especiales: "Prêmios especiais", especiales_sub: "Só dá para ganhar jogando nesta temporada. Não são vendidos e não voltam.",
+      premio_n: "Prêmio {n}", icono_corto: "Ícone do app", tema_corto: "Tema de cores",
+      listo: "Pronto para resgatar!", tuyo: "Já é seu", ayuda: "Como funciona a temporada", entendido: "Entendi",
+      d_semillas: "Para trocar na Loja por frutas, acessórios e mais.",
+      d_acc: "Um acessório para sua fruta. Se você já tiver, ganha 25 sementes.",
+      d_icono: "Para o app de iPhone: muda como o tutti.frutti aparece na tela inicial do seu celular.",
+      d_tema: "As cores do jogo inteiro. Escolha na Loja.",
+      d_freeze: "Se você não jogar um dia, ele é usado sozinho e sua sequência continua.",
+      d_solo: "Só nesta temporada.",
+      d_cuando: "Prêmio {n} · faltam {x} XP" },
+  };
+  Object.keys(NUEVOS).forEach(function (l) { Object.assign(TEXTOS[l], NUEVOS[l]); });
+  function miles(n) { try { return Number(n).toLocaleString(state.lang === "pt" ? "pt-BR" : state.lang); } catch (e) { return String(n); } }
   function tx(clave, vars) {
     var str = (TEXTOS[state.lang] || TEXTOS.es)[clave] || TEXTOS.es[clave] || clave;
     if (APP.tu) str = APP.tu(str);
@@ -198,7 +246,9 @@
     var html = '<div class="aj-segmentos tp-seg">' +
       '<button type="button" class="aj-seg' + (activo === "pase" ? " activo" : "") + '" onclick="appAbrirTemporada()">' + esc(tx("pase")) + (APP.paseParaCobrar() > 0 ? ' <span class="tp-punto"></span>' : "") + "</button>" +
       '<button type="button" class="aj-seg' + (activo === "liga" ? " activo" : "") + '" onclick="appAbrirLiga()">' + esc(tx("liga")) + "</button></div>";
-    return window.appSolapaCopa ? appSolapaCopa(html, activo) : html;
+    html = window.appSolapaCopa ? appSolapaCopa(html, activo) : html;
+    // (16/11, igual que la app) El "?" al lado de las solapas explica cómo funciona la Temporada.
+    return '<div class="tp-seg-fila">' + html + '<button type="button" class="tp-ayuda" onclick="appExplicarTemporada()" aria-label="' + esc(tx("ayuda")) + '">?</button></div>';
   };
 
   function render() {
@@ -211,25 +261,85 @@
     var enNivel = d.xp - hasta(T, llegaste), proximo = costo(T, llegaste + 1);
     html += '<div class="tp-cabecera"><span class="tp-emoji">' + iconSvg(T.emoji) + '</span><div><h1>' + esc(tx("titulo", { t: T.nombre[state.lang] || T.nombre.es })) + "</h1>" +
       "<small>" + esc(dias > 0 ? tx("termina", { n: dias }) : tx("termina_hoy")) + "</small></div></div>" +
-      '<div class="tp-progreso"><div class="tp-progreso-fila"><strong>' + esc(tx("nivel", { n: llegaste, t: TOTAL })) + "</strong><small>" +
-      esc(llegaste >= TOTAL ? tx("completo") : tx("xp", { a: enNivel, b: proximo })) + '</small></div>' +
+      '<div class="tp-progreso"><strong class="tp-jugar">' + esc(tx("jugar")) + "</strong>" +
+      '<ol class="tp-pasos"><li>' + esc(tx("paso1")) + "</li><li>" + esc(tx("paso2")) + "</li><li>" + esc(tx("paso3")) + "</li></ol>" +
+      '<div class="tp-progreso-fila"><span>' + esc(tx("ganados", { n: llegaste, t: TOTAL })) + "</span><small>" +
+      esc(llegaste >= TOTAL ? tx("completo") : tx("faltan", { n: miles(proximo - enNivel) })) + '</small></div>' +
       '<span class="ah-barra"><span style="width:' + (llegaste >= TOTAL ? 100 : Math.round(100 * enNivel / proximo)) + '%"></span></span></div>' +
-      '<p class="hint">' + esc(T.xp && T.xp.length > 1 ? tx("como_sube", { a: T.xp[0], b: T.xp[1], c: T.xp[2] }) : tx("como", { n: costo(T, 1) })) + "</p>" +
-      '<h2 class="ah-titulo-seccion">' + esc(tx("exclusivos")) + "</h2>" +
-      '<div class="tp-exclusivos"><div><img class="tp-icono-app" src="/juego/iconos/' + T.icono + '.png" alt=""><small>' + esc(tx("icono", { n: T.nombre[state.lang] || T.nombre.es })) + "</small></div>" +
-      "<div>" + dibujoPremio({ tema: T.tema }) + "<small>" + esc(tx("tema", { n: nombreTema(T.tema) })) + "</small></div></div>" +
+      '<h2 class="ah-titulo-seccion tp-especiales-titulo">' + esc(tx("especiales")) + "</h2>" +
+      '<p class="tp-especiales-sub">' + esc(tx("especiales_sub")) + "</p>" +
+      '<div class="tp-exclusivos">' + lista.map(function (p, i) { return { p: p, n: i + 1 }; }).filter(function (x) { return x.p.icono || x.p.tema; }).map(function (x) {
+        var n = x.n, cobrado = hechos.indexOf(n) >= 0, abierto = n <= llegaste;
+        var estado = cobrado ? tx("tuyo") : abierto ? tx("listo") : tx("faltan", { n: miles(hasta(T, n) - d.xp) });
+        return '<button type="button" class="tp-especial' + (cobrado ? " cobrado" : abierto ? " listo" : "") + '" data-premio="' + n + '">' +
+          '<span class="tp-chip">' + esc(tx("premio_n", { n: n })) + "</span>" +
+          '<span class="tp-esquina">' + (cobrado ? "✓" : abierto ? "" : iconSvg("candado")) + "</span>" +
+          dibujoPremio(x.p.tema ? { tema: x.p.tema } : x.p) +
+          "<strong>" + esc(tx(x.p.tema ? "tema_corto" : "icono_corto")) + "</strong><small>" + esc(estado) + "</small></button>";
+      }).join("") + "</div>" +
       '<div class="tp-camino">' + lista.map(function (p, i) {
         var n = i + 1, cobrado = hechos.indexOf(n) >= 0, abierto = n <= llegaste;
         var especial = p.icono || p.tema || p.a;
-        return '<div class="tp-fila' + (cobrado ? " cobrado" : abierto ? " listo" : "") + (especial ? " especial" : "") + '" id="tpFila' + n + '">' +
+        return '<div class="tp-fila' + (cobrado ? " cobrado" : abierto ? " listo" : "") + (especial ? " especial" : "") + '" id="tpFila' + n + '" data-premio="' + n + '">' +
           '<span class="tp-num">' + n + "</span>" +
           '<span class="tp-dibujo">' + dibujoPremio(p) + "</span>" +
           '<span class="tp-texto">' + esc(textoPremio(p, T)) + "</span>" +
-          (cobrado ? '<span class="tp-ok">✓</span>' : abierto ? '<button type="button" class="tp-cobrar" onclick="appCobrarPase(' + n + ')">' + esc(tx("cobrar")) + "</button>" : '<span class="tp-candado" aria-label="' + esc(tx("bloqueado")) + '">' + iconSvg("candado") + '</span>') +
+          (cobrado ? '<span class="tp-ok">✓</span>' : abierto ? '<button type="button" class="tp-cobrar" onclick="appCobrarPase(' + n + ')">' + esc(tx("cobrar")) + "</button>" 
+            : '<span class="tp-falta" aria-label="' + esc(tx("bloqueado")) + '">' + iconSvg("candado") + "<small>" + esc(tx("falta_fila", { n: miles(hasta(T, n) - d.xp) })) + "</small></span>") +
           "</div>";
       }).join("") + "</div>";
     cont.innerHTML = html;
   }
+  // Tocar un premio (una fila o un especial) explica qué es y cuándo se gana.
+  function descripcion(p) {
+    var w = getWallet(), items = w.items || {};
+    if (p.tema) return tx("d_tema") + " " + tx("d_solo");
+    if (p.icono) return tx("d_icono") + " " + tx("d_solo");
+    if (p.a) return tx("d_acc");
+    if (p.i === "freeze") return tx("d_freeze");
+    if (p.i === "joker") return t("shop_joker_desc", { pts: typeof JOKER_POINTS !== "undefined" ? JOKER_POINTS : 5, n: items.joker || 0 });
+    if (p.i === "clock") return t("shop_clock_desc", { s: typeof CLOCK_SECONDS !== "undefined" ? CLOCK_SECONDS : 15, n: items.clock || 0 });
+    if (p.i) return t("shop_" + p.i + "_desc", { n: items[p.i] || 0 });
+    return tx("d_semillas");
+  }
+  function verPremio(n) {
+    var T = APP.temporadaActual();
+    if (!T || !APP.abrirHoja) return;
+    var p = premios(T)[n - 1], d = datos(T);
+    if (!p) return;
+    var cobrado = cobrados(T).indexOf(n) >= 0, abierto = n <= alcanzados(T);
+    var estado = cobrado ? tx("premio_n", { n: n }) + " · " + tx("tuyo") : abierto ? tx("premio_n", { n: n }) + " · " + tx("listo") : tx("d_cuando", { n: n, x: miles(hasta(T, n) - d.xp) });
+    var h = APP.abrirHoja('<div class="tp-hoja-premio"><span class="tp-hoja-dibujo">' + dibujoPremio(p) + "</span>" +
+      "<h2>" + esc(textoPremio(p, T)) + "</h2><p>" + esc(APP.numeros(descripcion(p))) + '</p><p class="tp-hoja-estado">' + esc(estado) + "</p></div>" +
+      '<div class="confirm-actions"><button type="button" class="btn btn-primary" data-r="' + (abierto && !cobrado ? "cobrar" : "ok") + '">' +
+      esc(abierto && !cobrado ? tx("cobrar") : tx("entendido")) + "</button></div>");
+    h.tarjeta.addEventListener("click", function (ev) {
+      var b = ev.target.closest("[data-r]");
+      if (!b) return;
+      h.cerrar();
+      if (b.getAttribute("data-r") === "cobrar") appCobrarPase(n);
+    });
+  }
+  cont.addEventListener("click", function (ev) {
+    if (ev.target.closest(".tp-cobrar")) return;
+    var f = ev.target.closest("[data-premio]");
+    if (f) verPremio(+f.getAttribute("data-premio"));
+  });
+  // La hoja que explica la Temporada (el "?" de Premios, Liga y Copa).
+  var EXPLICA = {
+    es: ["Temporada: tres formas de ganar premios", [["Premios", "30 premios gratis que se abren con la XP que ganás jugando cualquier modo. Los especiales solo se ganan esta temporada."], ["Liga", "Cada semana competís por XP con hasta 20 jugadores: los primeros suben de liga y ganan semillas."], ["Copa", "8 rivales de Frutibot, uno tras otro, con 3 vidas. Si los ganás a todos, te llevás la copa de la semana."]], "Entendido"],
+    en: ["Season: three ways to win prizes", [["Rewards", "30 free rewards you unlock with the XP you earn playing any mode. The special ones can only be won this season."], ["League", "Every week you compete for XP with up to 20 players: the top ones move up a league and win seeds."], ["Cup", "8 Frutibot rivals, one after another, with 3 lives. Beat them all and you win this week's cup."]], "Got it"],
+    pt: ["Temporada: três jeitos de ganhar prêmios", [["Prêmios", "30 prêmios grátis que você libera com a XP que ganha jogando qualquer modo. Os especiais só dá para ganhar nesta temporada."], ["Liga", "Toda semana você disputa XP com até 20 jogadores: os primeiros sobem de liga e ganham sementes."], ["Copa", "8 rivais do Frutibot, um depois do outro, com 3 vidas. Se vencer todos, leva a copa da semana."]], "Entendi"],
+  };
+  window.appExplicarTemporada = function () {
+    if (!APP.abrirHoja) return;
+    var e = EXPLICA[state.lang] || EXPLICA.es;
+    function tu(x) { return APP.numeros(APP.tu ? APP.tu(x) : x); }
+    var h = APP.abrirHoja("<h2>" + esc(tu(e[0])) + '</h2><ul class="tp-explica">' + e[1].filter(function (p, i) { return i < 2 || window.appAbrirCopa; }).map(function (p) {
+      return "<li><strong>" + esc(p[0]) + "</strong> " + esc(tu(p[1])) + "</li>";
+    }).join("") + '</ul><div class="confirm-actions"><button type="button" class="btn btn-primary" data-r="ok">' + esc(e[2]) + "</button></div>");
+    h.tarjeta.addEventListener("click", function (ev) { if (ev.target.closest("[data-r]")) h.cerrar(); });
+  };
   window.appAbrirTemporada = function () {
     render();
     showScreen("screen-temporada");
