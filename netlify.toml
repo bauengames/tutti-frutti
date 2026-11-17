@@ -135,3 +135,9 @@
   for = "/.well-known/apple-app-site-association"
   [headers.values]
     Content-Type = "application/json"
+
+# Android (App Links): los links del sitio abren la app de Android.
+[[headers]]
+  for = "/.well-known/assetlinks.json"
+  [headers.values]
+    Content-Type = "application/json"
