@@ -41,6 +41,14 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/contacto" />
   </url>
   <url>
+    <loc>https://tuttipuntofrutti.com/borrar-cuenta</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/borrar-cuenta" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/delete-account" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/apagar-conta" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/borrar-cuenta" />
+  </url>
+  <url>
     <loc>https://tuttipuntofrutti.com/en/</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/" />
@@ -81,6 +89,14 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/contacto" />
   </url>
   <url>
+    <loc>https://tuttipuntofrutti.com/en/delete-account</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/borrar-cuenta" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/delete-account" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/apagar-conta" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/borrar-cuenta" />
+  </url>
+  <url>
     <loc>https://tuttipuntofrutti.com/pt/</loc>
     <lastmod>2026-10-08</lastmod>
     <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/" />
@@ -119,6 +135,14 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/contact" />
     <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/contato" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/contacto" />
+  </url>
+  <url>
+    <loc>https://tuttipuntofrutti.com/pt/apagar-conta</loc>
+    <lastmod>2026-10-08</lastmod>
+    <xhtml:link rel="alternate" hreflang="es" href="https://tuttipuntofrutti.com/borrar-cuenta" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tuttipuntofrutti.com/en/delete-account" />
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tuttipuntofrutti.com/pt/apagar-conta" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tuttipuntofrutti.com/borrar-cuenta" />
   </url>
   <url>
     <loc>https://tuttipuntofrutti.com/desafio-del-dia</loc>

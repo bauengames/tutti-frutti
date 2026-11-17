@@ -35,10 +35,12 @@ const I18N_PAGES = {
   privacidad: { es: "/privacidad", en: "/en/privacy", pt: "/pt/privacidade" },
   terminos: { es: "/terminos", en: "/en/terms", pt: "/pt/termos" },
   contacto: { es: "/contacto", en: "/en/contact", pt: "/pt/contato" },
+  // Para Google Play: la página pública para borrar la cuenta.
+  borrar: { es: "/borrar-cuenta", en: "/en/delete-account", pt: "/pt/apagar-conta" },
 };
 
 // Fechas de "Última actualización" de las páginas legales.
-const UPDATED = { privacidad: [2026, 11, 13], terminos: [2026, 9, 22] };
+const UPDATED = { privacidad: [2026, 11, 17], terminos: [2026, 9, 22], borrar: [2026, 11, 17] };
 
 // Guías de contenido. Plantillas en scripts/templates/guias/<idioma>/<key>.html.
 // Una guía puede existir solo en algunos idiomas: se generan los que tengan URL en "urls".
@@ -355,6 +357,7 @@ function fixLinks(html, lang) {
     "privacidad.html": I18N_PAGES.privacidad[lang],
     "terminos.html": I18N_PAGES.terminos[lang],
     "contacto.html": I18N_PAGES.contacto[lang],
+    "borrar.html": I18N_PAGES.borrar[lang],
     "jugar.html": "/jugar",
   };
   return html.replace(/href="([a-z]+\.html)"/g, (m, file) => (map[file] ? `href="${map[file]}"` : m));
@@ -575,6 +578,7 @@ function siteFooter(page) {
   const legal = [
     footerLink(I18N_PAGES.privacidad[lang], t(lang, "nav_privacidad"), url),
     footerLink(I18N_PAGES.terminos[lang], t(lang, "nav_terminos"), url),
+    footerLink(I18N_PAGES.borrar[lang], t(lang, "nav_borrar"), url),
     GUIDE.quienes.hidden ? "" : footerLink(GUIDE.quienes.urls[lang], GUIDE.quienes[lang].nav, url),
   ].filter(Boolean);
   return `<footer class="site-footer">
@@ -987,7 +991,7 @@ ${urls.join("\n")}
 const built = [];
 for (const lang of LANGS) {
   built.push(buildHome(lang));
-  for (const key of ["reglas", "privacidad", "terminos", "contacto"]) built.push(buildI18nPage(key, lang));
+  for (const key of ["reglas", "privacidad", "terminos", "contacto", "borrar"]) built.push(buildI18nPage(key, lang));
 }
 for (const lang of LANGS) {
   for (const g of GUIDES) if (g.urls[lang]) built.push(buildGuide(g, lang));
