@@ -24,7 +24,7 @@ const MAX_LARGO_CATEGORIA = 40;
 // El juez rápido decide todo; lo que rechaza pasa a una apelación con un modelo más capaz
 // (son pocas palabras, así que casi no suma costo). Entre los dos tienen que entrar en el
 // límite de 10 s de las funciones de Netlify.
-const MODELO_JUEZ = "claude-haiku-4-5";
+const MODELO_JUEZ = "claude-haiku-5-5";
 const MODELO_APELACION = "claude-sonnet-5-5";
 const TIMEOUT_JUEZ_MS = 4500;
 const PRESUPUESTO_TOTAL_MS = 9000;
@@ -273,6 +273,17 @@ Rispondi SOLO con JSON, senza testo aggiuntivo né blocchi di codice:
 Compila "motivo" con un breve motivo IN ITALIANO solo quando "valida" è false.`,
 };
 
+// Cómo se apaga el "pensar" en cada modelo: Haiku 5.5 acepta "disabled"; Sonnet 5.5 no, usa "between_tools".
+function sinPensar(modelo) {
+  return /sonnet/.test(modelo) ? { type: "between_tools" } : { type: "disabled" };
+}
+// El texto de la respuesta (el primer bloque de texto, aunque antes venga otro tipo de bloque).
+function textoDe(data) {
+  const bloques = (data && Array.isArray(data.content)) ? data.content : [];
+  const b = bloques.find(x => x && x.type === "text");
+  return (b && b.text) || "";
+}
+
 // Llama al modelo y devuelve los veredictos que vinieron bien formados (id -> veredicto),
 // o null si falló, tardó demasiado o la respuesta no se pudo leer.
 async function pedirVeredictos(apiKey, modelo, sistema, disputas, timeoutMs) {
@@ -289,7 +300,9 @@ async function pedirVeredictos(apiKey, modelo, sistema, disputas, timeoutMs) {
       body: JSON.stringify({
         model: modelo,
         max_tokens: 1000,
-        temperature: 0,
+        // Sin "temperature": Haiku 5.5 y Sonnet 5.5 no la aceptan (con temperature la apelación fallaba
+        // siempre, del 1/10 al 18/11/2026). Y sin pensar antes de contestar: es un veredicto corto.
+        thinking: sinPensar(modelo),
         system: sistema,
         messages: [{ role: "user", content: JSON.stringify({ disputas }) }],
       }),
@@ -301,7 +314,7 @@ async function pedirVeredictos(apiKey, modelo, sistema, disputas, timeoutMs) {
       return null;
     }
     const data = await res.json().catch(() => null);
-    const texto = (data && data.content && data.content[0] && data.content[0].text) || "";
+    const texto = textoDe(data);
     let parsed = null;
     try {
       parsed = JSON.parse(texto.trim().replace(/^```json\s*/i, "").replace(/^```\s*/, "").replace(/```\s*$/, ""));

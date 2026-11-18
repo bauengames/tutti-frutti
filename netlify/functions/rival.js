@@ -142,9 +142,11 @@ exports.handler = async (event) => {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-haiku-4-5",
+        model: "claude-haiku-5-5",
         max_tokens: 600,
-        temperature: 1,
+        // Haiku 5.5 (18/11/2026): 10 veces más barato que Haiku 4.5. Sin pensar antes de contestar
+        // y sin "temperature" (en Haiku 5.5 solo vale la de siempre, que ya varía las respuestas).
+        thinking: { type: "disabled" },
         system: promptSistema,
         messages: [{ role: "user", content: JSON.stringify({ letra: letra.toUpperCase(), categorias }) }],
       }),
@@ -161,7 +163,9 @@ exports.handler = async (event) => {
   }
 
   const data = await respuestaAnthropic.json().catch(() => null);
-  const texto = (data && data.content && data.content[0] && data.content[0].text) || "";
+  const bloques = (data && Array.isArray(data.content)) ? data.content : [];
+  const bloqueTexto = bloques.find(x => x && x.type === "text");
+  const texto = (bloqueTexto && bloqueTexto.text) || "";
   let parsed = null;
   try {
     parsed = JSON.parse(texto.trim().replace(/^```json\s*/i, "").replace(/^```\s*/, "").replace(/```\s*$/, ""));
