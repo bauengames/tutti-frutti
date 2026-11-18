@@ -23,35 +23,35 @@ function estaBloqueadoPorRateLimit(ip) {
 
 const PROMPTS_SISTEMA = {
   es: `Sos un jugador de tutti frutti (también llamado Stop o Basta) de nivel intermedio.
-Recibís una letra y una lista de categorías. Para cada categoría escribí UNA respuesta real que empiece con esa letra, como la escribiría una persona común en una partida: palabras conocidas, no rebuscadas.
-Si en una categoría no se te ocurre nada razonable, dejala vacía ("").
+Recibís una letra y una lista de categorías. Para cada categoría escribí TRES respuestas reales distintas en español que empiecen con esa letra, como las escribiría una persona común en una partida: palabras conocidas, no rebuscadas.
+Si en una categoría no se te ocurre nada razonable, dejala vacía ([]).
 Respondé SOLO con JSON, sin texto adicional ni bloques de código, con este formato:
-{"respuestas":{"Categoría":"respuesta"}}`,
+{"respuestas":{"Categoría":["respuesta","respuesta","respuesta"]}}`,
   en: `You are an average player of a word game like Scattergories.
-You receive a letter and a list of categories. For each category write ONE real answer that starts with that letter, like a regular person would during a game: well-known words, nothing obscure.
-If nothing reasonable comes to mind for a category, leave it empty ("").
+You receive a letter and a list of categories. For each category write THREE different real answers in English that start with that letter, like a regular person would during a game: well-known words, nothing obscure. Always answer in English, even if the letter or the words look like another language.
+If nothing reasonable comes to mind for a category, leave it empty ([]).
 Respond ONLY with JSON, no extra text or code fences, in this format:
-{"respuestas":{"Category":"answer"}}`,
+{"respuestas":{"Category":["answer","answer","answer"]}}`,
   pt: `Você é um jogador mediano de um jogo de palavras como Adedanha (Stop).
-Você recebe uma letra e uma lista de categorias. Para cada categoria escreva UMA resposta real que comece com essa letra, como uma pessoa comum escreveria numa partida: palavras conhecidas, nada rebuscado.
-Se nada razoável vier à mente numa categoria, deixe vazio ("").
+Você recebe uma letra e uma lista de categorias. Para cada categoria escreva TRÊS respostas reais diferentes em português que comecem com essa letra, como uma pessoa comum escreveria numa partida: palavras conhecidas, nada rebuscado. Responda sempre em português.
+Se nada razoável vier à mente numa categoria, deixe vazio ([]).
 Responda APENAS com JSON, sem texto adicional nem blocos de código, neste formato:
-{"respuestas":{"Categoria":"resposta"}}`,
+{"respuestas":{"Categoria":["resposta","resposta","resposta"]}}`,
   de: `Du bist ein durchschnittlicher Spieler eines Wortspiels wie Stadt, Land, Fluss.
-Du bekommst einen Buchstaben und eine Liste von Kategorien. Schreib für jede Kategorie EINE echte Antwort auf Deutsch, die mit diesem Buchstaben beginnt, so wie ein normaler Mensch beim Spielen: bekannte Wörter, nichts Ausgefallenes.
-Fällt dir für eine Kategorie nichts Vernünftiges ein, lass sie leer ("").
+Du bekommst einen Buchstaben und eine Liste von Kategorien. Schreib für jede Kategorie DREI verschiedene echte Antworten auf Deutsch, die mit diesem Buchstaben beginnen, so wie ein normaler Mensch beim Spielen: bekannte Wörter, nichts Ausgefallenes.
+Fällt dir für eine Kategorie nichts Vernünftiges ein, lass sie leer ([]).
 Antworte NUR mit JSON, ohne zusätzlichen Text oder Codeblöcke, in diesem Format:
-{"respuestas":{"Kategorie":"Antwort"}}`,
+{"respuestas":{"Kategorie":["Antwort","Antwort","Antwort"]}}`,
   fr: `Tu es un joueur moyen d'un jeu de mots comme le Petit Bac.
-Tu reçois une lettre et une liste de catégories. Pour chaque catégorie, écris UNE vraie réponse en français qui commence par cette lettre, comme l'écrirait une personne ordinaire pendant une partie : des mots connus, rien de recherché.
-Si rien de raisonnable ne te vient pour une catégorie, laisse-la vide ("").
+Tu reçois une lettre et une liste de catégories. Pour chaque catégorie, écris TROIS vraies réponses différentes en français qui commencent par cette lettre, comme les écrirait une personne ordinaire pendant une partie : des mots connus, rien de recherché.
+Si rien de raisonnable ne te vient pour une catégorie, laisse-la vide ([]).
 Réponds UNIQUEMENT en JSON, sans texte supplémentaire ni bloc de code, dans ce format :
-{"respuestas":{"Catégorie":"réponse"}}`,
+{"respuestas":{"Catégorie":["réponse","réponse","réponse"]}}`,
   it: `Sei un giocatore medio di un gioco di parole come Nomi, cose, città.
-Ricevi una lettera e un elenco di categorie. Per ogni categoria scrivi UNA risposta vera in italiano che inizi con quella lettera, come la scriverebbe una persona qualunque durante una partita: parole conosciute, niente di ricercato.
-Se per una categoria non ti viene in mente niente di ragionevole, lasciala vuota ("").
+Ricevi una lettera e un elenco di categorie. Per ogni categoria scrivi TRE risposte vere diverse in italiano che inizino con quella lettera, come le scriverebbe una persona qualunque durante una partita: parole conosciute, niente di ricercato.
+Se per una categoria non ti viene in mente niente di ragionevole, lasciala vuota ([]).
 Rispondi SOLO con JSON, senza testo aggiuntivo né blocchi di codice, in questo formato:
-{"respuestas":{"Categoria":"risposta"}}`,
+{"respuestas":{"Categoria":["risposta","risposta","risposta"]}}`,
 };
 
 // Compara sin tildes ni mayúsculas, pero la Ñ sigue siendo una letra distinta de la N.
@@ -143,9 +143,10 @@ exports.handler = async (event) => {
       },
       body: JSON.stringify({
         model: "claude-haiku-5-5",
-        max_tokens: 600,
+        max_tokens: 1200,
         // Haiku 5.5 (18/11/2026): 10 veces más barato que Haiku 4.5. Sin pensar antes de contestar
-        // y sin "temperature" (en Haiku 5.5 solo vale la de siempre, que ya varía las respuestas).
+        // y sin "temperature" (Haiku 5.5 no la acepta). Sin temperature repetía siempre lo mismo con la misma
+        // letra, así que pide tres respuestas por categoría y acá se elige una al azar.
         thinking: { type: "disabled" },
         system: promptSistema,
         messages: [{ role: "user", content: JSON.stringify({ letra: letra.toUpperCase(), categorias }) }],
@@ -176,9 +177,12 @@ exports.handler = async (event) => {
   // Solo se devuelven respuestas de las categorías pedidas que empiecen con la letra.
   const respuestas = {};
   const crudas = (parsed && parsed.respuestas && typeof parsed.respuestas === "object") ? parsed.respuestas : {};
+  const limpiar = x => (typeof x === "string" ? x.trim().replace(/[.#$\[\]\/]/g, "").slice(0, MAX_LARGO_PALABRA) : "");
   categorias.forEach(cat => {
-    const v = typeof crudas[cat] === "string" ? crudas[cat].trim().replace(/[.#$\[\]\/]/g, "").slice(0, MAX_LARGO_PALABRA) : "";
-    if (v && empiezaConLetra(v, letra)) respuestas[cat] = v;
+    // Tres opciones por categoría (o una sola, si el modelo devolvió un texto): una al azar entre las que sirven.
+    const opciones = (Array.isArray(crudas[cat]) ? crudas[cat] : [crudas[cat]])
+      .map(limpiar).filter(v => v && empiezaConLetra(v, letra));
+    if (opciones.length) respuestas[cat] = opciones[Math.floor(Math.random() * opciones.length)];
   });
   return jsonResponse(200, { respuestas });
 };
