@@ -297,6 +297,12 @@ html[data-booting] *, html[data-booting] *::before, html[data-booting] *::after 
 .btn .ph { font-size: 22px; }
 .btn-block { width: 100%; }
 .install-btn { margin-top: 10px; gap: 8px; }
+.store-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 10px; margin-top: 18px; text-align: center; }
+.store-row > span { width: 100%; color: var(--text-muted); font-size: 13px; font-weight: 600; }
+.app-store-btn { display: inline-flex; flex-direction: column; align-items: flex-start; min-width: 118px; padding: 7px 16px; border-radius: 12px; border: 2px solid var(--borde); background: var(--surface); color: var(--text); text-decoration: none; line-height: 1.15; }
+.app-store-btn strong { font-size: 15px; }
+.app-store-btn small { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
+.app-store-btn:hover { border-color: var(--primary); }
 .btn-primary { background: var(--primary); color: var(--tinta); font-weight: 700; }
 .btn-primary:hover:not(:disabled) { filter: brightness(1.1); }
 .btn-primary:active:not(:disabled) { filter: brightness(.9); transform: translateY(2px); }
@@ -1374,6 +1380,8 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
 <script src="/cookie-consent.js" defer></script>
 <!-- Cartelito de Apple "Abrir en la App Store": solo lo muestra Safari en iPhone; en compu y Android no aparece nada. -->
 <meta name="apple-itunes-app" content="app-id=6820982794, app-argument=https://tuttipuntofrutti.com/jugar" />
+<!-- En Android, un cartel propio con el link a Google Play (app-android.js). -->
+<script src="/app-android.js" defer></script>
 <link rel="stylesheet" href="/juego/juego.css" />
 </head>
 <body>
@@ -1637,6 +1645,12 @@ html[data-light] .duel-info span.good, html[data-light] .duel-info span.bad { co
     </div>
     <div data-account-box class="lobby-account"></div>
     <button type="button" class="btn btn-ghost btn-block install-btn" id="installAppBtn" style="display:none;" onclick="installApp()"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" width="20" height="20"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/></svg><span data-install-label data-i18n="install_app_btn">Instalar la app</span></button>
+    <!-- Links a las fichas de la app en Google Play y en la App Store. -->
+    <div class="store-row">
+      <span data-i18n="apps_label">También en el celular</span>
+      <a class="app-store-btn" href="https://play.google.com/store/apps/details?id=com.tuttipuntofrutti.app&amp;referrer=utm_source%3Dweb%26utm_medium%3Djuego" target="_blank" rel="noopener"><strong>Android</strong><small>Google Play</small></a>
+      <a class="app-store-btn" href="https://apps.apple.com/app/id6820982794" target="_blank" rel="noopener"><strong>iPhone</strong><small>App Store</small></a>
+    </div>
   </div>
 </div>
 
@@ -3027,6 +3041,7 @@ const I18N = {
     streak_round_toast: "{valid} de {total} válidas",
     avatar_label: "Tu fruta",
     install_app_btn: "Instalar la app",
+    apps_label: "También en el celular",
     alert_connection_problem: "No pudimos conectarte con la sala. Recargá la página (F5) y probá de nuevo. Si tenés un bloqueador de anuncios, probá desactivarlo para este sitio.",
     twists_label: "Vueltas de tuerca (opcional)",
     twist_hard_title: "Letras difíciles",
@@ -3733,6 +3748,7 @@ const I18N = {
     streak_round_toast: "{valid} of {total} valid",
     avatar_label: "Your fruit",
     install_app_btn: "Install the app",
+    apps_label: "Also on your phone",
     alert_connection_problem: "We couldn't connect you to the room. Reload the page (F5) and try again. If you use an ad blocker, try turning it off for this site.",
     twists_label: "Twists (optional)",
     twist_hard_title: "Hard letters",
@@ -4439,6 +4455,7 @@ const I18N = {
     streak_round_toast: "{valid} de {total} válidas",
     avatar_label: "Sua fruta",
     install_app_btn: "Instalar o app",
+    apps_label: "Também no celular",
     alert_connection_problem: "Não conseguimos te conectar à sala. Recarregue a página (F5) e tente de novo. Se você usa um bloqueador de anúncios, tente desativá-lo para este site.",
     twists_label: "Reviravoltas (opcional)",
     twist_hard_title: "Letras difíceis",

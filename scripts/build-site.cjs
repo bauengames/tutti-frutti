@@ -413,6 +413,8 @@ function head(page) {
   lines.push(`<meta name="theme-color" content="${THEME_COLOR}" />`);
   // Cartelito de Apple "Abrir en la App Store": solo lo muestra Safari en iPhone; en compu y Android no aparece nada.
   lines.push('<meta name="apple-itunes-app" content="app-id=6820982794" />');
+  // En Android no hay cartel propio del navegador: app-android.js muestra uno con el link a Google Play.
+  lines.push('<script src="/app-android.js" defer></script>');
   if (page.extraHead) lines.push(page.extraHead);
   lines.push(`<link rel="icon" type="image/svg+xml" href="${FAVICON}" />`);
   if (page.url) lines.push(`<link rel="canonical" href="${abs(page.url)}" />`);
@@ -566,6 +568,18 @@ function footerLink(url, text, currentUrl) {
   return `<a href="${url}"${url === currentUrl ? ' aria-current="page"' : ""}>${esc(text)}</a>`;
 }
 
+// Links a las fichas de la app en Google Play y en la App Store (pie de todas las páginas).
+const PLAY_URL = "https://play.google.com/store/apps/details?id=com.tuttipuntofrutti.app";
+const APPSTORE_URL = "https://apps.apple.com/app/id6820982794";
+function appsRow(lang, medio) {
+  const play = `${PLAY_URL}&amp;referrer=utm_source%3Dweb%26utm_medium%3D${medio}`;
+  return `<div class="footer-apps">
+      <span>${esc(t(lang, "apps_label"))}</span>
+      <a class="app-store-btn" href="${play}" target="_blank" rel="noopener"><strong>Android</strong><small>Google Play</small></a>
+      <a class="app-store-btn" href="${APPSTORE_URL}" target="_blank" rel="noopener"><strong>iPhone</strong><small>App Store</small></a>
+    </div>`;
+}
+
 function siteFooter(page) {
   const { lang, url } = page;
   const main = [
@@ -586,6 +600,7 @@ function siteFooter(page) {
     <nav class="footer-main">
       ${main.join("\n      ")}
     </nav>
+    ${appsRow(lang, "pie")}
     <div class="footer-bottom">
       <nav class="footer-legal">
         ${legal.join("\n        ")}

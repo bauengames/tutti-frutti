@@ -7,6 +7,7 @@
 <meta name="description" content="Juega al tutti frutti online gratis, también llamado Stop o Basta. Arma una sala con amigos o juega con un rival al azar. Un juez con IA resuelve dudas." />
 <meta name="theme-color" content="#14101F" />
 <meta name="apple-itunes-app" content="app-id=6820982794" />
+<script src="/app-android.js" defer></script>
 <meta name="google-site-verification" content="11IeCqdOInhFBmkUuvxaYK9JlKZoHk9tQVQZTIyQ_-w" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="mobile-web-app-capable" content="yes" />
@@ -359,6 +360,12 @@ footer.site-footer .footer-legal a { color: var(--text-muted); font-size: 13px; 
 footer.site-footer a:hover { color: var(--primary); text-decoration: none; }
 footer.site-footer a[aria-current="page"] { color: var(--primary); }
 footer.site-footer .copy { color: var(--text-muted); font-size: 13px; }
+footer.site-footer .footer-apps { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 10px; }
+footer.site-footer .footer-apps > span { width: 100%; color: var(--text-muted); font-size: 13px; font-weight: 600; }
+.app-store-btn { display: inline-flex; flex-direction: column; align-items: flex-start; min-width: 118px; padding: 7px 16px; border-radius: 12px; border: 2px solid var(--borde); background: var(--surface); color: var(--text); text-decoration: none; line-height: 1.15; }
+.app-store-btn strong { font-size: 15px; }
+.app-store-btn small { font-size: 11.5px; color: var(--text-muted); font-weight: 600; }
+footer.site-footer a.app-store-btn:hover { border-color: var(--primary); color: var(--text); }
 
 /* ---------- Selector de idioma como links + aviso de idioma ---------- */
 a.site-lang-option { color: var(--text); text-decoration: none; }
@@ -747,6 +754,11 @@ body > .lang-hint { align-self: stretch; width: auto; margin: -16px -16px 12px; 
       <a href="/tutti-frutti-para-imprimir">Planillas para imprimir</a>
       <a href="/contacto">Contacto</a>
     </nav>
+    <div class="footer-apps">
+      <span>También en el celular</span>
+      <a class="app-store-btn" href="https://play.google.com/store/apps/details?id=com.tuttipuntofrutti.app&amp;referrer=utm_source%3Dweb%26utm_medium%3Dpie" target="_blank" rel="noopener"><strong>Android</strong><small>Google Play</small></a>
+      <a class="app-store-btn" href="https://apps.apple.com/app/id6820982794" target="_blank" rel="noopener"><strong>iPhone</strong><small>App Store</small></a>
+    </div>
     <div class="footer-bottom">
       <nav class="footer-legal">
         <a href="/privacidad">Privacidad</a>
